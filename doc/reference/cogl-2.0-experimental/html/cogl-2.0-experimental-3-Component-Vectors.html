@@ -1,0 +1,585 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3 Component Vectors</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-utilities.html" title="Utilities">
+<link rel="prev" href="cogl-2.0-experimental-Matrices.html" title="Matrices">
+<link rel="next" href="cogl-2.0-experimental-Quaternions-(Rotations).html" title="Quaternions (Rotations)">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-Matrices.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-utilities.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Quaternions-(Rotations).html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-3-Component-Vectors.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-3-Component-Vectors.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-3-Component-Vectors"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-3-Component-Vectors.top_of_page"></a>3 Component Vectors</span></h2>
+<p>3 Component Vectors — Functions for handling single precision float
+                    vectors.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-3-Component-Vectors.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init" title="cogl_vector3_init">cogl_vector3_init</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init-zero" title="cogl_vector3_init_zero">cogl_vector3_init_zero</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal" title="cogl_vector3_equal">cogl_vector3_equal</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal-with-epsilon" title="cogl_vector3_equal_with_epsilon">cogl_vector3_equal_with_epsilon</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-copy" title="cogl_vector3_copy">cogl_vector3_copy</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free">cogl_vector3_free</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-invert" title="cogl_vector3_invert">cogl_vector3_invert</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-add" title="cogl_vector3_add">cogl_vector3_add</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-subtract" title="cogl_vector3_subtract">cogl_vector3_subtract</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-multiply-scalar" title="cogl_vector3_multiply_scalar">cogl_vector3_multiply_scalar</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-divide-scalar" title="cogl_vector3_divide_scalar">cogl_vector3_divide_scalar</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-normalize" title="cogl_vector3_normalize">cogl_vector3_normalize</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-magnitude" title="cogl_vector3_magnitude">cogl_vector3_magnitude</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-cross-product" title="cogl_vector3_cross_product">cogl_vector3_cross_product</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-dot-product" title="cogl_vector3_dot_product">cogl_vector3_dot_product</a>
+#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-distance" title="cogl_vector3_distance">cogl_vector3_distance</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-3-Component-Vectors.description"></a><h2>Description</h2>
+<p>
+This exposes a utility API that can be used for basic manipulation of 3
+component float vectors.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-3-Component-Vectors.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-vector3-init"></a><h3>cogl_vector3_init</h3>
+<pre class="programlisting">#define cogl_vector3_init cogl_vector3_init_EXP
+</pre>
+<p>
+Initializes a 3 component, single precision float vector which can
+then be manipulated with the cogl_vector convenience APIs. Vectors
+can also be used in places where a "point" is often desired.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to initialize</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>The x component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>The y component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z</code></em> :</span></p></td>
+<td>The z component</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-init-zero"></a><h3>cogl_vector3_init_zero</h3>
+<pre class="programlisting">#define cogl_vector3_init_zero cogl_vector3_init_zero_EXP
+</pre>
+<p>
+Initializes a 3 component, single precision float vector with zero
+for each component.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to initialize</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-equal"></a><h3>cogl_vector3_equal</h3>
+<pre class="programlisting">#define cogl_vector3_equal cogl_vector3_equal_EXP
+</pre>
+<p>
+Compares the components of two vectors and returns TRUE if they are
+the same.
+</p>
+<p>
+The comparison of the components is done with the '==' operator
+such that -0 is considered equal to 0, but otherwise there is no
+fuzziness such as an epsilon to consider vectors that are
+essentially identical except for some minor precision error
+differences due to the way they have been manipulated.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>v1</code></em> :</span></p></td>
+<td>The first CoglVector3 you want to compare</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>v2</code></em> :</span></p></td>
+<td>The second CoglVector3 you want to compare</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the vectors are equal else FALSE.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-equal-with-epsilon"></a><h3>cogl_vector3_equal_with_epsilon</h3>
+<pre class="programlisting">#define cogl_vector3_equal_with_epsilon cogl_vector3_equal_with_epsilon_EXP
+</pre>
+<p>
+Compares the components of two vectors using the given epsilon and
+returns TRUE if they are the same, using an internal epsilon for
+comparing the floats.
+</p>
+<p>
+Each component is compared against the epsilon value in this way:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">if</span><span class="normal"> </span><span class="symbol">(</span><span class="function">fabsf</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">vector0</span><span class="symbol">-&gt;</span><span class="normal">x </span><span class="symbol">-</span><span class="normal"> vector1</span><span class="symbol">-&gt;</span><span class="normal">x</span><span class="symbol">)</span><span class="normal"> </span><span class="symbol">&lt;</span><span class="normal"> epsilon</span><span class="symbol">)</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector0</code></em> :</span></p></td>
+<td>The first CoglVector3 you want to compare</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
+<td>The second CoglVector3 you want to compare</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>epsilon</code></em> :</span></p></td>
+<td>The allowable difference between components to still be
+considered equal</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>TRUE if the vectors are equal else FALSE.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-copy"></a><h3>cogl_vector3_copy</h3>
+<pre class="programlisting">#define cogl_vector3_copy cogl_vector3_copy_EXP
+</pre>
+<p>
+Allocates a new <span class="type">CoglVector3</span> structure on the heap initializing the
+components from the given <em class="parameter"><code>vector</code></em> and returns a pointer to the newly
+allocated vector. You should free the memory using
+<a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free"><code class="function">cogl_vector3_free()</code></a>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to copy</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <span class="type">CoglVector3</span>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-free"></a><h3>cogl_vector3_free</h3>
+<pre class="programlisting">#define cogl_vector3_free cogl_vector3_free_EXP
+</pre>
+<p>
+Frees a <span class="type">CoglVector3</span> that was previously allocated with
+<code class="function">cogl_vector_copy()</code>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to free</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-invert"></a><h3>cogl_vector3_invert</h3>
+<pre class="programlisting">#define cogl_vector3_invert cogl_vector3_invert_EXP
+</pre>
+<p>
+Inverts/negates all the components of the given <em class="parameter"><code>vector</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to manipulate</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-add"></a><h3>cogl_vector3_add</h3>
+<pre class="programlisting">#define cogl_vector3_add cogl_vector3_add_EXP
+</pre>
+<p>
+Adds each of the corresponding components in vectors <em class="parameter"><code>a</code></em> and <em class="parameter"><code>b</code></em>
+storing the results in <em class="parameter"><code>result</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
+<td>Where you want the result written</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>The first vector operand</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>The second vector operand</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-subtract"></a><h3>cogl_vector3_subtract</h3>
+<pre class="programlisting">#define cogl_vector3_subtract cogl_vector3_subtract_EXP
+</pre>
+<p>
+Subtracts each of the corresponding components in vector <em class="parameter"><code>b</code></em> from
+<em class="parameter"><code>a</code></em> storing the results in <em class="parameter"><code>result</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
+<td>Where you want the result written</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>The first vector operand</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>The second vector operand</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-multiply-scalar"></a><h3>cogl_vector3_multiply_scalar</h3>
+<pre class="programlisting">#define cogl_vector3_multiply_scalar cogl_vector3_multiply_scalar_EXP
+</pre>
+<p>
+Multiplies each of the <em class="parameter"><code>vector</code></em> components by the given scalar.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to manipulate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>scalar</code></em> :</span></p></td>
+<td>The scalar you want to multiply the vector components by</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-divide-scalar"></a><h3>cogl_vector3_divide_scalar</h3>
+<pre class="programlisting">#define cogl_vector3_divide_scalar cogl_vector3_divide_scalar_EXP
+</pre>
+<p>
+Divides each of the <em class="parameter"><code>vector</code></em> components by the given scalar.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to manipulate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>scalar</code></em> :</span></p></td>
+<td>The scalar you want to divide the vector components by</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-normalize"></a><h3>cogl_vector3_normalize</h3>
+<pre class="programlisting">#define cogl_vector3_normalize cogl_vector3_normalize_EXP
+</pre>
+<p>
+Updates the vector so it is a "unit vector" such that the
+<em class="parameter"><code>vector</code></em>s magnitude or length is equal to 1.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want to manipulate</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-magnitude"></a><h3>cogl_vector3_magnitude</h3>
+<pre class="programlisting">#define cogl_vector3_magnitude cogl_vector3_magnitude_EXP
+</pre>
+<p>
+Calculates the scalar magnitude or length of <em class="parameter"><code>vector</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
+<td>The CoglVector3 you want the magnitude for</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The magnitude of <em class="parameter"><code>vector</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-cross-product"></a><h3>cogl_vector3_cross_product</h3>
+<pre class="programlisting">#define cogl_vector3_cross_product cogl_vector3_cross_product_EXP
+</pre>
+<p>
+Calculates the cross product between the two vectors <em class="parameter"><code>u</code></em> and <em class="parameter"><code>v</code></em>.
+</p>
+<p>
+The cross product is a vector perpendicular to both <em class="parameter"><code>u</code></em> and <em class="parameter"><code>v</code></em>. This
+can be useful for calculating the normal of a polygon by creating
+two vectors in its plane using the polygons vertices and taking
+their cross product.
+</p>
+<p>
+If the two vectors are parallel then the cross product is 0.
+</p>
+<p>
+You can use a right hand rule to determine which direction the
+perpendicular vector will point: If you place the two vectors tail,
+to tail and imagine grabbing the perpendicular line that extends
+through the common tail with your right hand such that you fingers
+rotate in the direction from <em class="parameter"><code>u</code></em> to <em class="parameter"><code>v</code></em> then the resulting vector
+points along your extended thumb.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
+<td>Where you want the result written</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>u</code></em> :</span></p></td>
+<td>Your first CoglVector3</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>v</code></em> :</span></p></td>
+<td>Your second CoglVector3</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The cross product between two vectors <em class="parameter"><code>u</code></em> and <em class="parameter"><code>v</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-dot-product"></a><h3>cogl_vector3_dot_product</h3>
+<pre class="programlisting">#define cogl_vector3_dot_product cogl_vector3_dot_product_EXP
+</pre>
+<p>
+Calculates the dot product of the two <span class="type">CoglVector3</span>s. This
+can be used to determine the magnitude of one vector projected onto
+another. (for example a surface normal)
+</p>
+<p>
+For example if you have a polygon with a given normal vector and
+some other point for which you want to calculate its distance from
+the polygon, you can create a vector between one of the polygon
+vertices and that point and use the dot product to calculate the
+magnitude for that vector but projected onto the normal of the
+polygon. This way you don't just get the distance from the point to
+the edge of the polygon you get the distance from the point to the
+nearest part of the polygon.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>If you don't use a unit length normal in the above example
+then you would then also have to divide the result by the magnitude
+of the normal</div>
+<p>
+</p>
+<p>
+The dot product is calculated as:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="symbol">(</span><span class="normal">a</span><span class="symbol">-&gt;</span><span class="normal">x </span><span class="symbol">*</span><span class="normal"> b</span><span class="symbol">-&gt;</span><span class="normal">x </span><span class="symbol">+</span><span class="normal"> a</span><span class="symbol">-&gt;</span><span class="normal">y </span><span class="symbol">*</span><span class="normal"> b</span><span class="symbol">-&gt;</span><span class="normal">y </span><span class="symbol">+</span><span class="normal"> a</span><span class="symbol">-&gt;</span><span class="normal">z </span><span class="symbol">*</span><span class="normal"> b</span><span class="symbol">-&gt;</span><span class="normal">z</span><span class="symbol">)</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+For reference, the dot product can also be calculated from the
+angle between two vectors as:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="symbol">|</span><span class="normal">a</span><span class="symbol">||</span><span class="normal">b</span><span class="symbol">|</span><span class="normal">cos𝜃</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>Your first CoglVector3</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>Your second CoglVector3</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The dot product of two vectors.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-vector3-distance"></a><h3>cogl_vector3_distance</h3>
+<pre class="programlisting">#define cogl_vector3_distance cogl_vector3_distance_EXP
+</pre>
+<p>
+If you consider the two given vectors as (x,y,z) points instead
+then this will compute the distance between those two points.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
+<td>The first point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>The second point</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The distance between two points given as <em class="parameter"><code>CoglVector3</code></em>s</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

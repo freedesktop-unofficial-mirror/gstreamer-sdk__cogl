@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CoglFramebuffer: The Framebuffer Interface</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-framebuffer-apis.html" title="Framebuffers">
+<link rel="prev" href="cogl-framebuffer-apis.html" title="Framebuffers">
+<link rel="next" href="cogl-2.0-experimental-Offscreen-Framebuffers.html" title="Offscreen Framebuffers">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-framebuffer-apis.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-framebuffer-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Offscreen-Framebuffers.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.top_of_page"></a>CoglFramebuffer: The Framebuffer Interface</span></h2>
+<p>CoglFramebuffer: The Framebuffer Interface — A common interface for manipulating framebuffers</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer">CoglFramebuffer</a>;
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#COGL-FRAMEBUFFER:CAPS" title="COGL_FRAMEBUFFER()">COGL_FRAMEBUFFER</a>                    (X)
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-allocate" title="cogl_framebuffer_allocate">cogl_framebuffer_allocate</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-width" title="cogl_framebuffer_get_width">cogl_framebuffer_get_width</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-height" title="cogl_framebuffer_get_height">cogl_framebuffer_get_height</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-set-viewport" title="cogl_framebuffer_set_viewport">cogl_framebuffer_set_viewport</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-x" title="cogl_framebuffer_get_viewport_x">cogl_framebuffer_get_viewport_x</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-y" title="cogl_framebuffer_get_viewport_y">cogl_framebuffer_get_viewport_y</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-width" title="cogl_framebuffer_get_viewport_width">cogl_framebuffer_get_viewport_width</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-height" title="cogl_framebuffer_get_viewport_height">cogl_framebuffer_get_viewport_height</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport4fv" title="cogl_framebuffer_get_viewport4fv">cogl_framebuffer_get_viewport4fv</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-red-bits" title="cogl_framebuffer_get_red_bits">cogl_framebuffer_get_red_bits</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-green-bits" title="cogl_framebuffer_get_green_bits">cogl_framebuffer_get_green_bits</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-blue-bits" title="cogl_framebuffer_get_blue_bits">cogl_framebuffer_get_blue_bits</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-color-mask" title="cogl_framebuffer_get_color_mask">cogl_framebuffer_get_color_mask</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-set-color-mask" title="cogl_framebuffer_set_color_mask">cogl_framebuffer_set_color_mask</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-context" title="cogl_framebuffer_get_context">cogl_framebuffer_get_context</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-clear" title="cogl_framebuffer_clear">cogl_framebuffer_clear</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-clear4f" title="cogl_framebuffer_clear4f">cogl_framebuffer_clear4f</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-swap-buffers" title="cogl_framebuffer_swap_buffers">cogl_framebuffer_swap_buffers</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-swap-region" title="cogl_framebuffer_swap_region">cogl_framebuffer_swap_region</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-add-swap-buffers-callback" title="cogl_framebuffer_add_swap_buffers_callback">cogl_framebuffer_add_swap_buffers_callback</a>
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-remove-swap-buffers-callback" title="cogl_framebuffer_remove_swap_buffers_callback">cogl_framebuffer_remove_swap_buffers_callback</a>
+
+#define             <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-get-draw-framebuffer" title="cogl_get_draw_framebuffer">cogl_get_draw_framebuffer</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-set-framebuffer" title="cogl_set_framebuffer ()">cogl_set_framebuffer</a>                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> *buffer</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-push-framebuffer" title="cogl_push_framebuffer ()">cogl_push_framebuffer</a>               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> *buffer</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-pop-framebuffer" title="cogl_pop_framebuffer ()">cogl_pop_framebuffer</a>                (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.description"></a><h2>Description</h2>
+<p>
+Framebuffers are a collection of buffers that can be rendered too.
+A framebuffer may be comprised of one or more color buffers, an
+optional depth buffer and an optional stencil buffer. Other
+configuration parameters are associated with framebuffers too such
+as whether the framebuffer supports multi-sampling (an anti-aliasing
+technique) or dithering.
+</p>
+<p>
+There are two kinds of framebuffer in Cogl, <span class="type">CoglOnscreen</span>
+framebuffers and <span class="type">CoglOffscreen</span> framebuffers. As the names imply
+offscreen framebuffers are for rendering something offscreen
+(perhaps to a texture which is bound as one of the color buffers).
+The exact semantics of onscreen framebuffers depends on the window
+system backend that you are using, but typically you can expect
+rendering to a <span class="type">CoglOnscreen</span> framebuffer will be immediately
+visible to the user.
+</p>
+<p>
+If you want to create a new framebuffer then you should start by
+looking at the <span class="type">CoglOnscreen</span> and <span class="type">CoglOffscreen</span> constructor
+functions, such as <a class="link" href="cogl-2.0-experimental-Offscreen-Framebuffers.html#cogl-offscreen-new-to-texture" title="cogl_offscreen_new_to_texture ()"><code class="function">cogl_offscreen_new_to_texture()</code></a> or
+<code class="function">cogl_onscreen_new()</code>. The <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> interface deals with
+all aspects that are common between those two types of framebuffer.
+</p>
+<p>
+Setup of a new CoglFramebuffer happens in two stages. There is a
+configuration stage where you specify all the options and ancillary
+buffers you want associated with your framebuffer and then when you
+are happy with the configuration you can "allocate" the framebuffer
+using <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-allocate" title="cogl_framebuffer_allocate"><code class="function">cogl_framebuffer_allocate()</code></a>. Technically explicitly calling
+<a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-allocate" title="cogl_framebuffer_allocate"><code class="function">cogl_framebuffer_allocate()</code></a> is optional for convenience and the
+framebuffer will automatically be allocated when you first try to
+draw to it, but if you do the allocation manually then you can
+also catch any possible errors that may arise from your
+configuration.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglFramebuffer"></a><h3>CoglFramebuffer</h3>
+<pre class="programlisting">typedef struct _CoglFramebuffer CoglFramebuffer;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="COGL-FRAMEBUFFER:CAPS"></a><h3>COGL_FRAMEBUFFER()</h3>
+<pre class="programlisting">#define COGL_FRAMEBUFFER(X) ((CoglFramebuffer *)(X))
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-allocate"></a><h3>cogl_framebuffer_allocate</h3>
+<pre class="programlisting">#define cogl_framebuffer_allocate cogl_framebuffer_allocate_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-width"></a><h3>cogl_framebuffer_get_width</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_width cogl_framebuffer_get_width_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-height"></a><h3>cogl_framebuffer_get_height</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_height cogl_framebuffer_get_height_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-set-viewport"></a><h3>cogl_framebuffer_set_viewport</h3>
+<pre class="programlisting">#define cogl_framebuffer_set_viewport cogl_framebuffer_set_viewport_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-viewport-x"></a><h3>cogl_framebuffer_get_viewport_x</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_viewport_x cogl_framebuffer_get_viewport_x_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-viewport-y"></a><h3>cogl_framebuffer_get_viewport_y</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_viewport_y cogl_framebuffer_get_viewport_y_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-viewport-width"></a><h3>cogl_framebuffer_get_viewport_width</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_viewport_width cogl_framebuffer_get_viewport_width_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-viewport-height"></a><h3>cogl_framebuffer_get_viewport_height</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_viewport_height cogl_framebuffer_get_viewport_height_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-viewport4fv"></a><h3>cogl_framebuffer_get_viewport4fv</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_viewport4fv cogl_framebuffer_get_viewport4fv_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-red-bits"></a><h3>cogl_framebuffer_get_red_bits</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_red_bits cogl_framebuffer_get_red_bits_EXP
+</pre>
+<p>
+Retrieves the number of red bits of <em class="parameter"><code>framebuffer</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>a pointer to a <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number of bits</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-green-bits"></a><h3>cogl_framebuffer_get_green_bits</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_green_bits cogl_framebuffer_get_green_bits_EXP
+</pre>
+<p>
+Retrieves the number of green bits of <em class="parameter"><code>framebuffer</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>a pointer to a <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number of bits</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-blue-bits"></a><h3>cogl_framebuffer_get_blue_bits</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_blue_bits cogl_framebuffer_get_blue_bits_EXP
+</pre>
+<p>
+Retrieves the number of blue bits of <em class="parameter"><code>framebuffer</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>a pointer to a <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number of bits</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-color-mask"></a><h3>cogl_framebuffer_get_color_mask</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_color_mask cogl_framebuffer_get_color_mask_EXP
+</pre>
+<p>
+Gets the current <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> of which channels would be written to the
+current framebuffer. Each bit set in the mask means that the
+corresponding color would be written.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>a pointer to a <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-set-color-mask"></a><h3>cogl_framebuffer_set_color_mask</h3>
+<pre class="programlisting">#define cogl_framebuffer_set_color_mask cogl_framebuffer_set_color_mask_EXP
+</pre>
+<p>
+Defines a bit mask of which color channels should be written to the
+given <em class="parameter"><code>framebuffer</code></em>. If a bit is set in <em class="parameter"><code>color_mask</code></em> that means that
+color will be written.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>a pointer to a <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color_mask</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> of which color channels to write to
+the current framebuffer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-get-context"></a><h3>cogl_framebuffer_get_context</h3>
+<pre class="programlisting">#define cogl_framebuffer_get_context cogl_framebuffer_get_context_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-clear"></a><h3>cogl_framebuffer_clear</h3>
+<pre class="programlisting">#define cogl_framebuffer_clear cogl_framebuffer_clear_EXP
+</pre>
+<p>
+Clears all the auxiliary buffers identified in the <em class="parameter"><code>buffers</code></em> mask, and if
+that includes the color buffer then the specified <em class="parameter"><code>color</code></em> is used.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffers</code></em> :</span></p></td>
+<td>A mask of <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglBufferBit" title="enum CoglBufferBit"><span class="type">CoglBufferBit</span></a>'s identifying which auxiliary
+buffers to clear</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>The color to clear the color buffer too if specified in
+<em class="parameter"><code>buffers</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-clear4f"></a><h3>cogl_framebuffer_clear4f</h3>
+<pre class="programlisting">#define cogl_framebuffer_clear4f cogl_framebuffer_clear4f_EXP
+</pre>
+<p>
+Clears all the auxiliary buffers identified in the <em class="parameter"><code>buffers</code></em> mask, and if
+that includes the color buffer then the specified <em class="parameter"><code>color</code></em> is used.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>framebuffer</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffers</code></em> :</span></p></td>
+<td>A mask of <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglBufferBit" title="enum CoglBufferBit"><span class="type">CoglBufferBit</span></a>'s identifying which auxiliary
+buffers to clear</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>The red component of color to clear the color buffer too if
+specified in <em class="parameter"><code>buffers</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>The green component of color to clear the color buffer too if
+specified in <em class="parameter"><code>buffers</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>The blue component of color to clear the color buffer too if
+specified in <em class="parameter"><code>buffers</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>The alpha component of color to clear the color buffer too if
+specified in <em class="parameter"><code>buffers</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-swap-buffers"></a><h3>cogl_framebuffer_swap_buffers</h3>
+<pre class="programlisting">#define cogl_framebuffer_swap_buffers cogl_framebuffer_swap_buffers_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-swap-region"></a><h3>cogl_framebuffer_swap_region</h3>
+<pre class="programlisting">#define cogl_framebuffer_swap_region cogl_framebuffer_swap_region_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-add-swap-buffers-callback"></a><h3>cogl_framebuffer_add_swap_buffers_callback</h3>
+<pre class="programlisting">#define             cogl_framebuffer_add_swap_buffers_callback</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-framebuffer-remove-swap-buffers-callback"></a><h3>cogl_framebuffer_remove_swap_buffers_callback</h3>
+<pre class="programlisting">#define             cogl_framebuffer_remove_swap_buffers_callback</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-draw-framebuffer"></a><h3>cogl_get_draw_framebuffer</h3>
+<pre class="programlisting">#define cogl_get_draw_framebuffer cogl_get_draw_framebuffer_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-framebuffer"></a><h3>cogl_set_framebuffer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_framebuffer                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> *buffer</code></em>);</pre>
+<p>
+This redirects all subsequent drawing to the specified framebuffer. This can
+either be an offscreen buffer created with <a class="link" href="cogl-2.0-experimental-Offscreen-Framebuffers.html#cogl-offscreen-new-to-texture" title="cogl_offscreen_new_to_texture ()"><code class="function">cogl_offscreen_new_to_texture()</code></a>
+or in the future it may be an onscreen framebuffers too.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> object, either onscreen or offscreen.</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-push-framebuffer"></a><h3>cogl_push_framebuffer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_push_framebuffer               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> *buffer</code></em>);</pre>
+<p>
+Redirects all subsequent drawing to the specified framebuffer. This can
+either be an offscreen buffer created with <a class="link" href="cogl-2.0-experimental-Offscreen-Framebuffers.html#cogl-offscreen-new-to-texture" title="cogl_offscreen_new_to_texture ()"><code class="function">cogl_offscreen_new_to_texture()</code></a>
+or in the future it may be an onscreen framebuffer too.
+</p>
+<p>
+You should understand that a framebuffer owns the following state:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">The projection matrix</li>
+<li class="listitem">The modelview matrix stack</li>
+<li class="listitem">The viewport</li>
+<li class="listitem">The clip stack</li>
+</ul></div>
+<p>
+So these items will automatically be saved and restored when you
+push and pop between different framebuffers.
+</p>
+<p>
+Also remember a newly allocated framebuffer will have an identity matrix for
+the projection and modelview matrices which gives you a coordinate space
+like OpenGL with (-1, -1) corresponding to the top left of the viewport,
+(1, 1) corresponding to the bottom right and +z coming out towards the
+viewer.
+</p>
+<p>
+If you want to set up a coordinate space like Clutter does with (0, 0)
+corresponding to the top left and (framebuffer_width, framebuffer_height)
+corresponding to the bottom right you can do so like this:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">static</span><span class="normal"> </span><span class="type">void</span>
+<span class="function">setup_viewport</span><span class="normal"> </span><span class="symbol">(</span><span class="type">unsigned</span><span class="normal"> </span><span class="type">int</span><span class="normal"> width</span><span class="symbol">,</span>
+<span class="normal">                </span><span class="type">unsigned</span><span class="normal"> </span><span class="type">int</span><span class="normal"> height</span><span class="symbol">,</span>
+<span class="normal">                </span><span class="type">float</span><span class="normal"> fovy</span><span class="symbol">,</span>
+<span class="normal">                </span><span class="type">float</span><span class="normal"> aspect</span><span class="symbol">,</span>
+<span class="normal">                </span><span class="type">float</span><span class="normal"> z_near</span><span class="symbol">,</span>
+<span class="normal">                </span><span class="type">float</span><span class="normal"> z_far</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="type">float</span><span class="normal"> z_camera</span><span class="symbol">;</span>
+<span class="normal">  </span><span class="usertype">CoglMatrix</span><span class="normal"> projection_matrix</span><span class="symbol">;</span>
+<span class="normal">  </span><span class="usertype">CoglMatrix</span><span class="normal"> mv_matrix</span><span class="symbol">;</span>
+
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-viewport">cogl_set_viewport</a></span><span class="normal"> </span><span class="symbol">(</span><span class="number">0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal"> width</span><span class="symbol">,</span><span class="normal"> height</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-perspective">cogl_perspective</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">fovy</span><span class="symbol">,</span><span class="normal"> aspect</span><span class="symbol">,</span><span class="normal"> z_near</span><span class="symbol">,</span><span class="normal"> z_far</span><span class="symbol">);</span>
+
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-projection-matrix">cogl_get_projection_matrix</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">projection_matrix</span><span class="symbol">);</span>
+<span class="normal">  z_camera </span><span class="symbol">=</span><span class="normal"> </span><span class="number">0.5</span><span class="normal"> </span><span class="symbol">*</span><span class="normal"> projection_matrix</span><span class="symbol">.</span><span class="normal">xx</span><span class="symbol">;</span>
+
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-Matrices.html#cogl-matrix-init-identity">cogl_matrix_init_identity</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">mv_matrix</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-Matrices.html#cogl-matrix-translate">cogl_matrix_translate</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">mv_matrix</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">-</span><span class="number">0</span><span class="symbol">.</span><span class="normal">5f</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">-</span><span class="number">0</span><span class="symbol">.</span><span class="normal">5f</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">-</span><span class="normal">z_camera</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-Matrices.html#cogl-matrix-scale">cogl_matrix_scale</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">mv_matrix</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1</span><span class="symbol">.</span><span class="normal">0f </span><span class="symbol">/</span><span class="normal"> width</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">-</span><span class="number">1</span><span class="symbol">.</span><span class="normal">0f </span><span class="symbol">/</span><span class="normal"> height</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1</span><span class="symbol">.</span><span class="normal">0f </span><span class="symbol">/</span><span class="normal"> width</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-Matrices.html#cogl-matrix-translate">cogl_matrix_translate</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">mv_matrix</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">.</span><span class="normal">0f</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">-</span><span class="number">1.0</span><span class="normal"> </span><span class="symbol">*</span><span class="normal"> height</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">.</span><span class="normal">0f</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-modelview-matrix">cogl_set_modelview_matrix</a></span><span class="normal"> </span><span class="symbol">(&amp;</span><span class="normal">mv_matrix</span><span class="symbol">);</span>
+<span class="cbracket">}</span>
+
+<span class="keyword">static</span><span class="normal"> </span><span class="type">void</span>
+<span class="function">my_init_framebuffer</span><span class="normal"> </span><span class="symbol">(</span><span class="usertype">ClutterStage</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">stage</span><span class="symbol">,</span>
+<span class="normal">                     </span><span class="usertype">CoglFramebuffer</span><span class="normal"> </span><span class="symbol">*</span><span class="normal">framebuffer</span><span class="symbol">,</span>
+<span class="normal">                     </span><span class="type">unsigned</span><span class="normal"> </span><span class="type">int</span><span class="normal"> framebuffer_width</span><span class="symbol">,</span>
+<span class="normal">                     </span><span class="type">unsigned</span><span class="normal"> </span><span class="type">int</span><span class="normal"> framebuffer_height</span><span class="symbol">)</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="usertype">ClutterPerspective</span><span class="normal"> perspective</span><span class="symbol">;</span>
+
+<span class="normal">  </span><span class="function">clutter_stage_get_perspective</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">stage</span><span class="symbol">,</span><span class="normal"> </span><span class="symbol">&amp;</span><span class="normal">perspective</span><span class="symbol">);</span>
+
+<span class="normal">  </span><span class="function"><a href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-push-framebuffer">cogl_push_framebuffer</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal">framebuffer</span><span class="symbol">);</span>
+<span class="normal">  </span><span class="function">setup_viewport</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">framebuffer_width</span><span class="symbol">,</span>
+<span class="normal">                  framebuffer_height</span><span class="symbol">,</span>
+<span class="normal">                  perspective</span><span class="symbol">.</span><span class="normal">fovy</span><span class="symbol">,</span>
+<span class="normal">                  perspective</span><span class="symbol">.</span><span class="normal">aspect</span><span class="symbol">,</span>
+<span class="normal">                  perspective</span><span class="symbol">.</span><span class="normal">z_near</span><span class="symbol">,</span>
+<span class="normal">                  perspective</span><span class="symbol">.</span><span class="normal">z_far</span><span class="symbol">);</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The previous framebuffer can be restored by calling <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-pop-framebuffer" title="cogl_pop_framebuffer ()"><code class="function">cogl_pop_framebuffer()</code></a>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> object, either onscreen or offscreen.</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pop-framebuffer"></a><h3>cogl_pop_framebuffer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pop_framebuffer                (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Restores the framebuffer that was previously at the top of the stack.
+All subsequent drawing will be redirected to this framebuffer.
+</p>
+<p class="since">Since 1.2</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

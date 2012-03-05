@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>General API (Deprecated)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch03.html" title="Cogl deprecated API">
+<link rel="prev" href="ch03.html" title="Cogl deprecated API">
+<link rel="next" href="cogl-Textures-(Deprecated).html" title="Textures (Deprecated)">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch03.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Textures-(Deprecated).html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-General-API-(Deprecated).synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-General-API-(Deprecated).description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-General-API-(Deprecated)"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-General-API-(Deprecated).top_of_page"></a>General API (Deprecated)</span></h2>
+<p>General API (Deprecated)</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-General-API-(Deprecated).synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-General-API-(Deprecated).html#cogl-check-extension" title="cogl_check_extension ()">cogl_check_extension</a>                (<em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *ext</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API-(Deprecated).html#cogl-viewport" title="cogl_viewport ()">cogl_viewport</a>                       (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API-(Deprecated).html#cogl-get-bitmasks" title="cogl_get_bitmasks ()">cogl_get_bitmasks</a>                   (<em class="parameter"><code><span class="type">int</span> *red</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *green</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API-(Deprecated).html#cogl-set-depth-test-enabled" title="cogl_set_depth_test_enabled ()">cogl_set_depth_test_enabled</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> setting</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-General-API-(Deprecated).html#cogl-get-depth-test-enabled" title="cogl_get_depth_test_enabled ()">cogl_get_depth_test_enabled</a>         (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-General-API-(Deprecated).description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="cogl-General-API-(Deprecated).details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-check-extension"></a><h3>cogl_check_extension ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_check_extension                (<em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *ext</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_check_extension</code> has been deprecated since version 1.2 and should not be used in newly-written code. OpenGL is an implementation detail for Cogl and so it's
+  not appropriate to expose OpenGL extensions through the Cogl API. This
+  function can be replaced by the following equivalent code:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">gboolean</span><span class="normal"> retval </span><span class="symbol">=</span><span class="normal"> </span><span class="symbol">(</span><span class="function">strstr</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">ext</span><span class="symbol">,</span><span class="normal"> name</span><span class="symbol">)</span><span class="normal"> </span><span class="symbol">!=</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS">NULL</a></span><span class="symbol">)</span><span class="normal"> </span><span class="symbol">?</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS">TRUE</a> </span><span class="symbol">:</span><span class="normal"> <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS">FALSE</a></span><span class="symbol">;</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<p>
+Check whether <em class="parameter"><code>name</code></em> occurs in list of extensions in <em class="parameter"><code>ext</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>extension to check for</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ext</code></em> :</span></p></td>
+<td>list of extensions</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the extension occurs in the list, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-viewport"></a><h3>cogl_viewport ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_viewport                       (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_viewport</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-set-viewport" title="cogl_set_viewport ()"><code class="function">cogl_set_viewport()</code></a> instead</p>
+</div>
+<p>
+Replace the current viewport with the given values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>Width of the viewport</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>Height of the viewport</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-bitmasks"></a><h3>cogl_get_bitmasks ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_get_bitmasks                   (<em class="parameter"><code><span class="type">int</span> *red</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *green</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *alpha</code></em>);</pre>
+<p>
+Gets the number of bitplanes used for each of the color components
+in the color buffer. Pass <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for any of the arguments if the
+value is not required.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>Return location for the number of red bits or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>Return location for the number of green bits or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>Return location for the number of blue bits or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>Return location for the number of alpha bits or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-depth-test-enabled"></a><h3>cogl_set_depth_test_enabled ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_depth_test_enabled         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> setting</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_set_depth_test_enabled</code> has been deprecated since version 1.4 and should not be used in newly-written code. Use <code class="function">cogl_material_set_depth_test_enabled()</code>
+instead.</p>
+</div>
+<p>
+Sets whether depth testing is enabled. If it is disabled then the
+order that actors are layered on the screen depends solely on the
+order specified using <code class="function">clutter_actor_raise()</code> and
+<code class="function">clutter_actor_lower()</code>, otherwise it will also take into account the
+actor's depth. Depth testing is disabled by default.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>setting</code></em> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to enable depth testing or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to disable.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-depth-test-enabled"></a><h3>cogl_get_depth_test_enabled ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_get_depth_test_enabled         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_get_depth_test_enabled</code> has been deprecated since version 1.4 and should not be used in newly-written code. Use <code class="function">cogl_material_get_depth_test_enabled()</code>
+instead.</p>
+</div>
+<p>
+Queries if depth testing has been enabled via <code class="function">cogl_set_depth_test_enable()</code>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if depth testing is enabled, and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

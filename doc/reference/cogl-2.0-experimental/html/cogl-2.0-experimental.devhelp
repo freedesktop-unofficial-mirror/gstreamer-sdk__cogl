@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Cogl 2.0 Reference Manual" link="index.html" author="" name="cogl-2.0-experimental">
+  <chapters>
+    <sub name="Cogl - a modern 3D graphics API" link="ch01.html">
+      <sub name="About Cogl" link="ch01.html#cogl-intro"/>
+      <sub name="The Object Interface" link="cogl-2.0-experimental-The-Object-Interface.html"/>
+      <sub name="The Top-Level Context" link="cogl-2.0-experimental-The-Top-Level-Context.html"/>
+      <sub name="Setting Up A GPU Pipeline" link="cogl-pipeline-apis.html">
+        <sub name="Blend Strings" link="cogl-Blend-Strings.html"/>
+        <sub name="Pipeline" link="cogl-2.0-experimental-Pipeline.html"/>
+      </sub>
+      <sub name="Allocating GPU Memory" link="cogl-buffer-apis.html">
+        <sub name="CoglBuffer: The Buffer Interface" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html"/>
+        <sub name="CoglAttributeBuffer: Buffers of vertex attributes" link="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html"/>
+        <sub name="CoglIndexBuffer: Buffers of vertex indices" link="cogl-2.0-experimental-CoglIndexBuffer---Buffers-of-vertex-indices.html"/>
+      </sub>
+      <sub name="Describing the layout of GPU Memory" link="cogl-buffer-layout-apis.html">
+        <sub name="Vertex Attributes" link="cogl-2.0-experimental-Vertex-Attributes.html"/>
+        <sub name="Indices" link="cogl-2.0-experimental-Indices.html"/>
+      </sub>
+      <sub name="Geometry" link="cogl-primitive-apis.html">
+        <sub name="Primitives" link="cogl-2.0-experimental-Primitives.html"/>
+        <sub name="Path Primitives" link="cogl-2.0-experimental-Path-Primitives.html"/>
+      </sub>
+      <sub name="Drawing" link="cogl-drawing-apis.html">
+        <sub name="Draw Vertex Attributes" link="cogl-2.0-experimental-Draw-Vertex-Attributes.html"/>
+        <sub name="Rectangles" link="cogl-2.0-experimental-Rectangles.html"/>
+      </sub>
+      <sub name="Textures" link="cogl-textures.html">
+        <sub name="The Texture Interface" link="cogl-2.0-experimental-The-Texture-Interface.html"/>
+        <sub name="3D textures" link="cogl-2.0-experimental-3D-textures.html"/>
+      </sub>
+      <sub name="Clipping" link="cogl-2.0-experimental-Clipping.html"/>
+      <sub name="Framebuffers" link="cogl-framebuffer-apis.html">
+        <sub name="CoglFramebuffer: The Framebuffer Interface" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html"/>
+        <sub name="Offscreen Framebuffers" link="cogl-2.0-experimental-Offscreen-Framebuffers.html"/>
+      </sub>
+      <sub name="Utilities" link="cogl-utilities.html">
+        <sub name="Color Type" link="cogl-2.0-experimental-Color-Type.html"/>
+        <sub name="Matrices" link="cogl-2.0-experimental-Matrices.html"/>
+        <sub name="3 Component Vectors" link="cogl-2.0-experimental-3-Component-Vectors.html"/>
+        <sub name="Quaternions (Rotations)" link="cogl-2.0-experimental-Quaternions-(Rotations).html"/>
+        <sub name="Common Types" link="cogl-2.0-experimental-Common-Types.html"/>
+      </sub>
+      <sub name="Binding and Integrating" link="cogl-integration.html">
+        <sub name="GType Integration API" link="cogl-2.0-experimental-GType-Integration-API.html"/>
+      </sub>
+    </sub>
+    <sub name="Glossaries" link="coglglossary.html">
+      <sub name="Annotation Glossary" link="coglglossary.html#annotation-glossary"/>
+    </sub>
+    <sub name="Index of all symbols" link="ix01.html"/>
+    <sub name="Index of deprecated symbols" link="ix02.html"/>
+    <sub name="Index of new symbols in 0.8" link="ix03.html"/>
+    <sub name="Index of new symbols in 1.0" link="ix04.html"/>
+    <sub name="Index of new symbols in 1.2" link="ix05.html"/>
+    <sub name="Index of new symbols in 1.4" link="ix06.html"/>
+    <sub name="License" link="license.html"/>
+  </chapters>
+  <functions>
+    <function name="CoglObject" link="cogl-2.0-experimental-The-Object-Interface.html#CoglObject"/>
+    <function name="cogl_object_ref ()" link="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-ref"/>
+    <function name="cogl_object_unref ()" link="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref"/>
+    <function name="cogl_object_get_user_data ()" link="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-get-user-data"/>
+    <function name="cogl_object_set_user_data ()" link="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-set-user-data"/>
+    <function name="cogl_context_new" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-new"/>
+    <function name="cogl_context_get_display" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-get-display"/>
+    <function name="cogl_push_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-push-matrix"/>
+    <function name="cogl_pop_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-pop-matrix"/>
+    <function name="cogl_scale ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-scale"/>
+    <function name="cogl_translate ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-translate"/>
+    <function name="cogl_rotate ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-rotate"/>
+    <function name="cogl_transform ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-transform"/>
+    <function name="cogl_frustum ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-frustum"/>
+    <function name="cogl_perspective ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-perspective"/>
+    <function name="cogl_ortho ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-ortho"/>
+    <function name="cogl_get_modelview_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-modelview-matrix"/>
+    <function name="cogl_set_modelview_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-modelview-matrix"/>
+    <function name="cogl_get_projection_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-projection-matrix"/>
+    <function name="cogl_set_projection_matrix ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-projection-matrix"/>
+    <function name="cogl_set_viewport ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-viewport"/>
+    <function name="cogl_get_viewport ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-viewport"/>
+    <function name="cogl_set_source ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source"/>
+    <function name="cogl_set_source_color ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-color"/>
+    <function name="cogl_set_source_color4ub ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-color4ub"/>
+    <function name="cogl_set_source_color4f ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-color4f"/>
+    <function name="cogl_set_source_texture ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-texture"/>
+    <function name="cogl_get_source ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-source"/>
+    <function name="cogl_push_source ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-push-source"/>
+    <function name="cogl_pop_source ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-pop-source"/>
+    <function name="COGL_TYPE_BUFFER_BIT" link="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-TYPE-BUFFER-BIT:CAPS"/>
+    <function name="cogl_clear ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-clear"/>
+    <function name="enum CoglReadPixelsFlags" link="cogl-2.0-experimental-The-Top-Level-Context.html#CoglReadPixelsFlags"/>
+    <function name="cogl_read_pixels ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-read-pixels"/>
+    <function name="cogl_flush ()" link="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-flush"/>
+    <function name="cogl_pipeline_new" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new"/>
+    <function name="cogl_pipeline_copy" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy"/>
+    <function name="cogl_is_pipeline" link="cogl-2.0-experimental-Pipeline.html#cogl-is-pipeline"/>
+    <function name="cogl_pipeline_set_color" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color"/>
+    <function name="cogl_pipeline_set_color4ub" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4ub"/>
+    <function name="cogl_pipeline_set_color4f" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4f"/>
+    <function name="cogl_pipeline_get_color" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color"/>
+    <function name="cogl_pipeline_set_ambient" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient"/>
+    <function name="cogl_pipeline_get_ambient" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-ambient"/>
+    <function name="cogl_pipeline_set_diffuse" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse"/>
+    <function name="cogl_pipeline_get_diffuse" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-diffuse"/>
+    <function name="cogl_pipeline_set_ambient_and_diffuse" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient-and-diffuse"/>
+    <function name="cogl_pipeline_set_emission" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-emission"/>
+    <function name="cogl_pipeline_get_emission" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-emission"/>
+    <function name="cogl_pipeline_set_specular" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-specular"/>
+    <function name="cogl_pipeline_get_specular" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-specular"/>
+    <function name="cogl_pipeline_set_shininess" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-shininess"/>
+    <function name="cogl_pipeline_get_shininess" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-shininess"/>
+    <function name="cogl_pipeline_set_alpha_test_function" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-alpha-test-function"/>
+    <function name="COGL_BLEND_STRING_ERROR" link="cogl-2.0-experimental-Pipeline.html#COGL-BLEND-STRING-ERROR:CAPS"/>
+    <function name="enum CoglBlendStringError" link="cogl-2.0-experimental-Pipeline.html#CoglBlendStringError"/>
+    <function name="cogl_pipeline_set_blend" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend"/>
+    <function name="cogl_pipeline_set_blend_constant" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant"/>
+    <function name="cogl_pipeline_set_point_size" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-point-size"/>
+    <function name="cogl_pipeline_get_point_size" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-point-size"/>
+    <function name="cogl_pipeline_get_color_mask" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color-mask"/>
+    <function name="cogl_pipeline_set_color_mask" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask"/>
+    <function name="cogl_pipeline_set_layer_texture" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-texture"/>
+    <function name="cogl_pipeline_set_layer_filters" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters"/>
+    <function name="cogl_pipeline_set_layer_wrap_mode" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode"/>
+    <function name="cogl_pipeline_set_layer_wrap_mode_s" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s"/>
+    <function name="cogl_pipeline_set_layer_wrap_mode_t" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t"/>
+    <function name="cogl_pipeline_set_layer_wrap_mode_p" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p"/>
+    <function name="cogl_pipeline_set_layer_combine" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine"/>
+    <function name="Layer Combine Examples" link="cogl-2.0-experimental-Pipeline.html#cogl-Layer-Combine-Examples"/>
+    <function name="cogl_pipeline_set_layer_combine_constant" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine-constant"/>
+    <function name="cogl_pipeline_set_layer_matrix" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-matrix"/>
+    <function name="cogl_pipeline_set_layer_point_sprite_coords_enabled" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-point-sprite-coords-enabled"/>
+    <function name="cogl_pipeline_get_layer_point_sprite_coords_enabled" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-point-sprite-coords-enabled"/>
+    <function name="cogl_pipeline_remove_layer" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-remove-layer"/>
+    <function name="cogl_pipeline_get_n_layers" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-n-layers"/>
+    <function name="cogl_pipeline_foreach_layer" link="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-foreach-layer"/>
+    <function name="cogl_is_buffer" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-is-buffer"/>
+    <function name="cogl_buffer_get_size" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-size"/>
+    <function name="cogl_buffer_set_usage_hint" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-usage-hint"/>
+    <function name="cogl_buffer_get_usage_hint" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-usage-hint"/>
+    <function name="enum CoglBufferUpdateHint" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint"/>
+    <function name="cogl_buffer_set_update_hint" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint"/>
+    <function name="cogl_buffer_get_update_hint" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-update-hint"/>
+    <function name="enum CoglBufferAccess" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferAccess"/>
+    <function name="cogl_buffer_map" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map"/>
+    <function name="cogl_buffer_unmap" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-unmap"/>
+    <function name="cogl_buffer_set_data" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data"/>
+    <function name="cogl_pixel_buffer_new" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-pixel-buffer-new"/>
+    <function name="cogl_is_pixel_buffer" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-is-pixel-buffer"/>
+    <function name="cogl_texture_new_from_buffer ()" link="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-texture-new-from-buffer"/>
+    <function name="CoglAttributeBuffer" link="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer"/>
+    <function name="cogl_attribute_buffer_new ()" link="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#cogl-attribute-buffer-new"/>
+    <function name="cogl_is_attribute_buffer ()" link="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#cogl-is-attribute-buffer"/>
+    <function name="CoglIndexBuffer" link="cogl-2.0-experimental-CoglIndexBuffer---Buffers-of-vertex-indices.html#CoglIndexBuffer"/>
+    <function name="cogl_index_buffer_new ()" link="cogl-2.0-experimental-CoglIndexBuffer---Buffers-of-vertex-indices.html#cogl-index-buffer-new"/>
+    <function name="cogl_is_index_buffer ()" link="cogl-2.0-experimental-CoglIndexBuffer---Buffers-of-vertex-indices.html#cogl-is-index-buffer"/>
+    <function name="cogl_attribute_new ()" link="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-new"/>
+    <function name="cogl_is_attribute ()" link="cogl-2.0-experimental-Vertex-Attributes.html#cogl-is-attribute"/>
+    <function name="cogl_indices_new ()" link="cogl-2.0-experimental-Indices.html#cogl-indices-new"/>
+    <function name="CoglPrimitive" link="cogl-2.0-experimental-Primitives.html#CoglPrimitive"/>
+    <function name="cogl_primitive_new ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-new"/>
+    <function name="cogl_is_primitive ()" link="cogl-2.0-experimental-Primitives.html#cogl-is-primitive"/>
+    <function name="cogl_primitive_get_first_vertex ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-first-vertex"/>
+    <function name="cogl_primitive_set_first_vertex ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-first-vertex"/>
+    <function name="cogl_primitive_get_n_vertices ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-n-vertices"/>
+    <function name="cogl_primitive_set_n_vertices ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices"/>
+    <function name="cogl_primitive_get_mode ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-mode"/>
+    <function name="cogl_primitive_set_mode ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-mode"/>
+    <function name="cogl_primitive_set_attributes ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-attributes"/>
+    <function name="cogl_primitive_set_indices ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices"/>
+    <function name="cogl_primitive_draw ()" link="cogl-2.0-experimental-Primitives.html#cogl-primitive-draw"/>
+    <function name="cogl_is_path ()" link="cogl-2.0-experimental-Path-Primitives.html#cogl-is-path"/>
+    <function name="cogl_path_new" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new"/>
+    <function name="cogl_path_copy ()" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-copy"/>
+    <function name="cogl_path_move_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-move-to"/>
+    <function name="cogl_path_close" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-close"/>
+    <function name="cogl_path_line_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line-to"/>
+    <function name="cogl_path_curve_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-curve-to"/>
+    <function name="cogl_path_arc" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-arc"/>
+    <function name="cogl_path_rel_move_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-move-to"/>
+    <function name="cogl_path_rel_line_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-line-to"/>
+    <function name="cogl_path_rel_curve_to" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-curve-to"/>
+    <function name="cogl_path_line" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line"/>
+    <function name="cogl_path_polyline" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polyline"/>
+    <function name="cogl_path_polygon" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polygon"/>
+    <function name="cogl_path_rectangle" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rectangle"/>
+    <function name="cogl_path_round_rectangle" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-round-rectangle"/>
+    <function name="cogl_path_ellipse" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-ellipse"/>
+    <function name="enum CoglPathFillRule" link="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule"/>
+    <function name="cogl_path_set_fill_rule" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-set-fill-rule"/>
+    <function name="cogl_path_get_fill_rule" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-get-fill-rule"/>
+    <function name="cogl_path_fill" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-fill"/>
+    <function name="cogl_path_stroke" link="cogl-2.0-experimental-Path-Primitives.html#cogl-path-stroke"/>
+    <function name="cogl_rectangle ()" link="cogl-2.0-experimental-Rectangles.html#cogl-rectangle"/>
+    <function name="cogl_rectangles ()" link="cogl-2.0-experimental-Rectangles.html#cogl-rectangles"/>
+    <function name="cogl_rectangle_with_texture_coords ()" link="cogl-2.0-experimental-Rectangles.html#cogl-rectangle-with-texture-coords"/>
+    <function name="cogl_rectangles_with_texture_coords ()" link="cogl-2.0-experimental-Rectangles.html#cogl-rectangles-with-texture-coords"/>
+    <function name="cogl_rectangle_with_multitexture_coords ()" link="cogl-2.0-experimental-Rectangles.html#cogl-rectangle-with-multitexture-coords"/>
+    <function name="struct CoglTextureVertex" link="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureVertex"/>
+    <function name="enum CoglTextureFlags" link="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureFlags"/>
+    <function name="cogl_texture_new_with_size ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-with-size"/>
+    <function name="cogl_texture_new_from_file ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-from-file"/>
+    <function name="cogl_texture_new_from_data ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-from-data"/>
+    <function name="cogl_texture_new_from_foreign ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-from-foreign"/>
+    <function name="cogl_texture_new_from_bitmap ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-from-bitmap"/>
+    <function name="cogl_texture_new_from_sub_texture ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-new-from-sub-texture"/>
+    <function name="cogl_is_texture ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-is-texture"/>
+    <function name="cogl_texture_get_width ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-width"/>
+    <function name="cogl_texture_get_height ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-height"/>
+    <function name="cogl_texture_get_format ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-format"/>
+    <function name="cogl_texture_get_rowstride ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-rowstride"/>
+    <function name="cogl_texture_get_max_waste ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-max-waste"/>
+    <function name="cogl_texture_is_sliced ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-is-sliced"/>
+    <function name="cogl_texture_get_gl_texture ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-gl-texture"/>
+    <function name="cogl_texture_get_data ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-get-data"/>
+    <function name="cogl_texture_set_region ()" link="cogl-2.0-experimental-The-Texture-Interface.html#cogl-texture-set-region"/>
+    <function name="cogl_texture_3d_new_with_size" link="cogl-2.0-experimental-3D-textures.html#cogl-texture-3d-new-with-size"/>
+    <function name="cogl_texture_3d_new_from_data" link="cogl-2.0-experimental-3D-textures.html#cogl-texture-3d-new-from-data"/>
+    <function name="cogl_is_texture_3d" link="cogl-2.0-experimental-3D-textures.html#cogl-is-texture-3d"/>
+    <function name="cogl_clip_push_rectangle ()" link="cogl-2.0-experimental-Clipping.html#cogl-clip-push-rectangle"/>
+    <function name="cogl_clip_push_window_rectangle ()" link="cogl-2.0-experimental-Clipping.html#cogl-clip-push-window-rectangle"/>
+    <function name="cogl_clip_push_from_path ()" link="cogl-2.0-experimental-Clipping.html#cogl-clip-push-from-path"/>
+    <function name="cogl_clip_push_from_path_preserve ()" link="cogl-2.0-experimental-Clipping.html#cogl-clip-push-from-path-preserve"/>
+    <function name="cogl_clip_pop ()" link="cogl-2.0-experimental-Clipping.html#cogl-clip-pop"/>
+    <function name="CoglFramebuffer" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer"/>
+    <function name="COGL_FRAMEBUFFER()" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#COGL-FRAMEBUFFER:CAPS"/>
+    <function name="cogl_framebuffer_allocate" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-allocate"/>
+    <function name="cogl_framebuffer_get_width" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-width"/>
+    <function name="cogl_framebuffer_get_height" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-height"/>
+    <function name="cogl_framebuffer_set_viewport" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-set-viewport"/>
+    <function name="cogl_framebuffer_get_viewport_x" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-x"/>
+    <function name="cogl_framebuffer_get_viewport_y" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-y"/>
+    <function name="cogl_framebuffer_get_viewport_width" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-width"/>
+    <function name="cogl_framebuffer_get_viewport_height" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport-height"/>
+    <function name="cogl_framebuffer_get_viewport4fv" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-viewport4fv"/>
+    <function name="cogl_framebuffer_get_red_bits" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-red-bits"/>
+    <function name="cogl_framebuffer_get_green_bits" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-green-bits"/>
+    <function name="cogl_framebuffer_get_blue_bits" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-blue-bits"/>
+    <function name="cogl_framebuffer_get_color_mask" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-color-mask"/>
+    <function name="cogl_framebuffer_set_color_mask" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-set-color-mask"/>
+    <function name="cogl_framebuffer_get_context" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-get-context"/>
+    <function name="cogl_framebuffer_clear" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-clear"/>
+    <function name="cogl_framebuffer_clear4f" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-clear4f"/>
+    <function name="cogl_framebuffer_swap_buffers" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-swap-buffers"/>
+    <function name="cogl_framebuffer_swap_region" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-swap-region"/>
+    <function name="cogl_framebuffer_add_swap_buffers_callback" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-add-swap-buffers-callback"/>
+    <function name="cogl_framebuffer_remove_swap_buffers_callback" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-framebuffer-remove-swap-buffers-callback"/>
+    <function name="cogl_get_draw_framebuffer" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-get-draw-framebuffer"/>
+    <function name="cogl_set_framebuffer ()" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-set-framebuffer"/>
+    <function name="cogl_push_framebuffer ()" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-push-framebuffer"/>
+    <function name="cogl_pop_framebuffer ()" link="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#cogl-pop-framebuffer"/>
+    <function name="cogl_offscreen_new_to_texture ()" link="cogl-2.0-experimental-Offscreen-Framebuffers.html#cogl-offscreen-new-to-texture"/>
+    <function name="cogl_is_offscreen ()" link="cogl-2.0-experimental-Offscreen-Framebuffers.html#cogl-is-offscreen"/>
+    <function name="struct CoglColor" link="cogl-2.0-experimental-Color-Type.html#CoglColor"/>
+    <function name="cogl_color_new ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-new"/>
+    <function name="cogl_color_copy ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-copy"/>
+    <function name="cogl_color_free ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-free"/>
+    <function name="cogl_color_set_from_4ub ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-from-4ub"/>
+    <function name="cogl_color_set_from_4f ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-from-4f"/>
+    <function name="cogl_color_get_red ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-red"/>
+    <function name="cogl_color_get_green ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-green"/>
+    <function name="cogl_color_get_blue ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-blue"/>
+    <function name="cogl_color_get_alpha ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-alpha"/>
+    <function name="cogl_color_get_red_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-red-byte"/>
+    <function name="cogl_color_get_green_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-green-byte"/>
+    <function name="cogl_color_get_blue_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-blue-byte"/>
+    <function name="cogl_color_get_alpha_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-alpha-byte"/>
+    <function name="cogl_color_get_red_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-red-float"/>
+    <function name="cogl_color_get_green_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-green-float"/>
+    <function name="cogl_color_get_blue_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-blue-float"/>
+    <function name="cogl_color_get_alpha_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-get-alpha-float"/>
+    <function name="cogl_color_set_red ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-red"/>
+    <function name="cogl_color_set_green ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-green"/>
+    <function name="cogl_color_set_blue ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-blue"/>
+    <function name="cogl_color_set_alpha ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-alpha"/>
+    <function name="cogl_color_set_red_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-red-byte"/>
+    <function name="cogl_color_set_green_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-green-byte"/>
+    <function name="cogl_color_set_blue_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-blue-byte"/>
+    <function name="cogl_color_set_alpha_byte ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-alpha-byte"/>
+    <function name="cogl_color_set_red_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-red-float"/>
+    <function name="cogl_color_set_green_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-green-float"/>
+    <function name="cogl_color_set_blue_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-blue-float"/>
+    <function name="cogl_color_set_alpha_float ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-set-alpha-float"/>
+    <function name="cogl_color_premultiply ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-premultiply"/>
+    <function name="cogl_color_unpremultiply ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-unpremultiply"/>
+    <function name="cogl_color_equal ()" link="cogl-2.0-experimental-Color-Type.html#cogl-color-equal"/>
+    <function name="CoglMatrix" link="cogl-2.0-experimental-Matrices.html#CoglMatrix"/>
+    <function name="cogl_matrix_init_identity ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-init-identity"/>
+    <function name="cogl_matrix_init_from_array ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-init-from-array"/>
+    <function name="cogl_matrix_copy ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-copy"/>
+    <function name="cogl_matrix_equal ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-equal"/>
+    <function name="cogl_matrix_free ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-free"/>
+    <function name="cogl_matrix_frustum ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-frustum"/>
+    <function name="cogl_matrix_ortho ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-ortho"/>
+    <function name="cogl_matrix_perspective ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-perspective"/>
+    <function name="cogl_matrix_look_at" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-look-at"/>
+    <function name="cogl_matrix_multiply ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-multiply"/>
+    <function name="cogl_matrix_rotate ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-rotate"/>
+    <function name="cogl_matrix_translate ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-translate"/>
+    <function name="cogl_matrix_scale ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-scale"/>
+    <function name="cogl_matrix_get_array ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-get-array"/>
+    <function name="cogl_matrix_get_inverse ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-get-inverse"/>
+    <function name="cogl_matrix_transform_point ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-transform-point"/>
+    <function name="cogl_matrix_transform_points" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-transform-points"/>
+    <function name="cogl_matrix_project_points" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-project-points"/>
+    <function name="cogl_matrix_is_identity ()" link="cogl-2.0-experimental-Matrices.html#cogl-matrix-is-identity"/>
+    <function name="cogl_vector3_init" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init"/>
+    <function name="cogl_vector3_init_zero" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init-zero"/>
+    <function name="cogl_vector3_equal" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal"/>
+    <function name="cogl_vector3_equal_with_epsilon" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal-with-epsilon"/>
+    <function name="cogl_vector3_copy" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-copy"/>
+    <function name="cogl_vector3_free" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free"/>
+    <function name="cogl_vector3_invert" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-invert"/>
+    <function name="cogl_vector3_add" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-add"/>
+    <function name="cogl_vector3_subtract" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-subtract"/>
+    <function name="cogl_vector3_multiply_scalar" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-multiply-scalar"/>
+    <function name="cogl_vector3_divide_scalar" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-divide-scalar"/>
+    <function name="cogl_vector3_normalize" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-normalize"/>
+    <function name="cogl_vector3_magnitude" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-magnitude"/>
+    <function name="cogl_vector3_cross_product" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-cross-product"/>
+    <function name="cogl_vector3_dot_product" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-dot-product"/>
+    <function name="cogl_vector3_distance" link="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-distance"/>
+    <function name="CoglQuaternion" link="cogl-2.0-experimental-Quaternions-(Rotations).html#CoglQuaternion"/>
+    <function name="cogl_quaternion_init_identity ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-identity"/>
+    <function name="cogl_quaternion_init ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init"/>
+    <function name="cogl_quaternion_init_from_angle_vector ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-from-angle-vector"/>
+    <function name="cogl_quaternion_init_from_array ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-from-array"/>
+    <function name="cogl_quaternion_init_from_x_rotation ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-from-x-rotation"/>
+    <function name="cogl_quaternion_init_from_y_rotation ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-from-y-rotation"/>
+    <function name="cogl_quaternion_init_from_z_rotation ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-init-from-z-rotation"/>
+    <function name="cogl_quaternion_equal ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-equal"/>
+    <function name="cogl_quaternion_copy ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-copy"/>
+    <function name="cogl_quaternion_free ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-free"/>
+    <function name="cogl_quaternion_get_rotation_angle ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-get-rotation-angle"/>
+    <function name="cogl_quaternion_get_rotation_axis ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-get-rotation-axis"/>
+    <function name="cogl_quaternion_normalize ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-normalize"/>
+    <function name="cogl_quaternion_dot_product ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-dot-product"/>
+    <function name="cogl_quaternion_invert ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-invert"/>
+    <function name="cogl_quaternion_multiply ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-multiply"/>
+    <function name="cogl_quaternion_pow ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-pow"/>
+    <function name="cogl_quaternion_slerp ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-slerp"/>
+    <function name="cogl_quaternion_nlerp ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-nlerp"/>
+    <function name="cogl_quaternion_squad ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-quaternion-squad"/>
+    <function name="cogl_get_static_identity_quaternion ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-get-static-identity-quaternion"/>
+    <function name="cogl_get_static_zero_quaternion ()" link="cogl-2.0-experimental-Quaternions-(Rotations).html#cogl-get-static-zero-quaternion"/>
+    <function name="CoglFuncPtr ()" link="cogl-2.0-experimental-Common-Types.html#CoglFuncPtr"/>
+    <function name="enum CoglPixelFormat" link="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat"/>
+    <function name="enum CoglBufferTarget" link="cogl-2.0-experimental-Common-Types.html#CoglBufferTarget"/>
+    <function name="enum CoglBufferBit" link="cogl-2.0-experimental-Common-Types.html#CoglBufferBit"/>
+    <function name="enum CoglAttributeType" link="cogl-2.0-experimental-Common-Types.html#CoglAttributeType"/>
+    <function name="enum CoglColorMask" link="cogl-2.0-experimental-Common-Types.html#CoglColorMask"/>
+    <function name="cogl_gtype_matrix_get_type ()" link="cogl-2.0-experimental-GType-Integration-API.html#cogl-gtype-matrix-get-type"/>
+  </functions>
+</book>

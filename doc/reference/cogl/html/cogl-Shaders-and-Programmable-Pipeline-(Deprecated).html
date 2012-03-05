@@ -1,0 +1,348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Shaders and Programmable Pipeline (Deprecated)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch03.html" title="Cogl deprecated API">
+<link rel="prev" href="cogl-Vertex-Buffers-(Deprecated).html" title="Vertex Buffers (Deprecated)">
+<link rel="next" href="cogl-Offscreen-Buffers-(Deprecated).html" title="Offscreen Buffers (Deprecated)">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Vertex-Buffers-(Deprecated).html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Offscreen-Buffers-(Deprecated).html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-Shaders-and-Programmable-Pipeline-(Deprecated).synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-Shaders-and-Programmable-Pipeline-(Deprecated).description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-Shaders-and-Programmable-Pipeline-(Deprecated)"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).top_of_page"></a>Shaders and Programmable Pipeline (Deprecated)</span></h2>
+<p>Shaders and Programmable Pipeline (Deprecated)</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-ref" title="cogl_shader_ref ()">cogl_shader_ref</a>                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-unref" title="cogl_shader_unref ()">cogl_shader_unref</a>                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+
+<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-ref" title="cogl_program_ref ()">cogl_program_ref</a>                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-unref" title="cogl_program_unref ()">cogl_program_unref</a>                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()">cogl_program_use</a>                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-1f" title="cogl_program_uniform_1f ()">cogl_program_uniform_1f</a>             (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-1i" title="cogl_program_uniform_1i ()">cogl_program_uniform_1i</a>             (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-float" title="cogl_program_uniform_float ()">cogl_program_uniform_float</a>          (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-int" title="cogl_program_uniform_int ()">cogl_program_uniform_int</a>            (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">int</span> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-matrix" title="cogl_program_uniform_matrix ()">cogl_program_uniform_matrix</a>         (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> transpose</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-shader-ref"></a><h3>cogl_shader_ref ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_shader_ref                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_shader_ref</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Add an extra reference to a shader.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to a shader.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td><em class="parameter"><code>handle</code></em></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-shader-unref"></a><h3>cogl_shader_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_shader_unref                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_shader_unref</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Removes a reference to a shader. If it was the last reference the
+shader object will be destroyed.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to a shader.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-ref"></a><h3>cogl_program_ref ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_program_ref                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Add an extra reference to a program.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to a program.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td><em class="parameter"><code>handle</code></em></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-unref"></a><h3>cogl_program_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_unref                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Removes a reference to a program. If it was the last reference the
+program object will be destroyed.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to a program.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-use"></a><h3>cogl_program_use ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_use                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Activate a specific shader program replacing that part of the GL
+rendering pipeline, if passed in <a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> the default
+behavior of GL is reinstated.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a shader program or <a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a>.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-uniform-1f"></a><h3>cogl_program_uniform_1f ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_uniform_1f             (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_uniform_1f</code> has been deprecated since version 1.4 and should not be used in newly-written code. Use <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-program-set-uniform-1f" title="cogl_program_set_uniform_1f ()"><code class="function">cogl_program_set_uniform_1f()</code></a> instead.</p>
+</div>
+<p>
+Changes the value of a floating point uniform in the currently
+used (see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()"><code class="function">cogl_program_use()</code></a>) shader program.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_no</code></em> :</span></p></td>
+<td>the uniform to set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the new value of the uniform.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-uniform-1i"></a><h3>cogl_program_uniform_1i ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_uniform_1i             (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_uniform_1i</code> has been deprecated since version 1.4 and should not be used in newly-written code. Use <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-program-set-uniform-1i" title="cogl_program_set_uniform_1i ()"><code class="function">cogl_program_set_uniform_1i()</code></a> instead.</p>
+</div>
+<p>
+Changes the value of an integer uniform in the currently
+used (see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()"><code class="function">cogl_program_use()</code></a>) shader program.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_no</code></em> :</span></p></td>
+<td>the uniform to set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the new value of the uniform.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-uniform-float"></a><h3>cogl_program_uniform_float ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_uniform_float          (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_uniform_float</code> has been deprecated since version 1.4 and should not be used in newly-written code. Use <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-program-set-uniform-float" title="cogl_program_set_uniform_float ()"><code class="function">cogl_program_set_uniform_float()</code></a> instead.</p>
+</div>
+<p>
+Changes the value of a float vector uniform, or uniform array in the
+currently used (see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()"><code class="function">cogl_program_use()</code></a>) shader program.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_no</code></em> :</span></p></td>
+<td>the uniform to set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>Size of float vector.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>Size of array of uniforms.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the new value of the uniform. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=count]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-uniform-int"></a><h3>cogl_program_uniform_int ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_uniform_int            (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">int</span> *value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_uniform_int</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Changes the value of a int vector uniform, or uniform array in the
+currently used (see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()"><code class="function">cogl_program_use()</code></a>) shader program.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_no</code></em> :</span></p></td>
+<td>the uniform to set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>Size of int vector.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>Size of array of uniforms.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the new value of the uniform. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=count]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-program-uniform-matrix"></a><h3>cogl_program_uniform_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_uniform_matrix         (<em class="parameter"><code><span class="type">int</span> uniform_no</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> transpose</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_uniform_matrix</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+Changes the value of a matrix uniform, or uniform array in the
+currently used (see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use" title="cogl_program_use ()"><code class="function">cogl_program_use()</code></a>) shader program. The <em class="parameter"><code>size</code></em>
+parameter is used to determine the square size of the matrix.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_no</code></em> :</span></p></td>
+<td>the uniform to set.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>Size of matrix.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>Size of array of uniforms.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>transpose</code></em> :</span></p></td>
+<td>Whether to transpose the matrix when setting the uniform.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the new value of the uniform. <span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=count]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

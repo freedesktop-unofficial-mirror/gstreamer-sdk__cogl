@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3D textures</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-textures.html" title="Textures">
+<link rel="prev" href="cogl-2.0-experimental-The-Texture-Interface.html" title="The Texture Interface">
+<link rel="next" href="cogl-2.0-experimental-Clipping.html" title="Clipping">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-The-Texture-Interface.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-textures.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Clipping.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-3D-textures.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-3D-textures.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-3D-textures"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-3D-textures.top_of_page"></a>3D textures</span></h2>
+<p>3D textures — Fuctions for creating and manipulating 3D textures</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-3D-textures.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-3D-textures.html#cogl-texture-3d-new-with-size" title="cogl_texture_3d_new_with_size">cogl_texture_3d_new_with_size</a>
+#define             <a class="link" href="cogl-2.0-experimental-3D-textures.html#cogl-texture-3d-new-from-data" title="cogl_texture_3d_new_from_data">cogl_texture_3d_new_from_data</a>
+#define             <a class="link" href="cogl-2.0-experimental-3D-textures.html#cogl-is-texture-3d" title="cogl_is_texture_3d">cogl_is_texture_3d</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-3D-textures.description"></a><h2>Description</h2>
+<p>
+These functions allow 3D textures to be used. 3D textures can be
+thought of as layers of 2D images arranged into a cuboid
+shape. When choosing a texel from the texture, Cogl will take into
+account the 'r' texture coordinate to select one of the images.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-3D-textures.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-texture-3d-new-with-size"></a><h3>cogl_texture_3d_new_with_size</h3>
+<pre class="programlisting">#define cogl_texture_3d_new_with_size cogl_texture_3d_new_with_size_EXP
+</pre>
+<p>
+Creates a new Cogl 3D texture with the specified dimensions and
+pixel format.
+</p>
+<p>
+Note that this function will throw a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> if
+<a href="../cogl/cogl-General-API.html#COGL-FEATURE-TEXTURE-3D:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_3D</code></a> is not advertised. It can also fail if the
+requested dimensions are not supported by the GPU.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td>depth of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td>Optional flags for the texture, or <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#COGL-TEXTURE-NONE:CAPS"><code class="literal">COGL_TEXTURE_NONE</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> to use for the GPU
+storage of the texture.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A GError return location.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a new handle to a CoglTexture3D object or
+<a href="../cogl/cogl-General-API.html#COGL-INVALID-HANDLE:CAPS"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-3d-new-from-data"></a><h3>cogl_texture_3d_new_from_data</h3>
+<pre class="programlisting">#define cogl_texture_3d_new_from_data cogl_texture_3d_new_from_data_EXP
+</pre>
+<p>
+Creates a new 3D texture and initializes it with <em class="parameter"><code>data</code></em>. The data is
+assumed to be packed array of <em class="parameter"><code>depth</code></em> images. There can be padding
+between the images using <em class="parameter"><code>image_stride</code></em>.
+</p>
+<p>
+Note that this function will throw a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> if
+<a href="../cogl/cogl-General-API.html#COGL-FEATURE-TEXTURE-3D:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_3D</code></a> is not advertised. It can also fail if the
+requested dimensions are not supported by the GPU.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td>depth of the texture in pixels.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td>Optional flags for the texture, or <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#COGL-TEXTURE-NONE:CAPS"><code class="literal">COGL_TEXTURE_NONE</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> the buffer is stored in in RAM</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> that will be used for storing
+the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
+premultiplied format similar to the format of the source data will
+be used. The default blending equations of Cogl expect premultiplied
+color data; the main use of passing a non-premultiplied format here
+is if you have non-premultiplied source data and are going to adjust
+the blend mode (see <a href="../cogl/cogl-Materials.html#cogl-material-set-blend"><code class="function">cogl_material_set_blend()</code></a>) or use the data for
+something other than straight blending.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>rowstride</code></em> :</span></p></td>
+<td>the memory offset in bytes between the starts of
+scanlines in <em class="parameter"><code>data</code></em> or 0 to infer it from the width and format</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>image_stride</code></em> :</span></p></td>
+<td>the number of bytes from one image to the next. This
+can be used to add padding between the images in a similar way
+that the rowstride can be used to add padding between
+rows. Alternatively 0 can be passed to infer the <em class="parameter"><code>image_stride</code></em>
+from the <em class="parameter"><code>height</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>pointer the memory region where the source buffer resides</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A GError return location.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the newly created texture or <a href="../cogl/cogl-General-API.html#COGL-INVALID-HANDLE:CAPS"><code class="literal">COGL_INVALID_HANDLE</code></a> if
+there was an error.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-texture-3d"></a><h3>cogl_is_texture_3d</h3>
+<pre class="programlisting">#define cogl_is_texture_3d cogl_is_texture_3d_EXP
+</pre>
+<p>
+Checks whether <em class="parameter"><code>handle</code></em> is a <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> for a 3D texture.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>a <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the passed handle represents a 3D texture
+and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

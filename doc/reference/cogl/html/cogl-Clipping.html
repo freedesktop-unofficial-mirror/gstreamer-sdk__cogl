@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Clipping</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
+<link rel="prev" href="cogl-Path-Primitives.html" title="Path Primitives">
+<link rel="next" href="cogl-Vertex-Buffers.html" title="Vertex Buffers">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Path-Primitives.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Vertex-Buffers.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-Clipping.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-Clipping.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-Clipping"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-Clipping.top_of_page"></a>Clipping</span></h2>
+<p>Clipping — Fuctions for manipulating a stack of clipping regions</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-Clipping.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><span class="returnvalue">void</span>                <a class="link" href="cogl-Clipping.html#cogl-clip-push-rectangle" title="cogl_clip_push_rectangle ()">cogl_clip_push_rectangle</a>            (<em class="parameter"><code><span class="type">float</span> x0</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y0</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y1</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Clipping.html#cogl-clip-push-window-rectangle" title="cogl_clip_push_window_rectangle ()">cogl_clip_push_window_rectangle</a>     (<em class="parameter"><code><span class="type">int</span> x_offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y_offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Clipping.html#cogl-clip-push-from-path" title="cogl_clip_push_from_path ()">cogl_clip_push_from_path</a>            (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Clipping.html#cogl-clip-push-from-path-preserve" title="cogl_clip_push_from_path_preserve ()">cogl_clip_push_from_path_preserve</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Clipping.html#cogl-clip-pop" title="cogl_clip_pop ()">cogl_clip_pop</a>                       (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-Clipping.description"></a><h2>Description</h2>
+<p>
+To support clipping your geometry to rectangles or paths Cogl exposes a
+stack based API whereby each clip region you push onto the stack is
+intersected with the previous region.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-Clipping.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-clip-push-rectangle"></a><h3>cogl_clip_push_rectangle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clip_push_rectangle            (<em class="parameter"><code><span class="type">float</span> x0</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y0</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y1</code></em>);</pre>
+<p>
+Specifies a rectangular clipping area for all subsequent drawing
+operations. Any drawing commands that extend outside the rectangle
+will be clipped so that only the portion inside the rectangle will
+be displayed. The rectangle dimensions are transformed by the
+current model-view matrix.
+</p>
+<p>
+The rectangle is intersected with the current clip region. To undo
+the effect of this function, call <a class="link" href="cogl-Clipping.html#cogl-clip-pop" title="cogl_clip_pop ()"><code class="function">cogl_clip_pop()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x0</code></em> :</span></p></td>
+<td>x coordinate for top left corner of the clip rectangle</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y0</code></em> :</span></p></td>
+<td>y coordinate for top left corner of the clip rectangle</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x1</code></em> :</span></p></td>
+<td>x coordinate for bottom right corner of the clip rectangle</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y1</code></em> :</span></p></td>
+<td>y coordinate for bottom right corner of the clip rectangle</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-clip-push-window-rectangle"></a><h3>cogl_clip_push_window_rectangle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clip_push_window_rectangle     (<em class="parameter"><code><span class="type">int</span> x_offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y_offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>);</pre>
+<p>
+Specifies a rectangular clipping area for all subsequent drawing
+operations. Any drawing commands that extend outside the rectangle
+will be clipped so that only the portion inside the rectangle will
+be displayed. The rectangle dimensions are not transformed by the
+current model-view matrix.
+</p>
+<p>
+The rectangle is intersected with the current clip region. To undo
+the effect of this function, call <a class="link" href="cogl-Clipping.html#cogl-clip-pop" title="cogl_clip_pop ()"><code class="function">cogl_clip_pop()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x_offset</code></em> :</span></p></td>
+<td>left edge of the clip rectangle in window coordinates</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y_offset</code></em> :</span></p></td>
+<td>top edge of the clip rectangle in window coordinates</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of the clip rectangle</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of the clip rectangle</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-clip-push-from-path"></a><h3>cogl_clip_push_from_path ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clip_push_from_path            (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Sets a new clipping area using the current path. The current path
+is then cleared. The clipping area is intersected with the previous
+clipping area. To restore the previous clipping area, call
+<a class="link" href="cogl-Clipping.html#cogl-clip-pop" title="cogl_clip_pop ()"><code class="function">cogl_clip_pop()</code></a>.
+</p>
+<p class="since">Since 1.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-clip-push-from-path-preserve"></a><h3>cogl_clip_push_from_path_preserve ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clip_push_from_path_preserve   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Sets a new clipping area using the current path. The current path
+is then cleared. The clipping area is intersected with the previous
+clipping area. To restore the previous clipping area, call
+<a class="link" href="cogl-Clipping.html#cogl-clip-pop" title="cogl_clip_pop ()"><code class="function">cogl_clip_pop()</code></a>.
+</p>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-clip-pop"></a><h3>cogl_clip_pop ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clip_pop                       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Reverts the clipping region to the state before the last call to
+<a class="link" href="cogl-Clipping-(Deprecated).html#cogl-clip-push" title="cogl_clip_push ()"><code class="function">cogl_clip_push()</code></a>.
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Vertex Attributes</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-buffer-layout-apis.html" title="Describing the layout of GPU Memory">
+<link rel="prev" href="cogl-buffer-layout-apis.html" title="Describing the layout of GPU Memory">
+<link rel="next" href="cogl-2.0-experimental-Indices.html" title="Indices">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-buffer-layout-apis.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-buffer-layout-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Indices.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Vertex-Attributes.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Vertex-Attributes.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Vertex-Attributes"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Vertex-Attributes.top_of_page"></a>Vertex Attributes</span></h2>
+<p>Vertex Attributes — Functions for declaring and drawing vertex
+   attributes</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Vertex-Attributes.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><span class="returnvalue">CoglAttribute</span> *     <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-new" title="cogl_attribute_new ()">cogl_attribute_new</a>                  (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> *attribute_buffer</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> stride</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> components</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglAttributeType" title="enum CoglAttributeType"><span class="type">CoglAttributeType</span></a> type</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-is-attribute" title="cogl_is_attribute ()">cogl_is_attribute</a>                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Vertex-Attributes.description"></a><h2>Description</h2>
+<p>
+FIXME
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Vertex-Attributes.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-attribute-new"></a><h3>cogl_attribute_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglAttribute</span> *     cogl_attribute_new                  (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> *attribute_buffer</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *name</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> stride</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> offset</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> components</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglAttributeType" title="enum CoglAttributeType"><span class="type">CoglAttributeType</span></a> type</code></em>);</pre>
+<p>
+Describes the layout for a list of vertex attribute values (For
+example, a list of texture coordinates or colors).
+</p>
+<p>
+The <em class="parameter"><code>name</code></em> is used to access the attribute inside a GLSL vertex
+shader and there are some special names you should use if they are
+applicable:
+ </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">"cogl_position_in" (used for vertex positions)</li>
+<li class="listitem">"cogl_color_in" (used for vertex colors)</li>
+<li class="listitem">"cogl_tex_coord0_in", "cogl_tex_coord1", ...
+(used for vertex texture coordinates)</li>
+<li class="listitem">"cogl_normal_in" (used for vertex normals)</li>
+</ul></div>
+<p>
+</p>
+<p>
+The attribute values corresponding to different vertices can either
+be tightly packed or interleaved with other attribute values. For
+example it's common to define a structure for a single vertex like:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="keyword">typedef</span><span class="normal"> </span><span class="keyword">struct</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="type">float</span><span class="normal"> x</span><span class="symbol">,</span><span class="normal"> y</span><span class="symbol">,</span><span class="normal"> z</span><span class="symbol">;</span><span class="normal"> </span><span class="comment">/* position attribute */</span>
+<span class="normal">  </span><span class="type">float</span><span class="normal"> s</span><span class="symbol">,</span><span class="normal"> t</span><span class="symbol">;</span><span class="normal"> </span><span class="comment">/* texture coordinate attribute */</span>
+<span class="cbracket">}</span><span class="normal"> MyVertex</span><span class="symbol">;</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+And then create an array of vertex data something like:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">MyVertex</span><span class="normal"> vertices</span><span class="symbol">[</span><span class="number">100</span><span class="symbol">]</span><span class="normal"> </span><span class="symbol">=</span><span class="normal"> </span><span class="cbracket">{</span><span class="normal"> </span><span class="symbol">....</span><span class="normal"> </span><span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+In this case, to describe either the position or texture coordinate
+attribute you have to move <span style="color: red">&lt;pre&gt;sizeof (MyVertex)&lt;/pre&gt;</span> bytes to
+move from one vertex to the next.  This is called the attribute
+<em class="parameter"><code>stride</code></em>. If you weren't interleving attributes and you instead had
+a packed array of float x, y pairs then the attribute stride would
+be <span style="color: red">&lt;pre&gt;(2 * sizeof (float))&lt;/pre&gt;</span>. So the <em class="parameter"><code>stride</code></em> is the number of
+bytes to move to find the attribute value of the next vertex.
+</p>
+<p>
+Normally a list of attributes starts at the beginning of an array.
+So for the <span style="color: red">&lt;pre&gt;MyVertex&lt;/pre&gt;</span> example above the <em class="parameter"><code>offset</code></em> is the
+offset inside the <span style="color: red">&lt;pre&gt;MyVertex&lt;/pre&gt;</span> structure to the first
+component of the attribute. For the texture coordinate attribute
+the offset would be <span style="color: red">&lt;pre&gt;offsetof (MyVertex, s)&lt;/pre&gt;</span> or instead of
+using the offsetof macro you could use <span style="color: red">&lt;pre&gt;sizeof (float) * 3&lt;/pre&gt;</span>.
+If you've divided your <em class="parameter"><code>array</code></em> into blocks of non-interleved
+attributes then you will need to calculate the <em class="parameter"><code>offset</code></em> as the
+number of bytes in blocks preceding the attribute you're
+describing.
+</p>
+<p>
+An attribute often has more than one component. For example a color
+is often comprised of 4 red, green, blue and alpha <em class="parameter"><code>components</code></em>, and a
+position may be comprised of 2 x and y <em class="parameter"><code>components</code></em>. You should aim
+to keep the number of components to a minimum as more components
+means more data needs to be mapped into the GPU which can be a
+bottlneck when dealing with a large number of vertices.
+</p>
+<p>
+Finally you need to specify the component data type. Here you
+should aim to use the smallest type that meets your precision
+requirements. Again the larger the type then more data needs to be
+mapped into the GPU which can be a bottlneck when dealing with
+a large number of vertices.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute_buffer</code></em> :</span></p></td>
+<td>The <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> containing the actual
+attribute data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>The name of the attribute (used to reference it from GLSL)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>stride</code></em> :</span></p></td>
+<td>The number of bytes to jump to get to the next attribute
+value for the next vertex. (Usually
+<span style="color: red">&lt;pre&gt;sizeof (MyVertex)&lt;/pre&gt;</span>)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
+<td>The byte offset from the start of <em class="parameter"><code>attribute_buffer</code></em> for
+the first attribute value. (Usually
+<span style="color: red">&lt;pre&gt;offsetof (MyVertex, component0)&lt;/pre&gt;</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>components</code></em> :</span></p></td>
+<td>The number of components (e.g. 4 for an rgba color or
+3 for and (x,y,z) position)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
+<td>FIXME</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <span class="type">CoglAttribute</span> describing the
+layout for a list of attribute values stored in <em class="parameter"><code>array</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-attribute"></a><h3>cogl_is_attribute ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_attribute                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Gets whether the given object references a <span class="type">CoglAttribute</span>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the handle references a <span class="type">CoglAttribute</span>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

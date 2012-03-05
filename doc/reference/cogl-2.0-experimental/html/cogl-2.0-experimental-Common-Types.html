@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Common Types</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-utilities.html" title="Utilities">
+<link rel="prev" href="cogl-2.0-experimental-Quaternions-(Rotations).html" title="Quaternions (Rotations)">
+<link rel="next" href="cogl-integration.html" title="Binding and Integrating">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-Quaternions-(Rotations).html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-utilities.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-integration.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Common-Types.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Common-Types.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Common-Types"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Common-Types.top_of_page"></a>Common Types</span></h2>
+<p>Common Types</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Common-Types.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><span class="returnvalue">void</span>                (<a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglFuncPtr" title="CoglFuncPtr ()">*CoglFuncPtr</a>)                      (<em class="parameter"><code><span class="type">void</span></code></em>);
+enum                <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat">CoglPixelFormat</a>;
+enum                <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglBufferTarget" title="enum CoglBufferTarget">CoglBufferTarget</a>;
+enum                <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglBufferBit" title="enum CoglBufferBit">CoglBufferBit</a>;
+enum                <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglAttributeType" title="enum CoglAttributeType">CoglAttributeType</a>;
+enum                <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask">CoglColorMask</a>;
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Common-Types.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Common-Types.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglFuncPtr"></a><h3>CoglFuncPtr ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*CoglFuncPtr)                      (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+The type used by cogl for function pointers, note that this type
+is used as a generic catch-all cast for function pointers and the
+actual arguments and return type may be different.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglPixelFormat"></a><h3>enum CoglPixelFormat</h3>
+<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
+  COGL_PIXEL_FORMAT_ANY           = 0,
+  COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
+
+  COGL_PIXEL_FORMAT_RGB_565       = 4,
+  COGL_PIXEL_FORMAT_RGBA_4444     = 5 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_RGBA_5551     = 6 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_YUV           = 7,
+  COGL_PIXEL_FORMAT_G_8           = 8,
+
+  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
+  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT)
+} CoglPixelFormat;
+</pre>
+<p>
+Pixel formats used by COGL. For the formats with a byte per
+component, the order of the components specify the order in
+increasing memory addresses. So for example
+<a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-RGB-888:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></a> would have the red component in the
+lowest address, green in the next address and blue after that
+regardless of the endinanness of the system.
+</p>
+<p>
+For the 16-bit formats the component order specifies the order
+within a 16-bit number from most significant bit to least
+significant. So for <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component
+would be in bits 11-15, the green component would be in 6-11 and
+the blue component would be in 1-5. Therefore the order in memory
+depends on the endianness of the system.
+</p>
+<p>
+When uploading a texture <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-ANY:CAPS"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></a> can be used as the
+internal format. Cogl will try to pick the best format to use
+internally and convert the texture data if necessary.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ANY:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></span></p></td>
+<td>Any format
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-A-8:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_A_8</code></span></p></td>
+<td>8 bits alpha mask
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGB-565:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></span></p></td>
+<td>RGB, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-4444:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_4444</code></span></p></td>
+<td>RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-5551:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_5551</code></span></p></td>
+<td>RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-YUV:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_YUV</code></span></p></td>
+<td>Not currently supported
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-G-8:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_G_8</code></span></p></td>
+<td>Single luminance component
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGB-888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></span></p></td>
+<td>RGB, 24 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGR-888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGR_888</code></span></p></td>
+<td>BGR, 24 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888</code></span></p></td>
+<td>RGBA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_8888</code></span></p></td>
+<td>BGRA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_8888</code></span></p></td>
+<td>ARGB, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_8888</code></span></p></td>
+<td>ABGR, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_8888_PRE</code></span></p></td>
+<td>Premultiplied BGRA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_8888_PRE</code></span></p></td>
+<td>Premultiplied ARGB, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_8888_PRE</code></span></p></td>
+<td>Premultiplied ABGR, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-4444-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_4444_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-5551-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_5551_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 16 bits
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBufferTarget"></a><h3>enum CoglBufferTarget</h3>
+<pre class="programlisting">typedef enum
+{
+  COGL_WINDOW_BUFFER      = (1 &lt;&lt; 1),
+  COGL_OFFSCREEN_BUFFER   = (1 &lt;&lt; 2)
+} CoglBufferTarget;
+</pre>
+<p>
+Target flags for FBOs.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-WINDOW-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_WINDOW_BUFFER</code></span></p></td>
+<td>FIXME
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-OFFSCREEN-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_OFFSCREEN_BUFFER</code></span></p></td>
+<td>FIXME
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBufferBit"></a><h3>enum CoglBufferBit</h3>
+<pre class="programlisting">typedef enum {
+  COGL_BUFFER_BIT_COLOR   = 1L&lt;&lt;0,
+  COGL_BUFFER_BIT_DEPTH   = 1L&lt;&lt;1,
+  COGL_BUFFER_BIT_STENCIL = 1L&lt;&lt;2
+} CoglBufferBit;
+</pre>
+<p>
+Types of auxiliary buffers
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-COLOR:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_COLOR</code></span></p></td>
+<td>Selects the primary color buffer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-DEPTH:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_DEPTH</code></span></p></td>
+<td>Selects the depth buffer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-STENCIL:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_STENCIL</code></span></p></td>
+<td>Selects the stencil buffer
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglAttributeType"></a><h3>enum CoglAttributeType</h3>
+<pre class="programlisting">typedef enum {
+  COGL_ATTRIBUTE_TYPE_BYTE           = 0x1400,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE  = 0x1401,
+  COGL_ATTRIBUTE_TYPE_SHORT          = 0x1402,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT = 0x1403,
+  COGL_ATTRIBUTE_TYPE_FLOAT          = 0x1406
+} CoglAttributeType;
+</pre>
+<p>
+Data types for the components of a vertex attribute.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-BYTE:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_BYTE</code></span></p></td>
+<td>Data is the same size of a byte
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-UNSIGNED-BYTE:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE</code></span></p></td>
+<td>Data is the same size of an
+  unsigned byte
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-SHORT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_SHORT</code></span></p></td>
+<td>Data is the same size of a short integer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-UNSIGNED-SHORT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT</code></span></p></td>
+<td>Data is the same size of
+  an unsigned short integer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-FLOAT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_FLOAT</code></span></p></td>
+<td>Data is the same size of a float
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglColorMask"></a><h3>enum CoglColorMask</h3>
+<pre class="programlisting">typedef enum
+{
+  COGL_COLOR_MASK_NONE = 0,
+  COGL_COLOR_MASK_RED = 1L&lt;&lt;0,
+  COGL_COLOR_MASK_GREEN = 1L&lt;&lt;1,
+  COGL_COLOR_MASK_BLUE = 1L&lt;&lt;2,
+  COGL_COLOR_MASK_ALPHA = 1L&lt;&lt;3,
+  /* XXX: glib-mkenums is a perl script that can't cope if we split
+   * this onto multiple lines! *sigh* */
+  COGL_COLOR_MASK_ALL = (COGL_COLOR_MASK_RED | COGL_COLOR_MASK_GREEN | COGL_COLOR_MASK_BLUE | COGL_COLOR_MASK_ALPHA)
+} CoglColorMask;
+</pre>
+<p>
+Defines a bit mask of color channels. This can be used with
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask"><code class="function">cogl_pipeline_set_color_mask()</code></a> for example to define which color
+channels should be written to the current framebuffer when
+drawing something.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-NONE:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_NONE</code></span></p></td>
+<td>None of the color channels are masked
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-RED:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_RED</code></span></p></td>
+<td>Masks the red color channel
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-GREEN:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_GREEN</code></span></p></td>
+<td>Masks the green color channel
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-BLUE:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_BLUE</code></span></p></td>
+<td>Masks the blue color channel
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-ALPHA:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_ALPHA</code></span></p></td>
+<td>Masks the alpha color channel
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-COLOR-MASK-ALL:CAPS"></a><span class="term"><code class="literal">COGL_COLOR_MASK_ALL</code></span></p></td>
+<td>All of the color channels are masked
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

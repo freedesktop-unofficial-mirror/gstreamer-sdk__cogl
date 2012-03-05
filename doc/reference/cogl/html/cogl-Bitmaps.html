@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Bitmaps</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
+<link rel="prev" href="cogl-Offscreen-Buffers.html" title="Offscreen Buffers">
+<link rel="next" href="cogl-Fixed-Point-API.html" title="Fixed Point API">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Offscreen-Buffers.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Fixed-Point-API.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-Bitmaps.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-Bitmaps.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-Bitmaps"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-Bitmaps.top_of_page"></a>Bitmaps</span></h2>
+<p>Bitmaps — Fuctions for loading images</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-Bitmaps.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap">CoglBitmap</a>;
+<a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="returnvalue">CoglBitmap</span></a> *        <a class="link" href="cogl-Bitmaps.html#cogl-bitmap-new-from-file" title="cogl_bitmap_new_from_file ()">cogl_bitmap_new_from_file</a>           (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Bitmaps.html#cogl-bitmap-get-size-from-file" title="cogl_bitmap_get_size_from_file ()">cogl_bitmap_get_size_from_file</a>      (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *height</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Bitmaps.html#cogl-is-bitmap" title="cogl_is_bitmap ()">cogl_is_bitmap</a>                      (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+enum                <a class="link" href="cogl-Bitmaps.html#CoglBitmapError" title="enum CoglBitmapError">CoglBitmapError</a>;
+#define             <a class="link" href="cogl-Bitmaps.html#COGL-BITMAP-ERROR:CAPS" title="COGL_BITMAP_ERROR">COGL_BITMAP_ERROR</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-Bitmaps.description"></a><h2>Description</h2>
+<p>
+Cogl allows loading image data into memory as CoglBitmaps without
+loading them immediately into GPU textures.
+</p>
+<p>
+<a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a> is available since Cogl 1.0
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-Bitmaps.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglBitmap"></a><h3>CoglBitmap</h3>
+<pre class="programlisting">typedef struct _CoglBitmap CoglBitmap;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-bitmap-new-from-file"></a><h3>cogl_bitmap_new_from_file ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="returnvalue">CoglBitmap</span></a> *        cogl_bitmap_new_from_file           (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Loads an image file from disk. This function can be safely called from
+within a thread.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
+<td>the file to load.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a> to the new loaded image data, or
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if loading the image failed.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-bitmap-get-size-from-file"></a><h3>cogl_bitmap_get_size_from_file ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_bitmap_get_size_from_file      (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *height</code></em>);</pre>
+<p>
+Parses an image file enough to extract the width and height
+of the bitmap.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
+<td>the file to check</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>return location for the bitmap width, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>return location for the bitmap height, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the image was successfully parsed</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-bitmap"></a><h3>cogl_is_bitmap ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_bitmap                      (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Checks whether <em class="parameter"><code>handle</code></em> is a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a bitmap
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a bitmap</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the passed handle represents a bitmap,
+and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBitmapError"></a><h3>enum CoglBitmapError</h3>
+<pre class="programlisting">typedef enum {
+  COGL_BITMAP_ERROR_FAILED,
+  COGL_BITMAP_ERROR_UNKNOWN_TYPE,
+  COGL_BITMAP_ERROR_CORRUPT_IMAGE
+} CoglBitmapError;
+</pre>
+<p>
+Error codes that can be thrown when performing bitmap
+operations. Note that <code class="function">gdk_pixbuf_new_from_file()</code> can also throw
+errors directly from the underlying image loading library. For
+example, if GdkPixbuf is used then errors <span class="type">GdkPixbufError</span>s
+will be used directly.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-BITMAP-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">COGL_BITMAP_ERROR_FAILED</code></span></p></td>
+<td>Generic failure code, something went
+  wrong.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BITMAP-ERROR-UNKNOWN-TYPE:CAPS"></a><span class="term"><code class="literal">COGL_BITMAP_ERROR_UNKNOWN_TYPE</code></span></p></td>
+<td>Unknown image type.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BITMAP-ERROR-CORRUPT-IMAGE:CAPS"></a><span class="term"><code class="literal">COGL_BITMAP_ERROR_CORRUPT_IMAGE</code></span></p></td>
+<td>An image file was broken somehow.
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="COGL-BITMAP-ERROR:CAPS"></a><h3>COGL_BITMAP_ERROR</h3>
+<pre class="programlisting">#define COGL_BITMAP_ERROR (cogl_bitmap_error_quark ())
+</pre>
+<p>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> domain for bitmap errors.
+</p>
+<p class="since">Since 1.4</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

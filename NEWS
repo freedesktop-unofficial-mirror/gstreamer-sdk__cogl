@@ -1,0 +1,323 @@
+Cogl 1.8.2                                                         2011-10-17
+===============================================================================
+
+  • List of changes since Cogl 1.8.0
+
+  » Fix a crash while generating ARBfp code with layers containing a
+    NULL texture.
+  » Improvements to the mingw-fetch-dependencies script to work
+    without first needing to find a copy of config.guess.
+  » Translation updates.  
+
+  • List of bugs fixed since Cogl 1.8.0
+
+    https://bugzilla.gnome.org:
+
+    #660184 - Running an X client causes a segfault when using software
+              rendering
+    #660387 - test-color-mask fails due to uninitialized texture data
+    #660986 - memory leak in CoglPipeline::layers_cache
+
+Many thanks to:
+    Robert Bragg
+    Ivaylo Valkov
+    Gabor Kelemen
+    Luca Bruno
+    Seong-ho, Cho
+
+Cogl 1.8.0                                                         2011-09-19
+===============================================================================
+
+  • List of changes since Cogl 1.7.8
+
+  » Started porting Cogl conformance tests from Clutter to be standalone
+    Cogl tests including tests for depth-state and backface culling.
+  » Added a new color mask conformance test
+  » We no longer implicitly define COGL_ENABLE_EXPERIMENTAL_2_0_API in the
+    cogl-2.0-experimental.pc file cflags because the way pkgconfig works makes
+    it hard to then consume libraries depending on cogl-2.0-experimental.pc
+    with Clutter.
+  » Made progress re-factoring cogl-pipeline.c to be more maintainable by
+    starting to split the code up into more manageable pieces.
+  » We now bind the locale dir for the Cogl domain during init
+  » We now track backface culling state as part of CoglPipeline.
+
+  • List of bugs fixed since Cogl 1.7.8
+
+    https://bugzilla.gnome.org:
+
+    #656442 - README points to wrong bug product
+    #658092 - St ::hover transitions don't act as expected
+    #658333 - Typo in cogl/cogl-display.h
+    #658700 - Bind the locale domain so that gettext actually works
+    #659029 - Clipping problem
+    #659360 - Optimization in _cogl_winsys_onscreen_swap_region causes tearing
+
+Many thanks to:
+    Neil Roberts
+    Matej Urbančič
+    Abdalrahim G. Fakhouri
+    Adel Gadllah
+    Andika Triwidada
+    Arash Mousavi
+    Bruce Cowan
+    Chun-wei Fan
+    Duarte Loreto
+    Emmanuele Bassi
+    I Felix
+    Ihar Hrachyshka
+    Ioannis Zamboukas
+    Laura Balbastre
+    Luca Ferretti
+    Manoj Kumar Giri
+    Muhammet Kara
+    Rudolfs Mazurs
+    Tiffany Antopolski
+    Wolfgang Stöggl
+    Wouter Bolsterlee
+    Xandru Armesto
+    Yinghua Wang
+    Yuri Myasoedov
+    Мирослав Николић
+
+Cogl 1.7.8                                                         2011-09-05
+===============================================================================
+
+  • List of changes since Cogl 1.7.6
+
+   » Getters for the display and renderer associated with context
+   » Getter for the number of supported texture units during fragment
+     processing. (ClutterGst needs to know this for example to know if GLSL
+     based YUV->RGB color space conversion can be used.)
+   » Optimizations for the GLSL codegen for fragment processing so we can
+     ignore redundant layers - if for example the "REPLACE" function is used
+     for layer N then computing anything for previous layers is redundant. Also
+     if texture combining needs to sample the same texture multiple times we
+     now re-use the same sample instead of repeating it.
+   » Optimize texture uploads to a texture atlas on GLES by avoiding lots of
+     redundant format conversions.
+   » Relax the requirement to need braces around blend factors when using the
+     CoglBlendString syntax. Braces are only needed for factors involving a
+     subtraction like "(1 - SRC_COLOR[A])"
+   » Adds API for querying the format of a CoglFramebuffer
+
+  • List of bugs fixed since Cogl 1.7.6
+
+    https://bugzilla.gnome.org:
+
+    #656426 - Improve the generated GLSL code
+    #656441 - Build failure in examples
+    #656587 - Outdated FSF Address in code files
+    #657347 - Retrieve the number of texture image units
+    #657840 - Atlas-ed bitmaps converted too many times
+    #656809 - cogl 1.7.6 doesn't compile on Fedora 16/17
+
+Many thanks to:
+    Damien Lespiau
+    Neil Roberts
+    Emmanuele Bassi
+
+Cogl 1.7.6                                                         2011-08-12
+===============================================================================
+
+  • List of changes since Cogl 1.7.4
+
+   » Add an experimental cogl_matrix_look_at function
+   » Fix flipping the y-coordinates for cogl_framebuffer_swap_region
+   » Automatically allocate framebuffers on first use
+   » Add experimental cogl_framebuffer_clear functions
+   » Add a function to get the context given a framebuffer
+   » Add support for a cogl.conf config file
+   » Fix using TEXTURE_n as the source for a layer combine
+   » Some fixes for the WGL backend
+   » Add experimental API to upload a texture subregion from a CoglBuffer
+
+  • List of bugs fixed since Cogl 1.7.4
+
+    https://bugzilla.gnome.org:
+
+    #655026 - cogl-pango should not link to systemwide libcogl during make
+              install
+    #655216 - egl: Guard the feature discovery of eglCreateImage()
+    #655228 - Bugs in cogl-quaternion library functions
+              cogl_quaternion_init_from_array and
+              cogl_quaternion_get_rotation_axis.
+    #655355 - Make Cogl master work on EGL/GDL again
+    #655400 - cogl-pipeline-fragend-arbfp: Initialise template_pipeline
+    #655412 - Don't use the 'NULL' GModule to resolve GL symbols
+    #655510 - Access Violation (a.k.a Segfault) in cogl/driver/gl/cogl-gl.c
+    #655556 - Memory leak in function cogl_polygon in cogl-primitives.c
+    #655723 - egl-gdl: Silence a gcc warning
+    #655724 - egl-gdl: Don't generate cogl-display.h
+    #656303 - Improve cogl-pango's journal usage
+    #655792 - android: Commit the build.xml file
+    #655791 - android: Update the hello example to the latest glib-android
+              API change
+
+Many thanks to:
+    Robert Bragg
+    Damien Lespiau
+    Chun-wei Fan
+    Alexandre Rostovtsev
+    Kirk A. Baker
+    Philip Withnall
+    Florian Renaut
+
+Cogl 1.7.4                                                         2011-07-20
+===============================================================================
+
+  • List of changes since Cogl 1.7.2
+
+   » Optimize pipeline unparent operation using embedded lists instead
+     of using GList API.
+   » Remove the old matrix operation code we had before pulling in the
+     mesa based code, and flatten all our matrix utilities back into one
+     maintainable file.
+   » Expose cogl_framebuffer_get_red/green/blue/alpha bits to query
+     the precision for a framebuffer's color channels.
+   » Numerous reference manual updates
+   » Fix some memory leaks in CoglPipeline that weren't captured in
+     bugzilla.
+   » Fix some EGL winsys issues that weren't captured in bugzilla.
+   » Switch to dynamically loading libGL, libGLESv2 or libGLES[v1]_CM
+     at runtime so it's possible to distribute a libcogl that can choose
+     to work with any of these at runtime. This can simplify packaging
+     on distros that have numerous packages that provide a platform
+     specific GL/GLES driver and certainly helps during the development
+     process when evaluating the pros-and-cons of different drivers for
+     a given platform.
+   » Clean up lots of inconsistencies with platform specific APIs, so
+     we follow the naming convention of cogl_<platform>_object_method.
+   » Remove cogl_set_default_context from experimental 2.0 api, since
+     we are aiming to remove the default context for 2.0
+   » Ensure the experimental 2.0 reference manual gets a unique
+     DOC_MODULE name so that distro's trying to package cogl don't end
+     up installing the 1.x and 2.0 manuals to the same location
+   » Add a program cache for the GLSL backend, a bit like we have for
+     the ARBfp backend. This can be a big boost in performance for some
+     apps depending on your platform.
+   » Adds dither_enable getter and setter API for CoglFramebuffer so
+     that Clutter doesn't need to use the GL API directly when picking.
+     We need to get to the point where Clutter doesn't need to link
+     against libGL directly so Clutter can take advantage of runtime
+     driver selection by Cogl.
+   » Use MESA_pack_invert extension in cogl_read_pixels to avoid
+     needing to manually flip pixel data read in bottom-up order to a
+     top-down order.
+   » Fix the hello example to actually clear the framebuffer at the
+     start of the frame instead of unintentionally relying on the driver
+     to have cleared the framebuffer.
+
+  • List of bugs fixed since Cogl 1.7.2
+
+    https://bugzilla.gnome.org:
+
+    #652514 - CoglPipeline could embed the list nodes for the
+              children directly in the CoglPipeline struct
+    #654440 - _cogl_winsys_context_init crash
+    #654718 - clutter 1.6.16 compile issues
+    #654593 - dlopening an unversionaed Shared Object is illegal.
+
+Many thanks to:
+    Neil Roberts
+    Damien Lespiau
+    Emmanuele Bassi
+    Takeshi AIHANA
+
+Cogl 1.7.2                                                         2011-07-01
+===============================================================================
+
+  • List of changes since Cogl 1.7.0
+
+   » Add an example program to draw a 3D crate
+
+   » Add experimental API to get and set the viewport on a framebuffer
+     without going through the implicit context.
+
+   » Add API to select the winsys backend without having to use an
+     environment variable.
+
+   » Various documentation fixes.
+
+   » Add winsys-specific typesafe APIs to replace the old
+     cogl_renderer_handle_native_event functions.
+
+   » Rename platform-specific APIs so that we consistently have
+     cogl_<platform>_symbol_name instead of cogl_symbol_name_<platform>.
+
+   » Fixed building against GLES.
+
+  • List of bugs fixed since Cogl 1.7.0
+
+    https://bugzilla.gnome.org:
+
+    #652672 - Typo fix in cogl-framebuffer
+    #653615 - cogl_release_status='snapshot' breaks linking on 64-bit
+              systems due to namespace conflict with ltoptions.m4
+    #653229 - pipeline: Don't regenerate shaders when not changing the
+              number of layers
+    #653231 - pipeline: Don't trigger a change when binding the invalid
+              texture target
+
+Many thanks to:
+  Robert Bragg
+  Adam Jackson
+  Emmanuele Bassi
+
+Cogl 1.7.0                                                         2011-06-10
+===============================================================================
+
+  • List of changes since Clutter 1.6
+
+    » Cogl split out into a standalone project!
+
+    » Added native winsys backends for GLX, WGL, EGL and Android (Quartz in
+      progress)
+      » Supported EGL platforms include: NULL, X11, GDL and Wayland
+
+    » Adds renderer,display,onscreen-template and swap-chain APIs for
+      writing standalone apps using the experimental 2.0 API
+
+    » Added convenience functions cogl_matrix_view_2d_in_frustum/perspective
+      for setting up a Clutter style view transform for a 2d coordinate system
+      inside a projective perspective.
+
+    » Added an experimental Quaternion API
+
+    » Added an experimental Euler API
+
+    » Re-worked the CoglPipeline depth testing state API
+
+    » Added EGL X11 texture-from-pixmap support.
+
+    » Added a tiny Wayland compositor (without input support) under
+      examples/
+
+    » Optimizations:
+      » Optimise paths that are just a rectangle
+      » Journal: Use a pool of vertex-arrays to avoid allocation costs.
+
+  • List of bugs fixed since Clutter 1.6
+
+    http://bugzilla.clutter-project.org:
+    #2538 - crash in gnome-shell
+    #2544 - Using vertex buffers causes memory corruption when you unref the CoglHandle
+    #2561 - Updates to COGL sources regarding non-standard code usage
+    #2588 - Assertion failure in _cogl_pipeline_set_layer_texture_target
+    #2594 - cogl-clip-state: Adapt to experimental cogl2 API.
+    #2620 - _cogl_offscreen_new_to_texture_full() leaks reference when failing
+
+    https://bugzilla.gnome.org:
+    #641197 - mouse events at pixel row zero are ignored
+    #650966 - CoglPipeline doesn't support any layers on fixed function hardware
+    #650979 - cogl-pipeline-fragend-fixed: Fix enabling texture targets
+    #651256 - configure fails for the poor sods who use dash as sh
+
+Many thanks to:
+
+  Neil Roberts
+  Emmanuele Bassi
+  Damien Lespiau
+  James Athey
+  Jasper St. Pierre
+  Piotr Drąg

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Offscreen Buffers (Deprecated)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch03.html" title="Cogl deprecated API">
+<link rel="prev" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html" title="Shaders and Programmable Pipeline (Deprecated)">
+<link rel="next" href="coglglossary.html" title="Glossaries">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="coglglossary.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-Offscreen-Buffers-(Deprecated).synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-Offscreen-Buffers-(Deprecated).description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-Offscreen-Buffers-(Deprecated)"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-Offscreen-Buffers-(Deprecated).top_of_page"></a>Offscreen Buffers (Deprecated)</span></h2>
+<p>Offscreen Buffers (Deprecated)</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-Offscreen-Buffers-(Deprecated).synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-ref" title="cogl_offscreen_ref ()">cogl_offscreen_ref</a>                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-unref" title="cogl_offscreen_unref ()">cogl_offscreen_unref</a>                (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-Offscreen-Buffers-(Deprecated).description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="cogl-Offscreen-Buffers-(Deprecated).details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-offscreen-ref"></a><h3>cogl_offscreen_ref ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_offscreen_ref                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_offscreen_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()"><code class="function">cogl_handle_ref()</code></a> should be used in new code.</p>
+</div>
+<p>
+Increments the reference count on the offscreen buffer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A CoglHandle for an offscreen buffer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>For convenience it returns the given CoglHandle. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-offscreen-unref"></a><h3>cogl_offscreen_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_offscreen_unref                (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_offscreen_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()"><code class="function">cogl_handle_unref()</code></a> should be used in new code.</p>
+</div>
+<p>
+Decreases the reference count for the offscreen buffer and frees it when
+the count reaches 0.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A CoglHandle for an offscreen buffer</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

@@ -1,0 +1,1938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>General API</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
+<link rel="prev" href="ch01.html" title="Cogl - a modern 3D graphics API">
+<link rel="next" href="cogl-Color-Type.html" title="Color Type">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch01.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Color-Type.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-General-API.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-General-API.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-General-API"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-General-API.top_of_page"></a>General API</span></h2>
+<p>General API — General purpose API</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-General-API.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject">CoglObject</a>;
+<span class="returnvalue">void</span> *              <a class="link" href="cogl-General-API.html#cogl-object-ref" title="cogl_object_ref ()">cogl_object_ref</a>                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-object-unref" title="cogl_object_unref ()">cogl_object_unref</a>                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">void</span> *              <a class="link" href="cogl-General-API.html#cogl-object-get-user-data" title="cogl_object_get_user_data ()">cogl_object_get_user_data</a>           (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataKey</span> *key</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-object-set-user-data" title="cogl_object_set_user_data ()">cogl_object_set_user_data</a>           (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataKey</span> *key</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataDestroyCallback</span> destroy</code></em>);
+#define             <a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE">COGL_INVALID_HANDLE</a>
+typedef             <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle">CoglHandle</a>;
+<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()">cogl_handle_ref</a>                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()">cogl_handle_unref</a>                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+
+<span class="returnvalue">void</span>                (<a class="link" href="cogl-General-API.html#CoglFuncPtr" title="CoglFuncPtr ()">*CoglFuncPtr</a>)                      (<em class="parameter"><code><span class="type">void</span></code></em>);
+enum                <a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat">CoglPixelFormat</a>;
+enum                <a class="link" href="cogl-General-API.html#CoglBufferTarget" title="enum CoglBufferTarget">CoglBufferTarget</a>;
+enum                <a class="link" href="cogl-General-API.html#CoglBufferBit" title="enum CoglBufferBit">CoglBufferBit</a>;
+enum                <a class="link" href="cogl-General-API.html#CoglAttributeType" title="enum CoglAttributeType">CoglAttributeType</a>;
+
+enum                <a class="link" href="cogl-General-API.html#CoglFeatureFlags" title="enum CoglFeatureFlags">CoglFeatureFlags</a>;
+<a class="link" href="cogl-General-API.html#CoglFeatureFlags" title="enum CoglFeatureFlags"><span class="returnvalue">CoglFeatureFlags</span></a>    <a class="link" href="cogl-General-API.html#cogl-get-features" title="cogl_get_features ()">cogl_get_features</a>                   (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-General-API.html#cogl-features-available" title="cogl_features_available ()">cogl_features_available</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglFeatureFlags" title="enum CoglFeatureFlags"><span class="type">CoglFeatureFlags</span></a> features</code></em>);
+<a class="link" href="cogl-General-API.html#CoglFuncPtr" title="CoglFuncPtr ()"><span class="returnvalue">CoglFuncPtr</span></a>         <a class="link" href="cogl-General-API.html#cogl-get-proc-address" title="cogl_get_proc_address ()">cogl_get_proc_address</a>               (<em class="parameter"><code>const <span class="type">char</span> *name</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="returnvalue">GOptionGroup</span></a> *      <a class="link" href="cogl-General-API.html#cogl-get-option-group" title="cogl_get_option_group ()">cogl_get_option_group</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-push-matrix" title="cogl_push_matrix ()">cogl_push_matrix</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-pop-matrix" title="cogl_pop_matrix ()">cogl_pop_matrix</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-scale" title="cogl_scale ()">cogl_scale</a>                          (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-translate" title="cogl_translate ()">cogl_translate</a>                      (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-rotate" title="cogl_rotate ()">cogl_rotate</a>                         (<em class="parameter"><code><span class="type">float</span> angle</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-transform" title="cogl_transform ()">cogl_transform</a>                      (<em class="parameter"><code>const <a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-frustum" title="cogl_frustum ()">cogl_frustum</a>                        (<em class="parameter"><code><span class="type">float</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-perspective" title="cogl_perspective ()">cogl_perspective</a>                    (<em class="parameter"><code><span class="type">float</span> fovy</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> aspect</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-ortho" title="cogl_ortho ()">cogl_ortho</a>                          (<em class="parameter"><code><span class="type">float</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> far</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-get-modelview-matrix" title="cogl_get_modelview_matrix ()">cogl_get_modelview_matrix</a>           (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-modelview-matrix" title="cogl_set_modelview_matrix ()">cogl_set_modelview_matrix</a>           (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-get-projection-matrix" title="cogl_get_projection_matrix ()">cogl_get_projection_matrix</a>          (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-projection-matrix" title="cogl_set_projection_matrix ()">cogl_set_projection_matrix</a>          (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-viewport" title="cogl_set_viewport ()">cogl_set_viewport</a>                   (<em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-get-viewport" title="cogl_get_viewport ()">cogl_get_viewport</a>                   (<em class="parameter"><code><span class="type">float</span> v[4]</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-clear" title="cogl_clear ()">cogl_clear</a>                          (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><span class="type">unsigned long </span> buffers</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-backface-culling-enabled" title="cogl_set_backface_culling_enabled ()">cogl_set_backface_culling_enabled</a>   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> setting</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-General-API.html#cogl-get-backface-culling-enabled" title="cogl_get_backface_culling_enabled ()">cogl_get_backface_culling_enabled</a>   (<em class="parameter"><code><span class="type">void</span></code></em>);
+
+enum                <a class="link" href="cogl-General-API.html#CoglFogMode" title="enum CoglFogMode">CoglFogMode</a>;
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-fog" title="cogl_set_fog ()">cogl_set_fog</a>                        (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *fog_color</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglFogMode" title="enum CoglFogMode"><span class="type">CoglFogMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> density</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-disable-fog" title="cogl_disable_fog ()">cogl_disable_fog</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source" title="cogl_set_source ()">cogl_set_source</a>                     (<em class="parameter"><code><span class="type">void</span> *material</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-color" title="cogl_set_source_color ()">cogl_set_source_color</a>               (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-color4ub" title="cogl_set_source_color4ub ()">cogl_set_source_color4ub</a>            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> blue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-color4f" title="cogl_set_source_color4f ()">cogl_set_source_color4f</a>             (<em class="parameter"><code><span class="type">float</span> red</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> green</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-texture" title="cogl_set_source_texture ()">cogl_set_source_texture</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);
+<span class="returnvalue">void</span> *              <a class="link" href="cogl-General-API.html#cogl-get-source" title="cogl_get_source ()">cogl_get_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-push-source" title="cogl_push_source ()">cogl_push_source</a>                    (<em class="parameter"><code><span class="type">void</span> *material</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-pop-source" title="cogl_pop_source ()">cogl_pop_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
+
+enum                <a class="link" href="cogl-General-API.html#CoglReadPixelsFlags" title="enum CoglReadPixelsFlags">CoglReadPixelsFlags</a>;
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-read-pixels" title="cogl_read_pixels ()">cogl_read_pixels</a>                    (<em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglReadPixelsFlags" title="enum CoglReadPixelsFlags"><span class="type">CoglReadPixelsFlags</span></a> source</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *pixels</code></em>);
+
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-flush" title="cogl_flush ()">cogl_flush</a>                          (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()">cogl_begin_gl</a>                       (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-end-gl" title="cogl_end_gl ()">cogl_end_gl</a>                         (<em class="parameter"><code><span class="type">void</span></code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-General-API.description"></a><h2>Description</h2>
+<p>
+General utility functions for COGL.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-General-API.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglObject"></a><h3>CoglObject</h3>
+<pre class="programlisting">typedef struct _CoglObject CoglObject;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-object-ref"></a><h3>cogl_object_ref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_object_ref                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Increases the reference count of <em class="parameter"><code>handle</code></em> by 1
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <em class="parameter"><code>object</code></em>, with its reference count increased</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-object-unref"></a><h3>cogl_object_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_object_unref                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Drecreases the reference count of <em class="parameter"><code>object</code></em> by 1; if the reference
+count reaches 0, the resources allocated by <em class="parameter"><code>object</code></em> will be freed
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-object-get-user-data"></a><h3>cogl_object_get_user_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_object_get_user_data           (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataKey</span> *key</code></em>);</pre>
+<p>
+Finds the user data previously associated with <em class="parameter"><code>object</code></em> using
+the given <em class="parameter"><code>key</code></em>. If no user data has been associated with <em class="parameter"><code>object</code></em>
+for the given <em class="parameter"><code>key</code></em> this function returns NULL.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>The object with associated private data to query</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em> :</span></p></td>
+<td>The address of a <span class="type">CoglUserDataKey</span> which provides a unique value
+with which to index the private data.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The user data previously associated
+with <em class="parameter"><code>object</code></em> using the given <em class="parameter"><code>key</code></em>; or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no associated
+data is found. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-object-set-user-data"></a><h3>cogl_object_set_user_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_object_set_user_data           (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> *object</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataKey</span> *key</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglUserDataDestroyCallback</span> destroy</code></em>);</pre>
+<p>
+Associates some private <em class="parameter"><code>user_data</code></em> with a given <a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>. To
+later remove the association call <a class="link" href="cogl-General-API.html#cogl-object-set-user-data" title="cogl_object_set_user_data ()"><code class="function">cogl_object_set_user_data()</code></a> with
+the same <em class="parameter"><code>key</code></em> but NULL for the <em class="parameter"><code>user_data</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>The object to associate private data with</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em> :</span></p></td>
+<td>The address of a <span class="type">CoglUserDataKey</span> which provides a unique value
+with which to index the private data.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>The data to associate with the given object,
+or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> to remove a previous association.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>destroy</code></em> :</span></p></td>
+<td>A <span class="type">CoglUserDataDestroyCallback</span> to call if the object is
+destroyed or if the association is removed by later setting
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> data for the same key.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="COGL-INVALID-HANDLE:CAPS"></a><h3>COGL_INVALID_HANDLE</h3>
+<pre class="programlisting">#define COGL_INVALID_HANDLE NULL
+</pre>
+<p>
+A COGL handle that is not valid, used for unitialized handles as well as
+error conditions.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglHandle"></a><h3>CoglHandle</h3>
+<pre class="programlisting">typedef gpointer CoglHandle;
+</pre>
+<p>
+Type used for storing references to cogl objects, the CoglHandle is
+a fully opaque type without any public data members.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-handle-ref"></a><h3>cogl_handle_ref ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_handle_ref                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Increases the reference count of <em class="parameter"><code>handle</code></em> by 1
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the handle, with its reference count increased. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-handle-unref"></a><h3>cogl_handle_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_handle_unref                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<p>
+Drecreases the reference count of <em class="parameter"><code>handle</code></em> by 1; if the reference
+count reaches 0, the resources allocated by <em class="parameter"><code>handle</code></em> will be freed
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglFuncPtr"></a><h3>CoglFuncPtr ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*CoglFuncPtr)                      (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+The type used by cogl for function pointers, note that this type
+is used as a generic catch-all cast for function pointers and the
+actual arguments and return type may be different.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglPixelFormat"></a><h3>enum CoglPixelFormat</h3>
+<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
+  COGL_PIXEL_FORMAT_ANY           = 0,
+  COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
+
+  COGL_PIXEL_FORMAT_RGB_565       = 4,
+  COGL_PIXEL_FORMAT_RGBA_4444     = 5 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_RGBA_5551     = 6 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_YUV           = 7,
+  COGL_PIXEL_FORMAT_G_8           = 8,
+
+  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
+  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT)
+} CoglPixelFormat;
+</pre>
+<p>
+Pixel formats used by COGL. For the formats with a byte per
+component, the order of the components specify the order in
+increasing memory addresses. So for example
+<a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-888:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></a> would have the red component in the
+lowest address, green in the next address and blue after that
+regardless of the endinanness of the system.
+</p>
+<p>
+For the 16-bit formats the component order specifies the order
+within a 16-bit number from most significant bit to least
+significant. So for <a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component
+would be in bits 11-15, the green component would be in 6-11 and
+the blue component would be in 1-5. Therefore the order in memory
+depends on the endianness of the system.
+</p>
+<p>
+When uploading a texture <a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-ANY:CAPS"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></a> can be used as the
+internal format. Cogl will try to pick the best format to use
+internally and convert the texture data if necessary.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ANY:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></span></p></td>
+<td>Any format
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-A-8:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_A_8</code></span></p></td>
+<td>8 bits alpha mask
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGB-565:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></span></p></td>
+<td>RGB, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-4444:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_4444</code></span></p></td>
+<td>RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-5551:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_5551</code></span></p></td>
+<td>RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-YUV:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_YUV</code></span></p></td>
+<td>Not currently supported
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-G-8:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_G_8</code></span></p></td>
+<td>Single luminance component
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGB-888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></span></p></td>
+<td>RGB, 24 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGR-888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGR_888</code></span></p></td>
+<td>BGR, 24 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888</code></span></p></td>
+<td>RGBA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_8888</code></span></p></td>
+<td>BGRA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_8888</code></span></p></td>
+<td>ARGB, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-8888:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_8888</code></span></p></td>
+<td>ABGR, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_8888_PRE</code></span></p></td>
+<td>Premultiplied BGRA, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_8888_PRE</code></span></p></td>
+<td>Premultiplied ARGB, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_8888_PRE</code></span></p></td>
+<td>Premultiplied ABGR, 32 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-4444-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_4444_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 16 bits
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-5551-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_5551_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 16 bits
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBufferTarget"></a><h3>enum CoglBufferTarget</h3>
+<pre class="programlisting">typedef enum
+{
+  COGL_WINDOW_BUFFER      = (1 &lt;&lt; 1),
+  COGL_OFFSCREEN_BUFFER   = (1 &lt;&lt; 2)
+} CoglBufferTarget;
+</pre>
+<p>
+Target flags for FBOs.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-WINDOW-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_WINDOW_BUFFER</code></span></p></td>
+<td>FIXME
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-OFFSCREEN-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_OFFSCREEN_BUFFER</code></span></p></td>
+<td>FIXME
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBufferBit"></a><h3>enum CoglBufferBit</h3>
+<pre class="programlisting">typedef enum {
+  COGL_BUFFER_BIT_COLOR   = 1L&lt;&lt;0,
+  COGL_BUFFER_BIT_DEPTH   = 1L&lt;&lt;1,
+  COGL_BUFFER_BIT_STENCIL = 1L&lt;&lt;2
+} CoglBufferBit;
+</pre>
+<p>
+Types of auxiliary buffers
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-COLOR:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_COLOR</code></span></p></td>
+<td>Selects the primary color buffer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-DEPTH:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_DEPTH</code></span></p></td>
+<td>Selects the depth buffer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BUFFER-BIT-STENCIL:CAPS"></a><span class="term"><code class="literal">COGL_BUFFER_BIT_STENCIL</code></span></p></td>
+<td>Selects the stencil buffer
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglAttributeType"></a><h3>enum CoglAttributeType</h3>
+<pre class="programlisting">typedef enum {
+  COGL_ATTRIBUTE_TYPE_BYTE           = 0x1400,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE  = 0x1401,
+  COGL_ATTRIBUTE_TYPE_SHORT          = 0x1402,
+  COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT = 0x1403,
+  COGL_ATTRIBUTE_TYPE_FLOAT          = 0x1406
+} CoglAttributeType;
+</pre>
+<p>
+Data types for the components of a vertex attribute.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-BYTE:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_BYTE</code></span></p></td>
+<td>Data is the same size of a byte
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-UNSIGNED-BYTE:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE</code></span></p></td>
+<td>Data is the same size of an
+  unsigned byte
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-SHORT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_SHORT</code></span></p></td>
+<td>Data is the same size of a short integer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-UNSIGNED-SHORT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_UNSIGNED_SHORT</code></span></p></td>
+<td>Data is the same size of
+  an unsigned short integer
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-ATTRIBUTE-TYPE-FLOAT:CAPS"></a><span class="term"><code class="literal">COGL_ATTRIBUTE_TYPE_FLOAT</code></span></p></td>
+<td>Data is the same size of a float
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglFeatureFlags"></a><h3>enum CoglFeatureFlags</h3>
+<pre class="programlisting">typedef enum
+{
+  COGL_FEATURE_TEXTURE_RECTANGLE      = (1 &lt;&lt; 1),
+  COGL_FEATURE_TEXTURE_NPOT           = (1 &lt;&lt; 2),
+  COGL_FEATURE_TEXTURE_YUV            = (1 &lt;&lt; 3),
+  COGL_FEATURE_TEXTURE_READ_PIXELS    = (1 &lt;&lt; 4),
+  COGL_FEATURE_SHADERS_GLSL           = (1 &lt;&lt; 5),
+  COGL_FEATURE_OFFSCREEN              = (1 &lt;&lt; 6),
+  COGL_FEATURE_OFFSCREEN_MULTISAMPLE  = (1 &lt;&lt; 7),
+  COGL_FEATURE_OFFSCREEN_BLIT         = (1 &lt;&lt; 8),
+  COGL_FEATURE_FOUR_CLIP_PLANES       = (1 &lt;&lt; 9),
+  COGL_FEATURE_STENCIL_BUFFER         = (1 &lt;&lt; 10),
+  COGL_FEATURE_VBOS		      = (1 &lt;&lt; 11),
+  COGL_FEATURE_PBOS		      = (1 &lt;&lt; 12),
+  COGL_FEATURE_UNSIGNED_INT_INDICES   = (1 &lt;&lt; 13),
+  COGL_FEATURE_DEPTH_RANGE            = (1 &lt;&lt; 14),
+  COGL_FEATURE_TEXTURE_NPOT_BASIC     = (1 &lt;&lt; 15),
+  COGL_FEATURE_TEXTURE_NPOT_MIPMAP    = (1 &lt;&lt; 16),
+  COGL_FEATURE_TEXTURE_NPOT_REPEAT    = (1 &lt;&lt; 17),
+  COGL_FEATURE_POINT_SPRITE           = (1 &lt;&lt; 18),
+  COGL_FEATURE_TEXTURE_3D             = (1 &lt;&lt; 19),
+  COGL_FEATURE_SHADERS_ARBFP          = (1 &lt;&lt; 20),
+  COGL_FEATURE_MAP_BUFFER_FOR_READ    = (1 &lt;&lt; 21),
+  COGL_FEATURE_MAP_BUFFER_FOR_WRITE   = (1 &lt;&lt; 22),
+  COGL_FEATURE_ONSCREEN_MULTIPLE      = (1 &lt;&lt; 23)
+} CoglFeatureFlags;
+</pre>
+<p>
+Flags for the supported features.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-RECTANGLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_RECTANGLE</code></span></p></td>
+<td>ARB_texture_rectangle support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-NPOT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_NPOT</code></span></p></td>
+<td>Non power of two textures are supported
+   by the hardware. This is a equivalent to the
+   <a class="link" href="cogl-General-API.html#COGL-FEATURE-TEXTURE-NPOT-BASIC:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_BASIC</code></a>, <a class="link" href="cogl-General-API.html#COGL-FEATURE-TEXTURE-NPOT-MIPMAP:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_MIPMAP</code></a>
+   and <a class="link" href="cogl-General-API.html#COGL-FEATURE-TEXTURE-NPOT-REPEAT:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_REPEAT</code></a> features combined.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-YUV:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_YUV</code></span></p></td>
+<td>ycbcr conversion support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-READ-PIXELS:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_READ_PIXELS</code></span></p></td>
+<td>glReadPixels() support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-SHADERS-GLSL:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_SHADERS_GLSL</code></span></p></td>
+<td>GLSL support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-OFFSCREEN:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_OFFSCREEN</code></span></p></td>
+<td>FBO support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-OFFSCREEN-MULTISAMPLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_OFFSCREEN_MULTISAMPLE</code></span></p></td>
+<td>Multisample support on FBOs
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-OFFSCREEN-BLIT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_OFFSCREEN_BLIT</code></span></p></td>
+<td>Blit support on FBOs
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-FOUR-CLIP-PLANES:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_FOUR_CLIP_PLANES</code></span></p></td>
+<td>At least 4 clip planes available
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-STENCIL-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_STENCIL_BUFFER</code></span></p></td>
+<td>Stencil buffer support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-VBOS:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_VBOS</code></span></p></td>
+<td>VBO support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-PBOS:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_PBOS</code></span></p></td>
+<td>PBO support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-UNSIGNED-INT-INDICES:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_UNSIGNED_INT_INDICES</code></span></p></td>
+<td>Set if
+    <a class="link" href="cogl-Vertex-Buffers.html#COGL-INDICES-TYPE-UNSIGNED-INT:CAPS"><code class="literal">COGL_INDICES_TYPE_UNSIGNED_INT</code></a> is supported in
+    <a class="link" href="cogl-Vertex-Buffers.html#cogl-vertex-buffer-indices-new" title="cogl_vertex_buffer_indices_new ()"><code class="function">cogl_vertex_buffer_indices_new()</code></a>.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-DEPTH-RANGE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_DEPTH_RANGE</code></span></p></td>
+<td>cogl_material_set_depth_range() support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-NPOT-BASIC:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_BASIC</code></span></p></td>
+<td>The hardware supports non power
+    of two textures, but you also need to check the
+    <a class="link" href="cogl-General-API.html#COGL-FEATURE-TEXTURE-NPOT-MIPMAP:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_MIPMAP</code></a> and <a class="link" href="cogl-General-API.html#COGL-FEATURE-TEXTURE-NPOT-REPEAT:CAPS"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_REPEAT</code></a>
+    features to know if the hardware supports npot texture mipmaps
+    or repeat modes other than
+    <code class="literal">COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE</code> respectively.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-NPOT-MIPMAP:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_MIPMAP</code></span></p></td>
+<td>Mipmapping is supported in
+    conjuntion with non power of two textures.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-NPOT-REPEAT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_NPOT_REPEAT</code></span></p></td>
+<td>Repeat modes other than
+    <code class="literal">COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE</code> are supported by the
+    hardware.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-POINT-SPRITE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_POINT_SPRITE</code></span></p></td>
+<td>Whether
+    <a class="link" href="cogl-Materials.html#cogl-material-set-layer-point-sprite-coords-enabled" title="cogl_material_set_layer_point_sprite_coords_enabled ()"><code class="function">cogl_material_set_layer_point_sprite_coords_enabled()</code></a> is supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-TEXTURE-3D:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_TEXTURE_3D</code></span></p></td>
+<td>3D texture support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-SHADERS-ARBFP:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_SHADERS_ARBFP</code></span></p></td>
+<td>ARBFP support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-MAP-BUFFER-FOR-READ:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_MAP_BUFFER_FOR_READ</code></span></p></td>
+<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a> is
+    supported with CoglBufferAccess including read support.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-MAP-BUFFER-FOR-WRITE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_MAP_BUFFER_FOR_WRITE</code></span></p></td>
+<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a> is
+    supported with CoglBufferAccess including write support.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ONSCREEN-MULTIPLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ONSCREEN_MULTIPLE</code></span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-features"></a><h3>cogl_get_features ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglFeatureFlags" title="enum CoglFeatureFlags"><span class="returnvalue">CoglFeatureFlags</span></a>    cogl_get_features                   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Returns all of the features supported by COGL.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A logical OR of all the supported COGL features.</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 0.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-features-available"></a><h3>cogl_features_available ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_features_available             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglFeatureFlags" title="enum CoglFeatureFlags"><span class="type">CoglFeatureFlags</span></a> features</code></em>);</pre>
+<p>
+Checks whether the given COGL features are available. Multiple
+features can be checked for by or-ing them together with the '|'
+operator. <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> is only returned if all of the requested features
+are available.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>features</code></em> :</span></p></td>
+<td>A bitmask of features to check for</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the features are available, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-proc-address"></a><h3>cogl_get_proc_address ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglFuncPtr" title="CoglFuncPtr ()"><span class="returnvalue">CoglFuncPtr</span></a>         cogl_get_proc_address               (<em class="parameter"><code>const <span class="type">char</span> *name</code></em>);</pre>
+<p>
+Gets a pointer to a given GL or GL ES extension function. This acts
+as a wrapper around <code class="function">glXGetProcAddress()</code> or whatever is the
+appropriate function for the current backend.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>the name of the function.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a pointer to the requested function or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if the
+function is not available.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-option-group"></a><h3>cogl_get_option_group ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="returnvalue">GOptionGroup</span></a> *      cogl_get_option_group               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Retrieves the <a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="type">GOptionGroup</span></a> used by COGL to parse the command
+line options. Clutter uses this to handle the COGL command line
+options during its initialization process.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="type">GOptionGroup</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-push-matrix"></a><h3>cogl_push_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_push_matrix                    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Stores the current model-view matrix on the matrix stack. The matrix
+can later be restored with <a class="link" href="cogl-General-API.html#cogl-pop-matrix" title="cogl_pop_matrix ()"><code class="function">cogl_pop_matrix()</code></a>.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pop-matrix"></a><h3>cogl_pop_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pop_matrix                     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Restores the current model-view matrix from the matrix stack.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-scale"></a><h3>cogl_scale ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_scale                          (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);</pre>
+<p>
+Multiplies the current model-view matrix by one that scales the x,
+y and z axes by the given values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>Amount to scale along the x-axis</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Amount to scale along the y-axis</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z</code></em> :</span></p></td>
+<td>Amount to scale along the z-axis</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-translate"></a><h3>cogl_translate ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_translate                      (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);</pre>
+<p>
+Multiplies the current model-view matrix by one that translates the
+model along all three axes according to the given values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>Distance to translate along the x-axis</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Distance to translate along the y-axis</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z</code></em> :</span></p></td>
+<td>Distance to translate along the z-axis</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-rotate"></a><h3>cogl_rotate ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_rotate                         (<em class="parameter"><code><span class="type">float</span> angle</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);</pre>
+<p>
+Multiplies the current model-view matrix by one that rotates the
+model around the vertex specified by <em class="parameter"><code>x</code></em>, <em class="parameter"><code>y</code></em> and <em class="parameter"><code>z</code></em>. The rotation
+follows the right-hand thumb rule so for example rotating by 10
+degrees about the vertex (0, 0, 1) causes a small counter-clockwise
+rotation.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>angle</code></em> :</span></p></td>
+<td>Angle in degrees to rotate.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>X-component of vertex to rotate around.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Y-component of vertex to rotate around.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z</code></em> :</span></p></td>
+<td>Z-component of vertex to rotate around.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-transform"></a><h3>cogl_transform ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_transform                      (<em class="parameter"><code>const <a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Multiplies the current model-view matrix by the given matrix.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>the matrix to multiply with the current model-view</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.4</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-frustum"></a><h3>cogl_frustum ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_frustum                        (<em class="parameter"><code><span class="type">float</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
+<p>
+Replaces the current projection matrix with a perspective matrix
+for the given viewing frustum.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td>Left clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
+<td>Right clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
+<td>Bottom clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
+<td>Top clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
+<td>Nearest visible point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
+<td>Furthest visible point along the z-axis</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.8.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-perspective"></a><h3>cogl_perspective ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_perspective                    (<em class="parameter"><code><span class="type">float</span> fovy</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> aspect</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
+<p>
+Replaces the current projection matrix with a perspective matrix
+based on the provided values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fovy</code></em> :</span></p></td>
+<td>Vertical of view angle in degrees.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>aspect</code></em> :</span></p></td>
+<td>Aspect ratio of diesplay</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
+<td>Nearest visible point</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
+<td>Furthest visible point along the z-axis</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-ortho"></a><h3>cogl_ortho ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_ortho                          (<em class="parameter"><code><span class="type">float</span> left</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> far</code></em>);</pre>
+<p>
+Replaces the current projection matrix with an orthographic projection
+matrix. See <a class="xref" href="cogl-General-API.html#cogl-ortho-matrix" title="Figure 1. ">Figure 1, “”</a> to see how the matrix is
+calculated.
+</p>
+<p>
+</p>
+<div class="figure">
+<a name="cogl-ortho-matrix"></a><p class="title"><b>Figure 1. </b></p>
+<div class="figure-contents"><div><img src="cogl_ortho.png"></div></div>
+</div>
+<p><br class="figure-break">
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>This function copies the arguments from OpenGL's <code class="function">glOrtho()</code> even
+though they are unnecessarily confusing due to the z near and z far
+arguments actually being a "distance" from the origin, where
+negative values are behind the viewer, instead of coordinates for
+the z clipping planes which would have been consistent with the
+left, right bottom and top arguments.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
+<td>The coordinate for the left clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
+<td>The coordinate for the right clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
+<td>The coordinate for the bottom clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
+<td>The coordinate for the top clipping plane</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>near</code></em> :</span></p></td>
+<td>The <span class="emphasis"><em>distance</em></span> to the near clipping
+plane (negative if the plane is behind the viewer)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>far</code></em> :</span></p></td>
+<td>The <span class="emphasis"><em>distance</em></span> for the far clipping
+plane (negative if the plane is behind the viewer)</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-modelview-matrix"></a><h3>cogl_get_modelview_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_get_modelview_matrix           (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Stores the current model-view matrix in <em class="parameter"><code>matrix</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>return location for the model-view matrix. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-modelview-matrix"></a><h3>cogl_set_modelview_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_modelview_matrix           (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Loads <em class="parameter"><code>matrix</code></em> as the new model-view matrix.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>the new model-view matrix</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-projection-matrix"></a><h3>cogl_get_projection_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_get_projection_matrix          (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Stores the current projection matrix in <em class="parameter"><code>matrix</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>return location for the projection matrix. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-projection-matrix"></a><h3>cogl_set_projection_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_projection_matrix          (<em class="parameter"><code><a class="link" href="cogl-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Loads matrix as the new projection matrix.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>the new projection matrix</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-viewport"></a><h3>cogl_set_viewport ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_viewport                   (<em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>);</pre>
+<p>
+Replaces the current viewport with the given values.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>X offset of the viewport</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>Y offset of the viewport</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>Width of the viewport</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>Height of the viewport</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.2</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-viewport"></a><h3>cogl_get_viewport ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_get_viewport                   (<em class="parameter"><code><span class="type">float</span> v[4]</code></em>);</pre>
+<p>
+Stores the current viewport in <em class="parameter"><code>v</code></em>. <em class="parameter"><code>v</code></em>[0] and <em class="parameter"><code>v</code></em>[1] get the x and y
+position of the viewport and <em class="parameter"><code>v</code></em>[2] and <em class="parameter"><code>v</code></em>[3] get the width and
+height.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>v</code></em> :</span></p></td>
+<td>pointer to a 4 element array
+of <span class="type">float</span>s to receive the viewport dimensions. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> fixed-size=4]</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-clear"></a><h3>cogl_clear ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_clear                          (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>,
+                                                         <em class="parameter"><code><span class="type">unsigned long </span> buffers</code></em>);</pre>
+<p>
+Clears all the auxiliary buffers identified in the <em class="parameter"><code>buffers</code></em> mask, and if
+that includes the color buffer then the specified <em class="parameter"><code>color</code></em> is used.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>Background color to clear to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffers</code></em> :</span></p></td>
+<td>A mask of <a class="link" href="cogl-General-API.html#CoglBufferBit" title="enum CoglBufferBit"><span class="type">CoglBufferBit</span></a>'s identifying which auxiliary
+buffers to clear</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-backface-culling-enabled"></a><h3>cogl_set_backface_culling_enabled ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_backface_culling_enabled   (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> setting</code></em>);</pre>
+<p>
+Sets whether textures positioned so that their backface is showing
+should be hidden. This can be used to efficiently draw two-sided
+textures or fully closed cubes without enabling depth testing. This
+only affects calls to the cogl_rectangle* family of functions and
+cogl_vertex_buffer_draw*. Backface culling is disabled by default.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>setting</code></em> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> to enable backface culling or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> to disable.</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-backface-culling-enabled"></a><h3>cogl_get_backface_culling_enabled ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_get_backface_culling_enabled   (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Queries if backface culling has been enabled via
+<a class="link" href="cogl-General-API.html#cogl-set-backface-culling-enabled" title="cogl_set_backface_culling_enabled ()"><code class="function">cogl_set_backface_culling_enabled()</code></a>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if backface culling is enabled, and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglFogMode"></a><h3>enum CoglFogMode</h3>
+<pre class="programlisting">typedef enum {
+  COGL_FOG_MODE_LINEAR,
+  COGL_FOG_MODE_EXPONENTIAL,
+  COGL_FOG_MODE_EXPONENTIAL_SQUARED
+} CoglFogMode;
+</pre>
+<p>
+The fog mode determines the equation used to calculate the fogging blend
+factor while fogging is enabled. The simplest <a class="link" href="cogl-General-API.html#COGL-FOG-MODE-LINEAR:CAPS"><code class="literal">COGL_FOG_MODE_LINEAR</code></a> mode
+determines f as:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">f </span><span class="symbol">=</span><span class="normal"> end </span><span class="symbol">-</span><span class="normal"> eye_distance </span><span class="symbol">/</span><span class="normal"> end </span><span class="symbol">-</span><span class="normal"> start</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+Where eye_distance is the distance of the current fragment in eye
+coordinates from the origin.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-FOG-MODE-LINEAR:CAPS"></a><span class="term"><code class="literal">COGL_FOG_MODE_LINEAR</code></span></p></td>
+<td>Calculates the fog blend factor as:
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">f </span><span class="symbol">=</span><span class="normal"> end </span><span class="symbol">-</span><span class="normal"> eye_distance </span><span class="symbol">/</span><span class="normal"> end </span><span class="symbol">-</span><span class="normal"> start</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FOG-MODE-EXPONENTIAL:CAPS"></a><span class="term"><code class="literal">COGL_FOG_MODE_EXPONENTIAL</code></span></p></td>
+<td>Calculates the fog blend factor as:
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">f </span><span class="symbol">=</span><span class="normal"> e </span><span class="symbol">^</span><span class="normal"> </span><span class="symbol">-(</span><span class="normal">density </span><span class="symbol">*</span><span class="normal"> eye_distance</span><span class="symbol">)</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FOG-MODE-EXPONENTIAL-SQUARED:CAPS"></a><span class="term"><code class="literal">COGL_FOG_MODE_EXPONENTIAL_SQUARED</code></span></p></td>
+<td>Calculates the fog blend factor as:
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">f </span><span class="symbol">=</span><span class="normal"> e </span><span class="symbol">^</span><span class="normal"> </span><span class="symbol">-(</span><span class="normal">density </span><span class="symbol">*</span><span class="normal"> eye_distance</span><span class="symbol">)^</span><span class="number">2</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-fog"></a><h3>cogl_set_fog ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_fog                        (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *fog_color</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglFogMode" title="enum CoglFogMode"><span class="type">CoglFogMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> density</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
+<p>
+Enables fogging. Fogging causes vertices that are further away from the eye
+to be rendered with a different color. The color is determined according to
+the chosen fog mode; at it's simplest the color is linearly interpolated so
+that vertices at <em class="parameter"><code>z_near</code></em> are drawn fully with their original color and
+vertices at <em class="parameter"><code>z_far</code></em> are drawn fully with <em class="parameter"><code>fog_color</code></em>. Fogging will remain
+enabled until you call <a class="link" href="cogl-General-API.html#cogl-disable-fog" title="cogl_disable_fog ()"><code class="function">cogl_disable_fog()</code></a>.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The fogging functions only work correctly when primitives use
+unmultiplied alpha colors. By default Cogl will premultiply textures
+and <a class="link" href="cogl-General-API.html#cogl-set-source-color" title="cogl_set_source_color ()"><code class="function">cogl_set_source_color()</code></a> will premultiply colors, so unless you
+explicitly load your textures requesting an unmultiplied internal format
+and use <a class="link" href="cogl-Materials.html#cogl-material-set-color" title="cogl_material_set_color ()"><code class="function">cogl_material_set_color()</code></a> you can only use fogging with fully
+opaque primitives. This might improve in the future when we can depend
+on fragment shaders.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fog_color</code></em> :</span></p></td>
+<td>The color of the fog</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglFogMode" title="enum CoglFogMode"><span class="type">CoglFogMode</span></a> that determines the equation used to calculate the
+fogging blend factor.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>density</code></em> :</span></p></td>
+<td>Used by <a class="link" href="cogl-General-API.html#COGL-FOG-MODE-EXPONENTIAL:CAPS"><code class="literal">COGL_FOG_MODE_EXPONENTIAL</code></a> and by
+<a class="link" href="cogl-General-API.html#COGL-FOG-MODE-EXPONENTIAL-SQUARED:CAPS"><code class="literal">COGL_FOG_MODE_EXPONENTIAL_SQUARED</code></a> equations.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
+<td>Position along Z axis where no fogging should be applied</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
+<td>Position along Z axis where full fogging should be applied</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-disable-fog"></a><h3>cogl_disable_fog ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_disable_fog                    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+This function disables fogging, so primitives drawn afterwards will not be
+blended with any previously set fog color.
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-source"></a><h3>cogl_set_source ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source                     (<em class="parameter"><code><span class="type">void</span> *material</code></em>);</pre>
+<p>
+This function changes the material at the top of the source stack.
+The material at the top of this stack defines the GPU state used to
+process subsequent primitives, such as rectangles drawn with
+<a class="link" href="cogl-Primitives.html#cogl-rectangle" title="cogl_rectangle ()"><code class="function">cogl_rectangle()</code></a> or vertices drawn using <a class="link" href="cogl-Vertex-Buffers.html#cogl-vertex-buffer-draw" title="cogl_vertex_buffer_draw ()"><code class="function">cogl_vertex_buffer_draw()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>material</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-source-color"></a><h3>cogl_set_source_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_color               (<em class="parameter"><code>const <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);</pre>
+<p>
+This is a convenience function for creating a solid fill source material
+from the given color. This color will be used for any subsequent drawing
+operation.
+</p>
+<p>
+The color will be premultiplied by Cogl, so the color should be
+non-premultiplied. For example: use (1.0, 0.0, 0.0, 0.5) for
+semi-transparent red.
+</p>
+<p>
+See also <a class="link" href="cogl-General-API.html#cogl-set-source-color4ub" title="cogl_set_source_color4ub ()"><code class="function">cogl_set_source_color4ub()</code></a> and <a class="link" href="cogl-General-API.html#cogl-set-source-color4f" title="cogl_set_source_color4f ()"><code class="function">cogl_set_source_color4f()</code></a>
+if you already have the color components.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-source-color4ub"></a><h3>cogl_set_source_color4ub ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_color4ub            (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> blue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> alpha</code></em>);</pre>
+<p>
+This is a convenience function for creating a solid fill source material
+from the given color using unsigned bytes for each component. This
+color will be used for any subsequent drawing operation.
+</p>
+<p>
+The value for each component is an unsigned byte in the range
+between 0 and 255.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>value of the red channel, between 0 and 255</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>value of the green channel, between 0 and 255</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>value of the blue channel, between 0 and 255</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>value of the alpha channel, between 0 and 255</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-source-color4f"></a><h3>cogl_set_source_color4f ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_color4f             (<em class="parameter"><code><span class="type">float</span> red</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> green</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha</code></em>);</pre>
+<p>
+This is a convenience function for creating a solid fill source material
+from the given color using normalized values for each component. This color
+will be used for any subsequent drawing operation.
+</p>
+<p>
+The value for each component is a fixed point number in the range
+between 0 and <code class="literal">1</code>.0. If the values passed in are outside that
+range, they will be clamped.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>value of the red channel, between 0 and <code class="literal">1</code>.0</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>value of the green channel, between 0 and <code class="literal">1</code>.0</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>value of the blue channel, between 0 and <code class="literal">1</code>.0</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>value of the alpha channel, between 0 and <code class="literal">1</code>.0</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-set-source-texture"></a><h3>cogl_set_source_texture ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_texture             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);</pre>
+<p>
+This is a convenience function for creating a material with the first
+layer set to <span class="type">texture_handle</span> and setting that material as the source with
+cogl_set_source.
+</p>
+<p>
+Note: There is no interaction between calls to cogl_set_source_color
+and cogl_set_source_texture. If you need to blend a texture with a color then
+you can create a simple material like this:
+</p>
+<pre class="programlisting">
+material = cogl_material_new ();
+cogl_material_set_color4ub (material, 0xff, 0x00, 0x00, 0x80);
+cogl_material_set_layer (material, 0, tex_handle);
+cogl_set_source (material);
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>texture_handle</code></em> :</span></p></td>
+<td>The Cogl texture you want as your source</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-get-source"></a><h3>cogl_get_source ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_get_source                     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Returns the current source material as previously set using
+<a class="link" href="cogl-General-API.html#cogl-set-source" title="cogl_set_source ()"><code class="function">cogl_set_source()</code></a>.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You should typically consider the returned material immutable
+and not try to change any of its properties unless you own a
+reference to that material. At times you may be able to get a
+reference to an internally managed materials and the result of
+modifying such materials is undefined.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The current source material.</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-push-source"></a><h3>cogl_push_source ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_push_source                    (<em class="parameter"><code><span class="type">void</span> *material</code></em>);</pre>
+<p>
+Pushes the given <em class="parameter"><code>material</code></em> to the top of the source stack. The
+material at the top of this stack defines the GPU state used to
+process later primitives as defined by <a class="link" href="cogl-General-API.html#cogl-set-source" title="cogl_set_source ()"><code class="function">cogl_set_source()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>material</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pop-source"></a><h3>cogl_pop_source ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pop_source                     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+Removes the material at the top of the source stack. The material
+at the top of this stack defines the GPU state used to process
+later primitives as defined by <a class="link" href="cogl-General-API.html#cogl-set-source" title="cogl_set_source ()"><code class="function">cogl_set_source()</code></a>.
+</p>
+<p class="since">Since 1.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglReadPixelsFlags"></a><h3>enum CoglReadPixelsFlags</h3>
+<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_READ_PIXELS &gt;*/
+  COGL_READ_PIXELS_COLOR_BUFFER = 1L &lt;&lt; 0
+} CoglReadPixelsFlags;
+</pre>
+<p>
+Flags for <a class="link" href="cogl-General-API.html#cogl-read-pixels" title="cogl_read_pixels ()"><code class="function">cogl_read_pixels()</code></a>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><a name="COGL-READ-PIXELS-COLOR-BUFFER:CAPS"></a><span class="term"><code class="literal">COGL_READ_PIXELS_COLOR_BUFFER</code></span></p></td>
+<td>Read from the color buffer
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-read-pixels"></a><h3>cogl_read_pixels ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_read_pixels                    (<em class="parameter"><code><span class="type">int</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglReadPixelsFlags" title="enum CoglReadPixelsFlags"><span class="type">CoglReadPixelsFlags</span></a> source</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *pixels</code></em>);</pre>
+<p>
+This reads a rectangle of pixels from the current framebuffer where
+position (0, 0) is the top left. The pixel at (x, y) is the first
+read, and the data is returned with a rowstride of (width * 4).
+</p>
+<p>
+Currently Cogl assumes that the framebuffer is in a premultiplied
+format so if <em class="parameter"><code>format</code></em> is non-premultiplied it will convert it. To
+read the pixel values without any conversion you should either
+specify a format that doesn't use an alpha channel or use one of
+the formats ending in PRE.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>The window x position to start reading from</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>y</code></em> :</span></p></td>
+<td>The window y position to start reading from</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>The width of the rectangle you want to read</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>The height of the rectangle you want to read</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>source</code></em> :</span></p></td>
+<td>Identifies which auxillary buffer you want to read
+(only COGL_READ_PIXELS_COLOR_BUFFER supported currently)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>The pixel format you want the result in
+(only COGL_PIXEL_FORMAT_RGBA_8888 supported currently)</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pixels</code></em> :</span></p></td>
+<td>The location to write the pixel data.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-flush"></a><h3>cogl_flush ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_flush                          (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+This function should only need to be called in exceptional circumstances.
+</p>
+<p>
+As an optimization Cogl drawing functions may batch up primitives
+internally, so if you are trying to use raw GL outside of Cogl you stand a
+better chance of being successful if you ask Cogl to flush any batched
+geometry before making your state changes.
+</p>
+<p>
+It only ensure that the underlying driver is issued all the commands
+necessary to draw the batched primitives. It provides no guarantees about
+when the driver will complete the rendering.
+</p>
+<p>
+This provides no guarantees about the GL state upon returning and to avoid
+confusing Cogl you should aim to restore any changes you make before
+resuming use of Cogl.
+</p>
+<p>
+If you are making state changes with the intention of affecting Cogl drawing
+primitives you are 100% on your own since you stand a good chance of
+conflicting with Cogl internals. For example clutter-gst which currently
+uses direct GL calls to bind ARBfp programs will very likely break when Cogl
+starts to use ARBfb programs itself for the material API.
+</p>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-begin-gl"></a><h3>cogl_begin_gl ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_begin_gl                       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+We do not advise nor reliably support the interleaving of raw GL drawing and
+Cogl drawing functions, but if you insist, <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a> and <a class="link" href="cogl-General-API.html#cogl-end-gl" title="cogl_end_gl ()"><code class="function">cogl_end_gl()</code></a>
+provide a simple mechanism that may at least give you a fighting chance of
+succeeding.
+</p>
+<p>
+Note: this doesn't help you modify the behaviour of Cogl drawing functions
+through the modification of GL state; that will never be reliably supported,
+but if you are trying to do something like:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="cbracket">{</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> setup some </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> draw </span><span class="usertype">using</span><span class="normal"> </span><span class="function">OpenGL</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">e</span><span class="symbol">.</span><span class="normal">g</span><span class="symbol">.</span><span class="normal"> </span><span class="function">glDrawArrays</span><span class="symbol">()</span><span class="normal"> </span><span class="symbol">)</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> reset modified </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> </span><span class="keyword">continue</span><span class="normal"> using Cogl to draw</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+You should surround blocks of drawing using raw GL with <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a>
+and <a class="link" href="cogl-General-API.html#cogl-end-gl" title="cogl_end_gl ()"><code class="function">cogl_end_gl()</code></a>:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="cbracket">{</span>
+<span class="normal">   </span><span class="function"><a href="cogl-General-API.html#cogl-begin-gl">cogl_begin_gl</a></span><span class="normal"> </span><span class="symbol">();</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> setup some </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> draw </span><span class="usertype">using</span><span class="normal"> </span><span class="function">OpenGL</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">e</span><span class="symbol">.</span><span class="normal">g</span><span class="symbol">.</span><span class="normal"> </span><span class="function">glDrawArrays</span><span class="symbol">()</span><span class="normal"> </span><span class="symbol">)</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> reset modified </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="normal">   </span><span class="function"><a href="cogl-General-API.html#cogl-end-gl">cogl_end_gl</a></span><span class="normal"> </span><span class="symbol">();</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> </span><span class="keyword">continue</span><span class="normal"> using Cogl to draw</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+Don't ever try and do:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="cbracket">{</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> setup some </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> use Cogl to draw</span>
+<span class="normal">   </span><span class="symbol">-</span><span class="normal"> reset modified </span><span class="usertype">OpenGL</span><span class="normal"> state</span><span class="symbol">.</span>
+<span class="cbracket">}</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+When the internals of Cogl evolves, this is very liable to break.
+</p>
+<p>
+This function will flush all batched primitives, and subsequently flush
+all internal Cogl state to OpenGL as if it were going to draw something
+itself.
+</p>
+<p>
+The result is that the OpenGL modelview matrix will be setup; the state
+corresponding to the current source material will be set up and other world
+state such as backface culling, depth and fogging enabledness will be sent
+to OpenGL.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>No special material state is flushed, so if you want Cogl to setup a
+simplified material state it is your responsibility to set a simple source
+material before calling <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a>. E.g. by calling
+<a class="link" href="cogl-General-API.html#cogl-set-source-color4ub" title="cogl_set_source_color4ub ()"><code class="function">cogl_set_source_color4ub()</code></a>.</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>It is your responsibility to restore any OpenGL state that you modify
+to how it was after calling <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a> if you don't do this then the
+result of further Cogl calls is undefined.</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You can not nest begin/end blocks.</div>
+<p>
+</p>
+<p>
+Again we would like to stress, we do not advise the use of this API and if
+possible we would prefer to improve Cogl than have developers require raw
+OpenGL.
+</p>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-end-gl"></a><h3>cogl_end_gl ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_end_gl                         (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>
+This is the counterpart to <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a> used to delimit blocks of drawing
+code using raw OpenGL. Please refer to <a class="link" href="cogl-General-API.html#cogl-begin-gl" title="cogl_begin_gl ()"><code class="function">cogl_begin_gl()</code></a> for full details.
+</p>
+<p class="since">Since 1.0</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Primitives</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-primitive-apis.html" title="Geometry">
+<link rel="prev" href="cogl-primitive-apis.html" title="Geometry">
+<link rel="next" href="cogl-2.0-experimental-Path-Primitives.html" title="Path Primitives">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-primitive-apis.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-primitive-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Path-Primitives.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Primitives.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Primitives.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Primitives"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Primitives.top_of_page"></a>Primitives</span></h2>
+<p>Primitives — Functions for creating, manipulating and drawing
+   primitives</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Primitives.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive">CoglPrimitive</a>;
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new" title="cogl_primitive_new ()">cogl_primitive_new</a>                  (<em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-is-primitive" title="cogl_is_primitive ()">cogl_is_primitive</a>                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-first-vertex" title="cogl_primitive_get_first_vertex ()">cogl_primitive_get_first_vertex</a>     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-first-vertex" title="cogl_primitive_set_first_vertex ()">cogl_primitive_set_first_vertex</a>     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> first_vertex</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-n-vertices" title="cogl_primitive_get_n_vertices ()">cogl_primitive_get_n_vertices</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices ()">cogl_primitive_set_n_vertices</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>);
+<a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="returnvalue">CoglVerticesMode</span></a>    <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-mode" title="cogl_primitive_get_mode ()">cogl_primitive_get_mode</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-mode" title="cogl_primitive_set_mode ()">cogl_primitive_set_mode</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-attributes" title="cogl_primitive_set_attributes ()">cogl_primitive_set_attributes</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> **attributes</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_attributes</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices" title="cogl_primitive_set_indices ()">cogl_primitive_set_indices</a>          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglIndices</span> *indices</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-draw" title="cogl_primitive_draw ()">cogl_primitive_draw</a>                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Primitives.description"></a><h2>Description</h2>
+<p>
+FIXME
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Primitives.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglPrimitive"></a><h3>CoglPrimitive</h3>
+<pre class="programlisting">typedef struct _CoglPrimitive CoglPrimitive;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new"></a><h3>cogl_primitive_new ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new                  (<em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Combines a set of <span class="type">CoglAttribute</span>s with a specific draw <em class="parameter"><code>mode</code></em>
+and defines a vertex count so a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object can be retained and
+drawn later with no addition information required.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to process when drawing</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> terminated list of attributes</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-primitive"></a><h3>cogl_is_primitive ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_primitive                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Gets whether the given object references a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the handle references a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-get-first-vertex"></a><h3>cogl_primitive_get_first_vertex ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_primitive_get_first_vertex     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-set-first-vertex"></a><h3>cogl_primitive_set_first_vertex ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_first_vertex     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> first_vertex</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-get-n-vertices"></a><h3>cogl_primitive_get_n_vertices ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_primitive_get_n_vertices       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-set-n-vertices"></a><h3>cogl_primitive_set_n_vertices ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_n_vertices       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-get-mode"></a><h3>cogl_primitive_get_mode ()</h3>
+<pre class="programlisting"><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="returnvalue">CoglVerticesMode</span></a>    cogl_primitive_get_mode             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-set-mode"></a><h3>cogl_primitive_set_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_mode             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-set-attributes"></a><h3>cogl_primitive_set_attributes ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_attributes       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> **attributes</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_attributes</code></em>);</pre>
+<p>
+Replaces all the attributes of the given <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attributes</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> terminated array of <span class="type">CoglAttribute</span>
+pointers</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-set-indices"></a><h3>cogl_primitive_set_indices ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_indices          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglIndices</span> *indices</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-draw"></a><h3>cogl_primitive_draw ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_draw                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+<p>
+Draw the given <em class="parameter"><code>primitive</code></em> with the current source material.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

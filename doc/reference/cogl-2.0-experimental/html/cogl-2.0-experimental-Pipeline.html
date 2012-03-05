@@ -1,0 +1,1481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Pipeline</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-pipeline-apis.html" title="Setting Up A GPU Pipeline">
+<link rel="prev" href="cogl-Blend-Strings.html" title="Blend Strings">
+<link rel="next" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Blend-Strings.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-pipeline-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-buffer-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Pipeline.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Pipeline.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Pipeline"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Pipeline.top_of_page"></a>Pipeline</span></h2>
+<p>Pipeline — Functions for creating and manipulating the GPU
+                    pipeline</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Pipeline.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new">cogl_pipeline_new</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy">cogl_pipeline_copy</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-is-pipeline" title="cogl_is_pipeline">cogl_is_pipeline</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color">cogl_pipeline_set_color</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4ub" title="cogl_pipeline_set_color4ub">cogl_pipeline_set_color4ub</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4f" title="cogl_pipeline_set_color4f">cogl_pipeline_set_color4f</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color" title="cogl_pipeline_get_color">cogl_pipeline_get_color</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient">cogl_pipeline_set_ambient</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-ambient" title="cogl_pipeline_get_ambient">cogl_pipeline_get_ambient</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse">cogl_pipeline_set_diffuse</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-diffuse" title="cogl_pipeline_get_diffuse">cogl_pipeline_get_diffuse</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient-and-diffuse" title="cogl_pipeline_set_ambient_and_diffuse">cogl_pipeline_set_ambient_and_diffuse</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-emission" title="cogl_pipeline_set_emission">cogl_pipeline_set_emission</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-emission" title="cogl_pipeline_get_emission">cogl_pipeline_get_emission</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-specular" title="cogl_pipeline_set_specular">cogl_pipeline_set_specular</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-specular" title="cogl_pipeline_get_specular">cogl_pipeline_get_specular</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-shininess" title="cogl_pipeline_set_shininess">cogl_pipeline_set_shininess</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-shininess" title="cogl_pipeline_get_shininess">cogl_pipeline_get_shininess</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-alpha-test-function" title="cogl_pipeline_set_alpha_test_function">cogl_pipeline_set_alpha_test_function</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-BLEND-STRING-ERROR:CAPS" title="COGL_BLEND_STRING_ERROR">COGL_BLEND_STRING_ERROR</a>
+enum                <a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglBlendStringError" title="enum CoglBlendStringError">CoglBlendStringError</a>;
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend" title="cogl_pipeline_set_blend">cogl_pipeline_set_blend</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant">cogl_pipeline_set_blend_constant</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-point-size" title="cogl_pipeline_set_point_size">cogl_pipeline_set_point_size</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-point-size" title="cogl_pipeline_get_point_size">cogl_pipeline_get_point_size</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color-mask" title="cogl_pipeline_get_color_mask">cogl_pipeline_get_color_mask</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask">cogl_pipeline_set_color_mask</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-texture" title="cogl_pipeline_set_layer_texture">cogl_pipeline_set_layer_texture</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters" title="cogl_pipeline_set_layer_filters">cogl_pipeline_set_layer_filters</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode" title="cogl_pipeline_set_layer_wrap_mode">cogl_pipeline_set_layer_wrap_mode</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s">cogl_pipeline_set_layer_wrap_mode_s</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t">cogl_pipeline_set_layer_wrap_mode_t</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p">cogl_pipeline_set_layer_wrap_mode_p</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine" title="cogl_pipeline_set_layer_combine">cogl_pipeline_set_layer_combine</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine-constant" title="cogl_pipeline_set_layer_combine_constant">cogl_pipeline_set_layer_combine_constant</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-matrix" title="cogl_pipeline_set_layer_matrix">cogl_pipeline_set_layer_matrix</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-point-sprite-coords-enabled" title="cogl_pipeline_set_layer_point_sprite_coords_enabled">cogl_pipeline_set_layer_point_sprite_coords_enabled</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-point-sprite-coords-enabled" title="cogl_pipeline_get_layer_point_sprite_coords_enabled">cogl_pipeline_get_layer_point_sprite_coords_enabled</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-remove-layer" title="cogl_pipeline_remove_layer">cogl_pipeline_remove_layer</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-n-layers" title="cogl_pipeline_get_n_layers">cogl_pipeline_get_n_layers</a>
+#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-foreach-layer" title="cogl_pipeline_foreach_layer">cogl_pipeline_foreach_layer</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Pipeline.description"></a><h2>Description</h2>
+<p>
+Cogl allows creating and manipulating objects representing the full
+configuration of the GPU pipeline. In simplified terms the GPU
+pipeline takes primitive geometry as the input, it first performs
+vertex processing, allowing you to deform your geometry, then
+rasterizes that (turning it from pure geometry into fragments) then
+performs fragment processing including depth testing and texture
+mapping. Finally it blends the result with the framebuffer.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Pipeline.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-pipeline-new"></a><h3>cogl_pipeline_new</h3>
+<pre class="programlisting">#define cogl_pipeline_new cogl_pipeline_new_EXP
+</pre>
+<p>
+Allocates and initializes a default simple pipeline that will color
+a primitive white.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a pointer to a new <span class="type">CoglPipeline</span>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-copy"></a><h3>cogl_pipeline_copy</h3>
+<pre class="programlisting">#define cogl_pipeline_copy cogl_pipeline_copy_EXP
+</pre>
+<p>
+Creates a new pipeline with the configuration copied from the
+source pipeline.
+</p>
+<p>
+We would strongly advise developers to always aim to use
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy"><code class="function">cogl_pipeline_copy()</code></a> instead of <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new"><code class="function">cogl_pipeline_new()</code></a> whenever there will
+be any similarity between two pipelines. Copying a pipeline helps Cogl
+keep track of a pipelines ancestry which we may use to help minimize GPU
+state changes.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>source</code></em> :</span></p></td>
+<td>a <span class="type">CoglPipeline</span> object to copy</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a pointer to the newly allocated <span class="type">CoglPipeline</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-pipeline"></a><h3>cogl_is_pipeline</h3>
+<pre class="programlisting">#define cogl_is_pipeline cogl_is_pipeline_EXP
+</pre>
+<p>
+Gets whether the given handle references an existing pipeline object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A CoglHandle</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the handle references a <span class="type">CoglPipeline</span>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-color"></a><h3>cogl_pipeline_set_color</h3>
+<pre class="programlisting">#define cogl_pipeline_set_color cogl_pipeline_set_color_EXP
+</pre>
+<p>
+Sets the basic color of the pipeline, used when no lighting is enabled.
+</p>
+<p>
+Note that if you don't add any layers to the pipeline then the color
+will be blended unmodified with the destination; the default blend
+expects premultiplied colors: for example, use (0.5, 0.0, 0.0, 0.5) for
+semi-transparent red. See <a class="link" href="cogl-2.0-experimental-Color-Type.html#cogl-color-premultiply" title="cogl_color_premultiply ()"><code class="function">cogl_color_premultiply()</code></a>.
+</p>
+<p>
+The default value is (1.0, 1.0, 1.0, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>The components of the color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-color4ub"></a><h3>cogl_pipeline_set_color4ub</h3>
+<pre class="programlisting">#define cogl_pipeline_set_color4ub cogl_pipeline_set_color4ub_EXP
+</pre>
+<p>
+Sets the basic color of the pipeline, used when no lighting is enabled.
+</p>
+<p>
+The default value is (0xff, 0xff, 0xff, 0xff)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>The red component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>The green component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>The blue component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>The alpha component</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-color4f"></a><h3>cogl_pipeline_set_color4f</h3>
+<pre class="programlisting">#define cogl_pipeline_set_color4f cogl_pipeline_set_color4f_EXP
+</pre>
+<p>
+Sets the basic color of the pipeline, used when no lighting is enabled.
+</p>
+<p>
+The default value is (1.0, 1.0, 1.0, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>red</code></em> :</span></p></td>
+<td>The red component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>green</code></em> :</span></p></td>
+<td>The green component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blue</code></em> :</span></p></td>
+<td>The blue component</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha</code></em> :</span></p></td>
+<td>The alpha component</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-color"></a><h3>cogl_pipeline_get_color</h3>
+<pre class="programlisting">#define cogl_pipeline_get_color cogl_pipeline_get_color_EXP
+</pre>
+<p>
+Retrieves the current pipeline color.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>The location to store the color. <span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-ambient"></a><h3>cogl_pipeline_set_ambient</h3>
+<pre class="programlisting">#define cogl_pipeline_set_ambient cogl_pipeline_set_ambient_EXP
+</pre>
+<p>
+Sets the pipeline's ambient color, in the standard OpenGL lighting
+model. The ambient color affects the overall color of the object.
+</p>
+<p>
+Since the diffuse color will be intense when the light hits the surface
+directly, the ambient will be most apparent where the light hits at a
+slant.
+</p>
+<p>
+The default value is (0.2, 0.2, 0.2, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ambient</code></em> :</span></p></td>
+<td>The components of the desired ambient color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-ambient"></a><h3>cogl_pipeline_get_ambient</h3>
+<pre class="programlisting">#define cogl_pipeline_get_ambient cogl_pipeline_get_ambient_EXP
+</pre>
+<p>
+Retrieves the current ambient color for <em class="parameter"><code>pipeline</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ambient</code></em> :</span></p></td>
+<td>The location to store the ambient color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-diffuse"></a><h3>cogl_pipeline_set_diffuse</h3>
+<pre class="programlisting">#define cogl_pipeline_set_diffuse cogl_pipeline_set_diffuse_EXP
+</pre>
+<p>
+Sets the pipeline's diffuse color, in the standard OpenGL lighting
+model. The diffuse color is most intense where the light hits the
+surface directly - perpendicular to the surface.
+</p>
+<p>
+The default value is (0.8, 0.8, 0.8, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>diffuse</code></em> :</span></p></td>
+<td>The components of the desired diffuse color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-diffuse"></a><h3>cogl_pipeline_get_diffuse</h3>
+<pre class="programlisting">#define cogl_pipeline_get_diffuse cogl_pipeline_get_diffuse_EXP
+</pre>
+<p>
+Retrieves the current diffuse color for <em class="parameter"><code>pipeline</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>diffuse</code></em> :</span></p></td>
+<td>The location to store the diffuse color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-ambient-and-diffuse"></a><h3>cogl_pipeline_set_ambient_and_diffuse</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_ambient_and_diffuse</pre>
+<p>
+Conveniently sets the diffuse and ambient color of <em class="parameter"><code>pipeline</code></em> at the same
+time. See <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient"><code class="function">cogl_pipeline_set_ambient()</code></a> and <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse"><code class="function">cogl_pipeline_set_diffuse()</code></a>.
+</p>
+<p>
+The default ambient color is (0.2, 0.2, 0.2, 1.0)
+</p>
+<p>
+The default diffuse color is (0.8, 0.8, 0.8, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color</code></em> :</span></p></td>
+<td>The components of the desired ambient and diffuse colors</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-emission"></a><h3>cogl_pipeline_set_emission</h3>
+<pre class="programlisting">#define cogl_pipeline_set_emission cogl_pipeline_set_emission_EXP
+</pre>
+<p>
+Sets the pipeline's emissive color, in the standard OpenGL lighting
+model. It will look like the surface is a light source emitting this
+color.
+</p>
+<p>
+The default value is (0.0, 0.0, 0.0, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>emission</code></em> :</span></p></td>
+<td>The components of the desired emissive color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-emission"></a><h3>cogl_pipeline_get_emission</h3>
+<pre class="programlisting">#define cogl_pipeline_get_emission cogl_pipeline_get_emission_EXP
+</pre>
+<p>
+Retrieves the pipelines current emission color.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>emission</code></em> :</span></p></td>
+<td>The location to store the emission color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-specular"></a><h3>cogl_pipeline_set_specular</h3>
+<pre class="programlisting">#define cogl_pipeline_set_specular cogl_pipeline_set_specular_EXP
+</pre>
+<p>
+Sets the pipeline's specular color, in the standard OpenGL lighting
+model. The intensity of the specular color depends on the viewport
+position, and is brightest along the lines of reflection.
+</p>
+<p>
+The default value is (0.0, 0.0, 0.0, 1.0)
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>specular</code></em> :</span></p></td>
+<td>The components of the desired specular color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-specular"></a><h3>cogl_pipeline_get_specular</h3>
+<pre class="programlisting">#define cogl_pipeline_get_specular cogl_pipeline_get_specular_EXP
+</pre>
+<p>
+Retrieves the pipelines current specular color.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>specular</code></em> :</span></p></td>
+<td>The location to store the specular color</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-shininess"></a><h3>cogl_pipeline_set_shininess</h3>
+<pre class="programlisting">#define cogl_pipeline_set_shininess cogl_pipeline_set_shininess_EXP
+</pre>
+<p>
+Sets the shininess of the pipeline, in the standard OpenGL lighting
+model, which determines the size of the specular highlights. A
+higher <em class="parameter"><code>shininess</code></em> will produce smaller highlights which makes the
+object appear more shiny.
+</p>
+<p>
+The default value is 0.0
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>shininess</code></em> :</span></p></td>
+<td>The desired shininess; must be &gt;= 0.0</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-shininess"></a><h3>cogl_pipeline_get_shininess</h3>
+<pre class="programlisting">#define cogl_pipeline_get_shininess cogl_pipeline_get_shininess_EXP
+</pre>
+<p>
+Retrieves the pipelines current emission color.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The pipelines current shininess value</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-alpha-test-function"></a><h3>cogl_pipeline_set_alpha_test_function</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_alpha_test_function</pre>
+<p>
+Before a primitive is blended with the framebuffer, it goes through an
+alpha test stage which lets you discard fragments based on the current
+alpha value. This function lets you change the function used to evaluate
+the alpha channel, and thus determine which fragments are discarded
+and which continue on to the blending stage.
+</p>
+<p>
+The default is <code class="literal">COGL_PIPELINE_ALPHA_FUNC_ALWAYS</code>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha_func</code></em> :</span></p></td>
+<td>A <em class="parameter"><code>CoglPipelineAlphaFunc</code></em> constant</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alpha_reference</code></em> :</span></p></td>
+<td>A reference point that the chosen alpha function uses
+to compare incoming fragments to.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="COGL-BLEND-STRING-ERROR:CAPS"></a><h3>COGL_BLEND_STRING_ERROR</h3>
+<pre class="programlisting">#define COGL_BLEND_STRING_ERROR (cogl_blend_string_error_quark ())
+</pre>
+<p>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> domain for blend string parser errors
+</p>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglBlendStringError"></a><h3>enum CoglBlendStringError</h3>
+<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_BLEND_STRING_ERROR &gt;*/
+  COGL_BLEND_STRING_ERROR_PARSE_ERROR,
+  COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
+  COGL_BLEND_STRING_ERROR_INVALID_ERROR,
+  COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR
+} CoglBlendStringError;
+</pre>
+<p>
+Error enumeration for the blend strings parser
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-BLEND-STRING-ERROR-PARSE-ERROR:CAPS"></a><span class="term"><code class="literal">COGL_BLEND_STRING_ERROR_PARSE_ERROR</code></span></p></td>
+<td>Generic parse error
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BLEND-STRING-ERROR-ARGUMENT-PARSE-ERROR:CAPS"></a><span class="term"><code class="literal">COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR</code></span></p></td>
+<td>Argument parse error
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BLEND-STRING-ERROR-INVALID-ERROR:CAPS"></a><span class="term"><code class="literal">COGL_BLEND_STRING_ERROR_INVALID_ERROR</code></span></p></td>
+<td>Internal parser error
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-BLEND-STRING-ERROR-GPU-UNSUPPORTED-ERROR:CAPS"></a><span class="term"><code class="literal">COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR</code></span></p></td>
+<td>Blend string not
+  supported by the GPU
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-blend"></a><h3>cogl_pipeline_set_blend</h3>
+<pre class="programlisting">#define cogl_pipeline_set_blend cogl_pipeline_set_blend_EXP
+</pre>
+<p>
+If not already familiar; please refer <a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">here</a>
+for an overview of what blend strings are, and their syntax.
+</p>
+<p>
+Blending occurs after the alpha test function, and combines fragments with
+the framebuffer.
+</p>
+<p>
+Currently the only blend function Cogl exposes is <code class="function">ADD()</code>. So any valid
+blend statements will be of the form:
+</p>
+<p>
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="symbol">&lt;</span><span class="normal">channel</span><span class="symbol">-</span><span class="normal">mask</span><span class="symbol">&gt;=</span><span class="function">ADD</span><span class="symbol">(</span><span class="normal">SRC_COLOR</span><span class="symbol">*(&lt;</span><span class="normal">factor</span><span class="symbol">&gt;),</span><span class="normal"> DST_COLOR</span><span class="symbol">*(&lt;</span><span class="normal">factor</span><span class="symbol">&gt;))</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+This is the list of source-names usable as blend factors:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>SRC_COLOR: The color of the in comming fragment</p></li>
+<li class="listitem"><p>DST_COLOR: The color of the framebuffer</p></li>
+<li class="listitem"><p>CONSTANT: The constant set via <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant"><code class="function">cogl_pipeline_set_blend_constant()</code></a></p></li>
+</ul></div>
+<p>
+</p>
+<p>
+The source names can be used according to the
+<a class="link" href="cogl-Blend-Strings.html#cogl-Blend-String-syntax" title="Here's the syntax">color-source and factor syntax</a>,
+so for example "(1-SRC_COLOR[A])" would be a valid factor, as would
+"(CONSTANT[RGB])"
+</p>
+<p>
+These can also be used as factors:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">0: (0, 0, 0, 0)</li>
+<li class="listitem">1: (1, 1, 1, 1)</li>
+<li class="listitem">SRC_ALPHA_SATURATE_FACTOR: (f,f,f,1) where f = MIN(SRC_COLOR[A],1-DST_COLOR[A])</li>
+</ul></div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Remember; all color components are normalized to the range [0, 1]
+before computing the result of blending.</div>
+<p>
+</p>
+<p>
+</p>
+<div class="example">
+<a name="cogl-Blend-Strings-blend-unpremul"></a><p class="title"><b>Example 1. Blend Strings/1</b></p>
+<div class="example-contents">
+<p>Blend a non-premultiplied source over a destination with
+  premultiplied alpha:</p>
+<pre class="programlisting">
+"RGB = ADD(SRC_COLOR*(SRC_COLOR[A]), DST_COLOR*(1-SRC_COLOR[A]))"
+"A   = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+  </pre>
+</div>
+</div>
+<p><br class="example-break">
+</p>
+<p>
+</p>
+<div class="example">
+<a name="cogl-Blend-Strings-blend-premul"></a><p class="title"><b>Example 2. Blend Strings/2</b></p>
+<div class="example-contents">
+<p>Blend a premultiplied source over a destination with
+  premultiplied alpha</p>
+<pre class="programlisting">
+"RGBA = ADD(SRC_COLOR, DST_COLOR*(1-SRC_COLOR[A]))"
+  </pre>
+</div>
+</div>
+<p><br class="example-break">
+</p>
+<p>
+The default blend string is:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">RGBA </span><span class="symbol">=</span><span class="normal"> </span><span class="function">ADD</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">SRC_COLOR</span><span class="symbol">,</span><span class="normal"> DST_COLOR</span><span class="symbol">*(</span><span class="number">1</span><span class="symbol">-</span><span class="normal">SRC_COLOR</span><span class="symbol">[</span><span class="normal">A</span><span class="symbol">]))</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+That gives normal alpha-blending when the calculated color for the pipeline
+is in premultiplied form.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blend_string</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">Cogl blend string</a>
+describing the desired blend function.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>return location for a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> that may report lack of driver
+support if you give separate blend string statements for the alpha
+channel and RGB channels since some drivers, or backends such as
+GLES 1.1, don't support this feature. May be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, in which case a
+warning will be printed out using GLib's logging facilities if an
+error is encountered.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the blend string was successfully parsed, and the
+described blending is supported by the underlying driver/hardware. If
+there was an error, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned and <em class="parameter"><code>error</code></em> is set accordingly (if
+present).</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-blend-constant"></a><h3>cogl_pipeline_set_blend_constant</h3>
+<pre class="programlisting">#define cogl_pipeline_set_blend_constant cogl_pipeline_set_blend_constant_EXP
+</pre>
+<p>
+When blending is setup to reference a CONSTANT blend factor then
+blending will depend on the constant set with this function.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>constant_color</code></em> :</span></p></td>
+<td>The constant color you want</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-point-size"></a><h3>cogl_pipeline_set_point_size</h3>
+<pre class="programlisting">#define cogl_pipeline_set_point_size cogl_pipeline_set_point_size_EXP
+</pre>
+<p>
+Changes the size of points drawn when <a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-POINTS:CAPS"><code class="literal">COGL_VERTICES_MODE_POINTS</code></a> is
+used with the vertex buffer API. Note that typically the GPU will
+only support a limited minimum and maximum range of point sizes. If
+the chosen point size is outside that range then the nearest value
+within that range will be used instead. The size of a point is in
+screen space so it will be the same regardless of any
+transformations. The default point size is 1.0.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <span class="type">CoglPipeline</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>point_size</code></em> :</span></p></td>
+<td>the new point size.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-point-size"></a><h3>cogl_pipeline_get_point_size</h3>
+<pre class="programlisting">#define cogl_pipeline_get_point_size cogl_pipeline_get_point_size_EXP
+</pre>
+<p>
+Get the size of points drawn when <a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-POINTS:CAPS"><code class="literal">COGL_VERTICES_MODE_POINTS</code></a> is
+used with the vertex buffer API.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <span class="type">CoglPipeline</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the point size of the <em class="parameter"><code>pipeline</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-color-mask"></a><h3>cogl_pipeline_get_color_mask</h3>
+<pre class="programlisting">#define cogl_pipeline_get_color_mask cogl_pipeline_get_color_mask_EXP
+</pre>
+<p>
+Gets the current <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> of which channels would be written to the
+current framebuffer. Each bit set in the mask means that the
+corresponding color would be written.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <span class="type">CoglPipeline</span> object.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-color-mask"></a><h3>cogl_pipeline_set_color_mask</h3>
+<pre class="programlisting">#define cogl_pipeline_set_color_mask cogl_pipeline_set_color_mask_EXP
+</pre>
+<p>
+Defines a bit mask of which color channels should be written to the
+current framebuffer. If a bit is set in <em class="parameter"><code>color_mask</code></em> that means that
+color will be written.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <span class="type">CoglPipeline</span> object.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>color_mask</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> of which color channels to write to
+the current framebuffer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-texture"></a><h3>cogl_pipeline_set_layer_texture</h3>
+<pre class="programlisting">#define cogl_pipeline_set_layer_texture cogl_pipeline_set_layer_texture_EXP
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-filters"></a><h3>cogl_pipeline_set_layer_filters</h3>
+<pre class="programlisting">#define cogl_pipeline_set_layer_filters cogl_pipeline_set_layer_filters_EXP
+</pre>
+<p>
+Changes the decimation and interpolation filters used when a texture is
+drawn at other scales than 100%.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>min_filter</code></em> :</span></p></td>
+<td>the filter used when scaling a texture down.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mag_filter</code></em> :</span></p></td>
+<td>the filter used when magnifying a texture.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-wrap-mode"></a><h3>cogl_pipeline_set_layer_wrap_mode</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode</pre>
+<p>
+Sets the wrap mode for all three coordinates of texture lookups on
+this layer. This is equivalent to calling
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s"><code class="function">cogl_pipeline_set_layer_wrap_mode_s()</code></a>,
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t"><code class="function">cogl_pipeline_set_layer_wrap_mode_t()</code></a> and
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p"><code class="function">cogl_pipeline_set_layer_wrap_mode_p()</code></a> separately.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>the new wrap mode</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-wrap-mode-s"></a><h3>cogl_pipeline_set_layer_wrap_mode_s</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_s</pre>
+<p>
+Sets the wrap mode for the 's' coordinate of texture lookups on this layer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>the new wrap mode</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-wrap-mode-t"></a><h3>cogl_pipeline_set_layer_wrap_mode_t</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_t</pre>
+<p>
+Sets the wrap mode for the 't' coordinate of texture lookups on this layer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>the new wrap mode</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-wrap-mode-p"></a><h3>cogl_pipeline_set_layer_wrap_mode_p</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_p</pre>
+<p>
+Sets the wrap mode for the 'p' coordinate of texture lookups on
+this layer. 'p' is the third coordinate.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>the new wrap mode</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-combine"></a><h3>cogl_pipeline_set_layer_combine</h3>
+<pre class="programlisting">#define cogl_pipeline_set_layer_combine cogl_pipeline_set_layer_combine_EXP
+</pre>
+<p>
+If not already familiar; you can refer
+<a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">here</a> for an overview of what blend
+strings are and there syntax.
+</p>
+<p>
+These are all the functions available for texture combining:
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">REPLACE(arg0) = arg0</li>
+<li class="listitem">MODULATE(arg0, arg1) = arg0 x arg1</li>
+<li class="listitem">ADD(arg0, arg1) = arg0 + arg1</li>
+<li class="listitem">ADD_SIGNED(arg0, arg1) = arg0 + arg1 - 0.5</li>
+<li class="listitem">INTERPOLATE(arg0, arg1, arg2) = arg0 x arg2 + arg1 x (1 - arg2)</li>
+<li class="listitem">SUBTRACT(arg0, arg1) = arg0 - arg1</li>
+<li class="listitem"><pre class="programlisting">
+ DOT3_RGB(arg0, arg1) = 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+                             (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+                             (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+    </pre></li>
+<li class="listitem"><pre class="programlisting">
+ DOT3_RGBA(arg0, arg1) = 4 x ((arg0[R] - 0.5)) * (arg1[R] - 0.5) +
+                              (arg0[G] - 0.5)) * (arg1[G] - 0.5) +
+                              (arg0[B] - 0.5)) * (arg1[B] - 0.5))
+    </pre></li>
+</ul></div>
+<p>
+</p>
+<p>
+Refer to the
+<a class="link" href="cogl-Blend-Strings.html#cogl-Blend-String-syntax" title="Here's the syntax">color-source syntax</a> for
+describing the arguments. The valid source names for texture combining
+are:
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">TEXTURE</span></p></td>
+<td>Use the color from the current texture layer</td>
+</tr>
+<tr>
+<td><p><span class="term">TEXTURE_0, TEXTURE_1, etc</span></p></td>
+<td>Use the color from the specified texture layer</td>
+</tr>
+<tr>
+<td><p><span class="term">CONSTANT</span></p></td>
+<td>Use the color from the constant given with
+    <code class="function">cogl_pipeline_set_layer_constant()</code>
+</td>
+</tr>
+<tr>
+<td><p><span class="term">PRIMARY</span></p></td>
+<td>Use the color of the pipeline as set with
+    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color"><code class="function">cogl_pipeline_set_color()</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term">PREVIOUS</span></p></td>
+<td>Either use the texture color from the previous layer, or
+    if this is layer 0, use the color of the pipeline as set with
+    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color"><code class="function">cogl_pipeline_set_color()</code></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+<p>
+</p>
+<div class="refsect2">
+<a name="cogl-Layer-Combine-Examples"></a><h3>Layer Combine Examples</h3>
+<p>This is effectively what the default blending is:</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">RGBA </span><span class="symbol">=</span><span class="normal"> </span><span class="function">MODULATE</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">PREVIOUS</span><span class="symbol">,</span><span class="normal"> TEXTURE</span><span class="symbol">)</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>This could be used to cross-fade between two images, using
+  the alpha component of a constant as the interpolator. The constant
+  color is given by calling cogl_pipeline_set_layer_constant.</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="normal">RGBA </span><span class="symbol">=</span><span class="normal"> </span><span class="function">INTERPOLATE</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">PREVIOUS</span><span class="symbol">,</span><span class="normal"> TEXTURE</span><span class="symbol">,</span><span class="normal"> CONSTANT</span><span class="symbol">[</span><span class="normal">A</span><span class="symbol">])</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You can't give a multiplication factor for arguments as you can
+with blending.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>Specifies the layer you want define a combine function for</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>blend_string</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">Cogl blend string</a>
+describing the desired texture combine function.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> that may report parse errors or lack of GPU/driver
+support. May be <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>, in which case a warning will be printed out if an
+error is encountered.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the blend string was successfully parsed, and the
+described texture combining is supported by the underlying driver and
+or hardware. On failure, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> is returned and <em class="parameter"><code>error</code></em> is set</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-combine-constant"></a><h3>cogl_pipeline_set_layer_combine_constant</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_combine_constant</pre>
+<p>
+When you are using the 'CONSTANT' color source in a layer combine
+description then you can use this function to define its value.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>Specifies the layer you want to specify a constant used
+for texture combining</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>constant</code></em> :</span></p></td>
+<td>The constant color you want</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-matrix"></a><h3>cogl_pipeline_set_layer_matrix</h3>
+<pre class="programlisting">#define cogl_pipeline_set_layer_matrix cogl_pipeline_set_layer_matrix_EXP
+</pre>
+<p>
+This function lets you set a matrix that can be used to e.g. translate
+and rotate a single layer of a pipeline used to fill your geometry.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the index for the layer inside <em class="parameter"><code>pipeline</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>the transformation matrix for the layer</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_set_layer_point_sprite_coords_enabled</h3>
+<pre class="programlisting">#define             cogl_pipeline_set_layer_point_sprite_coords_enabled</pre>
+<p>
+When rendering points, if <em class="parameter"><code>enable</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> then the texture
+coordinates for this layer will be replaced with coordinates that
+vary from 0.0 to 1.0 across the primitive. The top left of the
+point will have the coordinates 0.0,0.0 and the bottom right will
+have 1.0,1.0. If <em class="parameter"><code>enable</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> then the coordinates will be
+fixed for the entire point.
+</p>
+<p>
+This function will only work if <a href="../cogl/cogl-General-API.html#COGL-FEATURE-POINT-SPRITE:CAPS"><code class="literal">COGL_FEATURE_POINT_SPRITE</code></a> is
+available. If the feature is not available then the function will
+return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> and set <em class="parameter"><code>error</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> to a pipeline.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>enable</code></em> :</span></p></td>
+<td>whether to enable point sprite coord generation.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A return location for a GError, or NULL to ignore errors.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the function succeeds, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_get_layer_point_sprite_coords_enabled</h3>
+<pre class="programlisting">#define             cogl_pipeline_get_layer_point_sprite_coords_enabled</pre>
+<p>
+Gets whether point sprite coordinate generation is enabled for this
+texture layer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>a <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> to a pipeline.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to check.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>whether the texture coordinates will be replaced with
+point sprite coordinates.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-remove-layer"></a><h3>cogl_pipeline_remove_layer</h3>
+<pre class="programlisting">#define cogl_pipeline_remove_layer cogl_pipeline_remove_layer_EXP
+</pre>
+<p>
+This function removes a layer from your pipeline
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>Specifies the layer you want to remove</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-n-layers"></a><h3>cogl_pipeline_get_n_layers</h3>
+<pre class="programlisting">#define cogl_pipeline_get_n_layers cogl_pipeline_get_n_layers_EXP
+</pre>
+<p>
+Retrieves the number of layers defined for the given <em class="parameter"><code>pipeline</code></em>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the number of layers</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-foreach-layer"></a><h3>cogl_pipeline_foreach_layer</h3>
+<pre class="programlisting">#define cogl_pipeline_foreach_layer cogl_pipeline_foreach_layer_EXP
+</pre>
+<p>
+Iterates all the layer indices of the given <em class="parameter"><code>pipeline</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipelineLayerCallback</span> to be called for each layer
+index</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>Private data that will be passed to the callback</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>

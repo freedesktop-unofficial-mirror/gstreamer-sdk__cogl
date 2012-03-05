@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Materials (Deprecated)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl Reference Manual">
+<link rel="up" href="ch03.html" title="Cogl deprecated API">
+<link rel="prev" href="cogl-Textures-(Deprecated).html" title="Textures (Deprecated)">
+<link rel="next" href="cogl-Clipping-(Deprecated).html" title="Clipping (Deprecated)">
+<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-Textures-(Deprecated).html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl Reference Manual</th>
+<td><a accesskey="n" href="cogl-Clipping-(Deprecated).html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-Materials-(Deprecated).synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-Materials-(Deprecated).description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-Materials-(Deprecated)"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-Materials-(Deprecated).top_of_page"></a>Materials (Deprecated)</span></h2>
+<p>Materials (Deprecated)</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-Materials-(Deprecated).synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Materials-(Deprecated).html#cogl-material-ref" title="cogl_material_ref ()">cogl_material_ref</a>                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> material</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Materials-(Deprecated).html#cogl-material-unref" title="cogl_material_unref ()">cogl_material_unref</a>                 (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> material</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *       <a class="link" href="cogl-Materials-(Deprecated).html#cogl-material-get-layers" title="cogl_material_get_layers ()">cogl_material_get_layers</a>            (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-Materials-(Deprecated).description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="cogl-Materials-(Deprecated).details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="cogl-material-ref"></a><h3>cogl_material_ref ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_material_ref                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> material</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_material_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-object-ref" title="cogl_object_ref ()"><code class="function">cogl_object_ref()</code></a> instead</p>
+</div>
+<p>
+Increment the reference count for a <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>material</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> object.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <em class="parameter"><code>material</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-material-unref"></a><h3>cogl_material_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_material_unref                 (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> material</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_material_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a> instead</p>
+</div>
+<p>
+Decrement the reference count for a <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>material</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> object.</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-material-get-layers"></a><h3>cogl_material_get_layers ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Doubly-Linked-Lists.html#GList"><span class="returnvalue">GList</span></a> *       cogl_material_get_layers            (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>);</pre>
+<p>
+This function lets you access a material's internal list of layers
+for iteration.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You should avoid using this API if possible since it was only
+made public by mistake and will be deprecated when we have
+suitable alternative.</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>It's important to understand that the list returned may not
+remain valid if you modify the material or any of the layers in any
+way and so you would have to re-get the list in that
+situation.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>material</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A
+list of <a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a>'s that can be passed to the
+cogl_material_layer_* functions. The list is owned by Cogl and it
+should not be modified or freed. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> CoglMaterialLayer][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.16.1</div>
+</body>
+</html>
