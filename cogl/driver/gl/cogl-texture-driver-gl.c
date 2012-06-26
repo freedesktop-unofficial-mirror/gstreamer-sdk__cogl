@@ -30,8 +30,7 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
-#include "cogl-internal.h"
+#include "cogl-private.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
@@ -101,7 +100,7 @@ prep_gl_for_pixels_upload_full (int pixels_rowstride,
   GE( ctx, glPixelStorei (GL_UNPACK_SKIP_PIXELS, pixels_src_x) );
   GE( ctx, glPixelStorei (GL_UNPACK_SKIP_ROWS, pixels_src_y) );
 
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_UNPACK_IMAGE_HEIGHT, image_height) );
 
   _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
@@ -130,7 +129,7 @@ prep_gl_for_pixels_download_full (int pixels_rowstride,
   GE( ctx, glPixelStorei (GL_PACK_SKIP_PIXELS, pixels_src_x) );
   GE( ctx, glPixelStorei (GL_PACK_SKIP_ROWS, pixels_src_y) );
 
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_PACK_IMAGE_HEIGHT, image_height) );
 
   _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_rowstride);
@@ -158,14 +157,15 @@ _cogl_texture_driver_upload_subregion_to_gl (GLenum       gl_target,
 				             GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
                                   0,
                                   src_x,
                                   src_y,
@@ -193,22 +193,23 @@ _cogl_texture_driver_upload_to_gl (GLenum       gl_target,
                                    GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
                                   0, 0, 0, bpp);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   GE( ctx, glTexImage2D (gl_target, 0,
                          internal_gl_format,
-                         _cogl_bitmap_get_width (source_bmp),
-                         _cogl_bitmap_get_height (source_bmp),
+                         cogl_bitmap_get_width (source_bmp),
+                         cogl_bitmap_get_height (source_bmp),
                          0,
                          source_gl_format,
                          source_gl_type,
@@ -229,15 +230,16 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
                                       GLuint       source_gl_type)
 {
   guint8 *data;
-  int bpp = _cogl_get_format_bpp (_cogl_bitmap_get_format (source_bmp));
+  CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   /* Setup gl alignment to match rowstride and top-left corner */
-  prep_gl_for_pixels_upload_full (_cogl_bitmap_get_rowstride (source_bmp),
-                                  (_cogl_bitmap_get_height (source_bmp) /
+  prep_gl_for_pixels_upload_full (cogl_bitmap_get_rowstride (source_bmp),
+                                  (cogl_bitmap_get_height (source_bmp) /
                                    depth),
                                   0, 0, bpp);
 
@@ -246,7 +248,7 @@ _cogl_texture_driver_upload_to_gl_3d (GLenum       gl_target,
   GE( ctx, glTexImage3D (gl_target,
                          0, /* level */
                          internal_gl_format,
-                         _cogl_bitmap_get_width (source_bmp),
+                         cogl_bitmap_get_width (source_bmp),
                          height,
                          depth,
                          0,
@@ -397,16 +399,14 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
                                          GLenum          *out_gltype)
 {
   CoglPixelFormat required_format;
-  GLenum          glintformat = 0;
-  GLenum          glformat = 0;
-  GLenum          gltype = 0;
-
-  /* FIXME: check YUV support */
+  GLenum glintformat;
+  GLenum glformat = 0;
+  GLenum gltype;
 
   required_format = format;
 
   /* Find GL equivalents */
-  switch (format & COGL_UNPREMULT_MASK)
+  switch (format)
     {
     case COGL_PIXEL_FORMAT_A_8:
       glintformat = GL_ALPHA;
@@ -430,11 +430,13 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
       gltype = GL_UNSIGNED_BYTE;
       break;
     case COGL_PIXEL_FORMAT_RGBA_8888:
+    case COGL_PIXEL_FORMAT_RGBA_8888_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_BYTE;
       break;
     case COGL_PIXEL_FORMAT_BGRA_8888:
+    case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
       glintformat = GL_RGBA;
       glformat = GL_BGRA;
       gltype = GL_UNSIGNED_BYTE;
@@ -444,6 +446,7 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
        * have no GL equivalent unless defined using
        * system word byte ordering */
     case COGL_PIXEL_FORMAT_ARGB_8888:
+    case COGL_PIXEL_FORMAT_ARGB_8888_PRE:
       glintformat = GL_RGBA;
       glformat = GL_BGRA;
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
@@ -454,6 +457,7 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
       break;
 
     case COGL_PIXEL_FORMAT_ABGR_8888:
+    case COGL_PIXEL_FORMAT_ABGR_8888_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
@@ -461,6 +465,34 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
 #else
       gltype = GL_UNSIGNED_INT_8_8_8_8_REV;
 #endif
+      break;
+
+    case COGL_PIXEL_FORMAT_RGBA_1010102:
+    case COGL_PIXEL_FORMAT_RGBA_1010102_PRE:
+      glintformat = GL_RGBA;
+      glformat = GL_RGBA;
+      gltype = GL_UNSIGNED_INT_10_10_10_2;
+      break;
+
+    case COGL_PIXEL_FORMAT_BGRA_1010102:
+    case COGL_PIXEL_FORMAT_BGRA_1010102_PRE:
+      glintformat = GL_RGBA;
+      glformat = GL_BGRA;
+      gltype = GL_UNSIGNED_INT_10_10_10_2;
+      break;
+
+    case COGL_PIXEL_FORMAT_ABGR_2101010:
+    case COGL_PIXEL_FORMAT_ABGR_2101010_PRE:
+      glintformat = GL_RGBA;
+      glformat = GL_RGBA;
+      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
+      break;
+
+    case COGL_PIXEL_FORMAT_ARGB_2101010:
+    case COGL_PIXEL_FORMAT_ARGB_2101010_PRE:
+      glintformat = GL_RGBA;
+      glformat = GL_BGRA;
+      gltype = GL_UNSIGNED_INT_2_10_10_10_REV;
       break;
 
       /* The following three types of channel ordering
@@ -472,20 +504,27 @@ _cogl_texture_driver_pixel_format_to_gl (CoglPixelFormat  format,
       gltype = GL_UNSIGNED_SHORT_5_6_5;
       break;
     case COGL_PIXEL_FORMAT_RGBA_4444:
+    case COGL_PIXEL_FORMAT_RGBA_4444_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_SHORT_4_4_4_4;
       break;
     case COGL_PIXEL_FORMAT_RGBA_5551:
+    case COGL_PIXEL_FORMAT_RGBA_5551_PRE:
       glintformat = GL_RGBA;
       glformat = GL_RGBA;
       gltype = GL_UNSIGNED_SHORT_5_5_5_1;
       break;
 
-      /* FIXME: check extensions for YUV support */
-    default:
+    case COGL_PIXEL_FORMAT_ANY:
+    case COGL_PIXEL_FORMAT_YUV:
+      g_assert_not_reached ();
       break;
     }
+
+  /* All of the pixel formats are handled above so if this hits then
+     we've been given an invalid pixel format */
+  g_assert (glformat != 0);
 
   if (out_glintformat != NULL)
     *out_glintformat = glintformat;

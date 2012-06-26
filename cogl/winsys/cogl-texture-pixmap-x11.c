@@ -30,7 +30,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
@@ -47,6 +46,7 @@
 #include "cogl-handle.h"
 #include "cogl-winsys-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-xlib.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -63,6 +63,12 @@ static void _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap);
 COGL_TEXTURE_DEFINE (TexturePixmapX11, texture_pixmap_x11);
 
 static const CoglTextureVtable cogl_texture_pixmap_x11_vtable;
+
+GQuark
+cogl_texture_pixmap_x11_error_quark (void)
+{
+  return g_quark_from_static_string ("cogl-texture-pixmap-error-quark");
+}
 
 static void
 cogl_damage_rectangle_union (CoglDamageRectangle *damage_rect,
@@ -263,9 +269,11 @@ set_damage_object_internal (CoglContext *ctx,
                                    tex_pixmap);
 }
 
-CoglHandle
-cogl_texture_pixmap_x11_new (guint32 pixmap,
-                             gboolean automatic_updates)
+CoglTexturePixmapX11 *
+cogl_texture_pixmap_x11_new (CoglContext *ctxt,
+                             guint32 pixmap,
+                             gboolean automatic_updates,
+                             GError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
   Display *display = cogl_xlib_get_display ();
@@ -276,8 +284,6 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   XWindowAttributes window_attributes;
   int damage_base;
   const CoglWinsysVtable *winsys;
-
-  _COGL_GET_CONTEXT (ctxt, COGL_INVALID_HANDLE);
 
   _cogl_texture_init (tex, &cogl_texture_pixmap_x11_vtable);
 
@@ -294,8 +300,11 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
                      &pixmap_border_width, &tex_pixmap->depth))
     {
       g_free (tex_pixmap);
-      g_warning ("Unable to query pixmap size");
-      return COGL_INVALID_HANDLE;
+      g_set_error (error,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
+                   "Unable to query pixmap size");
+      return NULL;
     }
 
   /* We need a visual to use for shared memory images so we'll query
@@ -303,8 +312,11 @@ cogl_texture_pixmap_x11_new (guint32 pixmap,
   if (!XGetWindowAttributes (display, pixmap_root_window, &window_attributes))
     {
       g_free (tex_pixmap);
-      g_warning ("Unable to query root window attributes");
-      return COGL_INVALID_HANDLE;
+      g_set_error (error,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR,
+                   COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
+                   "Unable to query root window attributes");
+      return NULL;
     }
   tex_pixmap->visual = window_attributes.visual;
 
@@ -416,17 +428,12 @@ try_alloc_shm (CoglTexturePixmapX11 *tex_pixmap)
 }
 
 void
-cogl_texture_pixmap_x11_update_area (CoglHandle handle,
+cogl_texture_pixmap_x11_update_area (CoglTexturePixmapX11 *tex_pixmap,
                                      int x,
                                      int y,
                                      int width,
                                      int height)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
-
-  if (!cogl_is_texture_pixmap_x11 (handle))
-    return;
-
   /* We'll queue the update for both the GLX texture and the regular
      texture because we can't determine which will be needed until we
      actually render something */
@@ -443,29 +450,20 @@ cogl_texture_pixmap_x11_update_area (CoglHandle handle,
 }
 
 gboolean
-cogl_texture_pixmap_x11_is_using_tfp_extension (CoglHandle handle)
+cogl_texture_pixmap_x11_is_using_tfp_extension (CoglTexturePixmapX11 *tex_pixmap)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
-
-  if (!cogl_is_texture_pixmap_x11 (tex_pixmap))
-    return FALSE;
-
   return !!tex_pixmap->winsys;
 }
 
 void
-cogl_texture_pixmap_x11_set_damage_object (CoglHandle handle,
+cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *tex_pixmap,
                                            guint32 damage,
                                            CoglTexturePixmapX11ReportLevel
                                                                   report_level)
 {
-  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (handle);
   int damage_base;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-
-  if (!cogl_is_texture_pixmap_x11 (tex_pixmap))
-    return;
 
   damage_base = _cogl_xlib_get_damage_base ();
   if (damage_base >= 0)
@@ -476,12 +474,14 @@ static void
 _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
   Display *display;
+  Visual *visual;
   CoglPixelFormat image_format;
   XImage *image;
   int src_x, src_y;
   int x, y, width, height;
 
   display = cogl_xlib_get_display ();
+  visual = tex_pixmap->visual;
 
   /* If the damage region is empty then there's nothing to do */
   if (tex_pixmap->damage_rect.x2 == tex_pixmap->damage_rect.x1)
@@ -575,47 +575,13 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
                     x, y);
     }
 
-  /* xlib doesn't appear to fill in image->{red,green,blue}_mask so
-     this just assumes that the image is stored as ARGB from most
-     significant byte to to least significant. If the format is little
-     endian that means the order will be BGRA in memory */
-
-  switch (image->bits_per_pixel)
-    {
-    default:
-    case 32:
-      {
-        /* If the pixmap is actually non-packed-pixel RGB format then
-           the texture would have been created in RGB_888 format so Cogl
-           will ignore the alpha channel and effectively pack it for
-           us */
-        image_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
-
-        /* If the format is actually big endian then the alpha
-           component will come first */
-        if (image->byte_order == MSBFirst)
-          image_format |= COGL_AFIRST_BIT;
-      }
-      break;
-
-    case 24:
-      image_format = COGL_PIXEL_FORMAT_RGB_888;
-      break;
-
-    case 16:
-      /* FIXME: this should probably swap the orders around if the
-         endianness does not match */
-      image_format = COGL_PIXEL_FORMAT_RGB_565;
-      break;
-    }
-
-  if (image->bits_per_pixel != 16)
-    {
-      /* If the image is in little-endian then the order in memory is
-         reversed */
-      if (image->byte_order == LSBFirst)
-        image_format |= COGL_BGR_BIT;
-    }
+  image_format =
+    _cogl_util_pixel_format_from_masks (visual->red_mask,
+                                        visual->green_mask,
+                                        visual->blue_mask,
+                                        image->depth,
+                                        image->bits_per_pixel,
+                                        image->byte_order == LSBFirst);
 
   cogl_texture_set_region (tex_pixmap->tex,
                            src_x, src_y,
@@ -643,7 +609,7 @@ _cogl_texture_pixmap_x11_set_use_winsys_texture (CoglTexturePixmapX11 *tex_pixma
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (tex_pixmap);
+      _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (tex_pixmap));
 
       tex_pixmap->use_winsys_texture = new_value;
     }
@@ -739,6 +705,33 @@ _cogl_texture_pixmap_x11_get_data (CoglTexture     *tex,
   return cogl_texture_get_data (child_tex, format, rowstride, data);
 }
 
+typedef struct _NormalizeCoordsWrapperData
+{
+  int width;
+  int height;
+  CoglMetaTextureCallback callback;
+  void *user_data;
+} NormalizeCoordsWrapperData;
+
+static void
+normalize_coords_wrapper_cb (CoglTexture *child_texture,
+                             const float *child_texture_coords,
+                             const float *meta_coords,
+                             void *user_data)
+{
+  NormalizeCoordsWrapperData *data = user_data;
+  float normalized_coords[4];
+
+  normalized_coords[0] = meta_coords[0] / data->width;
+  normalized_coords[1] = meta_coords[1] / data->height;
+  normalized_coords[2] = meta_coords[2] / data->width;
+  normalized_coords[3] = meta_coords[3] / data->height;
+
+  data->callback (child_texture,
+                  child_texture_coords, normalized_coords,
+                  data->user_data);
+}
+
 static void
 _cogl_texture_pixmap_x11_foreach_sub_texture_in_region
                                   (CoglTexture              *tex,
@@ -746,22 +739,54 @@ _cogl_texture_pixmap_x11_foreach_sub_texture_in_region
                                    float                     virtual_ty_1,
                                    float                     virtual_tx_2,
                                    float                     virtual_ty_2,
-                                   CoglTextureSliceCallback  callback,
+                                   CoglMetaTextureCallback   callback,
                                    void                     *user_data)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
-  CoglHandle child_tex;
-
-  child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
+  CoglHandle child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
   /* Forward on to the child texture */
-  _cogl_texture_foreach_sub_texture_in_region (child_tex,
-                                               virtual_tx_1,
-                                               virtual_ty_1,
-                                               virtual_tx_2,
-                                               virtual_ty_2,
-                                               callback,
-                                               user_data);
+
+  /* tfp textures may be implemented in terms of a
+   * CoglTextureRectangle texture which uses un-normalized texture
+   * coordinates but we want to consistently deal with normalized
+   * texture coordinates with CoglTexturePixmapX11... */
+  if (cogl_is_texture_rectangle (child_tex))
+    {
+      NormalizeCoordsWrapperData data;
+      int width = tex_pixmap->width;
+      int height = tex_pixmap->height;
+
+      virtual_tx_1 *= width;
+      virtual_ty_1 *= height;
+      virtual_tx_2 *= width;
+      virtual_ty_2 *= height;
+
+      data.width = width;
+      data.height = height;
+      data.callback = callback;
+      data.user_data = user_data;
+
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (child_tex),
+                                           virtual_tx_1,
+                                           virtual_ty_1,
+                                           virtual_tx_2,
+                                           virtual_ty_2,
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                           COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                           normalize_coords_wrapper_cb,
+                                           &data);
+    }
+  else
+    cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (child_tex),
+                                         virtual_tx_1,
+                                         virtual_ty_1,
+                                         virtual_tx_2,
+                                         virtual_ty_2,
+                                         COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                         COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                         callback,
+                                         user_data);
 }
 
 static int
@@ -938,6 +963,18 @@ _cogl_texture_pixmap_x11_get_height (CoglTexture *tex)
   return tex_pixmap->height;
 }
 
+static CoglTextureType
+_cogl_texture_pixmap_x11_get_type (CoglTexture *tex)
+{
+  CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
+  CoglTexture *child_tex;
+
+  child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
+
+  /* Forward on to the child texture */
+  return _cogl_texture_get_type (child_tex);
+}
+
 static void
 _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
@@ -989,5 +1026,6 @@ cogl_texture_pixmap_x11_vtable =
     _cogl_texture_pixmap_x11_get_gl_format,
     _cogl_texture_pixmap_x11_get_width,
     _cogl_texture_pixmap_x11_get_height,
+    _cogl_texture_pixmap_x11_get_type,
     NULL /* is_foreign */
   };

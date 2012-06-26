@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
@@ -37,6 +36,10 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl-private.h"
+#include "cogl-meta-texture.h"
+#include "cogl-framebuffer-private.h"
+#include "cogl1-context.h"
+#include "cogl-primitives-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -45,8 +48,9 @@
 
 typedef struct _TextureSlicedQuadState
 {
+  CoglFramebuffer *framebuffer;
   CoglPipeline *pipeline;
-  CoglHandle main_texture;
+  CoglTexture *main_texture;
   float tex_virtual_origin_x;
   float tex_virtual_origin_y;
   float quad_origin_x;
@@ -68,14 +72,14 @@ typedef struct _TextureSlicedPolygonState
 } TextureSlicedPolygonState;
 
 static void
-log_quad_sub_textures_cb (CoglHandle texture_handle,
+log_quad_sub_textures_cb (CoglTexture *texture,
                           const float *subtexture_coords,
                           const float *virtual_coords,
                           void *user_data)
 {
   TextureSlicedQuadState *state = user_data;
-  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
-  CoglHandle texture_override;
+  CoglFramebuffer *framebuffer = state->framebuffer;
+  CoglTexture *texture_override;
   float quad_coords[4];
 
 #define TEX_VIRTUAL_TO_QUAD(V, Q, AXIS) \
@@ -112,10 +116,10 @@ log_quad_sub_textures_cb (CoglHandle texture_handle,
 
   /* We only need to override the texture if it's different from the
      main texture */
-  if (texture_handle == state->main_texture)
-    texture_override = COGL_INVALID_HANDLE;
+  if (texture == state->main_texture)
+    texture_override = NULL;
   else
-    texture_override = texture_handle;
+    texture_override = texture;
 
   _cogl_journal_log_quad (framebuffer->journal,
                           quad_coords,
@@ -139,27 +143,33 @@ validate_first_layer_cb (CoglPipeline *pipeline,
   ValidateFirstLayerState *state = user_data;
   CoglPipelineWrapMode clamp_to_edge =
     COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE;
+  CoglPipelineWrapMode wrap_s;
+  CoglPipelineWrapMode wrap_t;
 
   /* We can't use hardware repeat so we need to set clamp to edge
    * otherwise it might pull in edge pixels from the other side. By
    * default WRAP_MODE_AUTOMATIC becomes CLAMP_TO_EDGE so we only need
-   * to override if the wrap mode is repeat.
+   * to override if the wrap mode isn't already automatic or
+   * clamp_to_edge.
    */
-  if (cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
+  wrap_s = cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index);
+  if (wrap_s != COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE &&
+      wrap_s != COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
       if (!state->override_pipeline)
         state->override_pipeline = cogl_pipeline_copy (pipeline);
-      cogl_pipeline_set_layer_wrap_mode_s (pipeline, layer_index,
-                                           clamp_to_edge);
+      cogl_pipeline_set_layer_wrap_mode_s (state->override_pipeline,
+                                           layer_index, clamp_to_edge);
     }
-  if (cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index) ==
-      COGL_PIPELINE_WRAP_MODE_REPEAT)
+
+  wrap_t = cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index);
+  if (wrap_t != COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE &&
+      wrap_t != COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
     {
       if (!state->override_pipeline)
         state->override_pipeline = cogl_pipeline_copy (pipeline);
-      cogl_pipeline_set_layer_wrap_mode_t (pipeline, layer_index,
-                                           clamp_to_edge);
+      cogl_pipeline_set_layer_wrap_mode_t (state->override_pipeline,
+                                           layer_index, clamp_to_edge);
     }
 
   return FALSE;
@@ -180,15 +190,15 @@ validate_first_layer_cb (CoglPipeline *pipeline,
  */
 /* TODO: support multitexturing */
 static void
-_cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
+_cogl_texture_quad_multiple_primitives (CoglFramebuffer *framebuffer,
                                         CoglPipeline *pipeline,
-                                        gboolean      clamp_s,
-                                        gboolean      clamp_t,
-                                        const float  *position,
-                                        float         tx_1,
-                                        float         ty_1,
-                                        float         tx_2,
-                                        float         ty_2)
+                                        CoglTexture *texture,
+                                        int layer_index,
+                                        const float *position,
+                                        float tx_1,
+                                        float ty_1,
+                                        float tx_2,
+                                        float ty_2)
 {
   TextureSlicedQuadState state;
   gboolean tex_virtual_flipped_x;
@@ -196,113 +206,18 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
   gboolean quad_flipped_x;
   gboolean quad_flipped_y;
   ValidateFirstLayerState validate_first_layer_state;
+  CoglPipelineWrapMode wrap_s, wrap_t;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* If the wrap mode is clamp to edge then we'll recursively draw the
-     stretched part and replace the coordinates */
-  if (clamp_s && tx_1 != tx_2)
-    {
-      float *replacement_position = g_newa (float, 4);
-      float old_tx_1 = tx_1, old_tx_2 = tx_2;
-
-      memcpy (replacement_position, position, sizeof (float) * 4);
-
-      tx_1 = CLAMP (tx_1, 0.0f, 1.0f);
-      tx_2 = CLAMP (tx_2, 0.0f, 1.0f);
-
-      if (old_tx_1 != tx_1)
-        {
-          /* Draw the left part of the quad as a stretched copy of tx_1 */
-          float tmp_position[] =
-            { position[0], position[1],
-              (position[0] +
-               (position[2] - position[0]) *
-               (tx_1 - old_tx_1) / (old_tx_2 - old_tx_1)),
-              position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
-                                                  FALSE, clamp_t,
-                                                  tmp_position,
-                                                  tx_1, ty_1, tx_1, ty_2);
-          replacement_position[0] = tmp_position[2];
-        }
-
-      if (old_tx_2 != tx_2)
-        {
-          /* Draw the right part of the quad as a stretched copy of tx_2 */
-          float tmp_position[] =
-            { (position[0] +
-               (position[2] - position[0]) *
-               (tx_2 - old_tx_1) / (old_tx_2 - old_tx_1)),
-              position[1], position[2], position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
-                                                  FALSE, clamp_t,
-                                                  tmp_position,
-                                                  tx_2, ty_1, tx_2, ty_2);
-          replacement_position[2] = tmp_position[0];
-        }
-
-      /* If there's no main part left then we don't need to continue */
-      if (tx_1 == tx_2)
-        return;
-
-      position = replacement_position;
-    }
-
-  if (clamp_t && ty_1 != ty_2)
-    {
-      float *replacement_position = g_newa (float, 4);
-      float old_ty_1 = ty_1, old_ty_2 = ty_2;
-
-      memcpy (replacement_position, position, sizeof (float) * 4);
-
-      ty_1 = CLAMP (ty_1, 0.0f, 1.0f);
-      ty_2 = CLAMP (ty_2, 0.0f, 1.0f);
-
-      if (old_ty_1 != ty_1)
-        {
-          /* Draw the top part of the quad as a stretched copy of ty_1 */
-          float tmp_position[] =
-            { position[0], position[1], position[2],
-              (position[1] +
-               (position[3] - position[1]) *
-               (ty_1 - old_ty_1) / (old_ty_2 - old_ty_1)) };
-          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
-                                                  clamp_s, FALSE,
-                                                  tmp_position,
-                                                  tx_1, ty_1, tx_2, ty_1);
-          replacement_position[1] = tmp_position[3];
-        }
-
-      if (old_ty_2 != ty_2)
-        {
-          /* Draw the bottom part of the quad as a stretched copy of ty_2 */
-          float tmp_position[] =
-            { position[0],
-              (position[1] +
-               (position[3] - position[1]) *
-               (ty_2 - old_ty_1) / (old_ty_2 - old_ty_1)),
-              position[2], position[3] };
-          _cogl_texture_quad_multiple_primitives (tex_handle, pipeline,
-                                                  clamp_s, FALSE,
-                                                  tmp_position,
-                                                  tx_1, ty_2, tx_2, ty_2);
-          replacement_position[3] = tmp_position[1];
-        }
-
-      /* If there's no main part left then we don't need to continue */
-      if (ty_1 == ty_2)
-        return;
-
-      position = replacement_position;
-    }
+  wrap_s = cogl_pipeline_get_layer_wrap_mode_s (pipeline, layer_index);
+  wrap_t = cogl_pipeline_get_layer_wrap_mode_t (pipeline, layer_index);
 
   validate_first_layer_state.override_pipeline = NULL;
   cogl_pipeline_foreach_layer (pipeline,
                                validate_first_layer_cb,
                                &validate_first_layer_state);
 
-  state.main_texture = tex_handle;
+  state.framebuffer = framebuffer;
+  state.main_texture = texture;
 
   if (validate_first_layer_state.override_pipeline)
     state.pipeline = validate_first_layer_state.override_pipeline;
@@ -350,10 +265,19 @@ _cogl_texture_quad_multiple_primitives (CoglHandle    tex_handle,
   state.v_to_q_scale_x = fabs (state.quad_len_x / (tx_2 - tx_1));
   state.v_to_q_scale_y = fabs (state.quad_len_y / (ty_2 - ty_1));
 
-  _cogl_texture_foreach_sub_texture_in_region (tex_handle,
-                                               tx_1, ty_1, tx_2, ty_2,
-                                               log_quad_sub_textures_cb,
-                                               &state);
+  /* For backwards compatablity the default wrap mode for cogl_rectangle() is
+   * _REPEAT... */
+  if (wrap_s == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_s = COGL_PIPELINE_WRAP_MODE_REPEAT;
+  if (wrap_t == COGL_PIPELINE_WRAP_MODE_AUTOMATIC)
+    wrap_t = COGL_PIPELINE_WRAP_MODE_REPEAT;
+
+  cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (texture),
+                                       tx_1, ty_1, tx_2, ty_2,
+                                       wrap_s,
+                                       wrap_t,
+                                       log_quad_sub_textures_cb,
+                                       &state);
 
   if (validate_first_layer_state.override_pipeline)
     cogl_object_unref (validate_first_layer_state.override_pipeline);
@@ -379,19 +303,13 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
                         void *user_data)
 {
   ValidateTexCoordsState *state = user_data;
-  CoglHandle texture;
+  CoglTexture *texture;
   const float *in_tex_coords;
   float *out_tex_coords;
   float default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
   CoglTransformResult transform_result;
 
   state->i++;
-
-  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
-
-  /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
-  if (!texture)
-    return TRUE;
 
   /* FIXME: we should be able to avoid this copying when no
    * transform is required by the texture backend and the user
@@ -408,6 +326,12 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
   out_tex_coords = &state->final_tex_coords[state->i * 4];
 
   memcpy (out_tex_coords, in_tex_coords, sizeof (float) * 4);
+
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
+
+  /* NB: NULL textures are handled by _cogl_pipeline_flush_gl_state */
+  if (!texture)
+    return TRUE;
 
   /* Convert the texture coordinates to GL.
    */
@@ -457,7 +381,7 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
                        "supported with multi-texturing.", state->i);
           warning_seen = TRUE;
 
-          cogl_pipeline_set_layer_texture (texture, layer_index, NULL);
+          cogl_pipeline_set_layer_texture (pipeline, layer_index, NULL);
         }
     }
 
@@ -508,17 +432,15 @@ validate_tex_coords_cb (CoglPipeline *pipeline,
  *   require repeating.
  */
 static gboolean
-_cogl_multitexture_quad_single_primitive (const float  *position,
+_cogl_multitexture_quad_single_primitive (CoglFramebuffer *framebuffer,
                                           CoglPipeline *pipeline,
+                                          const float  *position,
                                           const float  *user_tex_coords,
-                                          int           user_tex_coords_len)
+                                          int user_tex_coords_len)
 {
   int n_layers = cogl_pipeline_get_n_layers (pipeline);
   ValidateTexCoordsState state;
   float *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
-  CoglFramebuffer *framebuffer;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   state.i = -1;
   state.n_layers = n_layers;
@@ -538,12 +460,11 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
   if (state.override_pipeline)
     pipeline = state.override_pipeline;
 
-  framebuffer = cogl_get_draw_framebuffer ();
   _cogl_journal_log_quad (framebuffer->journal,
                           position,
                           pipeline,
                           n_layers,
-                          COGL_INVALID_HANDLE, /* no texture override */
+                          NULL, /* no texture override */
                           final_tex_coords,
                           n_layers * 4);
 
@@ -555,6 +476,7 @@ _cogl_multitexture_quad_single_primitive (const float  *position,
 
 typedef struct _ValidateLayerState
 {
+  CoglContext *ctx;
   int i;
   int first_layer;
   CoglPipeline *override_source;
@@ -567,7 +489,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
                                     void *user_data)
 {
   ValidateLayerState *state = user_data;
-  CoglHandle texture;
+  CoglTexture *texture;
 
   state->i++;
 
@@ -613,11 +535,11 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
    */
   _cogl_pipeline_pre_paint_for_layer (pipeline, layer_index);
 
-  texture = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
 
-  /* COGL_INVALID_HANDLE textures are handled by
+  /* NULL textures are handled by
    * _cogl_pipeline_flush_gl_state */
-  if (texture == COGL_INVALID_HANDLE)
+  if (texture == NULL)
     return TRUE;
 
   if (state->i == 0)
@@ -660,8 +582,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
       else
         {
           static gboolean warning_seen = FALSE;
-
-          _COGL_GET_CONTEXT (ctx, FALSE);
+          CoglTexture2D *tex_2d;
 
           if (!warning_seen)
             g_warning ("Skipping layer %d of your pipeline consisting of "
@@ -670,8 +591,9 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
           warning_seen = TRUE;
 
           /* Note: currently only 2D textures can be sliced. */
+          tex_2d = state->ctx->default_gl_texture_2d_tex;
           cogl_pipeline_set_layer_texture (pipeline, layer_index,
-                                           ctx->default_gl_texture_2d_tex);
+                                           COGL_TEXTURE (tex_2d));
           return TRUE;
         }
     }
@@ -704,29 +626,25 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
   return TRUE;
 }
 
-struct _CoglMutiTexturedRect
+void
+_cogl_framebuffer_draw_multitextured_rectangles (
+                                        CoglFramebuffer *framebuffer,
+                                        CoglPipeline *pipeline,
+                                        CoglMultiTexturedRect *rects,
+                                        int n_rects,
+                                        gboolean disable_legacy_state)
 {
-  const float *position; /* x0,y0,x1,y1 */
-  const float *tex_coords; /* (tx0,ty0,tx1,ty1)(tx0,ty0,tx1,ty1)(... */
-  int          tex_coords_len; /* number of floats in tex_coords? */
-};
-
-static void
-_cogl_rectangles_with_multitexture_coords (
-                                        struct _CoglMutiTexturedRect *rects,
-                                        int                           n_rects)
-{
-  CoglPipeline *original_pipeline, *pipeline;
+  CoglContext *ctx = framebuffer->context;
+  CoglPipeline *original_pipeline;
   ValidateLayerState state;
   int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  pipeline = original_pipeline = cogl_get_source ();
+  original_pipeline = pipeline;
 
   /*
    * Validate all the layers of the current source pipeline...
    */
+  state.ctx = ctx;
   state.i = -1;
   state.first_layer = 0;
   state.override_source = NULL;
@@ -738,13 +656,16 @@ _cogl_rectangles_with_multitexture_coords (
   if (state.override_source)
     pipeline = state.override_source;
 
-  if (G_UNLIKELY (ctx->legacy_state_set) &&
-      _cogl_get_enable_legacy_state ())
+  if (!disable_legacy_state)
     {
-      /* If we haven't already made a pipeline copy */
-      if (pipeline == original_pipeline)
-        pipeline = cogl_pipeline_copy (pipeline);
-      _cogl_pipeline_apply_legacy_state (pipeline);
+      if (G_UNLIKELY (ctx->legacy_state_set) &&
+          _cogl_get_enable_legacy_state ())
+        {
+          /* If we haven't already made a pipeline copy */
+          if (pipeline == original_pipeline)
+            pipeline = cogl_pipeline_copy (pipeline);
+          _cogl_pipeline_apply_legacy_state (pipeline);
+        }
     }
 
   /*
@@ -753,16 +674,16 @@ _cogl_rectangles_with_multitexture_coords (
 
   for (i = 0; i < n_rects; i++)
     {
-      CoglHandle texture;
+      CoglTexture *texture;
       const float default_tex_coords[4] = {0.0, 0.0, 1.0, 1.0};
       const float *tex_coords;
-      gboolean clamp_s, clamp_t;
 
       if (!state.all_use_sliced_quad_fallback)
         {
           gboolean success =
-            _cogl_multitexture_quad_single_primitive (rects[i].position,
+            _cogl_multitexture_quad_single_primitive (framebuffer,
                                                       pipeline,
+                                                      rects[i].position,
                                                       rects[i].tex_coords,
                                                       rects[i].tex_coords_len);
 
@@ -777,25 +698,19 @@ _cogl_rectangles_with_multitexture_coords (
       /* If multitexturing failed or we are drawing with a sliced texture
        * then we only support a single layer so we pluck out the texture
        * from the first pipeline layer... */
-      texture = _cogl_pipeline_get_layer_texture (pipeline, state.first_layer);
+      texture = cogl_pipeline_get_layer_texture (pipeline, state.first_layer);
 
       if (rects[i].tex_coords)
         tex_coords = rects[i].tex_coords;
       else
         tex_coords = default_tex_coords;
 
-      clamp_s = (cogl_pipeline_get_layer_wrap_mode_s (pipeline,
-                                                      state.first_layer) ==
-                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
-      clamp_t = (cogl_pipeline_get_layer_wrap_mode_t (pipeline,
-                                                      state.first_layer) ==
-                 COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
-
       COGL_NOTE (DRAW, "Drawing Tex Quad (Multi-Prim Mode)");
 
-      _cogl_texture_quad_multiple_primitives (texture,
+      _cogl_texture_quad_multiple_primitives (framebuffer,
                                               pipeline,
-                                              clamp_s, clamp_t,
+                                              texture,
+                                              state.first_layer,
                                               rects[i].position,
                                               tex_coords[0],
                                               tex_coords[1],
@@ -807,19 +722,31 @@ _cogl_rectangles_with_multitexture_coords (
     cogl_object_unref (pipeline);
 }
 
+static void
+_cogl_rectangles_with_multitexture_coords (
+                                        CoglMultiTexturedRect *rects,
+                                        int n_rects)
+{
+  _cogl_framebuffer_draw_multitextured_rectangles (cogl_get_draw_framebuffer (),
+                                                   cogl_get_source (),
+                                                   rects,
+                                                   n_rects,
+                                                   FALSE);
+}
+
 void
 cogl_rectangles (const float *verts,
                  unsigned int n_rects)
 {
-  struct _CoglMutiTexturedRect *rects;
+  CoglMultiTexturedRect *rects;
   int i;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
-  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
+  rects = g_alloca (n_rects * sizeof (CoglMultiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
@@ -835,15 +762,15 @@ void
 cogl_rectangles_with_texture_coords (const float *verts,
                                      unsigned int n_rects)
 {
-  struct _CoglMutiTexturedRect *rects;
+  CoglMultiTexturedRect *rects;
   int i;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
-  rects = g_alloca (n_rects * sizeof (struct _CoglMutiTexturedRect));
+  rects = g_alloca (n_rects * sizeof (CoglMultiTexturedRect));
 
   for (i = 0; i < n_rects; i++)
     {
@@ -867,10 +794,10 @@ cogl_rectangle_with_texture_coords (float x_1,
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
   const float tex_coords[4] = {tx_1, ty_1, tx_2, ty_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -890,10 +817,10 @@ cogl_rectangle_with_multitexture_coords (float        x_1,
                                          int          user_tex_coords_len)
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -911,10 +838,10 @@ cogl_rectangle (float x_1,
                 float y_2)
 {
   const float position[4] = {x_1, y_1, x_2, y_2};
-  struct _CoglMutiTexturedRect rect;
+  CoglMultiTexturedRect rect;
 
   /* XXX: All the cogl_rectangle* APIs normalize their input into an array of
-   * _CoglMutiTexturedRect rectangles and pass these on to our work horse;
+   * CoglMultiTexturedRect rectangles and pass these on to our work horse;
    * _cogl_rectangles_with_multitexture_coords.
    */
 
@@ -926,7 +853,9 @@ cogl_rectangle (float x_1,
 }
 
 void
-_cogl_rectangle_immediate (float x_1,
+_cogl_rectangle_immediate (CoglFramebuffer *framebuffer,
+                           CoglPipeline *pipeline,
+                           float x_1,
                            float y_1,
                            float x_2,
                            float y_2)
@@ -935,6 +864,7 @@ _cogl_rectangle_immediate (float x_1,
      through the journal. This should only be used in cases where the
      code might be called while the journal is already being flushed
      such as when flushing the clip state */
+  CoglContext *ctx = framebuffer->context;
   float vertices[8] =
     {
       x_1, y_1,
@@ -945,7 +875,8 @@ _cogl_rectangle_immediate (float x_1,
   CoglAttributeBuffer *attribute_buffer;
   CoglAttribute *attributes[1];
 
-  attribute_buffer = cogl_attribute_buffer_new (sizeof (vertices), vertices);
+  attribute_buffer =
+    cogl_attribute_buffer_new (ctx, sizeof (vertices), vertices);
   attributes[0] = cogl_attribute_new (attribute_buffer,
                                       "cogl_position_in",
                                       sizeof (float) * 2, /* stride */
@@ -953,14 +884,17 @@ _cogl_rectangle_immediate (float x_1,
                                       2, /* n_components */
                                       COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_STRIP,
-                         0, /* first_index */
-                         4, /* n_vertices */
-                         attributes,
-                         1,
-                         COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                         COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                         COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+  _cogl_framebuffer_draw_attributes (framebuffer,
+                                     pipeline,
+                                     COGL_VERTICES_MODE_TRIANGLE_STRIP,
+                                     0, /* first_index */
+                                     4, /* n_vertices */
+                                     attributes,
+                                     1,
+                                     COGL_DRAW_SKIP_JOURNAL_FLUSH |
+                                     COGL_DRAW_SKIP_PIPELINE_VALIDATION |
+                                     COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                                     COGL_DRAW_SKIP_LEGACY_STATE);
 
 
   cogl_object_unref (attributes[0]);
@@ -975,25 +909,25 @@ typedef struct _AppendTexCoordsState
   float *vertices_out;
 } AppendTexCoordsState;
 
-gboolean
+static gboolean
 append_tex_coord_attributes_cb (CoglPipeline *pipeline,
                                 int layer_index,
                                 void *user_data)
 {
   AppendTexCoordsState *state = user_data;
-  CoglHandle tex_handle;
+  CoglTexture *texture;
   float tx, ty;
   float *t;
 
   tx = state->vertices_in[state->vertex].tx;
   ty = state->vertices_in[state->vertex].ty;
 
-  /* COGL_INVALID_HANDLE textures will be handled in
+  /* NULL textures will be handled in
    * _cogl_pipeline_flush_layers_gl_state but there is no need to worry
    * about scaling texture coordinates in this case */
-  tex_handle = _cogl_pipeline_get_layer_texture (pipeline, layer_index);
-  if (tex_handle != COGL_INVALID_HANDLE)
-    _cogl_texture_transform_coords_to_gl (tex_handle, &tx, &ty);
+  texture = cogl_pipeline_get_layer_texture (pipeline, layer_index);
+  if (texture != NULL)
+    _cogl_texture_transform_coords_to_gl (texture, &tx, &ty);
 
   /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
   t = state->vertices_out + 3 + 2 * state->layer;
@@ -1089,7 +1023,7 @@ cogl_polygon (const CoglTextureVertex *vertices,
   g_array_set_size (ctx->polygon_vertices, n_vertices * stride);
 
   attribute_buffer =
-    cogl_attribute_buffer_new (n_vertices * stride_bytes, NULL);
+    cogl_attribute_buffer_new (ctx, n_vertices * stride_bytes, NULL);
 
   attributes[0] = cogl_attribute_new (attribute_buffer,
                                       "cogl_position_in",
@@ -1180,12 +1114,21 @@ cogl_polygon (const CoglTextureVertex *vertices,
                         v,
                         ctx->polygon_vertices->len * sizeof (float));
 
+  /* XXX: although this may seem redundant, we need to do this since
+   * cogl_polygon() can be used with legacy state and its the source stack
+   * which track whether legacy state is enabled.
+   *
+   * (We only have a CoglDrawFlag to disable legacy state not one
+   *  to enable it) */
   cogl_push_source (pipeline);
 
-  cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                        0, n_vertices,
-                        attributes,
-                        n_attributes);
+  _cogl_framebuffer_draw_attributes (cogl_get_draw_framebuffer (),
+                                     pipeline,
+                                     COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                     0, n_vertices,
+                                     attributes,
+                                     n_attributes,
+                                     0 /* no draw flags */);
 
   cogl_pop_source ();
 

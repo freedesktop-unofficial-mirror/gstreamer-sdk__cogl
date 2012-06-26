@@ -24,7 +24,7 @@
 #ifndef __COGL_JOURNAL_PRIVATE_H
 #define __COGL_JOURNAL_PRIVATE_H
 
-#include "cogl.h"
+#include "cogl-texture.h"
 #include "cogl-handle.h"
 #include "cogl-clip-stack.h"
 
@@ -33,6 +33,14 @@
 typedef struct _CoglJournal
 {
   CoglObject _parent;
+
+  /* A pointer the framebuffer that is using this journal. This is
+     only valid when the journal is not empty. It *does* take a
+     reference on the framebuffer. Although this creates a circular
+     reference, the framebuffer has special code to handle the case
+     where the journal is the only thing holding a reference and it
+     will cause the journal to flush */
+  CoglFramebuffer *framebuffer;
 
   GArray *entries;
   GArray *vertices;
@@ -69,20 +77,19 @@ typedef struct _CoglJournalEntry
 } CoglJournalEntry;
 
 CoglJournal *
-_cogl_journal_new (void);
+_cogl_journal_new (CoglFramebuffer *framebuffer);
 
 void
 _cogl_journal_log_quad (CoglJournal  *journal,
                         const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
-                        CoglHandle    layer0_override_texture,
+                        CoglTexture  *layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len);
 
 void
-_cogl_journal_flush (CoglJournal *journal,
-                     CoglFramebuffer *framebuffer);
+_cogl_journal_flush (CoglJournal *journal);
 
 void
 _cogl_journal_discard (CoglJournal *journal);
@@ -98,8 +105,10 @@ gboolean
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
-                              CoglPixelFormat format,
-                              guint8 *pixel,
+                              CoglBitmap *bitmap,
                               gboolean *found_intersection);
+
+gboolean
+_cogl_is_journal (void *object);
 
 #endif /* __COGL_JOURNAL_PRIVATE_H */

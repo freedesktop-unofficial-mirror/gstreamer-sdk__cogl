@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="prev" href="cogl-Color-Type.html" title="Color Type">
 <link rel="next" href="cogl-Blend-Strings.html" title="Material Blend Strings">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -39,52 +39,52 @@
 <a name="cogl-Textures.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">struct              <a class="link" href="cogl-Textures.html#CoglTextureVertex" title="struct CoglTextureVertex">CoglTextureVertex</a>;
 enum                <a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags">CoglTextureFlags</a>;
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-with-size" title="cogl_texture_new_with_size ()">cogl_texture_new_with_size</a>          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-with-size" title="cogl_texture_new_with_size ()">cogl_texture_new_with_size</a>          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>);
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-from-file" title="cogl_texture_new_from_file ()">cogl_texture_new_from_file</a>          (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-from-file" title="cogl_texture_new_from_file ()">cogl_texture_new_from_file</a>          (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-from-data" title="cogl_texture_new_from_data ()">cogl_texture_new_from_data</a>          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-from-data" title="cogl_texture_new_from_data ()">cogl_texture_new_from_data</a>          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-from-foreign" title="cogl_texture_new_from_foreign ()">cogl_texture_new_from_foreign</a>       (<em class="parameter"><code><span class="type">GLuint</span> gl_handle</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-from-foreign" title="cogl_texture_new_from_foreign ()">cogl_texture_new_from_foreign</a>       (<em class="parameter"><code><span class="type">GLuint</span> gl_handle</code></em>,
                                                          <em class="parameter"><code><span class="type">GLenum</span> gl_target</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> height</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> x_pot_waste</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> y_pot_waste</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>);
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-from-bitmap" title="cogl_texture_new_from_bitmap ()">cogl_texture_new_from_bitmap</a>        (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> bmp_handle</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-from-bitmap" title="cogl_texture_new_from_bitmap ()">cogl_texture_new_from_bitmap</a>        (<em class="parameter"><code><a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a> *bitmap</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>);
-<a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures.html#cogl-texture-new-from-sub-texture" title="cogl_texture_new_from_sub_texture ()">cogl_texture_new_from_sub_texture</a>   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> full_texture</code></em>,
+<a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-Textures.html#cogl-texture-new-from-sub-texture" title="cogl_texture_new_from_sub_texture ()">cogl_texture_new_from_sub_texture</a>   (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *full_texture</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_width</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_height</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-is-texture" title="cogl_is_texture ()">cogl_is_texture</a>                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-is-texture" title="cogl_is_texture ()">cogl_is_texture</a>                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
 
-unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-width" title="cogl_texture_get_width ()">cogl_texture_get_width</a>              (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-height" title="cogl_texture_get_height ()">cogl_texture_get_height</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="returnvalue">CoglPixelFormat</span></a>     <a class="link" href="cogl-Textures.html#cogl-texture-get-format" title="cogl_texture_get_format ()">cogl_texture_get_format</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-rowstride" title="cogl_texture_get_rowstride ()">cogl_texture_get_rowstride</a>          (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="cogl-Textures.html#cogl-texture-get-max-waste" title="cogl_texture_get_max_waste ()">cogl_texture_get_max_waste</a>          (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-is-sliced" title="cogl_texture_is_sliced ()">cogl_texture_is_sliced</a>              (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-get-gl-texture" title="cogl_texture_get_gl_texture ()">cogl_texture_get_gl_texture</a>         (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-width" title="cogl_texture_get_width ()">cogl_texture_get_width</a>              (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-height" title="cogl_texture_get_height ()">cogl_texture_get_height</a>             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+<a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="returnvalue">CoglPixelFormat</span></a>     <a class="link" href="cogl-Textures.html#cogl-texture-get-format" title="cogl_texture_get_format ()">cogl_texture_get_format</a>             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-Textures.html#cogl-texture-get-rowstride" title="cogl_texture_get_rowstride ()">cogl_texture_get_rowstride</a>          (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-Textures.html#cogl-texture-get-max-waste" title="cogl_texture_get_max_waste ()">cogl_texture_get_max_waste</a>          (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-is-sliced" title="cogl_texture_is_sliced ()">cogl_texture_is_sliced</a>              (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-get-gl-texture" title="cogl_texture_get_gl_texture ()">cogl_texture_get_gl_texture</a>         (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> *out_gl_handle</code></em>,
                                                          <em class="parameter"><code><span class="type">GLenum</span> *out_gl_target</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="cogl-Textures.html#cogl-texture-get-data" title="cogl_texture_get_data ()">cogl_texture_get_data</a>               (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-Textures.html#cogl-texture-get-data" title="cogl_texture_get_data ()">cogl_texture_get_data</a>               (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-set-region" title="cogl_texture_set_region ()">cogl_texture_set_region</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-Textures.html#cogl-texture-set-region" title="cogl_texture_set_region ()">cogl_texture_set_region</a>             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> src_x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> src_y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> dst_x</code></em>,
@@ -101,7 +101,7 @@ unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-
 <div class="refsect1">
 <a name="cogl-Textures.description"></a><h2>Description</h2>
 <p>
-COGL allows creating and manipulating GL textures using a uniform
+Cogl allows creating and manipulating textures using a uniform
 API that tries to hide all the various complexities of creating,
 loading and manipulating textures.
 </p>
@@ -200,12 +200,12 @@ Flags to pass to the cogl_texture_new_* family of functions.
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-with-size"></a><h3>cogl_texture_new_with_size ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_with_size          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_with_size          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>);</pre>
 <p>
-Creates a new COGL texture with the specified dimensions and pixel format.
+Creates a new <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> with the specified dimensions and pixel format.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -230,8 +230,7 @@ texture.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the newly created texture or
-<a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -240,12 +239,12 @@ texture.</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-from-file"></a><h3>cogl_texture_new_from_file ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_file          (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_from_file          (<em class="parameter"><code>const <span class="type">char</span> *filename</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
-Creates a COGL texture from an image file.
+Creates a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> from an image file.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -277,8 +276,7 @@ other than straight blending.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the newly created texture or
-<a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -287,7 +285,7 @@ other than straight blending.</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-from-data"></a><h3>cogl_texture_new_from_data ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_data          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_from_data          (<em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
@@ -295,7 +293,7 @@ other than straight blending.</td>
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);</pre>
 <p>
-Creates a new COGL texture based on data residing in memory.
+Creates a new <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> based on data residing in memory.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -340,8 +338,7 @@ scanlines in <em class="parameter"><code>data</code></em>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the newly created texture or
-<a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -350,7 +347,7 @@ scanlines in <em class="parameter"><code>data</code></em>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-from-foreign"></a><h3>cogl_texture_new_from_foreign ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_foreign       (<em class="parameter"><code><span class="type">GLuint</span> gl_handle</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_from_foreign       (<em class="parameter"><code><span class="type">GLuint</span> gl_handle</code></em>,
                                                          <em class="parameter"><code><span class="type">GLenum</span> gl_target</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> width</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> height</code></em>,
@@ -358,7 +355,7 @@ scanlines in <em class="parameter"><code>data</code></em>
                                                          <em class="parameter"><code><span class="type">GLuint</span> y_pot_waste</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>);</pre>
 <p>
-Creates a COGL texture based on an existing OpenGL texture; the
+Creates a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> based on an existing OpenGL texture; the
 width, height and format are passed along since it is not always
 possible to query these from OpenGL.
 </p>
@@ -403,8 +400,7 @@ the texture coordinate range [0:1].
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the newly created texture or
-<a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -413,18 +409,18 @@ the texture coordinate range [0:1].
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-from-bitmap"></a><h3>cogl_texture_new_from_bitmap ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_bitmap        (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> bmp_handle</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_from_bitmap        (<em class="parameter"><code><a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a> *bitmap</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Textures.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>);</pre>
 <p>
-Creates a COGL texture from a CoglBitmap.
+Creates a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> from a <a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bmp_handle</code></em> :</span></p></td>
-<td>A CoglBitmap handle</td>
+<td><p><span class="term"><em class="parameter"><code>bitmap</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Bitmaps.html#CoglBitmap" title="CoglBitmap"><span class="type">CoglBitmap</span></a> pointer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
@@ -438,8 +434,7 @@ texture</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the newly created texture or
-<a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> on failure</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -448,7 +443,7 @@ texture</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-new-from-sub-texture"></a><h3>cogl_texture_new_from_sub_texture ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_sub_texture   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> full_texture</code></em>,
+<pre class="programlisting"><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_texture_new_from_sub_texture   (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *full_texture</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> sub_width</code></em>,
@@ -473,7 +468,7 @@ texture.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>full_texture</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to an existing texture</td>
+<td>a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> pointer</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sub_x</code></em> :</span></p></td>
@@ -493,7 +488,7 @@ texture.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> to the new texture.</td>
+<td>A newly created <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> on failure</td>
 </tr>
 </tbody>
 </table></div>
@@ -502,16 +497,16 @@ texture.
 <hr>
 <div class="refsect2">
 <a name="cogl-is-texture"></a><h3>cogl_is_texture ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_texture                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_texture                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
 <p>
-Gets whether the given handle references an existing texture object.
+Gets whether the given object references a texture object.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>A CoglHandle</td>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-General-API.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> pointer</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -525,141 +520,135 @@ Gets whether the given handle references an existing texture object.
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-width"></a><h3>cogl_texture_get_width ()</h3>
-<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_width              (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_width              (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 Queries the width of a cogl texture.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the width of the GPU side texture in pixels</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-height"></a><h3>cogl_texture_get_height ()</h3>
-<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_height             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_height             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 Queries the height of a cogl texture.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the height of the GPU side texture in pixels</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-format"></a><h3>cogl_texture_get_format ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="returnvalue">CoglPixelFormat</span></a>     cogl_texture_get_format             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="returnvalue">CoglPixelFormat</span></a>     cogl_texture_get_format             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 Queries the <a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> of a cogl texture.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the <a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> of the GPU side texture</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-rowstride"></a><h3>cogl_texture_get_rowstride ()</h3>
-<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_rowstride          (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_texture_get_rowstride          (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_texture_get_rowstride</code> has been deprecated since version 1.10 and should not be used in newly-written code. There's no replacement for the API but there's
+                  also no known need for API either. It was just
+                  a mistake that it was ever published.</p>
+</div>
 <p>
-Queries the rowstride of a cogl texture.
+Determines the bytes-per-pixel for the <a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> retrieved
+from <a class="link" href="cogl-Textures.html#cogl-texture-get-format" title="cogl_texture_get_format ()"><code class="function">cogl_texture_get_format()</code></a> and multiplies that by the texture's
+width.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>It's very unlikely that anyone would need to use this API to
+query the internal rowstride of a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> which can just be
+considered an implementation detail. Actually it's not even useful
+internally since underlying drivers are free to use a different
+format</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>This API is only here for backwards compatibility and
+shouldn't be used in new code. In particular please don't be
+mislead to pass the returned value to <a class="link" href="cogl-Textures.html#cogl-texture-get-data" title="cogl_texture_get_data ()"><code class="function">cogl_texture_get_data()</code></a> for
+the rowstride, since you should be passing the rowstride you desire
+for your destination buffer not the rowstride of the source
+texture.</div>
+<p>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the offset in bytes between each consequetive row of pixels</td>
-</tr>
-</tbody>
+<td>The bytes-per-pixel for the current format
+multiplied by the texture's width</td>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-max-waste"></a><h3>cogl_texture_get_max_waste ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_texture_get_max_waste          (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_texture_get_max_waste          (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 Queries the maximum wasted (unused) pixels in one dimension of a GPU side
 texture.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>the maximum waste</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-is-sliced"></a><h3>cogl_texture_is_sliced ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_is_sliced              (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_is_sliced              (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 Queries if a texture is sliced (stored as multiple GPU side tecture
 objects).
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
-<tr>
+<tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the texture is sliced, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if the texture
 is stored as a single GPU texture</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-gl-texture"></a><h3>cogl_texture_get_gl_texture ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_get_gl_texture         (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_get_gl_texture         (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><span class="type">GLuint</span> *out_gl_handle</code></em>,
                                                          <em class="parameter"><code><span class="type">GLenum</span> *out_gl_target</code></em>);</pre>
 <p>
-Queries the GL handles for a GPU side texture through its <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a>.
+Queries the GL handles for a GPU side texture through its <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a>.
 </p>
 <p>
 If the texture is spliced the data for the first sub texture will be
@@ -668,10 +657,6 @@ queried.
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>out_gl_handle</code></em> :</span></p></td>
 <td>pointer to return location for the
@@ -696,38 +681,43 @@ if the handle was invalid</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-get-data"></a><h3>cogl_texture_get_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_texture_get_data               (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_texture_get_data               (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);</pre>
 <p>
 Copies the pixel data from a cogl texture to system memory.
 </p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Don't pass the value of <a class="link" href="cogl-Textures.html#cogl-texture-get-rowstride" title="cogl_texture_get_rowstride ()"><code class="function">cogl_texture_get_rowstride()</code></a> as the
+<em class="parameter"><code>rowstride</code></em> argument, the rowstride should be the rowstride you
+want for the destination <em class="parameter"><code>data</code></em> buffer not the rowstride of the
+source texture</div>
+<p>
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> for a texture.</td>
-</tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
 <td>the <a class="link" href="cogl-General-API.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> to store the texture as.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rowstride</code></em> :</span></p></td>
-<td>the rowstride of <em class="parameter"><code>data</code></em> or retrieved from texture if none is
-specified.</td>
+<td>the rowstride of <em class="parameter"><code>data</code></em> in bytes or pass 0 to calculate
+from the bytes-per-pixel of <em class="parameter"><code>format</code></em> multiplied by the
+<em class="parameter"><code>texture</code></em> width.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
-<td>memory location to write contents of buffer, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if we're
-only querying the data size through the return value.</td>
+<td>memory location to write the <em class="parameter"><code>texture</code></em>'s contents, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+to only query the data size through the return value.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the size of the texture data in bytes, or 0 if the texture
-is not valid</td>
+<td>the size of the texture data in bytes</td>
 </tr>
 </tbody>
 </table></div>
@@ -735,7 +725,7 @@ is not valid</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-set-region"></a><h3>cogl_texture_set_region ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_set_region             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_texture_set_region             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> src_x</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> src_y</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> dst_x</code></em>,
@@ -748,16 +738,19 @@ is not valid</td>
                                                          <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
                                                          <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> *data</code></em>);</pre>
 <p>
-Sets the pixels in a rectangular subregion of <em class="parameter"><code>handle</code></em> from an in-memory
+Sets the pixels in a rectangular subregion of <em class="parameter"><code>texture</code></em> from an in-memory
 buffer containing pixel data.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The region set can't be larger than the source <em class="parameter"><code>data</code></em>
+</div>
+<p>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a>.</td>
-</tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src_x</code></em> :</span></p></td>
 <td>upper left coordinate to use from source data.</td>
@@ -776,11 +769,13 @@ buffer containing pixel data.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dst_width</code></em> :</span></p></td>
-<td>width of destination region to write.</td>
+<td>width of destination region to write. (Must be less
+than or equal to <em class="parameter"><code>width</code></em>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dst_height</code></em> :</span></p></td>
-<td>height of destination region to write.</td>
+<td>height of destination region to write. (Must be less
+than or equal to <em class="parameter"><code>height</code></em>)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
@@ -816,6 +811,6 @@ specified)</td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

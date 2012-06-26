@@ -40,12 +40,9 @@ host_triplet = @host@
 @BUILD_COGL_PANGO_TRUE@am__append_1 = cogl-pango
 DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/README.in \
-	$(srcdir)/config.h.in \
+	$(srcdir)/config.h.in $(srcdir)/config.h.win32.in \
 	$(top_srcdir)/build/autotools/Makefile.am.release \
-	$(top_srcdir)/configure ABOUT-NLS COPYING ChangeLog NEWS \
-	build/compile build/config.guess build/config.rpath \
-	build/config.sub build/depcomp build/install-sh \
-	build/ltmain.sh build/missing
+	$(top_srcdir)/configure ABOUT-NLS COPYING ChangeLog NEWS
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps =  \
@@ -74,7 +71,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = README
+CONFIG_CLEAN_FILES = README config.h.win32
 CONFIG_CLEAN_VPATH_FILES =
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
@@ -98,7 +95,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir dist dist-all distcheck
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = cogl tests cogl-pango examples doc po
+DIST_SUBDIRS = cogl tests cogl-pango examples doc po build
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -200,6 +197,7 @@ GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GI_REQ_VERSION = @GI_REQ_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -209,9 +207,14 @@ GMSGFMT_015 = @GMSGFMT_015@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GTK_DOC_REQ_VERSION = @GTK_DOC_REQ_VERSION@
+HAVE_GL = @HAVE_GL@
+HAVE_GLES1 = @HAVE_GLES1@
+HAVE_GLES2 = @HAVE_GLES2@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -332,11 +335,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = cogl tests $(am__append_1) examples doc po
+SUBDIRS = cogl tests $(am__append_1) examples doc po build
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
 EXTRA_DIST = \
 	README.in \
-	config-custom.h
+	config-custom.h \
+	config.h.win32 \
+	config.h.win32.in
 
 
 # .changelog expects these to be initializes
@@ -350,7 +355,9 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-gles2 \
 	--enable-gl \
 	--enable-xlib-egl-platform \
-	--enable-glx
+	--enable-wayland-egl-platform \
+	--enable-glx \
+	--enable-wayland-egl-server
 
 TAR_OPTIONS = --owner=0 --group=0
 RELEASE_UPLOAD_HOST = clutter-project.org
@@ -358,7 +365,7 @@ RELEASE_UPLOAD_USER = clutter
 RELEASE_UPLOAD_DIR = $(RELEASE_UPLOAD_USER)@$(RELEASE_UPLOAD_HOST):~$(RELEASE_UPLOAD_USER)/upload-source
 RELEASE_URL_BASE = http://source.clutter-project.org/sources/clutter
 RELEASE_URL = $(RELEASE_URL_BASE)/$(COGL_MAJOR_VERSION).$(COGL_MINOR_VERSION)
-RELEASE_ANNOUNCE_LIST = clutter-announce@clutter-project.org
+RELEASE_ANNOUNCE_LIST = cogl3d@googlegroups.com, clutter-announce@clutter-project.org
 RELEASE_ANNOUNCE_CC = gnome-announce-list@gnome.org
 RELEASE_DOC_URL = http://docs.clutter-project.org/docs/
 tar_file = $(distdir).tar.bz2
@@ -419,6 +426,8 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 distclean-hdr:
 	-rm -f config.h stamp-h1
 README: $(top_builddir)/config.status $(srcdir)/README.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+config.h.win32: $(top_builddir)/config.status $(srcdir)/config.h.win32.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
@@ -918,10 +927,20 @@ release-message:
 	@echo "         Subject: Release Cogl $(COGL_1_VERSION) ($(COGL_RELEASE_STATUS))"
 	@echo "        Contents:"
 	@csplit -q --prefix=.README-section- $(top_builddir)/README '/^--$$/' '{*}'
+	@csplit -q --prefix=.NEWS-section- NEWS '/^Cogl/' '{*}'
 	@echo "--- CUT HERE ---"
 	@echo "Good news, everyone!"
 	@echo ""
-	@echo "A new Cogl $(COGL_RELEASE_STATUS) is now available at:"
+	@echo "A new Cogl $(COGL_RELEASE_STATUS) ($(COGL_1_VERSION)) is now available:"
+	@echo ""
+	@echo "LATEST NEWS"
+	@echo "-------------------------------------------------------------------------------"
+	@echo ""
+	@cat .NEWS-section-01
+	@echo "FETCHING THE RELEASE"
+	@echo "-------------------------------------------------------------------------------"
+	@echo ""
+	@echo "Tarballs can be downloaded from:"
 	@echo ""
 	@echo "  http://source.clutter-project.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"
 	@echo "  http://download.gnome.org/sources/cogl/1.$(COGL_1_MINOR_VERSION)/"

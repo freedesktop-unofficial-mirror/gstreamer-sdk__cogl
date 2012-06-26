@@ -1,0 +1,917 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Shader snippets</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-pipeline-apis.html" title="Setting Up A GPU Pipeline">
+<link rel="prev" href="cogl-2.0-experimental-Pipeline.html" title="Pipeline">
+<link rel="next" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-Pipeline.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-pipeline-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-buffer-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Shader-snippets.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Shader-snippets.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Shader-snippets"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Shader-snippets.top_of_page"></a>Shader snippets</span></h2>
+<p>Shader snippets — Functions for creating and manipulating shader snippets</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Shader-snippets.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet">CoglSnippet</a>;
+enum                <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook">CoglSnippetHook</a>;
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="returnvalue">CoglSnippet</span></a> *       <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-new" title="cogl_snippet_new ()">cogl_snippet_new</a>                    (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="type">CoglSnippetHook</span></a> hook</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *declarations</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *post</code></em>);
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="returnvalue">CoglSnippetHook</span></a>     <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-get-hook" title="cogl_snippet_get_hook ()">cogl_snippet_get_hook</a>               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-is-snippet" title="cogl_is_snippet ()">cogl_is_snippet</a>                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-declarations" title="cogl_snippet_set_declarations ()">cogl_snippet_set_declarations</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *declarations</code></em>);
+const <span class="returnvalue">char</span> *        <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-get-declarations" title="cogl_snippet_get_declarations ()">cogl_snippet_get_declarations</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-pre" title="cogl_snippet_set_pre ()">cogl_snippet_set_pre</a>                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *pre</code></em>);
+const <span class="returnvalue">char</span> *        <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-get-pre" title="cogl_snippet_get_pre ()">cogl_snippet_get_pre</a>                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-replace" title="cogl_snippet_set_replace ()">cogl_snippet_set_replace</a>            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *replace</code></em>);
+const <span class="returnvalue">char</span> *        <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-get-replace" title="cogl_snippet_get_replace ()">cogl_snippet_get_replace</a>            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-post" title="cogl_snippet_set_post ()">cogl_snippet_set_post</a>               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *post</code></em>);
+const <span class="returnvalue">char</span> *        <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-get-post" title="cogl_snippet_get_post ()">cogl_snippet_get_post</a>               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Shader-snippets.description"></a><h2>Description</h2>
+<p>
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>s are used to modify or replace parts of a
+<span class="type">CoglPipeline</span> using GLSL. GLSL is a programming language supported
+by OpenGL on programmable hardware to provide a more flexible
+description of what should be rendered. A description of GLSL
+itself is outside the scope of this documentation but any good
+OpenGL book should help to describe it.
+</p>
+<p>
+Unlike in OpenGL, when using GLSL with Cogl it is possible to write
+short snippets to replace small sections of the pipeline instead of
+having to replace the whole of either the vertex or fragment
+pipelines. Of course it is also possible to replace the whole of
+the pipeline if needed.
+</p>
+<p>
+Each snippet is a standalone chunk of code which would attach to
+the pipeline at a particular point. The code is split into four
+separate strings (all of which are optional):
+</p>
+<p>
+</p>
+<div class="glosslist"><dl>
+<dt>declarations</dt>
+<dd><p>
+The code in this string will be inserted outside of any function in
+the global scope of the shader. This can be used to declare
+uniforms, attributes, varyings and functions to be used by the
+snippet.
+  </p></dd>
+<dt>pre</dt>
+<dd><p>
+The code in this string will be inserted before the hook point.
+  </p></dd>
+<dt>post</dt>
+<dd><p>
+The code in this string will be inserted after the hook point. This
+can be used to modify the results of the builtin generated code for
+that hook point.
+  </p></dd>
+<dt>replace</dt>
+<dd><p>
+If present the code in this string will replace the generated code
+for the hook point.
+  </p></dd>
+</dl></div>
+<p>
+</p>
+<p>
+All of the strings apart from the declarations string of a pipeline
+are generated in a single function so they can share variables
+declared from one string in another. The scope of the code is
+limited to each snippet so local variables declared in the snippet
+will not collide with variables declared in another
+snippet. However, code in the 'declarations' string is global to
+the shader so it is the application's responsibility to ensure that
+variables declared here will not collide with those from other
+snippets.
+</p>
+<p>
+The snippets can be added to a pipeline with
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-snippet" title="cogl_pipeline_add_snippet ()"><code class="function">cogl_pipeline_add_snippet()</code></a> or
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-layer-snippet" title="cogl_pipeline_add_layer_snippet ()"><code class="function">cogl_pipeline_add_layer_snippet()</code></a>. Which function to use depends on
+which hook the snippet is targetting. The snippets are all
+generated in the order they are added to the pipeline. That is, the
+post strings are executed in the order they are added to the
+pipeline and the pre strings are executed in reverse order. If any
+replace strings are given for a snippet then any other snippets
+with the same hook added before that snippet will be ignored. The
+different hooks are documented under <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="type">CoglSnippetHook</span></a>.
+</p>
+<p>
+For portability with GLES2, it is recommended not to use the GLSL
+builtin names such as gl_FragColor. Instead there are replacement
+names under the cogl_* namespace which can be used instead. These
+are:
+</p>
+<p>
+</p>
+<div class="glosslist"><dl>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_modelview_matrix</em></span>
+</dt>
+<dd><p>
+   The current modelview matrix. This is equivalent to
+   <span class="type">gl_ModelViewMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_projection_matrix</em></span>
+</dt>
+<dd><p>
+   The current projection matrix. This is equivalent to
+   <span class="type">gl_ProjectionMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_modelview_projection_matrix</em></span>
+</dt>
+<dd><p>
+   The combined modelview and projection matrix. A vertex shader
+   would typically use this to transform the incoming vertex
+   position. The separate modelview and projection matrices are
+   usually only needed for lighting calculations. This is
+   equivalent to <span class="type">gl_ModelViewProjectionMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_texture_matrix</em></span>[]</dt>
+<dd><p>
+   An array of matrices for transforming the texture
+   coordinates. This is equivalent to <span class="type">gl_TextureMatrix</span>.
+  </p></dd>
+</dl></div>
+<p>
+</p>
+<p>
+In a vertex shader, the following are also available:
+</p>
+<p>
+</p>
+<div class="glosslist"><dl>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_position_in</em></span>
+</dt>
+<dd><p>
+   The incoming vertex position. This is equivalent to <span class="type">gl_Vertex</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_color_in</em></span>
+</dt>
+<dd><p>
+   The incoming vertex color. This is equivalent to <span class="type">gl_Color</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_tex_coord_in</em></span>
+</dt>
+<dd><p>
+   The texture coordinate for the first texture unit. This is
+   equivalent to <span class="type">gl_MultiTexCoord0</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_tex_coord0_in</em></span>
+</dt>
+<dd><p>
+   The texture coordinate for the first texture unit. This is
+   equivalent to <span class="type">gl_MultiTexCoord0</span>. There is also
+   <span class="type">cogl_tex_coord1_in</span> and so on.
+  </p></dd>
+<dt>attribute vec3
+        <span class="emphasis"><em>cogl_normal_in</em></span>
+</dt>
+<dd><p>
+   The normal of the vertex. This is equivalent to <span class="type">gl_Normal</span>.
+  </p></dd>
+<dt>vec4
+        <span class="emphasis"><em>cogl_position_out</em></span>
+</dt>
+<dd><p>
+   The calculated position of the vertex. This must be written to
+   in all vertex shaders. This is equivalent to <span class="type">gl_Position</span>.
+  </p></dd>
+<dt>float
+        <span class="emphasis"><em>cogl_point_size_out</em></span>
+</dt>
+<dd><p>
+   The calculated size of a point. This is equivalent to <span class="type">gl_PointSize</span>.
+  </p></dd>
+<dt>varying vec4
+        <span class="emphasis"><em>cogl_color_out</em></span>
+</dt>
+<dd><p>
+   The calculated color of a vertex. This is equivalent to <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>varying vec4
+        <span class="emphasis"><em>cogl_tex_coord_out</em></span>[]</dt>
+<dd><p>
+   An array of calculated texture coordinates for a vertex. This is
+   equivalent to <span class="type">gl_TexCoord</span>.
+  </p></dd>
+</dl></div>
+<p>
+</p>
+<p>
+In a fragment shader, the following are also available:
+</p>
+<p>
+</p>
+<div class="glosslist"><dl>
+<dt>varying vec4 <span class="emphasis"><em>cogl_color_in</em></span>
+</dt>
+<dd><p>
+   The calculated color of a vertex. This is equivalent to <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>varying vec4
+             <span class="emphasis"><em>cogl_tex_coord_in</em></span>[]</dt>
+<dd><p>
+   An array of calculated texture coordinates for a vertex. This is
+   equivalent to <span class="type">gl_TexCoord</span>.
+  </p></dd>
+<dt>vec4 <span class="emphasis"><em>cogl_color_out</em></span>
+</dt>
+<dd><p>
+   The final calculated color of the fragment. All fragment shaders
+   must write to this variable. This is equivalent to
+   <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>float <span class="emphasis"><em>cogl_depth_out</em></span>
+</dt>
+<dd><p>
+   An optional output variable specifying the depth value to use
+   for this fragment. This is equivalent to <span class="type">gl_FragDepth</span>.
+  </p></dd>
+<dt>bool <span class="emphasis"><em>cogl_front_facing</em></span>
+</dt>
+<dd><p>
+   A readonly variable that will be true if the current primitive
+   is front facing. This can be used to implement two-sided
+   coloring algorithms. This is equivalent to <span class="type">gl_FrontFacing</span>.
+  </p></dd>
+</dl></div>
+<p>
+</p>
+<p>
+Here is an example of using a snippet to add a desaturate effect to the
+generated color on a pipeline.
+</p>
+<p>
+</p>
+<pre class="programlisting">
+  CoglPipeline *pipeline = cogl_pipeline_new ();
+
+  /* Set up the pipeline here, ie by adding a texture or other
+     layers */
+
+  /* Create the snippet. The first string is the declarations which
+     we will use to add a uniform. The second is the 'post' string which
+     will contain the code to perform the desaturation. */
+  CoglSnippet *snippet =
+    cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                      "uniform float factor;",
+                      "float gray = dot (vec3 (0.299, 0.587, 0.114), "
+                      "                  cogl_color_out.rgb);"
+                      "cogl_color_out.rgb = mix (vec3 (gray),"
+                      "                          cogl_color_out.rgb,"
+                      "                          factor);");
+
+  /* Add it to the pipeline */
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  /* The pipeline keeps a reference to the snippet
+     so we don't need to */
+  cogl_object_unref (snippet);
+
+  /* Update the custom uniform on the pipeline */
+  int location = cogl_pipeline_get_uniform_location (pipeline, "factor");
+  cogl_pipeline_set_uniform_1f (pipeline, location, 0.5f);
+
+  /* Now we can render with the snippet as usual */
+  cogl_push_source (pipeline);
+  cogl_rectangle (0, 0, 10, 10);
+  cogl_pop_source ();
+</pre>
+<p>
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Shader-snippets.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglSnippet"></a><h3>CoglSnippet</h3>
+<pre class="programlisting">typedef struct _CoglSnippet CoglSnippet;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglSnippetHook"></a><h3>enum CoglSnippetHook</h3>
+<pre class="programlisting">typedef enum {
+  /* Per pipeline vertex hooks */
+  COGL_SNIPPET_HOOK_VERTEX = 0,
+  COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
+
+  /* Per pipeline fragment hooks */
+  COGL_SNIPPET_HOOK_FRAGMENT = 2048,
+
+  /* Per layer vertex hooks */
+  COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM = 4096,
+
+  /* Per layer fragment hooks */
+  COGL_SNIPPET_HOOK_LAYER_FRAGMENT = 6144,
+  COGL_SNIPPET_HOOK_TEXTURE_LOOKUP
+} CoglSnippetHook;
+</pre>
+<p>
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="type">CoglSnippetHook</span></a> is used to specify a location within a
+<span class="type">CoglPipeline</span> where the code of the snippet should be used when it
+is attached to a pipeline.
+</p>
+<p>
+</p>
+<div class="glosslist"><dl>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-VERTEX:CAPS"><code class="literal">COGL_SNIPPET_HOOK_VERTEX</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the vertex processing
+stage of the pipeline. This gives a chance for the application to
+modify the vertex attributes generated by the shader. Typically the
+snippet will modify cogl_color_out or cogl_position_out builtins.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted at the top of the
+<code class="function">main()</code> function before any vertex processing is done.
+</p>
+<p>
+The ‘replace’ string in <em class="parameter"><code>snippet</code></em> will be used instead of the
+generated vertex processing if it is present. This can be used if
+the application wants to provide a complete vertex shader and
+doesn't need the generated output from Cogl.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted after all of the
+standard vertex processing is done. This can be used to modify the
+outputs.
+</p>
+</dd>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-VERTEX-TRANSFORM:CAPS"><code class="literal">COGL_SNIPPET_HOOK_VERTEX_TRANSFORM</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the vertex transform stage.
+Typically the snippet will use the cogl_modelview_matrix,
+cogl_projection_matrix and cogl_modelview_projection_matrix matrices and the
+cogl_position_in attribute. The hook must write to cogl_position_out.
+The default processing for this hook will multiply cogl_position_in by
+the combined modelview-projection matrix and store it on cogl_position_out.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted at the top of the
+<code class="function">main()</code> function before the vertex transform is done.
+</p>
+<p>
+The ‘replace’ string in <em class="parameter"><code>snippet</code></em> will be used instead of the
+generated vertex transform if it is present.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted after all of the
+standard vertex transformation is done. This can be used to modify the
+cogl_position_out in addition to the default processing.
+</p>
+</dd>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-FRAGMENT:CAPS"><code class="literal">COGL_SNIPPET_HOOK_FRAGMENT</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the fragment processing
+stage of the pipeline. This gives a chance for the application to
+modify the fragment color generated by the shader. Typically the
+snippet will modify cogl_color_out.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted at the top of the
+<code class="function">main()</code> function before any fragment processing is done.
+</p>
+<p>
+The ‘replace’ string in <em class="parameter"><code>snippet</code></em> will be used instead of the
+generated fragment processing if it is present. This can be used if
+the application wants to provide a complete fragment shader and
+doesn't need the generated output from Cogl.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted after all of the
+standard fragment processing is done. At this point the generated
+value for the rest of the pipeline state will already be in
+cogl_color_out so the application can modify the result by altering
+this variable.
+</p>
+</dd>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-TEXTURE-COORD-TRANSFORM:CAPS"><code class="literal">COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the texture coordinate
+transformation of a particular layer. This can be used to replace
+the processing for a layer or to modify the results.
+</p>
+<p>
+Within the snippet code for this hook there are two extra
+variables. The first is a mat4 called cogl_matrix which represents
+the user matrix for this layer. The second is called cogl_tex_coord
+and represents the incoming and outgoing texture coordinate. On
+entry to the hook, cogl_tex_coord contains the value of the
+corresponding texture coordinate attribute for this layer. The hook
+is expected to modify this variable. The output will be passed as a
+varying to the fragment processing stage. The default code will
+just multiply cogl_matrix by cogl_tex_coord and store the result in
+cogl_tex_coord.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted just before the
+fragment processing for this layer. At this point cogl_tex_coord
+still contains the value of the texture coordinate attribute.
+</p>
+<p>
+If a ‘replace’ string is given then this will be used instead of
+the default fragment processing for this layer. The snippet can
+modify cogl_tex_coord or leave it as is to apply no transformation.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted just after the
+transformation. At this point cogl_tex_coord will contain the
+results of the transformation but it can be further modified by the
+snippet.
+</p>
+</dd>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-LAYER-FRAGMENT:CAPS"><code class="literal">COGL_SNIPPET_HOOK_LAYER_FRAGMENT</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the fragment processing
+of a particular layer. This can be used to replace the processing
+for a layer or to modify the results.
+</p>
+<p>
+Within the snippet code for this hook there is an extra vec4
+variable called ‘cogl_layer’. This contains the resulting color
+that will be used for the layer. This can be modified in the ‘post’
+section or it the default processing can be replaced entirely using
+the ‘replace’ section.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted just before the
+fragment processing for this layer.
+</p>
+<p>
+If a ‘replace’ string is given then this will be used instead of
+the default fragment processing for this layer. The snippet must write to
+the ‘cogl_layer’ variable in that case.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted just after the
+fragment processing for the layer. The results can be modified by changing
+the value of the ‘cogl_layer’ variable.
+</p>
+</dd>
+<dt><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#COGL-SNIPPET-HOOK-TEXTURE-LOOKUP:CAPS"><code class="literal">COGL_SNIPPET_HOOK_TEXTURE_LOOKUP</code></a></dt>
+<dd>
+<p>
+Adds a shader snippet that will hook on to the texture lookup part
+of a given layer. This gives a chance for the application to modify
+the coordinates that will be used for the texture lookup or to
+alter the returned texel.
+</p>
+<p>
+Within the snippet code for this hook there are three extra
+variables available. ‘cogl_sampler’ is a sampler object
+representing the sampler for the layer where the snippet is
+attached. ‘cogl_tex_coord’ is a vec4 which contains the texture
+coordinates that will be used for the texture lookup. This can be
+modified. ‘cogl_texel’ will contain the result of the texture
+lookup. This can also be modified.
+</p>
+<p>
+The ‘declarations’ string in <em class="parameter"><code>snippet</code></em> will be inserted in the
+global scope of the shader. Use this to declare any uniforms,
+attributes or functions that the snippet requires.
+</p>
+<p>
+The ‘pre’ string in <em class="parameter"><code>snippet</code></em> will be inserted at the top of the
+<code class="function">main()</code> function before any fragment processing is done. This is a
+good place to modify the cogl_tex_coord variable.
+</p>
+<p>
+If a ‘replace’ string is given then this will be used instead of a
+the default texture lookup. The snippet would typically use its own
+sampler in this case.
+</p>
+<p>
+The ‘post’ string in <em class="parameter"><code>snippet</code></em> will be inserted after texture lookup
+has been preformed. Here the snippet can modify the cogl_texel
+variable to alter the returned texel.
+</p>
+</dd>
+</dl></div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-VERTEX:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_VERTEX</code></span></p></td>
+<td>A hook for the entire vertex processing
+  stage of the pipeline.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-VERTEX-TRANSFORM:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_VERTEX_TRANSFORM</code></span></p></td>
+<td>A hook for the vertex transformation.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-FRAGMENT:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_FRAGMENT</code></span></p></td>
+<td>A hook for the entire fragment
+  processing stage of the pipeline.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-TEXTURE-COORD-TRANSFORM:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM</code></span></p></td>
+<td>A hook for applying the
+  layer matrix to a texture coordinate for a layer.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-LAYER-FRAGMENT:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_LAYER_FRAGMENT</code></span></p></td>
+<td>A hook for the fragment
+  processing of a particular layer.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-SNIPPET-HOOK-TEXTURE-LOOKUP:CAPS"></a><span class="term"><code class="literal">COGL_SNIPPET_HOOK_TEXTURE_LOOKUP</code></span></p></td>
+<td>A hook for the texture lookup
+  stage of a given layer in a pipeline.
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-new"></a><h3>cogl_snippet_new ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="returnvalue">CoglSnippet</span></a> *       cogl_snippet_new                    (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="type">CoglSnippetHook</span></a> hook</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *declarations</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *post</code></em>);</pre>
+<p>
+Allocates and initializes a new snippet with the given source strings.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>hook</code></em> :</span></p></td>
+<td>The point in the pipeline that this snippet will wrap around
+or replace.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>declarations</code></em> :</span></p></td>
+<td>The source code for the declarations for this
+snippet or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. See <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-declarations" title="cogl_snippet_set_declarations ()"><code class="function">cogl_snippet_set_declarations()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>post</code></em> :</span></p></td>
+<td>The source code to run after the hook point where this
+shader snippet is attached or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. See <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-post" title="cogl_snippet_set_post ()"><code class="function">cogl_snippet_set_post()</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a pointer to a new <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-get-hook"></a><h3>cogl_snippet_get_hook ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippetHook" title="enum CoglSnippetHook"><span class="returnvalue">CoglSnippetHook</span></a>     cogl_snippet_get_hook               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the hook that was set when <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-new" title="cogl_snippet_new ()"><code class="function">cogl_snippet_new()</code></a> was
+called.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-snippet"></a><h3>cogl_is_snippet ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_snippet                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Gets whether the given handle references an existing snippet object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
+<td>A CoglHandle</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the handle references a <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-set-declarations"></a><h3>cogl_snippet_set_declarations ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_snippet_set_declarations       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *declarations</code></em>);</pre>
+<p>
+Sets a source string that will be inserted in the global scope of
+the generated shader when this snippet is used on a pipeline. This
+string is typically used to declare uniforms, attributes or
+functions that will be used by the other parts of the snippets.
+</p>
+<p>
+This function should only be called before the snippet is attached
+to its first pipeline. After that the snippet should be considered
+immutable.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>declarations</code></em> :</span></p></td>
+<td>The new source string for the declarations section
+of this snippet.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-get-declarations"></a><h3>cogl_snippet_get_declarations ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *        cogl_snippet_get_declarations       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the source string that was set with
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-declarations" title="cogl_snippet_set_declarations ()"><code class="function">cogl_snippet_set_declarations()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-set-pre"></a><h3>cogl_snippet_set_pre ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_snippet_set_pre                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *pre</code></em>);</pre>
+<p>
+Sets a source string that will be inserted before the hook point in
+the generated shader for the pipeline that this snippet is attached
+to. Please see the documentation of each hook point in
+<span class="type">CoglPipeline</span> for a description of how this string should be used.
+</p>
+<p>
+This function should only be called before the snippet is attached
+to its first pipeline. After that the snippet should be considered
+immutable.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pre</code></em> :</span></p></td>
+<td>The new source string for the pre section of this snippet.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-get-pre"></a><h3>cogl_snippet_get_pre ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *        cogl_snippet_get_pre                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the source string that was set with
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-pre" title="cogl_snippet_set_pre ()"><code class="function">cogl_snippet_set_pre()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-set-replace"></a><h3>cogl_snippet_set_replace ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_snippet_set_replace            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *replace</code></em>);</pre>
+<p>
+Sets a source string that will be used instead of any generated
+source code or any previous snippets for this hook point. Please
+see the documentation of each hook point in <span class="type">CoglPipeline</span> for a
+description of how this string should be used.
+</p>
+<p>
+This function should only be called before the snippet is attached
+to its first pipeline. After that the snippet should be considered
+immutable.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>replace</code></em> :</span></p></td>
+<td>The new source string for the replace section of this snippet.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-get-replace"></a><h3>cogl_snippet_get_replace ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *        cogl_snippet_get_replace            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the source string that was set with
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-replace" title="cogl_snippet_set_replace ()"><code class="function">cogl_snippet_set_replace()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-set-post"></a><h3>cogl_snippet_set_post ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_snippet_set_post               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *post</code></em>);</pre>
+<p>
+Sets a source string that will be inserted after the hook point in
+the generated shader for the pipeline that this snippet is attached
+to. Please see the documentation of each hook point in
+<span class="type">CoglPipeline</span> for a description of how this string should be used.
+</p>
+<p>
+This function should only be called before the snippet is attached
+to its first pipeline. After that the snippet should be considered
+immutable.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>post</code></em> :</span></p></td>
+<td>The new source string for the post section of this snippet.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-snippet-get-post"></a><h3>cogl_snippet_get_post ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *        cogl_snippet_get_post               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the source string that was set with
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-set-post" title="cogl_snippet_set_post ()"><code class="function">cogl_snippet_set_post()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if none was set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

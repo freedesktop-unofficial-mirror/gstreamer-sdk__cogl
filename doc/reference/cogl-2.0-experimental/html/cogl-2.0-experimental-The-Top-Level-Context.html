@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
 <link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="prev" href="cogl-2.0-experimental-The-Object-Interface.html" title="The Object Interface">
-<link rel="next" href="cogl-pipeline-apis.html" title="Setting Up A GPU Pipeline">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="next" href="cogl-2.0-experimental-Main-loop-integeration.html" title="Main loop integeration">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Cogl 2.0 Reference Manual</th>
-<td><a accesskey="n" href="cogl-pipeline-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="cogl-2.0-experimental-Main-loop-integeration.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#cogl-2.0-experimental-The-Top-Level-Context.synopsis" class="shortcut">Top</a>
@@ -37,8 +37,21 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-The-Top-Level-Context.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-new" title="cogl_context_new">cogl_context_new</a>
-#define             <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-get-display" title="cogl_context_get_display">cogl_context_get_display</a>
+<pre class="synopsis"><span class="returnvalue">CoglContext</span> *       <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-new" title="cogl_context_new ()">cogl_context_new</a>                    (<em class="parameter"><code><span class="type">CoglDisplay</span> *display</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-is-context" title="cogl_is_context ()">cogl_is_context</a>                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">CoglDisplay</span> *       <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-get-display" title="cogl_context_get_display ()">cogl_context_get_display</a>            (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>);
+
+enum                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID">CoglFeatureID</a>;
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()">cogl_has_feature</a>                    (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID"><span class="type">CoglFeatureID</span></a> feature</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-features" title="cogl_has_features ()">cogl_has_features</a>                   (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);
+<span class="returnvalue">void</span>                (<a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureCallback" title="CoglFeatureCallback ()">*CoglFeatureCallback</a>)              (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID"><span class="type">CoglFeatureID</span></a> feature</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-foreach-feature" title="cogl_foreach_feature ()">cogl_foreach_feature</a>                (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureCallback" title="CoglFeatureCallback ()"><span class="type">CoglFeatureCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);
 
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-push-matrix" title="cogl_push_matrix ()">cogl_push_matrix</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-pop-matrix" title="cogl_pop_matrix ()">cogl_pop_matrix</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -90,7 +103,7 @@
                                                          <em class="parameter"><code><span class="type">float</span> green</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> blue</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> alpha</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-texture" title="cogl_set_source_texture ()">cogl_set_source_texture</a>             (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-set-source-texture" title="cogl_set_source_texture ()">cogl_set_source_texture</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
 <span class="returnvalue">void</span> *              <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-get-source" title="cogl_get_source ()">cogl_get_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-push-source" title="cogl_push_source ()">cogl_push_source</a>                    (<em class="parameter"><code><span class="type">void</span> *material</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-pop-source" title="cogl_pop_source ()">cogl_pop_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -114,26 +127,385 @@ enum                <a class="link" href="cogl-2.0-experimental-The-Top-Level-Co
 <div class="refsect1">
 <a name="cogl-2.0-experimental-The-Top-Level-Context.description"></a><h2>Description</h2>
 <p>
-A CoglContext is the topmost sandbox of Cogl state for an
-application or toolkit. Its main purpose is to bind together the
-key state objects at any one time; with the most significant being
-the current framebuffer being drawn too (See <a class="link" href="cogl-2.0-experimental-CoglFramebuffer---The-Framebuffer-Interface.html#CoglFramebuffer" title="CoglFramebuffer"><span class="type">CoglFramebuffer</span></a> for
-more details) and the current GPU pipeline configuration (See
-<span class="type">CoglPipeline</span> for more details).
+A <span class="type">CoglContext</span> is the top most sandbox of Cogl state for an
+application or toolkit. Its main purpose is to act as a sandbox
+for the memory management of state objects. Normally an application
+will only create a single context since there is no way to share
+resources between contexts.
+</p>
+<p>
+For those familiar with OpenGL or perhaps Cairo it should be
+understood that unlike these APIs a Cogl context isn't a rendering
+context as such. In other words Cogl doesn't aim to provide a state
+machine style model for configuring rendering parameters. Most
+rendering state in Cogl is directly associated with user managed
+objects called pipelines and geometry is drawn with a specific
+pipeline object to a framebuffer object and those 3 things fully
+define the state for drawing. This is an important part of Cogl's
+design since it helps you write orthogonal rendering components
+that can all access the same GPU without having to worry about
+what state other components have left you with.
 </p>
 </div>
 <div class="refsect1">
 <a name="cogl-2.0-experimental-The-Top-Level-Context.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="cogl-context-new"></a><h3>cogl_context_new</h3>
-<pre class="programlisting">#define cogl_context_new cogl_context_new_EXP
-</pre>
+<a name="cogl-context-new"></a><h3>cogl_context_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglContext</span> *       cogl_context_new                    (<em class="parameter"><code><span class="type">CoglDisplay</span> *display</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Creates a new <span class="type">CoglContext</span> which acts as an application sandbox
+for any state objects that are allocated.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>display</code></em> :</span></p></td>
+<td>A <span class="type">CoglDisplay</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A GError return location.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <span class="type">CoglContext</span>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-context-get-display"></a><h3>cogl_context_get_display</h3>
-<pre class="programlisting">#define cogl_context_get_display cogl_context_get_display_EXP
+<a name="cogl-is-context"></a><h3>cogl_is_context ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_context                     (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Gets whether the given object references an existing context object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>An object or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the handle references a <span class="type">CoglContext</span>,
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-context-get-display"></a><h3>cogl_context_get_display ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglDisplay</span> *       cogl_context_get_display            (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>);</pre>
+<p>
+Retrieves the <span class="type">CoglDisplay</span> that is internally associated with the
+given <em class="parameter"><code>context</code></em>. This will return the same <span class="type">CoglDisplay</span> that was
+passed to <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-new" title="cogl_context_new ()"><code class="function">cogl_context_new()</code></a> or if <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> was passed to
+<a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-context-new" title="cogl_context_new ()"><code class="function">cogl_context_new()</code></a> then this function returns a pointer to the
+display that was automatically setup internally.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The <span class="type">CoglDisplay</span> associated with the
+given <em class="parameter"><code>context</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglFeatureID"></a><h3>enum CoglFeatureID</h3>
+<pre class="programlisting">typedef enum {
+  COGL_FEATURE_ID_TEXTURE_NPOT_BASIC = 1,
+  COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP,
+  COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT,
+  COGL_FEATURE_ID_TEXTURE_NPOT,
+  COGL_FEATURE_ID_TEXTURE_RECTANGLE,
+  COGL_FEATURE_ID_TEXTURE_3D,
+  COGL_FEATURE_ID_GLSL,
+  COGL_FEATURE_ID_ARBFP,
+  COGL_FEATURE_ID_OFFSCREEN,
+  COGL_FEATURE_ID_OFFSCREEN_MULTISAMPLE,
+  COGL_FEATURE_ID_ONSCREEN_MULTIPLE,
+  COGL_FEATURE_ID_UNSIGNED_INT_INDICES,
+  COGL_FEATURE_ID_DEPTH_RANGE,
+  COGL_FEATURE_ID_POINT_SPRITE,
+  COGL_FEATURE_ID_MAP_BUFFER_FOR_READ,
+  COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE,
+  COGL_FEATURE_ID_MIRRORED_REPEAT,
+  COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
+} CoglFeatureID;
 </pre>
+<p>
+All the capabilities that can vary between different GPUs supported
+by Cogl. Applications that depend on any of these features should explicitly
+check for them using <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a> or <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-features" title="cogl_has_features ()"><code class="function">cogl_has_features()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-NPOT-BASIC:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_BASIC</code></span></p></td>
+<td>The hardware supports non power
+    of two textures, but you also need to check the
+    <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT-MIPMAP:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP</code></a> and <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT-REPEAT:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT</code></a>
+    features to know if the hardware supports npot texture mipmaps
+    or repeat modes other than
+    <code class="literal">COGL_RENDERER_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE</code> respectively.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-NPOT-MIPMAP:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP</code></span></p></td>
+<td>Mipmapping is supported in
+    conjuntion with non power of two textures.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-NPOT-REPEAT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT</code></span></p></td>
+<td>Repeat modes other than
+    <code class="literal">COGL_RENDERER_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE</code> are supported by the
+    hardware.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-NPOT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT</code></span></p></td>
+<td>Non power of two textures are supported
+   by the hardware. This is a equivalent to the
+   <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT-BASIC:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_BASIC</code></a>, <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT-MIPMAP:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP</code></a>
+   and <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT-REPEAT:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT</code></a> features combined.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-RECTANGLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_RECTANGLE</code></span></p></td>
+<td>Support for rectangular
+   textures with non-normalized texture coordinates.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-TEXTURE-3D:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_TEXTURE_3D</code></span></p></td>
+<td>3D texture support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-GLSL:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_GLSL</code></span></p></td>
+<td>GLSL support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-ARBFP:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_ARBFP</code></span></p></td>
+<td>ARBFP support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-OFFSCREEN:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_OFFSCREEN</code></span></p></td>
+<td>Offscreen rendering support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-OFFSCREEN-MULTISAMPLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_OFFSCREEN_MULTISAMPLE</code></span></p></td>
+<td>Multisample support for
+   offscreen framebuffers
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-ONSCREEN-MULTIPLE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_ONSCREEN_MULTIPLE</code></span></p></td>
+<td>Multiple onscreen framebuffers
+   supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-UNSIGNED-INT-INDICES:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_UNSIGNED_INT_INDICES</code></span></p></td>
+<td>Set if
+    <code class="literal">COGL_RENDERER_INDICES_TYPE_UNSIGNED_INT</code> is supported in
+    <a class="link" href="cogl-2.0-experimental-Indices.html#cogl-indices-new" title="cogl_indices_new ()"><code class="function">cogl_indices_new()</code></a>.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-DEPTH-RANGE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_DEPTH_RANGE</code></span></p></td>
+<td>cogl_pipeline_set_depth_range() support
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-POINT-SPRITE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_POINT_SPRITE</code></span></p></td>
+<td>Whether
+    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-point-sprite-coords-enabled" title="cogl_pipeline_set_layer_point_sprite_coords_enabled ()"><code class="function">cogl_pipeline_set_layer_point_sprite_coords_enabled()</code></a> is supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-MAP-BUFFER-FOR-READ:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_MAP_BUFFER_FOR_READ</code></span></p></td>
+<td>Whether <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a> is
+    supported with CoglBufferAccess including read support.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-MAP-BUFFER-FOR-WRITE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE</code></span></p></td>
+<td>Whether <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a> is
+    supported with CoglBufferAccess including write support.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-MIRRORED-REPEAT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_MIRRORED_REPEAT</code></span></p></td>
+<td>Whether
+   <code class="literal">COGL_PIPELINE_WRAP_MODE_MIRRORED_REPEAT</code> is supported.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-FEATURE-ID-SWAP-BUFFERS-EVENT:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_ID_SWAP_BUFFERS_EVENT</code></span></p></td>
+<td>    Available if the window system supports reporting an event
+    for swap buffer completions.
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-has-feature"></a><h3>cogl_has_feature ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_has_feature                    (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID"><span class="type">CoglFeatureID</span></a> feature</code></em>);</pre>
+<p>
+Checks if a given <em class="parameter"><code>feature</code></em> is currently available
+</p>
+<p>
+Cogl does not aim to be a lowest common denominator API, it aims to
+expose all the interesting features of GPUs to application which
+means applications have some responsibility to explicitly check
+that certain features are available before depending on them.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>feature</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID"><span class="type">CoglFeatureID</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the <em class="parameter"><code>feature</code></em> is currently supported or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> if
+not.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-has-features"></a><h3>cogl_has_features ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_has_features                   (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code>...</code></em>);</pre>
+<p>
+Checks if a list of features are all currently available.
+</p>
+<p>
+This checks all of the listed features using <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a> and
+returns <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if all the features are available or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
+otherwise.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>A 0 terminated list of CoglFeatureIDs</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if all the features are available, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>
+otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglFeatureCallback"></a><h3>CoglFeatureCallback ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                (*CoglFeatureCallback)              (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureID" title="enum CoglFeatureID"><span class="type">CoglFeatureID</span></a> feature</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);</pre>
+<p>
+A callback used with <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-foreach-feature" title="cogl_foreach_feature ()"><code class="function">cogl_foreach_feature()</code></a> for enumerating all
+context level features supported by Cogl.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>feature</code></em> :</span></p></td>
+<td>A single feature currently supported by Cogl</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>A private pointer passed to <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-foreach-feature" title="cogl_foreach_feature ()"><code class="function">cogl_foreach_feature()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-foreach-feature"></a><h3>cogl_foreach_feature ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_foreach_feature                (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureCallback" title="CoglFeatureCallback ()"><span class="type">CoglFeatureCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);</pre>
+<p>
+Iterates through all the context level features currently supported
+for a given <em class="parameter"><code>context</code></em> and for each feature <em class="parameter"><code>callback</code></em> is called.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#CoglFeatureCallback" title="CoglFeatureCallback ()"><span class="type">CoglFeatureCallback</span></a> called for each supported feature</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>Private data to pass to the callback</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -271,34 +643,39 @@ Multiplies the current model-view matrix by the given matrix.
                                                          <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
 <p>
 Replaces the current projection matrix with a perspective matrix
-for the given viewing frustum.
+for a given viewing frustum defined by 4 side clip planes that
+all cross through the origin and 2 near and far clip planes.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
-<td>Left clipping plane</td>
+<td>X position of the left clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
-<td>Right clipping plane</td>
+<td>X position of the right clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
-<td>Bottom clipping plane</td>
+<td>Y position of the bottom clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
-<td>Top clipping plane</td>
+<td>Y position of the top clipping plane where it intersects
+the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>Nearest visible point</td>
+<td>The distance to the near clipping plane (Must be positive)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>Furthest visible point along the z-axis</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
@@ -315,24 +692,33 @@ for the given viewing frustum.
 Replaces the current projection matrix with a perspective matrix
 based on the provided values.
 </p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You should be careful not to have to great a <em class="parameter"><code>z_far</code></em> / <em class="parameter"><code>z_near</code></em>
+ratio since that will reduce the effectiveness of depth testing
+since there wont be enough precision to identify the depth of
+objects near to each other.</div>
+<p>
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fovy</code></em> :</span></p></td>
-<td>Vertical of view angle in degrees.</td>
+<td>Vertical field of view angle in degrees.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>aspect</code></em> :</span></p></td>
-<td>Aspect ratio of diesplay</td>
+<td>The (width over height) aspect ratio for display</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>Nearest visible point</td>
+<td>The distance to the near clipping plane (Must be positive)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>Furthest visible point along the z-axis</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
@@ -647,10 +1033,10 @@ range, they will be clamped.
 <hr>
 <div class="refsect2">
 <a name="cogl-set-source-texture"></a><h3>cogl_set_source_texture ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_texture             (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_texture             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 This is a convenience function for creating a material with the first
-layer set to <span class="type">texture_handle</span> and setting that material as the source with
+layer set to <em class="parameter"><code>texture</code></em> and setting that material as the source with
 cogl_set_source.
 </p>
 <p>
@@ -669,8 +1055,8 @@ cogl_set_source (material);
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>texture_handle</code></em> :</span></p></td>
-<td>The Cogl texture you want as your source</td>
+<td><p><span class="term"><em class="parameter"><code>texture</code></em> :</span></p></td>
+<td>The <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a> you want as your source</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.0</p>
@@ -765,7 +1151,8 @@ buffers to clear</td>
 <hr>
 <div class="refsect2">
 <a name="CoglReadPixelsFlags"></a><h3>enum CoglReadPixelsFlags</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_READ_PIXELS &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_READ_PIXELS &gt;*/
   COGL_READ_PIXELS_COLOR_BUFFER = 1L &lt;&lt; 0
 } CoglReadPixelsFlags;
 </pre>
@@ -876,6 +1263,6 @@ starts to use ARBfb programs itself for the material API.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

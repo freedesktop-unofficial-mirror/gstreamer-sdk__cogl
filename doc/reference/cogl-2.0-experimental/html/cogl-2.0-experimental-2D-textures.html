@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>2D textures</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-textures.html" title="Textures">
+<link rel="prev" href="cogl-2.0-experimental-The-Texture-Interface.html" title="The Texture Interface">
+<link rel="next" href="cogl-2.0-experimental-3D-textures.html" title="3D textures">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-The-Texture-Interface.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-textures.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-3D-textures.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-2D-textures.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-2D-textures.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-2D-textures"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-2D-textures.top_of_page"></a>2D textures</span></h2>
+<p>2D textures — Functions for creating and manipulating 2D textures</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-2D-textures.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D">CoglTexture2D</a>;
+#define             <a class="link" href="cogl-2.0-experimental-2D-textures.html#cogl-texture-2d-new-with-size" title="cogl_texture_2d_new_with_size">cogl_texture_2d_new_with_size</a>
+#define             <a class="link" href="cogl-2.0-experimental-2D-textures.html#cogl-texture-2d-new-from-data" title="cogl_texture_2d_new_from_data">cogl_texture_2d_new_from_data</a>
+#define             <a class="link" href="cogl-2.0-experimental-2D-textures.html#cogl-texture-2d-new-from-foreign" title="cogl_texture_2d_new_from_foreign">cogl_texture_2d_new_from_foreign</a>
+#define             <a class="link" href="cogl-2.0-experimental-2D-textures.html#cogl-is-texture-rectangle" title="cogl_is_texture_rectangle">cogl_is_texture_rectangle</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-2D-textures.description"></a><h2>Description</h2>
+<p>
+These functions allow low-level 2D textures to be allocated. These
+differ from sliced textures for example which may internally be
+made up of multiple 2D textures, or atlas textures where Cogl must
+internally modify user texture coordinates before they can be used
+by the GPU.
+</p>
+<p>
+You should be aware that many GPUs only support power of two sizes
+for <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a> textures. You can check support for non power of
+two textures by checking for the <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT</code></a> feature
+via <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-2D-textures.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglTexture2D"></a><h3>CoglTexture2D</h3>
+<pre class="programlisting">typedef struct _CoglTexture2D CoglTexture2D;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-2d-new-with-size"></a><h3>cogl_texture_2d_new_with_size</h3>
+<pre class="programlisting">#define cogl_texture_2d_new_with_size cogl_texture_2d_new_with_size_EXP
+</pre>
+<p>
+Allocates a low-level <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a> texture that your GPU can
+texture from directly. This is unlike sliced textures for example
+which may be comprised of multiple internal textures, or atlas
+textures where Cogl has to modify texture coordinates before they
+may be used by the GPU.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Many GPUs only support power of two sizes for <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>
+textures. You can check support for non power of two textures by
+checking for the <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT</code></a> feature via
+<a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a>.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>Width of the texture to allocate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>Height of the texture to allocate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>The format of the texture</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for exceptions</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>, or if the size is not
+supported (because it is too large or a non-power-of-two
+size that the hardware doesn't support) it will return
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> and set <em class="parameter"><code>error</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-2d-new-from-data"></a><h3>cogl_texture_2d_new_from_data</h3>
+<pre class="programlisting">#define cogl_texture_2d_new_from_data cogl_texture_2d_new_from_data_EXP
+</pre>
+<p>
+Creates a new <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a> texture based on data residing in memory.
+These are unlike sliced textures for example which may be comprised
+of multiple internal textures, or atlas textures where Cogl has to
+modify texture coordinates before they may be used by the GPU.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Many GPUs only support power of two sizes for <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>
+textures. You can check support for non power of two textures by
+checking for the <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-NPOT:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_NPOT</code></a> feature via
+<a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a>.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>width of texture in pixels</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>height of texture in pixels</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> the buffer is stored in in RAM</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> that will be used for storing
+the buffer on the GPU. If COGL_PIXEL_FORMAT_ANY is given then a
+premultiplied format similar to the format of the source data will
+be used. The default blending equations of Cogl expect premultiplied
+color data; the main use of passing a non-premultiplied format here
+is if you have non-premultiplied source data and are going to adjust
+the blend mode (see <a href="../cogl/cogl-Materials.html#cogl-material-set-blend"><code class="function">cogl_material_set_blend()</code></a>) or use the data for
+something other than straight blending.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>rowstride</code></em> :</span></p></td>
+<td>the memory offset in bytes between the starts of
+scanlines in <em class="parameter"><code>data</code></em>. A value of 0 will make Cogl automatically
+calculate <em class="parameter"><code>rowstride</code></em> from <em class="parameter"><code>width</code></em> and <em class="parameter"><code>format</code></em>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>pointer the memory region where the source buffer resides</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for exceptions</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>, or if the size is not
+supported (because it is too large or a non-power-of-two
+size that the hardware doesn't support) it will return
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> and set <em class="parameter"><code>error</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-2d-new-from-foreign"></a><h3>cogl_texture_2d_new_from_foreign</h3>
+<pre class="programlisting">#define cogl_texture_2d_new_from_foreign cogl_texture_2d_new_from_foreign_EXP
+</pre>
+<p>
+Wraps an existing GL_TEXTURE_2D texture object as a <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>.
+This can be used for integrating Cogl with software using OpenGL
+directly.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The results are undefined for passing an invalid <em class="parameter"><code>gl_handle</code></em>
+or if <em class="parameter"><code>width</code></em> or <em class="parameter"><code>height</code></em> don't have the correct texture
+geometry.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>gl_handle</code></em> :</span></p></td>
+<td>A GL handle for a GL_TEXTURE_2D texture object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>Width of the foreign GL texture</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>Height of the foreign GL texture</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>The format of the texture</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for exceptions</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a>, or if Cogl could not
+validate the <em class="parameter"><code>gl_handle</code></em> in some way (perhaps because of
+an unsupported format) it will return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> and set
+<em class="parameter"><code>error</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-texture-rectangle"></a><h3>cogl_is_texture_rectangle</h3>
+<pre class="programlisting">#define cogl_is_texture_rectangle cogl_is_texture_rectangle_EXP
+</pre>
+<p>
+Gets whether the given object references an existing
+<a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a> object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the object references a
+<a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a>, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

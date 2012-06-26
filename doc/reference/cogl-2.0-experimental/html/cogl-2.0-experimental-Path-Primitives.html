@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
 <link rel="up" href="cogl-primitive-apis.html" title="Geometry">
 <link rel="prev" href="cogl-2.0-experimental-Primitives.html" title="Primitives">
-<link rel="next" href="cogl-drawing-apis.html" title="Drawing">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="next" href="cogl-2.0-experimental-Rectangles.html" title="Rectangles">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="cogl-primitive-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Cogl 2.0 Reference Manual</th>
-<td><a accesskey="n" href="cogl-drawing-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="cogl-2.0-experimental-Rectangles.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#cogl-2.0-experimental-Path-Primitives.synopsis" class="shortcut">Top</a>
@@ -37,29 +37,64 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-Path-Primitives.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-is-path" title="cogl_is_path ()">cogl_is_path</a>                        (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new">cogl_path_new</a>
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-is-path" title="cogl_is_path ()">cogl_is_path</a>                        (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new ()">cogl_path_new</a>                       (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">CoglPath</span> *          <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-copy" title="cogl_path_copy ()">cogl_path_copy</a>                      (<em class="parameter"><code><span class="type">CoglPath</span> *path</code></em>);
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-move-to" title="cogl_path_move_to">cogl_path_move_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-close" title="cogl_path_close">cogl_path_close</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line-to" title="cogl_path_line_to">cogl_path_line_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-curve-to" title="cogl_path_curve_to">cogl_path_curve_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-arc" title="cogl_path_arc">cogl_path_arc</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-move-to" title="cogl_path_rel_move_to">cogl_path_rel_move_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-line-to" title="cogl_path_rel_line_to">cogl_path_rel_line_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-curve-to" title="cogl_path_rel_curve_to">cogl_path_rel_curve_to</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line" title="cogl_path_line">cogl_path_line</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polyline" title="cogl_path_polyline">cogl_path_polyline</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polygon" title="cogl_path_polygon">cogl_path_polygon</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rectangle" title="cogl_path_rectangle">cogl_path_rectangle</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-round-rectangle" title="cogl_path_round_rectangle">cogl_path_round_rectangle</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-ellipse" title="cogl_path_ellipse">cogl_path_ellipse</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-move-to" title="cogl_path_move_to ()">cogl_path_move_to</a>                   (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-close" title="cogl_path_close ()">cogl_path_close</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line-to" title="cogl_path_line_to ()">cogl_path_line_to</a>                   (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-curve-to" title="cogl_path_curve_to ()">cogl_path_curve_to</a>                  (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_3</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_3</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-arc" title="cogl_path_arc ()">cogl_path_arc</a>                       (<em class="parameter"><code><span class="type">float</span> center_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> center_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> angle_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> angle_2</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-move-to" title="cogl_path_rel_move_to ()">cogl_path_rel_move_to</a>               (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-line-to" title="cogl_path_rel_line_to ()">cogl_path_rel_line_to</a>               (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rel-curve-to" title="cogl_path_rel_curve_to ()">cogl_path_rel_curve_to</a>              (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_3</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_3</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-line" title="cogl_path_line ()">cogl_path_line</a>                      (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polyline" title="cogl_path_polyline ()">cogl_path_polyline</a>                  (<em class="parameter"><code>const <span class="type">float</span> *coords</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> num_points</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-polygon" title="cogl_path_polygon ()">cogl_path_polygon</a>                   (<em class="parameter"><code>const <span class="type">float</span> *coords</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> num_points</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-rectangle" title="cogl_path_rectangle ()">cogl_path_rectangle</a>                 (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-round-rectangle" title="cogl_path_round_rectangle ()">cogl_path_round_rectangle</a>           (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> arc_step</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-ellipse" title="cogl_path_ellipse ()">cogl_path_ellipse</a>                   (<em class="parameter"><code><span class="type">float</span> center_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> center_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_y</code></em>);
 
 enum                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule" title="enum CoglPathFillRule">CoglPathFillRule</a>;
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-set-fill-rule" title="cogl_path_set_fill_rule">cogl_path_set_fill_rule</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-get-fill-rule" title="cogl_path_get_fill_rule">cogl_path_get_fill_rule</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-fill" title="cogl_path_fill">cogl_path_fill</a>
-#define             <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-stroke" title="cogl_path_stroke">cogl_path_stroke</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-set-fill-rule" title="cogl_path_set_fill_rule ()">cogl_path_set_fill_rule</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule" title="enum CoglPathFillRule"><span class="type">CoglPathFillRule</span></a> fill_rule</code></em>);
+<a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule" title="enum CoglPathFillRule"><span class="returnvalue">CoglPathFillRule</span></a>    <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-get-fill-rule" title="cogl_path_get_fill_rule ()">cogl_path_get_fill_rule</a>             (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-fill" title="cogl_path_fill ()">cogl_path_fill</a>                      (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-stroke" title="cogl_path_stroke ()">cogl_path_stroke</a>                    (<em class="parameter"><code><span class="type">void</span></code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -85,7 +120,7 @@ rather then in the absolute coordinates.
 <a name="cogl-2.0-experimental-Path-Primitives.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="cogl-is-path"></a><h3>cogl_is_path ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_path                        (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_path                        (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <p>
 Gets whether the given object references an existing path object.
 </p>
@@ -109,9 +144,8 @@ Gets whether the given object references an existing path object.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-new"></a><h3>cogl_path_new</h3>
-<pre class="programlisting">#define cogl_path_new cogl2_path_new
-</pre>
+<a name="cogl-path-new"></a><h3>cogl_path_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_new                       (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Creates a new, empty path object. The default fill rule is
 <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#COGL-PATH-FILL-RULE-EVEN-ODD:CAPS"><code class="literal">COGL_PATH_FILL_RULE_EVEN_ODD</code></a>.
@@ -156,9 +190,9 @@ modified so copying paths should be relatively cheap.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-move-to"></a><h3>cogl_path_move_to</h3>
-<pre class="programlisting">#define cogl_path_move_to cogl2_path_move_to
-</pre>
+<a name="cogl-path-move-to"></a><h3>cogl_path_move_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_move_to                   (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);</pre>
 <p>
 Moves the pen to the given location. If there is an existing path
 this will start a new disjoint subpath.
@@ -180,9 +214,8 @@ this will start a new disjoint subpath.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-close"></a><h3>cogl_path_close</h3>
-<pre class="programlisting">#define cogl_path_close cogl2_path_close
-</pre>
+<a name="cogl-path-close"></a><h3>cogl_path_close ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_close                     (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Closes the path being constructed by adding a straight line segment
 to it that ends at the first vertex of the path.
@@ -191,9 +224,9 @@ to it that ends at the first vertex of the path.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-line-to"></a><h3>cogl_path_line_to</h3>
-<pre class="programlisting">#define cogl_path_line_to cogl2_path_line_to
-</pre>
+<a name="cogl-path-line-to"></a><h3>cogl_path_line_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_line_to                   (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);</pre>
 <p>
 Adds a straight line segment to the current path that ends at the
 given coordinates.
@@ -215,9 +248,13 @@ given coordinates.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-curve-to"></a><h3>cogl_path_curve_to</h3>
-<pre class="programlisting">#define cogl_path_curve_to cogl2_path_curve_to
-</pre>
+<a name="cogl-path-curve-to"></a><h3>cogl_path_curve_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_curve_to                  (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_3</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_3</code></em>);</pre>
 <p>
 Adds a cubic bezier curve segment to the current path with the given
 second, third and fourth control points and using current pen location
@@ -256,9 +293,13 @@ as the first control point.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-arc"></a><h3>cogl_path_arc</h3>
-<pre class="programlisting">#define cogl_path_arc cogl2_path_arc
-</pre>
+<a name="cogl-path-arc"></a><h3>cogl_path_arc ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_arc                       (<em class="parameter"><code><span class="type">float</span> center_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> center_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> angle_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> angle_2</code></em>);</pre>
 <p>
 Adds an elliptical arc segment to the current path. A straight line
 segment will link the current pen location with the first vertex
@@ -305,9 +346,9 @@ otherwise it will increase).
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-rel-move-to"></a><h3>cogl_path_rel_move_to</h3>
-<pre class="programlisting">#define cogl_path_rel_move_to cogl2_path_rel_move_to
-</pre>
+<a name="cogl-path-rel-move-to"></a><h3>cogl_path_rel_move_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_rel_move_to               (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);</pre>
 <p>
 Moves the pen to the given offset relative to the current pen
 location. If there is an existing path this will start a new
@@ -330,9 +371,9 @@ disjoint subpath.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-rel-line-to"></a><h3>cogl_path_rel_line_to</h3>
-<pre class="programlisting">#define cogl_path_rel_line_to cogl2_path_rel_line_to
-</pre>
+<a name="cogl-path-rel-line-to"></a><h3>cogl_path_rel_line_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_rel_line_to               (<em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>);</pre>
 <p>
 Adds a straight line segment to the current path that ends at the
 given coordinates relative to the current pen location.
@@ -354,9 +395,13 @@ given coordinates relative to the current pen location.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-rel-curve-to"></a><h3>cogl_path_rel_curve_to</h3>
-<pre class="programlisting">#define cogl_path_rel_curve_to cogl2_path_rel_curve_to
-</pre>
+<a name="cogl-path-rel-curve-to"></a><h3>cogl_path_rel_curve_to ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_rel_curve_to              (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_3</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_3</code></em>);</pre>
 <p>
 Adds a cubic bezier curve segment to the current path with the given
 second, third and fourth control points and using current pen location
@@ -396,9 +441,11 @@ current pen location.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-line"></a><h3>cogl_path_line</h3>
-<pre class="programlisting">#define cogl_path_line cogl2_path_line
-</pre>
+<a name="cogl-path-line"></a><h3>cogl_path_line ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_line                      (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>);</pre>
 <p>
 Constructs a straight line shape starting and ending at the given
 coordinates. If there is an existing path this will start a new
@@ -429,9 +476,9 @@ disjoint sub-path.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-polyline"></a><h3>cogl_path_polyline</h3>
-<pre class="programlisting">#define cogl_path_polyline cogl2_path_polyline
-</pre>
+<a name="cogl-path-polyline"></a><h3>cogl_path_polyline ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_polyline                  (<em class="parameter"><code>const <span class="type">float</span> *coords</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> num_points</code></em>);</pre>
 <p>
 Constructs a series of straight line segments, starting from the
 first given vertex coordinate. If there is an existing path this
@@ -465,9 +512,9 @@ array of fixed-point values that specify the vertex coordinates. <span class="an
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-polygon"></a><h3>cogl_path_polygon</h3>
-<pre class="programlisting">#define cogl_path_polygon cogl2_path_polygon
-</pre>
+<a name="cogl-path-polygon"></a><h3>cogl_path_polygon ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_polygon                   (<em class="parameter"><code>const <span class="type">float</span> *coords</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> num_points</code></em>);</pre>
 <p>
 Constructs a polygonal shape of the given number of vertices. If
 there is an existing path this will start a new disjoint sub-path.
@@ -497,9 +544,11 @@ an array of fixed-point values that specify the vertex coordinates. <span class=
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-rectangle"></a><h3>cogl_path_rectangle</h3>
-<pre class="programlisting">#define cogl_path_rectangle cogl2_path_rectangle
-</pre>
+<a name="cogl-path-rectangle"></a><h3>cogl_path_rectangle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_rectangle                 (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>);</pre>
 <p>
 Constructs a rectangular shape at the given coordinates. If there
 is an existing path this will start a new disjoint sub-path.
@@ -529,9 +578,13 @@ is an existing path this will start a new disjoint sub-path.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-round-rectangle"></a><h3>cogl_path_round_rectangle</h3>
-<pre class="programlisting">#define cogl_path_round_rectangle cogl2_path_round_rectangle
-</pre>
+<a name="cogl-path-round-rectangle"></a><h3>cogl_path_round_rectangle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_round_rectangle           (<em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> arc_step</code></em>);</pre>
 <p>
 Constructs a rectangular shape with rounded corners. If there is an
 existing path this will start a new disjoint sub-path.
@@ -570,9 +623,11 @@ the corner arcs.</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-ellipse"></a><h3>cogl_path_ellipse</h3>
-<pre class="programlisting">#define cogl_path_ellipse cogl2_path_ellipse
-</pre>
+<a name="cogl-path-ellipse"></a><h3>cogl_path_ellipse ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_ellipse                   (<em class="parameter"><code><span class="type">float</span> center_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> center_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> radius_y</code></em>);</pre>
 <p>
 Constructs an ellipse shape. If there is an existing path this will
 start a new disjoint sub-path.
@@ -622,7 +677,7 @@ point.
 The default fill rule is <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#COGL-PATH-FILL-RULE-EVEN-ODD:CAPS"><code class="literal">COGL_PATH_FILL_RULE_EVEN_ODD</code></a>. The fill
 rule is attached to the current path so preserving a path with
 <a href="../cogl/cogl-Path-Primitives.html#cogl-get-path"><code class="function">cogl_get_path()</code></a> also preserves the fill rule. Calling
-<a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new"><code class="function">cogl_path_new()</code></a> resets the current fill rule to the default.
+<a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new ()"><code class="function">cogl_path_new()</code></a> resets the current fill rule to the default.
 </p>
 <p>
 </p>
@@ -664,15 +719,14 @@ it won't. See <a class="xref" href="cogl-2.0-experimental-Path-Primitives.html#f
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-set-fill-rule"></a><h3>cogl_path_set_fill_rule</h3>
-<pre class="programlisting">#define cogl_path_set_fill_rule cogl2_path_set_fill_rule
-</pre>
+<a name="cogl-path-set-fill-rule"></a><h3>cogl_path_set_fill_rule ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_set_fill_rule             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule" title="enum CoglPathFillRule"><span class="type">CoglPathFillRule</span></a> fill_rule</code></em>);</pre>
 <p>
 Sets the fill rule of the current path to <em class="parameter"><code>fill_rule</code></em>. This will
-affect how the path is filled when <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-fill" title="cogl_path_fill"><code class="function">cogl_path_fill()</code></a> is later
+affect how the path is filled when <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-fill" title="cogl_path_fill ()"><code class="function">cogl_path_fill()</code></a> is later
 called. Note that the fill rule state is attached to the path so
 calling <a href="../cogl/cogl-Path-Primitives.html#cogl-get-path"><code class="function">cogl_get_path()</code></a> will preserve the fill rule and calling
-<a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new"><code class="function">cogl_path_new()</code></a> will reset the fill rule back to the default.
+<a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-new" title="cogl_path_new ()"><code class="function">cogl_path_new()</code></a> will reset the fill rule back to the default.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -685,11 +739,10 @@ calling <a href="../cogl/cogl-Path-Primitives.html#cogl-get-path"><code class="f
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-get-fill-rule"></a><h3>cogl_path_get_fill_rule</h3>
-<pre class="programlisting">#define cogl_path_get_fill_rule cogl2_path_get_fill_rule
-</pre>
+<a name="cogl-path-get-fill-rule"></a><h3>cogl_path_get_fill_rule ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglPathFillRule" title="enum CoglPathFillRule"><span class="returnvalue">CoglPathFillRule</span></a>    cogl_path_get_fill_rule             (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
-Retrieves the fill rule set using <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-set-fill-rule" title="cogl_path_set_fill_rule"><code class="function">cogl_path_set_fill_rule()</code></a>.
+Retrieves the fill rule set using <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#cogl-path-set-fill-rule" title="cogl_path_set_fill_rule ()"><code class="function">cogl_path_set_fill_rule()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -702,9 +755,8 @@ Retrieves the fill rule set using <a class="link" href="cogl-2.0-experimental-Pa
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-fill"></a><h3>cogl_path_fill</h3>
-<pre class="programlisting">#define cogl_path_fill cogl2_path_fill
-</pre>
+<a name="cogl-path-fill"></a><h3>cogl_path_fill ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_fill                      (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Fills the interior of the constructed shape using the current
 drawing color.
@@ -718,7 +770,7 @@ path. See <a class="link" href="cogl-2.0-experimental-Path-Primitives.html#CoglP
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>The result of referencing sliced textures in your current
 pipeline when filling a path are undefined. You should pass
-the <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag when loading any texture you will
+the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag when loading any texture you will
 use while filling a path.</div>
 <p>
 </p>
@@ -726,9 +778,8 @@ use while filling a path.</div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-path-stroke"></a><h3>cogl_path_stroke</h3>
-<pre class="programlisting">#define cogl_path_stroke cogl2_path_stroke
-</pre>
+<a name="cogl-path-stroke"></a><h3>cogl_path_stroke ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_path_stroke                    (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
 Strokes the constructed shape using the current drawing color and a
 width of 1 pixel (regardless of the current transformation
@@ -740,6 +791,6 @@ matrix).
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

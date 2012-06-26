@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
@@ -43,6 +42,8 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-atlas.h"
+#include "cogl1-context.h"
+#include "cogl-sub-texture.h"
 
 #include <stdlib.h>
 
@@ -58,11 +59,13 @@ _cogl_atlas_texture_create_sub_texture (CoglHandle full_texture,
 {
   /* Create a subtexture for the given rectangle not including the
      1-pixel border */
-  return _cogl_sub_texture_new (full_texture,
-                                rectangle->x + 1,
-                                rectangle->y + 1,
-                                rectangle->width - 2,
-                                rectangle->height - 2);
+  _COGL_GET_CONTEXT (ctx, NULL);
+  return cogl_sub_texture_new (ctx,
+                               full_texture,
+                               rectangle->x + 1,
+                               rectangle->y + 1,
+                               rectangle->width - 2,
+                               rectangle->height - 2);
 }
 
 static void
@@ -225,19 +228,21 @@ _cogl_atlas_texture_foreach_sub_texture_in_region (
                                        float virtual_ty_1,
                                        float virtual_tx_2,
                                        float virtual_ty_2,
-                                       CoglTextureSliceCallback callback,
+                                       CoglMetaTextureCallback callback,
                                        void *user_data)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_foreach_sub_texture_in_region (atlas_tex->sub_texture,
-                                               virtual_tx_1,
-                                               virtual_ty_1,
-                                               virtual_tx_2,
-                                               virtual_ty_2,
-                                               callback,
-                                               user_data);
+  cogl_meta_texture_foreach_in_region (atlas_tex->sub_texture,
+                                       virtual_tx_1,
+                                       virtual_ty_1,
+                                       virtual_tx_2,
+                                       virtual_ty_2,
+                                       COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                       COGL_PIPELINE_WRAP_MODE_REPEAT,
+                                       callback,
+                                       user_data);
 }
 
 static void
@@ -384,7 +389,7 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture
        * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (atlas_tex);
+      _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (atlas_tex));
 
       /* We need to unref the sub texture after doing the copy because
          the copy can involve rendering which might cause the texture
@@ -523,11 +528,11 @@ _cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
 
   override_bmp =
     _cogl_bitmap_new_shared (converted_bmp,
-                             _cogl_bitmap_get_format (converted_bmp) &
+                             cogl_bitmap_get_format (converted_bmp) &
                              ~COGL_PREMULT_BIT,
-                             _cogl_bitmap_get_width (converted_bmp),
-                             _cogl_bitmap_get_height (converted_bmp),
-                             _cogl_bitmap_get_rowstride (converted_bmp));
+                             cogl_bitmap_get_width (converted_bmp),
+                             cogl_bitmap_get_height (converted_bmp),
+                             cogl_bitmap_get_rowstride (converted_bmp));
 
   cogl_object_unref (converted_bmp);
 
@@ -657,7 +662,7 @@ _cogl_atlas_texture_new_with_size (unsigned int width,
 
   /* If we can't use FBOs then it will be too slow to migrate textures
      and we shouldn't use the atlas */
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return COGL_INVALID_HANDLE;
 
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", width, height);
@@ -732,11 +737,11 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
 
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
 
-  g_return_val_if_fail (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), COGL_INVALID_HANDLE);
 
-  bmp_width = _cogl_bitmap_get_width (bmp);
-  bmp_height = _cogl_bitmap_get_height (bmp);
-  bmp_format = _cogl_bitmap_get_format (bmp);
+  bmp_width = cogl_bitmap_get_width (bmp);
+  bmp_height = cogl_bitmap_get_height (bmp);
+  bmp_format = cogl_bitmap_get_format (bmp);
 
   internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
@@ -805,6 +810,12 @@ _cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
     g_hook_destroy_link (&ctx->atlas_reorganize_callbacks, hook);
 }
 
+static CoglTextureType
+_cogl_atlas_texture_get_type (CoglTexture *tex)
+{
+  return COGL_TEXTURE_TYPE_2D;
+}
+
 static const CoglTextureVtable
 cogl_atlas_texture_vtable =
   {
@@ -825,5 +836,6 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_get_gl_format,
     _cogl_atlas_texture_get_width,
     _cogl_atlas_texture_get_height,
+    _cogl_atlas_texture_get_type,
     NULL /* is_foreign */
   };

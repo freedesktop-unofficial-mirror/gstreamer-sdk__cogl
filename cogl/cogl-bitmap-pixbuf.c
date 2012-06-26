@@ -25,9 +25,10 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
+#include "cogl-context-private.h"
 
 #include <string.h>
 
@@ -36,43 +37,6 @@
 #elif defined(USE_GDKPIXBUF)
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
-
-gboolean
-_cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_can_unpremult (CoglPixelFormat format)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_can_premult (CoglPixelFormat format)
-{
-  return FALSE;
-}
-
-CoglBitmap *
-_cogl_bitmap_convert (CoglBitmap *bmp,
-		      CoglPixelFormat   dst_format)
-{
-  return NULL;
-}
-
-gboolean
-_cogl_bitmap_unpremult (CoglBitmap *dst_bmp)
-{
-  return FALSE;
-}
-
-gboolean
-_cogl_bitmap_premult (CoglBitmap *dst_bmp)
-{
-  return FALSE;
-}
 
 #ifdef USE_QUARTZ
 
@@ -104,6 +68,9 @@ _cogl_bitmap_from_file (const char  *filename,
   guint8 *out_data;
   CGColorSpaceRef color_space;
   CGContextRef bitmap_context;
+  CoglBitmap *bmp;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   g_assert (filename != NULL);
   g_assert (error == NULL || *error == NULL);
@@ -159,8 +126,13 @@ _cogl_bitmap_from_file (const char  *filename,
     }
 
   /* allocate buffer big enough to hold pixel data */
-  rowstride = 4 * width;
-  out_data = g_malloc0 (height * rowstride);
+  bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                             width, height,
+                                             COGL_PIXEL_FORMAT_ARGB_8888);
+  rowstride = cogl_bitmap_get_rowstride (bmp);
+  out_data = _cogl_bitmap_map (bmp,
+                               COGL_BUFFER_ACCESS_WRITE,
+                               COGL_BUFFER_MAP_HINT_DISCARD);
 
   /* render to buffer */
   color_space = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);
@@ -179,13 +151,10 @@ _cogl_bitmap_from_file (const char  *filename,
   CGImageRelease (image);
   CGContextRelease (bitmap_context);
 
+  _cogl_bitmap_unmap (bmp);
+
   /* store bitmap info */
-  return _cogl_bitmap_new_from_data (out_data,
-                                     COGL_PIXEL_FORMAT_ARGB_8888,
-                                     width, height,
-                                     rowstride,
-                                     (CoglBitmapDestroyNotify) g_free,
-                                     NULL);
+  return bmp;
 }
 
 #elif defined(USE_GDKPIXBUF)
@@ -195,7 +164,7 @@ _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height)
 {
-  g_return_val_if_fail (filename != NULL, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (filename != NULL, FALSE);
 
   if (gdk_pixbuf_get_file_info (filename, width, height) != NULL)
     return TRUE;
@@ -203,17 +172,11 @@ _cogl_bitmap_get_size_from_file (const char *filename,
   return FALSE;
 }
 
-static void
-_cogl_bitmap_unref_pixbuf (guint8 *pixels,
-                           void *pixbuf)
-{
-  g_object_unref (pixbuf);
-}
-
 CoglBitmap *
 _cogl_bitmap_from_file (const char   *filename,
 			GError      **error)
 {
+  static CoglUserDataKey pixbuf_key;
   GdkPixbuf        *pixbuf;
   gboolean          has_alpha;
   GdkColorspace     color_space;
@@ -223,8 +186,11 @@ _cogl_bitmap_from_file (const char   *filename,
   int               rowstride;
   int               bits_per_sample;
   int               n_channels;
+  CoglBitmap       *bmp;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
   /* Load from file using GdkPixbuf */
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
@@ -270,13 +236,19 @@ _cogl_bitmap_from_file (const char   *filename,
      to read past the end of bpp*width on the last row even if the
      rowstride is much larger so we don't need to worry about
      GdkPixbuf's semantics that it may under-allocate the buffer. */
-  return _cogl_bitmap_new_from_data (gdk_pixbuf_get_pixels (pixbuf),
-                                     pixel_format,
-                                     width,
-                                     height,
-                                     rowstride,
-                                     _cogl_bitmap_unref_pixbuf,
-                                     pixbuf);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width,
+                                  height,
+                                  pixel_format,
+                                  rowstride,
+                                  gdk_pixbuf_get_pixels (pixbuf));
+
+  cogl_object_set_user_data (COGL_OBJECT (bmp),
+                             &pixbuf_key,
+                             pixbuf,
+                             g_object_unref);
+
+  return bmp;
 }
 
 #else
@@ -301,13 +273,16 @@ CoglBitmap *
 _cogl_bitmap_from_file (const char  *filename,
 			GError     **error)
 {
+  static CoglUserDataKey bitmap_data_key;
   CoglBitmap *bmp;
   int      stb_pixel_format;
   int      width;
   int      height;
   guint8  *pixels;
 
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, FALSE);
 
   /* Load from file using stb */
   pixels = stbi_load (filename,
@@ -317,14 +292,14 @@ _cogl_bitmap_from_file (const char  *filename,
     return FALSE;
 
   /* Store bitmap info */
-  bmp = _cogl_bitmap_new_from_data (g_memdup (pixels, height * width * 4),
-                                    COGL_PIXEL_FORMAT_RGBA_8888,
-                                    width, height,
-                                    width * 4,
-                                    (CoglBitmapDestroyNotify) g_free,
-                                    NULL);
-
-  free (pixels);
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  COGL_PIXEL_FORMAT_RGBA_8888,
+                                  width * 4, /* rowstride */
+                                  pixels);
+  /* Register a destroy function so the pixel data will be freed
+     automatically when the bitmap object is destroyed */
+  cogl_object_set_user_data (COGL_OBJECT (bmp), &bitmap_data_key, pixels, free);
 
   return bmp;
 }

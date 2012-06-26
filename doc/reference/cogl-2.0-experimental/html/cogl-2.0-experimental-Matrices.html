@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-utilities.html" title="Utilities">
 <link rel="prev" href="cogl-2.0-experimental-Color-Type.html" title="Color Type">
 <link rel="next" href="cogl-2.0-experimental-3-Component-Vectors.html" title="3 Component Vectors">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -52,19 +52,28 @@
                                                          <em class="parameter"><code><span class="type">float</span> top</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-ortho" title="cogl_matrix_ortho ()">cogl_matrix_ortho</a>                   (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> left</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-orthographic" title="cogl_matrix_orthographic ()">cogl_matrix_orthographic</a>            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> far</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-perspective" title="cogl_matrix_perspective ()">cogl_matrix_perspective</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> fov_y</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> aspect</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> z_far</code></em>);
-#define             <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-look-at" title="cogl_matrix_look_at">cogl_matrix_look_at</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-look-at" title="cogl_matrix_look_at ()">cogl_matrix_look_at</a>                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_z</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-multiply" title="cogl_matrix_multiply ()">cogl_matrix_multiply</a>                (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *result</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *a</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *b</code></em>);
@@ -81,6 +90,7 @@
                                                          <em class="parameter"><code><span class="type">float</span> sx</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> sy</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> sz</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-transpose" title="cogl_matrix_transpose ()">cogl_matrix_transpose</a>               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
 const <span class="returnvalue">float</span> *       <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-get-array" title="cogl_matrix_get_array ()">cogl_matrix_get_array</a>               (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-get-inverse" title="cogl_matrix_get_inverse ()">cogl_matrix_get_inverse</a>             (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *inverse</code></em>);
@@ -89,8 +99,20 @@ const <span class="returnvalue">float</span> *       <a class="link" href="cogl-
                                                          <em class="parameter"><code><span class="type">float</span> *y</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *z</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> *w</code></em>);
-#define             <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-transform-points" title="cogl_matrix_transform_points">cogl_matrix_transform_points</a>
-#define             <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-project-points" title="cogl_matrix_project_points">cogl_matrix_project_points</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-transform-points" title="cogl_matrix_transform_points ()">cogl_matrix_transform_points</a>        (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *points_in</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *points_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_points</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-project-points" title="cogl_matrix_project_points ()">cogl_matrix_project_points</a>          (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *points_in</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *points_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_points</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-is-identity" title="cogl_matrix_is_identity ()">cogl_matrix_is_identity</a>             (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
 </pre>
 </div>
@@ -328,41 +350,45 @@ Multiplies <em class="parameter"><code>matrix</code></em> by the given frustum p
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
-<td>coord of left vertical clipping plane</td>
+<td>X position of the left clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
-<td>coord of right vertical clipping plane</td>
+<td>X position of the right clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
-<td>coord of bottom horizontal clipping plane</td>
+<td>Y position of the bottom clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
-<td>coord of top horizontal clipping plane</td>
+<td>Y position of the top clipping plane where it intersects
+the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>positive distance to near depth clipping plane</td>
+<td>The distance to the near clipping plane (Must be positive)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>positive distance to far depth clipping plane</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-matrix-ortho"></a><h3>cogl_matrix_ortho ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_ortho                   (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> left</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> right</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> bottom</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> top</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> z_near</code></em>,
-                                                         <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
+<a name="cogl-matrix-orthographic"></a><h3>cogl_matrix_orthographic ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_orthographic            (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y_2</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> near</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> far</code></em>);</pre>
 <p>
 Multiplies <em class="parameter"><code>matrix</code></em> by a parallel projection matrix.
 </p>
@@ -374,33 +400,37 @@ Multiplies <em class="parameter"><code>matrix</code></em> by a parallel projecti
 <td>A 4x4 transformation matrix</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
-<td>The coordinate for the left clipping plane</td>
+<td><p><span class="term"><em class="parameter"><code>x_1</code></em> :</span></p></td>
+<td>The x coordinate for the first vertical clipping plane</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
-<td>The coordinate for the right clipping plane</td>
+<td><p><span class="term"><em class="parameter"><code>y_1</code></em> :</span></p></td>
+<td>The y coordinate for the first horizontal clipping plane</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
-<td>The coordinate for the bottom clipping plane</td>
+<td><p><span class="term"><em class="parameter"><code>x_2</code></em> :</span></p></td>
+<td>The x coordinate for the second vertical clipping plane</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
-<td>The coordinate for the top clipping plane</td>
+<td><p><span class="term"><em class="parameter"><code>y_2</code></em> :</span></p></td>
+<td>The y coordinate for the second horizontal clipping plane</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>The coordinate for the near clipping plane (may be negative if
-the plane is behind the viewer)</td>
+<td><p><span class="term"><em class="parameter"><code>near</code></em> :</span></p></td>
+<td>The <span class="emphasis"><em>distance</em></span> to the near clipping
+plane (will be <span class="emphasis"><em>negative</em></span> if the plane is
+behind the viewer)</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>The coordinate for the far clipping plane (may be negative if
-the plane is behind the viewer)</td>
+<td><p><span class="term"><em class="parameter"><code>far</code></em> :</span></p></td>
+<td>The <span class="emphasis"><em>distance</em></span> to the far clipping
+plane (will be <span class="emphasis"><em>negative</em></span> if the plane is
+behind the viewer)</td>
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -416,10 +446,10 @@ Multiplies <em class="parameter"><code>matrix</code></em> by the described persp
 <p>
 </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>You should be careful not to have to great a <em class="parameter"><code>z_far</code></em> / <em class="parameter"><code>z_near</code></em> ratio
-since that will reduce the effectiveness of depth testing since there wont
-be enough precision to identify the depth of objects near to each
-other.</div>
+<h3 class="title">Note</h3>You should be careful not to have to great a <em class="parameter"><code>z_far</code></em> / <em class="parameter"><code>z_near</code></em>
+ratio since that will reduce the effectiveness of depth testing
+since there wont be enough precision to identify the depth of
+objects near to each other.</div>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -431,30 +461,37 @@ other.</div>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fov_y</code></em> :</span></p></td>
-<td>A field of view angle for the Y axis</td>
+<td>Vertical field of view angle in degrees.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>aspect</code></em> :</span></p></td>
-<td>The ratio of width to height determining the field of view angle
-for the x axis.</td>
+<td>The (width over height) aspect ratio for display</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>The distance to the near clip plane. Never pass 0 and always pass
-a positive number.</td>
+<td>The distance to the near clipping plane (Must be positive,
+and must not be 0)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>The distance to the far clip plane. (Should always be positive)</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-matrix-look-at"></a><h3>cogl_matrix_look_at</h3>
-<pre class="programlisting">#define cogl_matrix_look_at cogl_matrix_look_at_EXP
-</pre>
+<a name="cogl-matrix-look-at"></a><h3>cogl_matrix_look_at ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_look_at                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> eye_position_z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> object_z</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> world_up_z</code></em>);</pre>
 <p>
 Applies a view transform <em class="parameter"><code>matrix</code></em> that positions the camera at
 the coordinate (<em class="parameter"><code>eye_position_x</code></em>, <em class="parameter"><code>eye_position_y</code></em>, <em class="parameter"><code>eye_position_z</code></em>)
@@ -686,6 +723,24 @@ Y and Z axis.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cogl-matrix-transpose"></a><h3>cogl_matrix_transpose ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_transpose               (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
+<p>
+Replaces <em class="parameter"><code>matrix</code></em> with its transpose. Ie, every element (i,j) in the
+new matrix is taken from element (j,i) in the old matrix.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>matrix</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a>
+</td>
+</tr></tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cogl-matrix-get-array"></a><h3>cogl_matrix_get_array ()</h3>
 <pre class="programlisting">const <span class="returnvalue">float</span> *       cogl_matrix_get_array               (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
 <p>
@@ -791,9 +846,14 @@ components.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-matrix-transform-points"></a><h3>cogl_matrix_transform_points</h3>
-<pre class="programlisting">#define cogl_matrix_transform_points cogl_matrix_transform_points_EXP
-</pre>
+<a name="cogl-matrix-transform-points"></a><h3>cogl_matrix_transform_points ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_transform_points        (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *points_in</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *points_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_points</code></em>);</pre>
 <p>
 Transforms an array of input points and writes the result to
 another array of output points. The input points can either have 2
@@ -803,7 +863,7 @@ transform in-place.
 </p>
 <p>
 If you need to transform 4 component points see
-<a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-project-points" title="cogl_matrix_project_points"><code class="function">cogl_matrix_project_points()</code></a>.
+<a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-project-points" title="cogl_matrix_project_points ()"><code class="function">cogl_matrix_project_points()</code></a>.
 </p>
 <p>
 Here's an example with differing input/output strides:
@@ -903,9 +963,14 @@ Here's an example with differing input/output strides:
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-matrix-project-points"></a><h3>cogl_matrix_project_points</h3>
-<pre class="programlisting">#define cogl_matrix_project_points cogl_matrix_project_points_EXP
-</pre>
+<a name="cogl-matrix-project-points"></a><h3>cogl_matrix_project_points ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_matrix_project_points          (<em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_in</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *points_in</code></em>,
+                                                         <em class="parameter"><code><span class="type">size_t</span> stride_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *points_out</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_points</code></em>);</pre>
 <p>
 Projects an array of input points and writes the result to another
 array of output points. The input points can either have 2, 3 or 4
@@ -1038,6 +1103,6 @@ Determines if the given matrix is an identity matrix.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

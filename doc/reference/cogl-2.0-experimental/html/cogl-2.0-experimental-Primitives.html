@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-primitive-apis.html" title="Geometry">
 <link rel="prev" href="cogl-primitive-apis.html" title="Geometry">
 <link rel="next" href="cogl-2.0-experimental-Path-Primitives.html" title="Path Primitives">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -42,22 +42,63 @@
 <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new" title="cogl_primitive_new ()">cogl_primitive_new</a>                  (<em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
                                                          <em class="parameter"><code>...</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-with-attributes" title="cogl_primitive_new_with_attributes ()">cogl_primitive_new_with_attributes</a>  (<em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> **attributes</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_attributes</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2" title="cogl_primitive_new_p2 ()">cogl_primitive_new_p2</a>               (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3" title="cogl_primitive_new_p3 ()">cogl_primitive_new_p3</a>               (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2c4" title="cogl_primitive_new_p2c4 ()">cogl_primitive_new_p2c4</a>             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2C4</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3c4" title="cogl_primitive_new_p3c4 ()">cogl_primitive_new_p3c4</a>             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3C4</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2t2" title="cogl_primitive_new_p2t2 ()">cogl_primitive_new_p2t2</a>             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2T2</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3t2" title="cogl_primitive_new_p3t2 ()">cogl_primitive_new_p3t2</a>             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3T2</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2t2c4" title="cogl_primitive_new_p2t2c4 ()">cogl_primitive_new_p2t2c4</a>           (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2T2C4</span> *data</code></em>);
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3t2c4" title="cogl_primitive_new_p3t2c4 ()">cogl_primitive_new_p3t2c4</a>           (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3T2C4</span> *data</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-is-primitive" title="cogl_is_primitive ()">cogl_is_primitive</a>                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
 <span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-first-vertex" title="cogl_primitive_get_first_vertex ()">cogl_primitive_get_first_vertex</a>     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-first-vertex" title="cogl_primitive_set_first_vertex ()">cogl_primitive_set_first_vertex</a>     (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> first_vertex</code></em>);
-<span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-n-vertices" title="cogl_primitive_get_n_vertices ()">cogl_primitive_get_n_vertices</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices ()">cogl_primitive_set_n_vertices</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>);
+#define             <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-n-vertices" title="cogl_primitive_get_n_vertices">cogl_primitive_get_n_vertices</a>
+#define             <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices">cogl_primitive_set_n_vertices</a>
 <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="returnvalue">CoglVerticesMode</span></a>    <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-mode" title="cogl_primitive_get_mode ()">cogl_primitive_get_mode</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-mode" title="cogl_primitive_set_mode ()">cogl_primitive_set_mode</a>             (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
                                                          <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-attributes" title="cogl_primitive_set_attributes ()">cogl_primitive_set_attributes</a>       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
                                                          <em class="parameter"><code><span class="type">CoglAttribute</span> **attributes</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> n_attributes</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices" title="cogl_primitive_set_indices ()">cogl_primitive_set_indices</a>          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
-                                                         <em class="parameter"><code><span class="type">CoglIndices</span> *indices</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-draw" title="cogl_primitive_draw ()">cogl_primitive_draw</a>                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+<span class="returnvalue">CoglIndices</span> *       <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-get-indices" title="cogl_primitive_get_indices ()">cogl_primitive_get_indices</a>          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+#define             <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices" title="cogl_primitive_set_indices">cogl_primitive_set_indices</a>
+<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-copy" title="cogl_primitive_copy ()">cogl_primitive_copy</a>                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (<a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitiveAttributeCallback" title="CoglPrimitiveAttributeCallback ()">*CoglPrimitiveAttributeCallback</a>)   (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-foreach-attribute" title="cogl_primitive_foreach_attribute ()">cogl_primitive_foreach_attribute</a>    (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitiveAttributeCallback" title="CoglPrimitiveAttributeCallback ()"><span class="type">CoglPrimitiveAttributeCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -83,6 +124,12 @@ Combines a set of <span class="type">CoglAttribute</span>s with a specific draw 
 and defines a vertex count so a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object can be retained and
 drawn later with no addition information required.
 </p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> will simply update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
@@ -95,12 +142,800 @@ drawn later with no addition information required.
 <td>The number of vertices to process when drawing</td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>Varargs</code></em> :</span></p></td>
 <td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> terminated list of attributes</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-with-attributes"></a><h3>cogl_primitive_new_with_attributes ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_with_attributes  (<em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> **attributes</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_attributes</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p2"></a><h3>cogl_primitive_new_p2 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p2               (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position
+attribute with a <span class="type">CoglAttribute</span> and upload your data.
+</p>
+<p>
+For example to draw a convex polygon you can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP2</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="normal"> </span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2">cogl_primitive_new_p2</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                              </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP2</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p3"></a><h3>cogl_primitive_new_p3 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p3               (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position
+attribute with a <span class="type">CoglAttribute</span> and upload your data.
+</p>
+<p>
+For example to draw a convex polygon you can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP3</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="normal"> </span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3">cogl_primitive_new_p3</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                              </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP3</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p2c4"></a><h3>cogl_primitive_new_p2c4 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p2c4             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2C4</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position
+and color attributes with <span class="type">CoglAttribute</span>s and upload
+your data.
+</p>
+<p>
+For example to draw a convex polygon with a linear gradient you
+can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP2C4</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">    </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2c4">cogl_primitive_new_p2c4</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP2C4</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p3c4"></a><h3>cogl_primitive_new_p3c4 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p3c4             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3C4</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position
+and color attributes with <span class="type">CoglAttribute</span>s and upload
+your data.
+</p>
+<p>
+For example to draw a convex polygon with a linear gradient you
+can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP3C4</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="normal"> </span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3c4">cogl_primitive_new_p3c4</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP3C4</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p2t2"></a><h3>cogl_primitive_new_p2t2 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p2t2             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2T2</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position and
+texture coordinate attributes with <span class="type">CoglAttribute</span>s and
+upload your data.
+</p>
+<p>
+For example to draw a convex polygon with texture mapping you can
+do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP2T2</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">    </span><span class="number">0.5</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0.0</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2t2">cogl_primitive_new_p2t2</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP2T2</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p3t2"></a><h3>cogl_primitive_new_p3t2 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p3t2             (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3T2</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position and
+texture coordinate attributes with <span class="type">CoglAttribute</span>s and
+upload your data.
+</p>
+<p>
+For example to draw a convex polygon with texture mapping you can
+do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP3T2</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.5</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0.0</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3t2">cogl_primitive_new_p3t2</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP3T2</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p2t2c4"></a><h3>cogl_primitive_new_p2t2c4 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p2t2c4           (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP2T2C4</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position, texture
+coordinate and color attributes with <span class="type">CoglAttribute</span>s and
+upload your data.
+</p>
+<p>
+For example to draw a convex polygon with texture mapping and a
+linear gradient you can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP2T2C4</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">    </span><span class="number">0.5</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal">  </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p2t2c4">cogl_primitive_new_p2t2c4</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                  </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP2T2C4</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.6</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-new-p3t2c4"></a><h3>cogl_primitive_new_p3t2c4 ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_new_p3t2c4           (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> mode</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">CoglVertexP3T2C4</span> *data</code></em>);</pre>
+<p>
+Provides a convenient way to describe a primitive, such as a single
+triangle strip or a triangle fan, that will internally allocate the
+necessary <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> storage, describe the position, texture
+coordinate and color attributes with <span class="type">CoglAttribute</span>s and
+upload your data.
+</p>
+<p>
+For example to draw a convex polygon with texture mapping and a
+linear gradient you can do:
+</p>
+<div class="informalexample">
+  <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td class="listing_lines" align="right"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="usertype">CoglVertexP3T2C4</span><span class="normal"> triangle</span><span class="symbol">[]</span><span class="normal"> </span><span class="symbol">=</span>
+<span class="cbracket">{</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">150</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">   </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0.5</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span><span class="symbol">,</span>
+<span class="normal">  </span><span class="cbracket">{</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">300</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal"> </span><span class="number">1.0</span><span class="symbol">,</span><span class="normal">  </span><span class="number">0xff</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0x00</span><span class="symbol">,</span><span class="normal"> </span><span class="number">0xff</span><span class="cbracket">}</span>
+<span class="cbracket">}</span><span class="symbol">;</span>
+<span class="normal">prim </span><span class="symbol">=</span><span class="normal"> </span><span class="function"><a href="cogl-2.0-experimental-Primitives.html#cogl-primitive-new-p3t2c4">cogl_primitive_new_p3t2c4</a></span><span class="normal"> </span><span class="symbol">(</span><span class="normal"><a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-TRIANGLE-FAN:CAPS">COGL_VERTICES_MODE_TRIANGLE_FAN</a></span><span class="symbol">,</span>
+<span class="normal">                                  </span><span class="number">3</span><span class="symbol">,</span><span class="normal"> triangle</span><span class="symbol">);</span>
+<span class="function">cogl_primitive_draw</span><span class="normal"> </span><span class="symbol">(</span><span class="normal">prim</span><span class="symbol">);</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_vertices</code></em> is initially used to determine how
+much can be read from <em class="parameter"><code>data</code></em> but it will also be used to update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to read when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The primitive API doesn't support drawing with sliced
+textures (since switching between slices implies changing state and
+so that implies multiple primitives need to be submitted). You
+should pass the <a href="../cogl/cogl-Textures.html#COGL-TEXTURE-NO-SLICING:CAPS"><code class="literal">COGL_TEXTURE_NO_SLICING</code></a> flag to all textures that
+might be used while drawing with this API. If your hardware doesn't
+support non-power of two textures (For example you are using GLES
+1.1) then you will need to make sure your assets are resized to a
+power-of-two size (though they don't have to be square)</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>mode</code></em> :</span></p></td>
+<td>A <a href="../cogl/cogl-Vertex-Buffers.html#CoglVerticesMode"><span class="type">CoglVerticesMode</span></a> defining how to draw the vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read from <em class="parameter"><code>data</code></em> and also
+the number of vertices to read when later drawing.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An array of <span class="type">CoglVertexP3T2C4</span> vertices</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> with a reference of
+1. This can be freed using <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -146,14 +981,80 @@ Gets whether the given object references a <a class="link" href="cogl-2.0-experi
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-primitive-get-n-vertices"></a><h3>cogl_primitive_get_n_vertices ()</h3>
-<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_primitive_get_n_vertices       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+<a name="cogl-primitive-get-n-vertices"></a><h3>cogl_primitive_get_n_vertices</h3>
+<pre class="programlisting">#define cogl_primitive_get_n_vertices cogl_primitive_get_n_vertices_EXP
+</pre>
+<p>
+Queries the number of vertices to read when drawing the given
+<em class="parameter"><code>primitive</code></em>. Usually this value is implicitly set when associating
+vertex data or indices with a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>.
+</p>
+<p>
+If <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices" title="cogl_primitive_set_indices"><code class="function">cogl_primitive_set_indices()</code></a> has been used to associate a
+sequence of <span class="type">CoglIndices</span> with the given <em class="parameter"><code>primitive</code></em> then the
+number of vertices to read can also be phrased as the number
+of indices to read.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>To be clear; it doesn't refer to the number of vertices - in
+terms of data - associated with the primitive it's just the number
+of vertices to read and draw.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The number of vertices to read when drawing.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-primitive-set-n-vertices"></a><h3>cogl_primitive_set_n_vertices ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_n_vertices       (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
-                                                         <em class="parameter"><code><span class="type">int</span> n_vertices</code></em>);</pre>
+<a name="cogl-primitive-set-n-vertices"></a><h3>cogl_primitive_set_n_vertices</h3>
+<pre class="programlisting">#define cogl_primitive_set_n_vertices cogl_primitive_set_n_vertices_EXP
+</pre>
+<p>
+Specifies how many vertices should be read when drawing the given
+<em class="parameter"><code>primitive</code></em>.
+</p>
+<p>
+Usually this value is set implicitly when associating vertex data
+or indices with a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>To be clear; it doesn't refer to the number of vertices - in
+terms of data - associated with the primitive it's just the number
+of vertices to read and draw.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_vertices</code></em> :</span></p></td>
+<td>The number of vertices to read when drawing.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.8</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -194,31 +1095,172 @@ pointers</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-primitive-set-indices"></a><h3>cogl_primitive_set_indices ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_set_indices          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
-                                                         <em class="parameter"><code><span class="type">CoglIndices</span> *indices</code></em>);</pre>
+<a name="cogl-primitive-get-indices"></a><h3>cogl_primitive_get_indices ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglIndices</span> *       cogl_primitive_get_indices          (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the indices that were set with
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-indices" title="cogl_primitive_set_indices"><code class="function">cogl_primitive_set_indices()</code></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no indices were set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-primitive-draw"></a><h3>cogl_primitive_draw ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_draw                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+<a name="cogl-primitive-set-indices"></a><h3>cogl_primitive_set_indices</h3>
+<pre class="programlisting">#define cogl_primitive_set_indices cogl_primitive_set_indices_EXP
+</pre>
 <p>
-Draw the given <em class="parameter"><code>primitive</code></em> with the current source material.
+Associates a sequence of <span class="type">CoglIndices</span> with the given <em class="parameter"><code>primitive</code></em>.
+</p>
+<p>
+<span class="type">CoglIndices</span> provide a way to virtualize your real vertex data by
+providing a sequence of indices that index into your real vertex
+data. The GPU will walk though the index values to indirectly
+lookup the data for each vertex instead of sequentially walking
+through the data directly. This lets you save memory by indexing
+shared data multiple times instead of duplicating the data.
+</p>
+<p>
+The value passed as <em class="parameter"><code>n_indices</code></em> will simply update the
+<span class="type">"n_vertices"</span> property as if
+<a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-set-n-vertices" title="cogl_primitive_set_n_vertices"><code class="function">cogl_primitive_set_n_vertices()</code></a> were called. This property defines
+the number of vertices to draw or, put another way, how many
+indices should be read from <em class="parameter"><code>indices</code></em> when drawing.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>The <span class="type">"first_vertex"</span> property also affects
+drawing with indices by defining the first entry of the indices to
+start drawing from.</div>
+<p>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody><tr>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>indices</code></em> :</span></p></td>
+<td>A <span class="type">CoglIndices</span> array</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_indices</code></em> :</span></p></td>
+<td>The number of indices to reference when drawing</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-copy"></a><h3>cogl_primitive_copy ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="returnvalue">CoglPrimitive</span></a> *     cogl_primitive_copy                 (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>);</pre>
+<p>
+Makes a copy of an existing <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>. Note that the primitive
+is a shallow copy which means it will use the same attributes and
+attribute buffers as the original primitive.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>A primitive copy</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the new primitive</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglPrimitiveAttributeCallback"></a><h3>CoglPrimitiveAttributeCallback ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            (*CoglPrimitiveAttributeCallback)   (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);</pre>
+<p>
+The callback prototype used with <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-foreach-attribute" title="cogl_primitive_foreach_attribute ()"><code class="function">cogl_primitive_foreach_attribute()</code></a>
+for iterating all the attributes of a <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>.
+</p>
+<p>
+The function should return TRUE to continue iteration or FALSE to
+stop.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
+<td>The <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> whose attributes are being iterated</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td>The <span class="type">CoglAttribute</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>The private data passed to <a class="link" href="cogl-2.0-experimental-Primitives.html#cogl-primitive-foreach-attribute" title="cogl_primitive_foreach_attribute ()"><code class="function">cogl_primitive_foreach_attribute()</code></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-primitive-foreach-attribute"></a><h3>cogl_primitive_foreach_attribute ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_primitive_foreach_attribute    (<em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> *primitive</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitiveAttributeCallback" title="CoglPrimitiveAttributeCallback ()"><span class="type">CoglPrimitiveAttributeCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);</pre>
+<p>
+Iterates all the attributes of the given <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
 <td><p><span class="term"><em class="parameter"><code>primitive</code></em> :</span></p></td>
 <td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitive" title="CoglPrimitive"><span class="type">CoglPrimitive</span></a> object</td>
-</tr></tbody>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Primitives.html#CoglPrimitiveAttributeCallback" title="CoglPrimitiveAttributeCallback ()"><span class="type">CoglPrimitiveAttributeCallback</span></a> to be called for each attribute</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>Private data that will be passed to the callback</td>
+</tr>
+</tbody>
 </table></div>
-<p class="since">Since 1.6</p>
+<p class="since">Since 1.10</p>
 <p class="stability">Stability Level: Unstable</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

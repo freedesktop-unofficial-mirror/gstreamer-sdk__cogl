@@ -29,7 +29,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
@@ -46,18 +45,13 @@
 #include "cogl-util.h"
 #include "cogl-profile.h"
 #include "cogl-depth-state-private.h"
+#include "cogl1-context.h"
 
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <string.h>
 
-static CoglPipelineLayer *_cogl_pipeline_layer_copy (CoglPipelineLayer *layer);
-
 static void _cogl_pipeline_free (CoglPipeline *tex);
-static void _cogl_pipeline_layer_free (CoglPipelineLayer *layer);
-static void _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
-                                                 CoglPipelineLayer *layer,
-                                                 gboolean inc_n_layers);
 static void recursively_free_layer_caches (CoglPipeline *pipeline);
 static gboolean _cogl_pipeline_is_weak (CoglPipeline *pipeline);
 
@@ -77,9 +71,6 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
 #include "cogl-pipeline-fragend-fixed-private.h"
 #endif
-#ifdef COGL_PIPELINE_PROGEND_GLSL
-#include "cogl-pipeline-progend-glsl-private.h"
-#endif
 
 #ifdef COGL_PIPELINE_VERTEND_GLSL
 #include "cogl-pipeline-vertend-glsl-private.h"
@@ -88,87 +79,14 @@ _cogl_pipeline_progends[MAX (COGL_PIPELINE_N_PROGENDS, 1)];
 #include "cogl-pipeline-vertend-fixed-private.h"
 #endif
 
+#ifdef COGL_PIPELINE_PROGEND_FIXED
+#include "cogl-pipeline-progend-fixed-private.h"
+#endif
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+#include "cogl-pipeline-progend-glsl-private.h"
+#endif
+
 COGL_OBJECT_DEFINE (Pipeline, pipeline);
-/* This type was made deprecated before the cogl_is_pipeline_layer
-   function was ever exposed in the public headers so there's no need
-   to make the cogl_is_pipeline_layer function public. We use INTERNAL
-   so that the cogl_is_* function won't get defined */
-COGL_OBJECT_INTERNAL_DEFINE (PipelineLayer, pipeline_layer);
-
-GQuark
-_cogl_pipeline_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-pipeline-error-quark");
-}
-
-static void
-_cogl_pipeline_node_init (CoglPipelineNode *node)
-{
-  node->parent = NULL;
-  COGL_LIST_INIT (&node->children);
-}
-
-static void
-_cogl_pipeline_node_set_parent_real (CoglPipelineNode *node,
-                                     CoglPipelineNode *parent,
-                                     CoglPipelineNodeUnparentVFunc unparent,
-                                     gboolean take_strong_reference)
-{
-  /* NB: the old parent may indirectly be keeping the new parent alive
-   * so we have to ref the new parent before unrefing the old.
-   *
-   * Note: we take a reference here regardless of
-   * take_strong_reference because weak children may need special
-   * handling when the parent disposes itself which relies on a
-   * consistent link to all weak nodes. Once the node is linked to its
-   * parent then we remove the reference at the end if
-   * take_strong_reference == FALSE. */
-  cogl_object_ref (parent);
-
-  if (node->parent)
-    unparent (node);
-
-  COGL_LIST_INSERT_HEAD (&parent->children, node, list_node);
-
-  node->parent = parent;
-  node->has_parent_reference = take_strong_reference;
-
-  /* Now that there is a consistent parent->child link we can remove
-   * the parent reference if no reference was requested. If it turns
-   * out that the new parent was only being kept alive by the old
-   * parent then it will be disposed of here. */
-  if (!take_strong_reference)
-    cogl_object_unref (parent);
-}
-
-static void
-_cogl_pipeline_node_unparent_real (CoglPipelineNode *node)
-{
-  CoglPipelineNode *parent = node->parent;
-
-  if (parent == NULL)
-    return;
-
-  g_return_if_fail (!COGL_LIST_EMPTY (&parent->children));
-
-  COGL_LIST_REMOVE (node, list_node);
-
-  if (node->has_parent_reference)
-    cogl_object_unref (parent);
-
-  node->parent = NULL;
-}
-
-void
-_cogl_pipeline_node_foreach_child (CoglPipelineNode *node,
-                                   CoglPipelineNodeChildCallback callback,
-                                   void *user_data)
-{
-  CoglPipelineNode *child, *next;
-
-  COGL_LIST_FOREACH_SAFE (child, &node->children, list_node, next)
-    callback (child, user_data);
-}
 
 /*
  * This initializes the first pipeline owned by the Cogl context. All
@@ -188,9 +106,9 @@ _cogl_pipeline_init_default_pipeline (void)
   CoglPipelineLightingState *lighting_state = &big_state->lighting_state;
   CoglPipelineAlphaFuncState *alpha_state = &big_state->alpha_state;
   CoglPipelineBlendState *blend_state = &big_state->blend_state;
-  CoglDepthState *depth_state = &big_state->depth_state;
   CoglPipelineLogicOpsState *logic_ops_state = &big_state->logic_ops_state;
   CoglPipelineCullFaceState *cull_face_state = &big_state->cull_face_state;
+  CoglPipelineUniformsState *uniforms_state = &big_state->uniforms_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -207,6 +125,10 @@ _cogl_pipeline_init_default_pipeline (void)
   _cogl_pipeline_fragends[COGL_PIPELINE_FRAGEND_FIXED] =
     &_cogl_pipeline_fixed_fragend;
 #endif
+#ifdef COGL_PIPELINE_PROGEND_FIXED
+  _cogl_pipeline_progends[COGL_PIPELINE_PROGEND_FIXED] =
+    &_cogl_pipeline_fixed_progend;
+#endif
 #ifdef COGL_PIPELINE_PROGEND_GLSL
   _cogl_pipeline_progends[COGL_PIPELINE_PROGEND_GLSL] =
     &_cogl_pipeline_glsl_progend;
@@ -221,7 +143,7 @@ _cogl_pipeline_init_default_pipeline (void)
     &_cogl_pipeline_fixed_vertend;
 #endif
 
-  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
+  _cogl_pipeline_node_init (COGL_NODE (pipeline));
 
   pipeline->is_weak = FALSE;
   pipeline->journal_ref_count = 0;
@@ -287,12 +209,7 @@ _cogl_pipeline_init_default_pipeline (void)
 
   big_state->user_program = COGL_INVALID_HANDLE;
 
-  /* The same as the GL defaults */
-  depth_state->test_enabled = FALSE;
-  depth_state->test_function = COGL_DEPTH_TEST_FUNCTION_LESS;
-  depth_state->write_enabled = TRUE;
-  depth_state->range_near = 0;
-  depth_state->range_far = 1;
+  cogl_depth_state_init (&big_state->depth_state);
 
   big_state->point_size = 1.0f;
 
@@ -301,18 +218,22 @@ _cogl_pipeline_init_default_pipeline (void)
   cull_face_state->mode = COGL_PIPELINE_CULL_FACE_MODE_NONE;
   cull_face_state->front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
 
+  _cogl_bitmask_init (&uniforms_state->override_mask);
+  _cogl_bitmask_init (&uniforms_state->changed_mask);
+  uniforms_state->override_values = NULL;
+
   ctx->default_pipeline = _cogl_pipeline_object_new (pipeline);
 }
 
 static void
-_cogl_pipeline_unparent (CoglPipelineNode *pipeline)
+_cogl_pipeline_unparent (CoglNode *pipeline)
 {
   /* Chain up */
   _cogl_pipeline_node_unparent_real (pipeline);
 }
 
 static gboolean
-recursively_free_layer_caches_cb (CoglPipelineNode *node,
+recursively_free_layer_caches_cb (CoglNode *node,
                                   void *user_data)
 {
   recursively_free_layer_caches (COGL_PIPELINE (node));
@@ -338,7 +259,7 @@ recursively_free_layer_caches (CoglPipeline *pipeline)
                    pipeline->layers_cache);
   pipeline->layers_cache_dirty = TRUE;
 
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+  _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                      recursively_free_layer_caches_cb,
                                      NULL);
 }
@@ -349,8 +270,8 @@ _cogl_pipeline_set_parent (CoglPipeline *pipeline,
                            gboolean take_strong_reference)
 {
   /* Chain up */
-  _cogl_pipeline_node_set_parent_real (COGL_PIPELINE_NODE (pipeline),
-                                       COGL_PIPELINE_NODE (parent),
+  _cogl_pipeline_node_set_parent_real (COGL_NODE (pipeline),
+                                       COGL_NODE (parent),
                                        _cogl_pipeline_unparent,
                                        take_strong_reference);
 
@@ -375,18 +296,18 @@ _cogl_pipeline_set_parent (CoglPipeline *pipeline,
 static void
 _cogl_pipeline_promote_weak_ancestors (CoglPipeline *strong)
 {
-  CoglPipelineNode *n;
+  CoglNode *n;
 
-  g_return_if_fail (!strong->is_weak);
+  _COGL_RETURN_IF_FAIL (!strong->is_weak);
 
   /* If the parent of strong is weak, then we want to promote it by
      taking a reference on strong's grandparent. We don't need to take
      a reference on strong's direct parent */
 
-  if (COGL_PIPELINE_NODE (strong)->parent == NULL)
+  if (COGL_NODE (strong)->parent == NULL)
     return;
 
-  for (n = COGL_PIPELINE_NODE (strong)->parent;
+  for (n = COGL_NODE (strong)->parent;
        /* We can assume that all weak pipelines have a parent */
        COGL_PIPELINE (n)->is_weak;
        n = n->parent)
@@ -397,17 +318,17 @@ _cogl_pipeline_promote_weak_ancestors (CoglPipeline *strong)
 static void
 _cogl_pipeline_revert_weak_ancestors (CoglPipeline *strong)
 {
-  CoglPipelineNode *n;
+  CoglNode *n;
 
-  g_return_if_fail (!strong->is_weak);
+  _COGL_RETURN_IF_FAIL (!strong->is_weak);
 
   /* This reverts the effect of calling
      _cogl_pipeline_promote_weak_ancestors */
 
-  if (COGL_PIPELINE_NODE (strong)->parent == NULL)
+  if (COGL_NODE (strong)->parent == NULL)
     return;
 
-  for (n = COGL_PIPELINE_NODE (strong)->parent;
+  for (n = COGL_NODE (strong)->parent;
        /* We can assume that all weak pipelines have a parent */
        COGL_PIPELINE (n)->is_weak;
        n = n->parent)
@@ -422,7 +343,7 @@ _cogl_pipeline_copy (CoglPipeline *src, gboolean is_weak)
 {
   CoglPipeline *pipeline = g_slice_new (CoglPipeline);
 
-  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (pipeline));
+  _cogl_pipeline_node_init (COGL_NODE (pipeline));
 
   pipeline->is_weak = is_weak;
 
@@ -489,31 +410,29 @@ _cogl_pipeline_weak_copy (CoglPipeline *pipeline,
 }
 
 CoglPipeline *
-cogl_pipeline_new (void)
+cogl_pipeline_new (CoglContext *context)
 {
   CoglPipeline *new;
 
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  new = cogl_pipeline_copy (ctx->default_pipeline);
+  new = cogl_pipeline_copy (context->default_pipeline);
   _cogl_pipeline_set_static_breadcrumb (new, "new");
   return new;
 }
 
 static gboolean
-destroy_weak_children_cb (CoglPipelineNode *node,
+destroy_weak_children_cb (CoglNode *node,
                           void *user_data)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (node);
 
   if (_cogl_pipeline_is_weak (pipeline))
     {
-      _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+      _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                          destroy_weak_children_cb,
                                          NULL);
 
       pipeline->destroy_callback (pipeline, pipeline->destroy_data);
-      _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
+      _cogl_pipeline_unparent (COGL_NODE (pipeline));
     }
 
   return TRUE;
@@ -526,17 +445,32 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
     _cogl_pipeline_revert_weak_ancestors (pipeline);
 
   /* Weak pipelines don't take a reference on their parent */
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+  _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                      destroy_weak_children_cb,
                                      NULL);
 
-  g_assert (COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (pipeline)->children));
+  g_assert (COGL_LIST_EMPTY (&COGL_NODE (pipeline)->children));
 
-  _cogl_pipeline_unparent (COGL_PIPELINE_NODE (pipeline));
+  _cogl_pipeline_unparent (COGL_NODE (pipeline));
 
   if (pipeline->differences & COGL_PIPELINE_STATE_USER_SHADER &&
       pipeline->big_state->user_program)
     cogl_handle_unref (pipeline->big_state->user_program);
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_UNIFORMS)
+    {
+      CoglPipelineUniformsState *uniforms_state
+        = &pipeline->big_state->uniforms_state;
+      int n_overrides = _cogl_bitmask_popcount (&uniforms_state->override_mask);
+      int i;
+
+      for (i = 0; i < n_overrides; i++)
+        _cogl_boxed_value_destroy (uniforms_state->override_values + i);
+      g_free (uniforms_state->override_values);
+
+      _cogl_bitmask_destroy (&uniforms_state->override_mask);
+      _cogl_bitmask_destroy (&uniforms_state->changed_mask);
+    }
 
   if (pipeline->differences & COGL_PIPELINE_STATE_NEEDS_BIG_STATE)
     g_slice_free (CoglPipelineBigState, pipeline->big_state);
@@ -548,6 +482,12 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
       g_list_free (pipeline->layer_differences);
     }
 
+  if (pipeline->differences & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&pipeline->big_state->vertex_snippets);
+
+  if (pipeline->differences & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    _cogl_pipeline_snippet_list_free (&pipeline->big_state->fragment_snippets);
+
   g_list_free (pipeline->deprecated_get_layers_list);
 
   recursively_free_layer_caches (pipeline);
@@ -558,27 +498,9 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
 gboolean
 _cogl_pipeline_get_real_blend_enabled (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   return pipeline->real_blend_enable;
-}
-
-CoglPipelineLayer *
-_cogl_pipeline_layer_get_authority (CoglPipelineLayer *layer,
-                                    unsigned long difference)
-{
-  CoglPipelineLayer *authority = layer;
-  while (!(authority->differences & difference))
-    authority = _cogl_pipeline_layer_get_parent (authority);
-  return authority;
-}
-
-int
-_cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer)
-{
-  CoglPipelineLayer *authority =
-    _cogl_pipeline_layer_get_authority (layer, COGL_PIPELINE_LAYER_STATE_UNIT);
-  return authority->unit_index;
 }
 
 static void
@@ -681,7 +603,7 @@ _cogl_pipeline_foreach_layer_internal (CoglPipeline *pipeline,
 
   for (i = 0, cont = TRUE; i < n_layers && cont == TRUE; i++)
     {
-      g_return_if_fail (authority->layers_cache_dirty == FALSE);
+      _COGL_RETURN_IF_FAIL (authority->layers_cache_dirty == FALSE);
       cont = callback (authority->layers_cache[i], user_data);
     }
 }
@@ -732,53 +654,18 @@ cogl_pipeline_foreach_layer (CoglPipeline *pipeline,
 static gboolean
 layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
 {
-  CoglPipelineLayer *combine_authority =
-    _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_COMBINE);
-  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
-  CoglPipelineLayer *tex_authority;
   gboolean *has_alpha = data;
+  *has_alpha = _cogl_pipeline_layer_has_alpha (layer);
 
-  /* has_alpha maintains the alpha status for the GL_PREVIOUS layer */
-
-  /* For anything but the default texture combine we currently just
-   * assume it may result in an alpha value < 1
+  /* return FALSE to stop iterating layers if we find any layer
+   * has alpha ...
    *
-   * FIXME: we could do better than this. */
-  if (big_state->texture_combine_alpha_func !=
-      COGL_PIPELINE_COMBINE_FUNC_MODULATE ||
-      big_state->texture_combine_alpha_src[0] !=
-      COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS ||
-      big_state->texture_combine_alpha_op[0] !=
-      COGL_PIPELINE_COMBINE_OP_SRC_ALPHA ||
-      big_state->texture_combine_alpha_src[1] !=
-      COGL_PIPELINE_COMBINE_SOURCE_TEXTURE ||
-      big_state->texture_combine_alpha_op[1] !=
-      COGL_PIPELINE_COMBINE_OP_SRC_ALPHA)
-    {
-      *has_alpha = TRUE;
-      /* return FALSE to stop iterating layers... */
-      return FALSE;
-    }
-
-  /* NB: A layer may have a combine mode set on it but not yet
-   * have an associated texture which would mean we'd fallback
-   * to the default texture which doesn't have an alpha component
+   * FIXME: actually we should never be bailing out because it's
+   * always possible that a later layer could discard any previous
+   * alpha!
    */
-  tex_authority =
-    _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
-  if (tex_authority->texture &&
-      cogl_texture_get_format (tex_authority->texture) & COGL_A_BIT)
-    {
-      *has_alpha = TRUE;
-      /* return FALSE to stop iterating layers... */
-      return FALSE;
-    }
 
-  *has_alpha = FALSE;
-  /* return FALSE to continue iterating layers... */
-  return TRUE;
+  return !(*has_alpha);
 }
 
 static gboolean
@@ -865,6 +752,18 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
        * TODO: check that it isn't just a vertex shader!
        */
       if (_cogl_pipeline_get_user_program (pipeline) != COGL_INVALID_HANDLE)
+        return TRUE;
+    }
+
+  if (changes & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    {
+      if (!_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
+        return TRUE;
+    }
+
+  if (changes & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    {
+      if (!_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
         return TRUE;
     }
 
@@ -1060,6 +959,40 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
               sizeof (CoglPipelineCullFaceState));
     }
 
+  if (differences & COGL_PIPELINE_STATE_UNIFORMS)
+    {
+      int n_overrides =
+        _cogl_bitmask_popcount (&src->big_state->uniforms_state.override_mask);
+      int i;
+
+      big_state->uniforms_state.override_values =
+        g_malloc (n_overrides * sizeof (CoglBoxedValue));
+
+      for (i = 0; i < n_overrides; i++)
+        {
+          CoglBoxedValue *dst_bv =
+            big_state->uniforms_state.override_values + i;
+          const CoglBoxedValue *src_bv =
+            src->big_state->uniforms_state.override_values + i;
+
+          _cogl_boxed_value_copy (dst_bv, src_bv);
+        }
+
+      _cogl_bitmask_init (&big_state->uniforms_state.override_mask);
+      _cogl_bitmask_set_bits (&big_state->uniforms_state.override_mask,
+                              &src->big_state->uniforms_state.override_mask);
+
+      _cogl_bitmask_init (&big_state->uniforms_state.changed_mask);
+    }
+
+  if (differences & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
+    _cogl_pipeline_snippet_list_copy (&big_state->vertex_snippets,
+                                      &src->big_state->vertex_snippets);
+
+  if (differences & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
+    _cogl_pipeline_snippet_list_copy (&big_state->fragment_snippets,
+                                      &src->big_state->fragment_snippets);
+
   /* XXX: we shouldn't bother doing this in most cases since
    * _copy_differences is typically used to initialize pipeline state
    * by copying it from the current authority, so it's not actually
@@ -1078,7 +1011,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
 {
   CoglPipeline *authority;
 
-  g_return_if_fail (change & COGL_PIPELINE_STATE_ALL_SPARSE);
+  _COGL_RETURN_IF_FAIL (change & COGL_PIPELINE_STATE_ALL_SPARSE);
 
   if (!(change & COGL_PIPELINE_STATE_MULTI_PROPERTY))
     return;
@@ -1144,11 +1077,30 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
                 sizeof (CoglPipelineCullFaceState));
         break;
       }
+    case COGL_PIPELINE_STATE_UNIFORMS:
+      {
+        CoglPipelineUniformsState *uniforms_state =
+          &pipeline->big_state->uniforms_state;
+        _cogl_bitmask_init (&uniforms_state->override_mask);
+        _cogl_bitmask_init (&uniforms_state->changed_mask);
+        uniforms_state->override_values = NULL;
+        break;
+      }
+    case COGL_PIPELINE_STATE_VERTEX_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&pipeline->big_state->vertex_snippets,
+                                        &authority->big_state->vertex_snippets);
+      break;
+
+    case COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS:
+      _cogl_pipeline_snippet_list_copy (&pipeline->big_state->fragment_snippets,
+                                        &authority->big_state->
+                                        fragment_snippets);
+      break;
     }
 }
 
 static gboolean
-check_if_strong_cb (CoglPipelineNode *node, void *user_data)
+check_if_strong_cb (CoglNode *node, void *user_data)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (node);
   gboolean *has_strong_child = user_data;
@@ -1166,7 +1118,7 @@ static gboolean
 has_strong_children (CoglPipeline *pipeline)
 {
   gboolean has_strong_child = FALSE;
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+  _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                      check_if_strong_cb,
                                      &has_strong_child);
   return has_strong_child;
@@ -1182,7 +1134,7 @@ _cogl_pipeline_is_weak (CoglPipeline *pipeline)
 }
 
 static gboolean
-reparent_children_cb (CoglPipelineNode *node,
+reparent_children_cb (CoglNode *node,
                       void *user_data)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (node);
@@ -1313,14 +1265,14 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
   /* The simplest descendants to handle are weak pipelines; we simply
    * destroy them if we are modifying a pipeline they depend on. This
    * means weak pipelines never cause us to do a copy-on-write. */
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+  _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                      destroy_weak_children_cb,
                                      NULL);
 
   /* If there are still children remaining though we'll need to
    * perform a copy-on-write and reparent the dependants as children
    * of the copy. */
-  if (!COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (pipeline)->children))
+  if (!COGL_LIST_EMPTY (&COGL_NODE (pipeline)->children))
     {
       CoglPipeline *new_authority;
 
@@ -1354,7 +1306,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
 
       /* Reparent the dependants of pipeline to be children of
        * new_authority instead... */
-      _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
+      _cogl_pipeline_node_foreach_child (COGL_NODE (pipeline),
                                          reparent_children_cb,
                                          new_authority);
 
@@ -1413,12 +1365,12 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
 }
 
 
-static void
+void
 _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
                                      CoglPipelineLayer *layer,
                                      gboolean inc_n_layers)
 {
-  g_return_if_fail (layer->owner == NULL);
+  _COGL_RETURN_IF_FAIL (layer->owner == NULL);
 
   layer->owner = pipeline;
   cogl_object_ref (layer);
@@ -1447,12 +1399,12 @@ _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
     pipeline->n_layers++;
 }
 
-static void
+void
 _cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
                                         CoglPipelineLayer *layer,
                                         gboolean dec_n_layers)
 {
-  g_return_if_fail (layer->owner == pipeline);
+  _COGL_RETURN_IF_FAIL (layer->owner == pipeline);
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
@@ -1589,7 +1541,7 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
   pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 }
 
-static void
+void
 _cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
@@ -1609,7 +1561,7 @@ _cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
     }
 }
 
-static void
+void
 _cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
@@ -1624,7 +1576,7 @@ _cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
     }
 }
 
-static void
+void
 _cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
                                             CoglPipelineLayer *layer,
                                             CoglPipelineLayerState change)
@@ -1638,239 +1590,6 @@ _cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
       _cogl_pipeline_progends[i]->layer_pre_change_notify (owner,
                                                            layer,
                                                            change);
-}
-
-unsigned int
-_cogl_get_n_args_for_combine_func (CoglPipelineCombineFunc func)
-{
-  switch (func)
-    {
-    case COGL_PIPELINE_COMBINE_FUNC_REPLACE:
-      return 1;
-    case COGL_PIPELINE_COMBINE_FUNC_MODULATE:
-    case COGL_PIPELINE_COMBINE_FUNC_ADD:
-    case COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED:
-    case COGL_PIPELINE_COMBINE_FUNC_SUBTRACT:
-    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB:
-    case COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA:
-      return 2;
-    case COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE:
-      return 3;
-    }
-  return 0;
-}
-
-static void
-_cogl_pipeline_layer_init_multi_property_sparse_state (
-                                                  CoglPipelineLayer *layer,
-                                                  CoglPipelineLayerState change)
-{
-  CoglPipelineLayer *authority;
-
-  /* Nothing to initialize in these cases since they are all comprised
-   * of one member which we expect to immediately be overwritten. */
-  if (!(change & COGL_PIPELINE_LAYER_STATE_MULTI_PROPERTY))
-    return;
-
-  authority = _cogl_pipeline_layer_get_authority (layer, change);
-
-  switch (change)
-    {
-    /* XXX: avoid using a default: label so we get a warning if we
-     * don't explicitly handle a newly defined state-group here. */
-    case COGL_PIPELINE_LAYER_STATE_UNIT:
-    case COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET:
-    case COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA:
-    case COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS:
-    case COGL_PIPELINE_LAYER_STATE_USER_MATRIX:
-    case COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT:
-      g_return_if_reached ();
-
-    /* XXX: technically we could probably even consider these as
-     * single property state-groups from the pov that currently the
-     * corresponding property setters always update all of the values
-     * at the same time. */
-    case COGL_PIPELINE_LAYER_STATE_FILTERS:
-      layer->min_filter = authority->min_filter;
-      layer->mag_filter = authority->mag_filter;
-      break;
-    case COGL_PIPELINE_LAYER_STATE_WRAP_MODES:
-      layer->wrap_mode_s = authority->wrap_mode_s;
-      layer->wrap_mode_t = authority->wrap_mode_t;
-      layer->wrap_mode_p = authority->wrap_mode_p;
-      break;
-    case COGL_PIPELINE_LAYER_STATE_COMBINE:
-      {
-        int n_args;
-        int i;
-        CoglPipelineLayerBigState *src_big_state = authority->big_state;
-        CoglPipelineLayerBigState *dest_big_state = layer->big_state;
-        GLint func = src_big_state->texture_combine_rgb_func;
-
-        dest_big_state->texture_combine_rgb_func = func;
-        n_args = _cogl_get_n_args_for_combine_func (func);
-        for (i = 0; i < n_args; i++)
-          {
-            dest_big_state->texture_combine_rgb_src[i] =
-              src_big_state->texture_combine_rgb_src[i];
-            dest_big_state->texture_combine_rgb_op[i] =
-              src_big_state->texture_combine_rgb_op[i];
-          }
-
-        func = src_big_state->texture_combine_alpha_func;
-        dest_big_state->texture_combine_alpha_func = func;
-        n_args = _cogl_get_n_args_for_combine_func (func);
-        for (i = 0; i < n_args; i++)
-          {
-            dest_big_state->texture_combine_alpha_src[i] =
-              src_big_state->texture_combine_alpha_src[i];
-            dest_big_state->texture_combine_alpha_op[i] =
-              src_big_state->texture_combine_alpha_op[i];
-          }
-        break;
-      }
-    }
-}
-
-/* NB: This function will allocate a new derived layer if you are
- * trying to change the state of a layer with dependants so you must
- * always check the return value.
- *
- * If a new layer is returned it will be owned by required_owner.
- *
- * required_owner can only by NULL for new, currently unowned layers
- * with no dependants.
- */
-CoglPipelineLayer *
-_cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
-                                        CoglPipelineLayer *layer,
-                                        CoglPipelineLayerState change)
-{
-  CoglTextureUnit *unit;
-
-  /* Identify the case where the layer is new with no owner or
-   * dependants and so we don't need to do anything. */
-  if (COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (layer)->children) &&
-      layer->owner == NULL)
-    goto init_layer_state;
-
-  /* We only allow a NULL required_owner for new layers */
-  g_return_val_if_fail (required_owner != NULL, layer);
-
-  /* Chain up:
-   * A modification of a layer is indirectly also a modification of
-   * its owner so first make sure to flush the journal of any
-   * references to the current owner state and if necessary perform
-   * a copy-on-write for the required_owner if it has dependants.
-   */
-  _cogl_pipeline_pre_change_notify (required_owner,
-                                    COGL_PIPELINE_STATE_LAYERS,
-                                    NULL,
-                                    TRUE);
-
-  /* Unlike pipelines; layers are simply considered immutable once
-   * they have dependants - either direct children, or another
-   * pipeline as an owner.
-   */
-  if (!COGL_LIST_EMPTY (&COGL_PIPELINE_NODE (layer)->children) ||
-      layer->owner != required_owner)
-    {
-      CoglPipelineLayer *new = _cogl_pipeline_layer_copy (layer);
-      if (layer->owner == required_owner)
-        _cogl_pipeline_remove_layer_difference (required_owner, layer, FALSE);
-      _cogl_pipeline_add_layer_difference (required_owner, new, FALSE);
-      cogl_object_unref (new);
-      layer = new;
-      goto init_layer_state;
-    }
-
-  /* Note: At this point we know there is only one pipeline dependant on
-   * this layer (required_owner), and there are no other layers
-   * dependant on this layer so it's ok to modify it. */
-
-  _cogl_pipeline_fragend_layer_change_notify (required_owner, layer, change);
-  _cogl_pipeline_vertend_layer_change_notify (required_owner, layer, change);
-  _cogl_pipeline_progend_layer_change_notify (required_owner, layer, change);
-
-  /* If the layer being changed is the same as the last layer we
-   * flushed to the corresponding texture unit then we keep a track of
-   * the changes so we can try to minimize redundant OpenGL calls if
-   * the same layer is flushed again.
-   */
-  unit = _cogl_get_texture_unit (_cogl_pipeline_layer_get_unit_index (layer));
-  if (unit->layer == layer)
-    unit->layer_changes_since_flush |= change;
-
-init_layer_state:
-
-  if (required_owner)
-    required_owner->age++;
-
-  if (change & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE &&
-      !layer->has_big_state)
-    {
-      layer->big_state = g_slice_new (CoglPipelineLayerBigState);
-      layer->has_big_state = TRUE;
-    }
-
-  /* Note: conceptually we have just been notified that a single
-   * property value is about to change, but since some state-groups
-   * contain multiple properties and 'layer' is about to take over
-   * being the authority for the property's corresponding state-group
-   * we need to maintain the integrity of the other property values
-   * too.
-   *
-   * To ensure this we handle multi-property state-groups by copying
-   * all the values from the old-authority to the new...
-   *
-   * We don't have to worry about non-sparse property groups since
-   * we never take over being an authority for such properties so
-   * they automatically maintain integrity.
-   */
-  if (change & COGL_PIPELINE_LAYER_STATE_ALL_SPARSE &&
-      !(layer->differences & change))
-    {
-      _cogl_pipeline_layer_init_multi_property_sparse_state (layer, change);
-      layer->differences |= change;
-    }
-
-  return layer;
-}
-
-static void
-_cogl_pipeline_layer_unparent (CoglPipelineNode *layer)
-{
-  /* Chain up */
-  _cogl_pipeline_node_unparent_real (layer);
-}
-
-static void
-_cogl_pipeline_layer_set_parent (CoglPipelineLayer *layer,
-                                 CoglPipelineLayer *parent)
-{
-  /* Chain up */
-  _cogl_pipeline_node_set_parent_real (COGL_PIPELINE_NODE (layer),
-                                       COGL_PIPELINE_NODE (parent),
-                                       _cogl_pipeline_layer_unparent,
-                                       TRUE);
-}
-
-/* XXX: This is duplicated logic; the same as for
- * _cogl_pipeline_prune_redundant_ancestry it would be nice to find a
- * way to consolidate these functions! */
-void
-_cogl_pipeline_layer_prune_redundant_ancestry (CoglPipelineLayer *layer)
-{
-  CoglPipelineLayer *new_parent = _cogl_pipeline_layer_get_parent (layer);
-
-  /* walk up past ancestors that are now redundant and potentially
-   * reparent the layer. */
-  while (_cogl_pipeline_layer_get_parent (new_parent) &&
-         (new_parent->differences | layer->differences) ==
-         layer->differences)
-    new_parent = _cogl_pipeline_layer_get_parent (new_parent);
-
-  _cogl_pipeline_layer_set_parent (layer, new_parent);
 }
 
 typedef struct
@@ -1974,8 +1693,9 @@ _cogl_pipeline_get_layer_info (CoglPipeline *pipeline,
 }
 
 CoglPipelineLayer *
-_cogl_pipeline_get_layer (CoglPipeline *pipeline,
-                          int layer_index)
+_cogl_pipeline_get_layer_with_flags (CoglPipeline *pipeline,
+                                     int layer_index,
+                                     CoglPipelineGetLayerFlags flags)
 {
   CoglPipeline *authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
@@ -1983,8 +1703,7 @@ _cogl_pipeline_get_layer (CoglPipeline *pipeline,
   CoglPipelineLayer *layer;
   int unit_index;
   int i;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext *ctx;
 
   /* The layer index of the layer we want info about */
   layer_info.layer_index = layer_index;
@@ -2010,8 +1729,10 @@ _cogl_pipeline_get_layer (CoglPipeline *pipeline,
 
   _cogl_pipeline_get_layer_info (authority, &layer_info);
 
-  if (layer_info.layer)
+  if (layer_info.layer || (flags & COGL_PIPELINE_GET_LAYER_NO_CREATE))
     return layer_info.layer;
+
+  ctx = _cogl_context_get_default ();
 
   unit_index = layer_info.insert_after + 1;
   if (unit_index == 0)
@@ -2057,7 +1778,7 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
   CoglPipelineLayerInfo layer_info;
   CoglPipeline *old_layers_authority;
 
-  g_return_if_fail (link != NULL);
+  _COGL_RETURN_IF_FAIL (link != NULL);
 
   /* If the layer's parent doesn't have an owner then we can simply
    * take ownership ourselves and drop our reference on the empty
@@ -2136,8 +1857,8 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglPipelineFallbackState *state = user_data;
   CoglPipeline *pipeline = state->pipeline;
-  CoglHandle texture = _cogl_pipeline_layer_get_texture (layer);
-  GLenum gl_target;
+  CoglTextureType texture_type = _cogl_pipeline_layer_get_texture_type (layer);
+  CoglTexture *texture = NULL;
   COGL_STATIC_COUNTER (layer_fallback_counter,
                        "layer fallback counter",
                        "Increments each time a layer's texture is "
@@ -2151,24 +1872,28 @@ fallback_layer_cb (CoglPipelineLayer *layer, void *user_data)
 
   COGL_COUNTER_INC (_cogl_uprof_context, layer_fallback_counter);
 
-  if (G_LIKELY (texture != COGL_INVALID_HANDLE))
-    cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-  else
-    gl_target = GL_TEXTURE_2D;
+  switch (texture_type)
+    {
+    case COGL_TEXTURE_TYPE_2D:
+      texture = COGL_TEXTURE (ctx->default_gl_texture_2d_tex);
+      break;
 
-  if (gl_target == GL_TEXTURE_2D)
-    texture = ctx->default_gl_texture_2d_tex;
-#ifdef HAVE_COGL_GL
-  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    texture = ctx->default_gl_texture_rect_tex;
-#endif
-  else
+    case COGL_TEXTURE_TYPE_3D:
+      texture = COGL_TEXTURE (ctx->default_gl_texture_3d_tex);
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      texture = COGL_TEXTURE (ctx->default_gl_texture_rect_tex);
+      break;
+    }
+
+  if (texture == NULL)
     {
       g_warning ("We don't have a fallback texture we can use to fill "
                  "in for an invalid pipeline layer, since it was "
                  "using an unsupported texture target ");
       /* might get away with this... */
-      texture = ctx->default_gl_texture_2d_tex;
+      texture = COGL_TEXTURE (ctx->default_gl_texture_2d_tex);
     }
 
   cogl_pipeline_set_layer_texture (pipeline, layer->index, texture);
@@ -2251,227 +1976,6 @@ _cogl_pipeline_apply_overrides (CoglPipeline *pipeline,
     }
 }
 
-/* Determine the mask of differences between two layers.
- *
- * XXX: If layers and pipelines could both be cast to a common Tree
- * type of some kind then we could have a unified
- * compare_differences() function.
- */
-unsigned long
-_cogl_pipeline_layer_compare_differences (CoglPipelineLayer *layer0,
-                                          CoglPipelineLayer *layer1)
-{
-  CoglPipelineLayer *node0;
-  CoglPipelineLayer *node1;
-  int len0;
-  int len1;
-  int len0_index;
-  int len1_index;
-  int count;
-  int i;
-  CoglPipelineLayer *common_ancestor = NULL;
-  unsigned long layers_difference = 0;
-
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  /* Algorithm:
-   *
-   * 1) Walk the ancestors of each layer to the root node, adding a
-   *    pointer to each ancester node to two GArrays:
-   *    ctx->pipeline0_nodes, and ctx->pipeline1_nodes.
-   *
-   * 2) Compare the arrays to find the nodes where they stop to
-   *    differ.
-   *
-   * 3) For each array now iterate from index 0 to the first node of
-   *    difference ORing that nodes ->difference mask into the final
-   *    pipeline_differences mask.
-   */
-
-  g_array_set_size (ctx->pipeline0_nodes, 0);
-  g_array_set_size (ctx->pipeline1_nodes, 0);
-  for (node0 = layer0; node0; node0 = _cogl_pipeline_layer_get_parent (node0))
-    g_array_append_vals (ctx->pipeline0_nodes, &node0, 1);
-  for (node1 = layer1; node1; node1 = _cogl_pipeline_layer_get_parent (node1))
-    g_array_append_vals (ctx->pipeline1_nodes, &node1, 1);
-
-  len0 = ctx->pipeline0_nodes->len;
-  len1 = ctx->pipeline1_nodes->len;
-  /* There's no point looking at the last entries since we know both
-   * layers must have the same default layer as their root node. */
-  len0_index = len0 - 2;
-  len1_index = len1 - 2;
-  count = MIN (len0, len1) - 1;
-  for (i = 0; i < count; i++)
-    {
-      node0 = g_array_index (ctx->pipeline0_nodes,
-                             CoglPipelineLayer *, len0_index--);
-      node1 = g_array_index (ctx->pipeline1_nodes,
-                             CoglPipelineLayer *, len1_index--);
-      if (node0 != node1)
-        {
-          common_ancestor = _cogl_pipeline_layer_get_parent (node0);
-          break;
-        }
-    }
-
-  /* If we didn't already find the first the common_ancestor ancestor
-   * that's because one pipeline is a direct descendant of the other
-   * and in this case the first common ancestor is the last node we
-   * looked at. */
-  if (!common_ancestor)
-    common_ancestor = node0;
-
-  count = len0 - 1;
-  for (i = 0; i < count; i++)
-    {
-      node0 = g_array_index (ctx->pipeline0_nodes, CoglPipelineLayer *, i);
-      if (node0 == common_ancestor)
-        break;
-      layers_difference |= node0->differences;
-    }
-
-  count = len1 - 1;
-  for (i = 0; i < count; i++)
-    {
-      node1 = g_array_index (ctx->pipeline1_nodes, CoglPipelineLayer *, i);
-      if (node1 == common_ancestor)
-        break;
-      layers_difference |= node1->differences;
-    }
-
-  return layers_difference;
-}
-
-static gboolean
-layer_state_equal (CoglPipelineLayerStateIndex state_index,
-                   CoglPipelineLayer **authorities0,
-                   CoglPipelineLayer **authorities1,
-                   CoglPipelineLayerStateComparitor comparitor)
-{
-  return comparitor (authorities0[state_index], authorities1[state_index]);
-}
-
-static void
-_cogl_pipeline_layer_resolve_authorities (CoglPipelineLayer *layer,
-                                          unsigned long differences,
-                                          CoglPipelineLayer **authorities)
-{
-  unsigned long remaining = differences;
-  CoglPipelineLayer *authority = layer;
-
-  do
-    {
-      unsigned long found = authority->differences & remaining;
-      int i;
-
-      if (found == 0)
-        continue;
-
-      for (i = 0; TRUE; i++)
-        {
-          unsigned long state = (1L<<i);
-
-          if (state & found)
-            authorities[i] = authority;
-          else if (state > found)
-            break;
-        }
-
-      remaining &= ~found;
-      if (remaining == 0)
-        return;
-    }
-  while ((authority = _cogl_pipeline_layer_get_parent (authority)));
-
-  g_assert (remaining == 0);
-}
-
-static gboolean
-_cogl_pipeline_layer_equal (CoglPipelineLayer *layer0,
-                            CoglPipelineLayer *layer1,
-                            unsigned long differences_mask,
-                            CoglPipelineEvalFlags flags)
-{
-  unsigned long layers_difference;
-  CoglPipelineLayer *authorities0[COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT];
-  CoglPipelineLayer *authorities1[COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT];
-
-  if (layer0 == layer1)
-    return TRUE;
-
-  layers_difference =
-    _cogl_pipeline_layer_compare_differences (layer0, layer1);
-
-  /* Only compare the sparse state groups requested by the caller... */
-  layers_difference &= differences_mask;
-
-  _cogl_pipeline_layer_resolve_authorities (layer0,
-                                            layers_difference,
-                                            authorities0);
-  _cogl_pipeline_layer_resolve_authorities (layer1,
-                                            layers_difference,
-                                            authorities1);
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET)
-    {
-      CoglPipelineLayerStateIndex state_index =
-        COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX;
-      if (!_cogl_pipeline_layer_texture_target_equal (authorities0[state_index],
-                                                      authorities1[state_index],
-                                                      flags))
-        return FALSE;
-    }
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
-    {
-      CoglPipelineLayerStateIndex state_index =
-        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX;
-      if (!_cogl_pipeline_layer_texture_data_equal (authorities0[state_index],
-                                                    authorities1[state_index],
-                                                    flags))
-        return FALSE;
-    }
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_combine_state_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_combine_constant_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_FILTERS &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_filters_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_WRAP_MODES &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_wrap_modes_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_user_matrix_equal))
-    return FALSE;
-
-  if (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS &&
-      !layer_state_equal (COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX,
-                          authorities0, authorities1,
-                          _cogl_pipeline_layer_point_sprite_coords_equal))
-    return FALSE;
-
-  return TRUE;
-}
-
 static gboolean
 _cogl_pipeline_layers_equal (CoglPipeline *authority0,
                              CoglPipeline *authority1,
@@ -2502,102 +2006,76 @@ unsigned long
 _cogl_pipeline_compare_differences (CoglPipeline *pipeline0,
                                     CoglPipeline *pipeline1)
 {
+  GSList *head0 = NULL;
+  GSList *head1 = NULL;
   CoglPipeline *node0;
   CoglPipeline *node1;
-  int len0;
-  int len1;
-  int len0_index;
-  int len1_index;
+  int len0 = 0;
+  int len1 = 0;
   int count;
-  int i;
-  CoglPipeline *common_ancestor = NULL;
+  GSList *common_ancestor0;
+  GSList *common_ancestor1;
   unsigned long pipelines_difference = 0;
-
-  _COGL_GET_CONTEXT (ctx, 0);
 
   /* Algorithm:
    *
-   * 1) Walk the ancestors of each layer to the root node, adding a
-   *    pointer to each ancester node to two GArrays:
-   *    ctx->pipeline0_nodes, and ctx->pipeline1_nodes.
+   * 1) Walk the ancestors of each pipeline to the root node, adding a
+   *    pointer to each ancester node to two linked lists
    *
-   * 2) Compare the arrays to find the nodes where they stop to
-   *    differ.
+   * 2) Compare the lists to find the nodes where they start to
+   *    differ marking the common_ancestor node for each list.
    *
-   * 3) For each array now iterate from index 0 to the first node of
-   *    difference ORing that nodes ->difference mask into the final
-   *    pipeline_differences mask.
+   * 3) For each list now iterate starting after the common_ancestor
+   *    nodes ORing each nodes ->difference mask into the final
+   *    differences mask.
    */
 
-  g_array_set_size (ctx->pipeline0_nodes, 0);
-  g_array_set_size (ctx->pipeline1_nodes, 0);
   for (node0 = pipeline0; node0; node0 = _cogl_pipeline_get_parent (node0))
-    g_array_append_vals (ctx->pipeline0_nodes, &node0, 1);
-  for (node1 = pipeline1; node1; node1 = _cogl_pipeline_get_parent (node1))
-    g_array_append_vals (ctx->pipeline1_nodes, &node1, 1);
-
-  len0 = ctx->pipeline0_nodes->len;
-  len1 = ctx->pipeline1_nodes->len;
-  /* There's no point looking at the last entries since we know both
-   * layers must have the same default layer as their root node. */
-  len0_index = len0 - 2;
-  len1_index = len1 - 2;
-  count = MIN (len0, len1) - 1;
-  for (i = 0; i < count; i++)
     {
-      node0 = g_array_index (ctx->pipeline0_nodes,
-                             CoglPipeline *, len0_index--);
-      node1 = g_array_index (ctx->pipeline1_nodes,
-                             CoglPipeline *, len1_index--);
-      if (node0 != node1)
-        {
-          common_ancestor = _cogl_pipeline_get_parent (node0);
-          break;
-        }
+      GSList *link = alloca (sizeof (GSList));
+      link->next = head0;
+      link->data = node0;
+      head0 = link;
+      len0++;
+    }
+  for (node1 = pipeline1; node1; node1 = _cogl_pipeline_get_parent (node1))
+    {
+      GSList *link = alloca (sizeof (GSList));
+      link->next = head1;
+      link->data = node1;
+      head1 = link;
+      len1++;
     }
 
-  /* If we didn't already find the first the common_ancestor ancestor
-   * that's because one pipeline is a direct descendant of the other
-   * and in this case the first common ancestor is the last node we
-   * looked at. */
-  if (!common_ancestor)
-    common_ancestor = node0;
-
-  count = len0 - 1;
-  for (i = 0; i < count; i++)
+  /* NB: There's no point looking at the head entries since we know both
+   * pipelines must have the same default pipeline as their root node. */
+  common_ancestor0 = head0;
+  common_ancestor1 = head1;
+  head0 = head0->next;
+  head1 = head1->next;
+  count = MIN (len0, len1) - 1;
+  while (count--)
     {
-      node0 = g_array_index (ctx->pipeline0_nodes, CoglPipeline *, i);
-      if (node0 == common_ancestor)
+      if (head0->data != head1->data)
         break;
+      common_ancestor0 = head0;
+      common_ancestor1 = head1;
+      head0 = head0->next;
+      head1 = head1->next;
+    }
+
+  for (head0 = common_ancestor0->next; head0; head0 = head0->next)
+    {
+      node0 = head0->data;
       pipelines_difference |= node0->differences;
     }
-
-  count = len1 - 1;
-  for (i = 0; i < count; i++)
+  for (head1 = common_ancestor1->next; head1; head1 = head1->next)
     {
-      node1 = g_array_index (ctx->pipeline1_nodes, CoglPipeline *, i);
-      if (node1 == common_ancestor)
-        break;
+      node1 = head1->data;
       pipelines_difference |= node1->differences;
     }
 
   return pipelines_difference;
-
-}
-
-static gboolean
-simple_property_equal (CoglPipeline **authorities0,
-                       CoglPipeline **authorities1,
-                       unsigned long pipelines_difference,
-                       CoglPipelineStateIndex state_index,
-                       CoglPipelineStateComparitor comparitor)
-{
-  if (pipelines_difference & (1L<<state_index))
-    {
-      if (!comparitor (authorities0[state_index], authorities1[state_index]))
-        return FALSE;
-    }
-  return TRUE;
 }
 
 static void
@@ -2669,6 +2147,7 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
   unsigned long pipelines_difference;
   CoglPipeline *authorities0[COGL_PIPELINE_STATE_SPARSE_COUNT];
   CoglPipeline *authorities1[COGL_PIPELINE_STATE_SPARSE_COUNT];
+  int bit;
   gboolean ret;
 
   COGL_STATIC_TIMER (pipeline_equal_timer,
@@ -2708,103 +2187,107 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                                       pipelines_difference,
                                       authorities1);
 
-  /* FIXME: we should resolve all the required authorities up front since
-   * that should reduce some repeat ancestor traversals. */
-
-  if (pipelines_difference & COGL_PIPELINE_STATE_COLOR)
+  COGL_FLAGS_FOREACH_START (&pipelines_difference, 1, bit)
     {
-      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_COLOR_INDEX];
-      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_COLOR_INDEX];
+      /* XXX: We considered having an array of callbacks for each state index
+       * that we'd call here but decided that this way the compiler is more
+       * likely going to be able to in-line the comparison functions and use
+       * the index to jump straight to the required code. */
+      switch ((CoglPipelineStateIndex)bit)
+        {
+        case COGL_PIPELINE_STATE_COLOR_INDEX:
+          if (!cogl_color_equal (&authorities0[bit]->color,
+                                 &authorities1[bit]->color))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LIGHTING_INDEX:
+          if (!_cogl_pipeline_lighting_state_equal (authorities0[bit],
+                                                    authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX:
+          if (!_cogl_pipeline_alpha_func_state_equal (authorities0[bit],
+                                                      authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX:
+          if (!_cogl_pipeline_alpha_func_reference_state_equal (
+                                                            authorities0[bit],
+                                                            authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_BLEND_INDEX:
+          /* We don't need to compare the detailed blending state if we know
+           * blending is disabled for both pipelines. */
+          if (pipeline0->real_blend_enable)
+            {
+              if (!_cogl_pipeline_blend_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+                goto done;
+            }
+          break;
+        case COGL_PIPELINE_STATE_DEPTH_INDEX:
+          if (!_cogl_pipeline_depth_state_equal (authorities0[bit],
+                                                 authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_FOG_INDEX:
+          if (!_cogl_pipeline_fog_state_equal (authorities0[bit],
+                                               authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_CULL_FACE_INDEX:
+          if (!_cogl_pipeline_cull_face_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_POINT_SIZE_INDEX:
+          if (!_cogl_pipeline_point_size_equal (authorities0[bit],
+                                                authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LOGIC_OPS_INDEX:
+          if (!_cogl_pipeline_logic_ops_state_equal (authorities0[bit],
+                                                     authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_USER_SHADER_INDEX:
+          if (!_cogl_pipeline_user_shader_equal (authorities0[bit],
+                                                 authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_UNIFORMS_INDEX:
+          if (!_cogl_pipeline_uniforms_state_equal (authorities0[bit],
+                                                    authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX:
+          if (!_cogl_pipeline_vertex_snippets_state_equal (authorities0[bit],
+                                                           authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX:
+          if (!_cogl_pipeline_fragment_snippets_state_equal (authorities0[bit],
+                                                             authorities1[bit]))
+            goto done;
+          break;
+        case COGL_PIPELINE_STATE_LAYERS_INDEX:
+          {
+            if (!_cogl_pipeline_layers_equal (authorities0[bit],
+                                              authorities1[bit],
+                                              layer_differences,
+                                              flags))
+              goto done;
+            break;
+          }
 
-      if (!cogl_color_equal (&authority0->color, &authority1->color))
-        goto done;
+        case COGL_PIPELINE_STATE_BLEND_ENABLE_INDEX:
+        case COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX:
+        case COGL_PIPELINE_STATE_COUNT:
+          g_warn_if_reached ();
+        }
     }
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_LIGHTING_INDEX,
-                              _cogl_pipeline_lighting_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_INDEX,
-                              _cogl_pipeline_alpha_func_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE_INDEX,
-                              _cogl_pipeline_alpha_func_reference_state_equal))
-    goto done;
-
-  /* We don't need to compare the detailed blending state if we know
-   * blending is disabled for both pipelines. */
-  if (pipeline0->real_blend_enable &&
-      pipelines_difference & COGL_PIPELINE_STATE_BLEND)
-    {
-      CoglPipeline *authority0 = authorities0[COGL_PIPELINE_STATE_BLEND_INDEX];
-      CoglPipeline *authority1 = authorities1[COGL_PIPELINE_STATE_BLEND_INDEX];
-
-      if (!_cogl_pipeline_blend_state_equal (authority0, authority1))
-        goto done;
-    }
-
-  /* XXX: we don't need to compare the BLEND_ENABLE state because it's
-   * already reflected in ->real_blend_enable */
-#if 0
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_BLEND_INDEX,
-                              _cogl_pipeline_blend_enable_equal))
-    return FALSE;
-#endif
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_DEPTH_INDEX,
-                              _cogl_pipeline_depth_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_FOG_INDEX,
-                              _cogl_pipeline_fog_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_CULL_FACE_INDEX,
-                              _cogl_pipeline_cull_face_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
-                              _cogl_pipeline_point_size_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
-                              _cogl_pipeline_logic_ops_state_equal))
-    goto done;
-
-  if (!simple_property_equal (authorities0, authorities1,
-                              pipelines_difference,
-                              COGL_PIPELINE_STATE_USER_SHADER_INDEX,
-                              _cogl_pipeline_user_shader_equal))
-    goto done;
-
-  if (pipelines_difference & COGL_PIPELINE_STATE_LAYERS)
-    {
-      CoglPipelineStateIndex state_index = COGL_PIPELINE_STATE_LAYERS_INDEX;
-      if (!_cogl_pipeline_layers_equal (authorities0[state_index],
-                                        authorities1[state_index],
-                                        layer_differences,
-                                        flags))
-        goto done;
-    }
+  COGL_FLAGS_FOREACH_END;
 
   ret = TRUE;
 done:
@@ -2886,7 +2369,7 @@ _cogl_pipeline_get_fog_enabled (CoglPipeline *pipeline)
 {
   CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
 
   authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_FOG);
@@ -2896,161 +2379,9 @@ _cogl_pipeline_get_fog_enabled (CoglPipeline *pipeline)
 unsigned long
 _cogl_pipeline_get_age (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), 0);
 
   return pipeline->age;
-}
-
-static CoglPipelineLayer *
-_cogl_pipeline_layer_copy (CoglPipelineLayer *src)
-{
-  CoglPipelineLayer *layer = g_slice_new (CoglPipelineLayer);
-
-  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
-
-  layer->owner = NULL;
-  layer->index = src->index;
-  layer->differences = 0;
-  layer->has_big_state = FALSE;
-
-  _cogl_pipeline_layer_set_parent (layer, src);
-
-  return _cogl_pipeline_layer_object_new (layer);
-}
-
-static void
-_cogl_pipeline_layer_free (CoglPipelineLayer *layer)
-{
-  _cogl_pipeline_layer_unparent (COGL_PIPELINE_NODE (layer));
-
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA &&
-      layer->texture != NULL)
-    cogl_object_unref (layer->texture);
-
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE)
-    g_slice_free (CoglPipelineLayerBigState, layer->big_state);
-
-  g_slice_free (CoglPipelineLayer, layer);
-}
-
-  /* If a layer has descendants we can't modify it freely
-   *
-   * If the layer is owned and the owner has descendants we can't
-   * modify it freely.
-   *
-   * In both cases when we can't freely modify a layer we can either:
-   * - create a new layer; splice it in to replace the layer so it can
-   *   be directly modified.
-   *   XXX: disadvantage is that we have to invalidate the layers_cache
-   *   for the owner and its descendants.
-   * - create a new derived layer and modify that.
-   */
-
-  /* XXX: how is the caller expected to deal with ref-counting?
-   *
-   * If the layer can't be freely modified and we return a new layer
-   * then that will effectively make the caller own a new reference
-   * which doesn't happen if we simply modify the given layer.
-   *
-   * We could make it consistent by taking a reference on the layer if
-   * we don't create a new one. At least this way the caller could
-   * deal with it consistently, though the semantics are a bit
-   * strange.
-   *
-   * Alternatively we could leave it to the caller to check
-   * ...?
-   */
-
-void
-_cogl_pipeline_init_default_layers (void)
-{
-  CoglPipelineLayer *layer = g_slice_new0 (CoglPipelineLayer);
-  CoglPipelineLayerBigState *big_state =
-    g_slice_new0 (CoglPipelineLayerBigState);
-  CoglPipelineLayer *new;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  _cogl_pipeline_node_init (COGL_PIPELINE_NODE (layer));
-
-  layer->index = 0;
-
-  layer->differences = COGL_PIPELINE_LAYER_STATE_ALL_SPARSE;
-
-  layer->unit_index = 0;
-
-  layer->texture = NULL;
-  layer->target = 0;
-
-  layer->mag_filter = COGL_PIPELINE_FILTER_LINEAR;
-  layer->min_filter = COGL_PIPELINE_FILTER_LINEAR;
-
-  layer->wrap_mode_s = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_t = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
-  layer->wrap_mode_p = COGL_PIPELINE_WRAP_MODE_AUTOMATIC;
-
-  layer->big_state = big_state;
-  layer->has_big_state = TRUE;
-
-  /* Choose the same default combine mode as OpenGL:
-   * RGBA = MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
-  big_state->texture_combine_rgb_func =
-    COGL_PIPELINE_COMBINE_FUNC_MODULATE;
-  big_state->texture_combine_rgb_src[0] =
-    COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS;
-  big_state->texture_combine_rgb_src[1] =
-    COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
-  big_state->texture_combine_rgb_op[0] =
-    COGL_PIPELINE_COMBINE_OP_SRC_COLOR;
-  big_state->texture_combine_rgb_op[1] =
-    COGL_PIPELINE_COMBINE_OP_SRC_COLOR;
-  big_state->texture_combine_alpha_func =
-    COGL_PIPELINE_COMBINE_FUNC_MODULATE;
-  big_state->texture_combine_alpha_src[0] =
-    COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS;
-  big_state->texture_combine_alpha_src[1] =
-    COGL_PIPELINE_COMBINE_SOURCE_TEXTURE;
-  big_state->texture_combine_alpha_op[0] =
-    COGL_PIPELINE_COMBINE_OP_SRC_ALPHA;
-  big_state->texture_combine_alpha_op[1] =
-    COGL_PIPELINE_COMBINE_OP_SRC_ALPHA;
-
-  big_state->point_sprite_coords = FALSE;
-
-  cogl_matrix_init_identity (&big_state->matrix);
-
-  ctx->default_layer_0 = _cogl_pipeline_layer_object_new (layer);
-
-  /* TODO: we should make default_layer_n comprise of two
-   * descendants of default_layer_0:
-   * - the first descendant should change the texture combine
-   *   to what we expect is most commonly used for multitexturing
-   * - the second should revert the above change.
-   *
-   * why? the documentation for how a new layer is initialized
-   * doesn't say that layers > 0 have different defaults so unless
-   * we change the documentation we can't use different defaults,
-   * but if the user does what we expect and changes the
-   * texture combine then we can revert the authority to the
-   * first descendant which means we can maximize the number
-   * of layers with a common ancestor.
-   *
-   * The main problem will be that we'll need to disable the
-   * optimizations for flattening the ancestry when we make
-   * the second descendant which reverts the state.
-   */
-  ctx->default_layer_n = _cogl_pipeline_layer_copy (layer);
-  new = _cogl_pipeline_set_layer_unit (NULL, ctx->default_layer_n, 1);
-  g_assert (new == ctx->default_layer_n);
-  /* Since we passed a newly allocated layer we don't expect that
-   * _set_layer_unit() will have to allocate *another* layer. */
-
-  /* Finally we create a dummy dependant for ->default_layer_n which
-   * effectively ensures that ->default_layer_n and ->default_layer_0
-   * remain immutable.
-   */
-  ctx->dummy_layer_dependant =
-    _cogl_pipeline_layer_copy (ctx->default_layer_n);
 }
 
 void
@@ -3060,7 +2391,7 @@ cogl_pipeline_remove_layer (CoglPipeline *pipeline, int layer_index)
   CoglPipelineLayerInfo layer_info;
   int                   i;
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
@@ -3123,7 +2454,7 @@ prepend_layer_to_list_cb (CoglPipelineLayer *layer,
 const GList *
 _cogl_pipeline_get_layers (CoglPipeline *pipeline)
 {
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), NULL);
 
   if (!pipeline->deprecated_get_layers_list_dirty)
     g_list_free (pipeline->deprecated_get_layers_list);
@@ -3146,39 +2477,12 @@ cogl_pipeline_get_n_layers (CoglPipeline *pipeline)
 {
   CoglPipeline *authority;
 
-  g_return_val_if_fail (cogl_is_pipeline (pipeline), 0);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), 0);
 
   authority =
     _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_LAYERS);
 
   return authority->n_layers;
-}
-
-void
-_cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layer)
-{
-  CoglPipelineLayer *texture_authority;
-
-  texture_authority =
-    _cogl_pipeline_layer_get_authority (layer,
-                                        COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA);
-
-  if (texture_authority->texture != COGL_INVALID_HANDLE)
-    {
-      CoglTexturePrePaintFlags flags = 0;
-      CoglPipelineFilter min_filter;
-      CoglPipelineFilter mag_filter;
-
-      _cogl_pipeline_layer_get_filters (layer, &min_filter, &mag_filter);
-
-      if (min_filter == COGL_PIPELINE_FILTER_NEAREST_MIPMAP_NEAREST
-          || min_filter == COGL_PIPELINE_FILTER_LINEAR_MIPMAP_NEAREST
-          || min_filter == COGL_PIPELINE_FILTER_NEAREST_MIPMAP_LINEAR
-          || min_filter == COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR)
-        flags |= COGL_TEXTURE_NEEDS_MIPMAP;
-
-      _cogl_texture_pre_paint (texture_authority->texture, flags);
-    }
 }
 
 void
@@ -3236,12 +2540,8 @@ _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline)
     _cogl_pipeline_set_fog_state (pipeline, &ctx->legacy_fog_state);
 
   if (ctx->legacy_backface_culling_enabled)
-    {
-      CoglPipelineCullFaceState state;
-      state.mode = COGL_PIPELINE_CULL_FACE_MODE_BACK;
-      state.front_winding = COGL_WINDING_COUNTER_CLOCKWISE;
-      _cogl_pipeline_set_cull_face_state (pipeline, &state);
-    }
+    cogl_pipeline_set_cull_face_mode (pipeline,
+                                      COGL_PIPELINE_CULL_FACE_MODE_BACK);
 }
 
 void
@@ -3268,8 +2568,8 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   CoglPipelineLayerStateIndex _index;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_UNIT_INDEX] =
     _cogl_pipeline_layer_hash_unit_state;
-  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX] =
-    _cogl_pipeline_layer_hash_texture_target_state;
+  layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE_INDEX] =
+    _cogl_pipeline_layer_hash_texture_type_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX] =
     _cogl_pipeline_layer_hash_texture_data_state;
   layer_state_hash_functions[COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX] =
@@ -3285,9 +2585,15 @@ _cogl_pipeline_init_layer_state_hash_functions (void)
   _index = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX;
   layer_state_hash_functions[_index] =
     _cogl_pipeline_layer_hash_point_sprite_state;
+  _index = COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS_INDEX;
+  layer_state_hash_functions[_index] =
+    _cogl_pipeline_layer_hash_point_sprite_state;
+  _index = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS_INDEX;
+  layer_state_hash_functions[_index] =
+    _cogl_pipeline_layer_hash_fragment_snippets_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 9);
+  g_assert (COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT == 11);
 }
 
 static gboolean
@@ -3386,9 +2692,15 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_LOGIC_OPS_INDEX] =
     _cogl_pipeline_hash_logic_ops_state;
+  state_hash_functions[COGL_PIPELINE_STATE_UNIFORMS_INDEX] =
+    _cogl_pipeline_hash_uniforms_state;
+  state_hash_functions[COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX] =
+    _cogl_pipeline_hash_vertex_snippets_state;
+  state_hash_functions[COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX] =
+    _cogl_pipeline_hash_fragment_snippets_state;
 
   /* So we get a big error if we forget to update this code! */
-  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 13);
+  g_assert (COGL_PIPELINE_STATE_SPARSE_COUNT == 16);
 }
 
 unsigned int
@@ -3446,253 +2758,6 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
 
 typedef struct
 {
-  int parent_id;
-  int *node_id_ptr;
-  GString *graph;
-  int indent;
-} PrintDebugState;
-
-static gboolean
-dump_layer_cb (CoglPipelineNode *node, void *user_data)
-{
-  CoglPipelineLayer *layer = COGL_PIPELINE_LAYER (node);
-  PrintDebugState *state = user_data;
-  int layer_id = *state->node_id_ptr;
-  PrintDebugState state_out;
-  GString *changes_label;
-  gboolean changes = FALSE;
-
-  if (state->parent_id >= 0)
-    g_string_append_printf (state->graph, "%*slayer%p -> layer%p;\n",
-                            state->indent, "",
-                            layer->_parent.parent,
-                            layer);
-
-  g_string_append_printf (state->graph,
-                          "%*slayer%p [label=\"layer=0x%p\\n"
-                          "ref count=%d\" "
-                          "color=\"blue\"];\n",
-                          state->indent, "",
-                          layer,
-                          layer,
-                          COGL_OBJECT (layer)->ref_count);
-
-  changes_label = g_string_new ("");
-  g_string_append_printf (changes_label,
-                          "%*slayer%p -> layer_state%d [weight=100];\n"
-                          "%*slayer_state%d [shape=box label=\"",
-                          state->indent, "",
-                          layer,
-                          layer_id,
-                          state->indent, "",
-                          layer_id);
-
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_UNIT)
-    {
-      changes = TRUE;
-      g_string_append_printf (changes_label,
-                              "\\lunit=%u\\n",
-                              layer->unit_index);
-    }
-
-  if (layer->differences & COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA)
-    {
-      changes = TRUE;
-      g_string_append_printf (changes_label,
-                              "\\ltexture=%p\\n",
-                              layer->texture);
-    }
-
-  if (changes)
-    {
-      g_string_append_printf (changes_label, "\"];\n");
-      g_string_append (state->graph, changes_label->str);
-      g_string_free (changes_label, TRUE);
-    }
-
-  state_out.parent_id = layer_id;
-
-  state_out.node_id_ptr = state->node_id_ptr;
-  (*state_out.node_id_ptr)++;
-
-  state_out.graph = state->graph;
-  state_out.indent = state->indent + 2;
-
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (layer),
-                                     dump_layer_cb,
-                                     &state_out);
-
-  return TRUE;
-}
-
-static gboolean
-dump_layer_ref_cb (CoglPipelineLayer *layer, void *data)
-{
-  PrintDebugState *state = data;
-  int pipeline_id = *state->node_id_ptr;
-
-  g_string_append_printf (state->graph,
-                          "%*spipeline_state%d -> layer%p;\n",
-                          state->indent, "",
-                          pipeline_id,
-                          layer);
-
-  return TRUE;
-}
-
-static gboolean
-dump_pipeline_cb (CoglPipelineNode *node, void *user_data)
-{
-  CoglPipeline *pipeline = COGL_PIPELINE (node);
-  PrintDebugState *state = user_data;
-  int pipeline_id = *state->node_id_ptr;
-  PrintDebugState state_out;
-  GString *changes_label;
-  gboolean changes = FALSE;
-  gboolean layers = FALSE;
-
-  if (state->parent_id >= 0)
-    g_string_append_printf (state->graph, "%*spipeline%d -> pipeline%d;\n",
-                            state->indent, "",
-                            state->parent_id,
-                            pipeline_id);
-
-  g_string_append_printf (state->graph,
-                          "%*spipeline%d [label=\"pipeline=0x%p\\n"
-                          "ref count=%d\\n"
-                          "breadcrumb=\\\"%s\\\"\" color=\"red\"];\n",
-                          state->indent, "",
-                          pipeline_id,
-                          pipeline,
-                          COGL_OBJECT (pipeline)->ref_count,
-                          pipeline->has_static_breadcrumb ?
-                          pipeline->static_breadcrumb : "NULL");
-
-  changes_label = g_string_new ("");
-  g_string_append_printf (changes_label,
-                          "%*spipeline%d -> pipeline_state%d [weight=100];\n"
-                          "%*spipeline_state%d [shape=box label=\"",
-                          state->indent, "",
-                          pipeline_id,
-                          pipeline_id,
-                          state->indent, "",
-                          pipeline_id);
-
-
-  if (pipeline->differences & COGL_PIPELINE_STATE_COLOR)
-    {
-      changes = TRUE;
-      g_string_append_printf (changes_label,
-                              "\\lcolor=0x%02X%02X%02X%02X\\n",
-                              cogl_color_get_red_byte (&pipeline->color),
-                              cogl_color_get_green_byte (&pipeline->color),
-                              cogl_color_get_blue_byte (&pipeline->color),
-                              cogl_color_get_alpha_byte (&pipeline->color));
-    }
-
-  if (pipeline->differences & COGL_PIPELINE_STATE_BLEND)
-    {
-      const char *blend_enable_name;
-
-      changes = TRUE;
-
-      switch (pipeline->blend_enable)
-        {
-        case COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC:
-          blend_enable_name = "AUTO";
-          break;
-        case COGL_PIPELINE_BLEND_ENABLE_ENABLED:
-          blend_enable_name = "ENABLED";
-          break;
-        case COGL_PIPELINE_BLEND_ENABLE_DISABLED:
-          blend_enable_name = "DISABLED";
-          break;
-        default:
-          blend_enable_name = "UNKNOWN";
-        }
-      g_string_append_printf (changes_label,
-                              "\\lblend=%s\\n",
-                              blend_enable_name);
-    }
-
-  if (pipeline->differences & COGL_PIPELINE_STATE_LAYERS)
-    {
-      changes = TRUE;
-      layers = TRUE;
-      g_string_append_printf (changes_label, "\\ln_layers=%d\\n",
-                              pipeline->n_layers);
-    }
-
-  if (changes)
-    {
-      g_string_append_printf (changes_label, "\"];\n");
-      g_string_append (state->graph, changes_label->str);
-      g_string_free (changes_label, TRUE);
-    }
-
-  if (layers)
-    {
-      g_list_foreach (pipeline->layer_differences,
-                      (GFunc)dump_layer_ref_cb,
-                      state);
-    }
-
-  state_out.parent_id = pipeline_id;
-
-  state_out.node_id_ptr = state->node_id_ptr;
-  (*state_out.node_id_ptr)++;
-
-  state_out.graph = state->graph;
-  state_out.indent = state->indent + 2;
-
-  _cogl_pipeline_node_foreach_child (COGL_PIPELINE_NODE (pipeline),
-                                     dump_pipeline_cb,
-                                     &state_out);
-
-  return TRUE;
-}
-
-void
-_cogl_debug_dump_pipelines_dot_file (const char *filename)
-{
-  GString *graph;
-  PrintDebugState layer_state;
-  PrintDebugState pipeline_state;
-  int layer_id = 0;
-  int pipeline_id = 0;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (!ctx->default_pipeline)
-    return;
-
-  graph = g_string_new ("");
-  g_string_append_printf (graph, "digraph {\n");
-
-  layer_state.graph = graph;
-  layer_state.parent_id = -1;
-  layer_state.node_id_ptr = &layer_id;
-  layer_state.indent = 0;
-  dump_layer_cb (ctx->default_layer_0, &layer_state);
-
-  pipeline_state.graph = graph;
-  pipeline_state.parent_id = -1;
-  pipeline_state.node_id_ptr = &pipeline_id;
-  pipeline_state.indent = 0;
-  dump_pipeline_cb (ctx->default_pipeline, &pipeline_state);
-
-  g_string_append_printf (graph, "}\n");
-
-  if (filename)
-    g_file_set_contents (filename, graph->str, -1, NULL);
-  else
-    g_print ("%s", graph->str);
-
-  g_string_free (graph, TRUE);
-}
-
-typedef struct
-{
   int i;
   CoglPipelineLayer **layers;
 } AddLayersToArrayState;
@@ -3704,80 +2769,6 @@ add_layer_to_array_cb (CoglPipelineLayer *layer,
   AddLayersToArrayState *state = user_data;
   state->layers[state->i++] = layer;
   return TRUE;
-}
-
-/* Determines if we need to handle the RGB and A texture combining
- * separately or is the same function used for both channel masks and
- * with the same arguments...
- */
-gboolean
-_cogl_pipeline_need_texture_combine_separate
-                                       (CoglPipelineLayer *combine_authority)
-{
-  CoglPipelineLayerBigState *big_state = combine_authority->big_state;
-  int n_args;
-  int i;
-
-  if (big_state->texture_combine_rgb_func !=
-      big_state->texture_combine_alpha_func)
-    return TRUE;
-
-  n_args = _cogl_get_n_args_for_combine_func (big_state->texture_combine_rgb_func);
-
-  for (i = 0; i < n_args; i++)
-    {
-      if (big_state->texture_combine_rgb_src[i] !=
-          big_state->texture_combine_alpha_src[i])
-        return TRUE;
-
-      /*
-       * We can allow some variation of the source operands without
-       * needing a separation...
-       *
-       * "A = REPLACE (CONSTANT[A])" + either of the following...
-       * "RGB = REPLACE (CONSTANT[RGB])"
-       * "RGB = REPLACE (CONSTANT[A])"
-       *
-       * can be combined as:
-       * "RGBA = REPLACE (CONSTANT)" or
-       * "RGBA = REPLACE (CONSTANT[A])" or
-       *
-       * And "A = REPLACE (1-CONSTANT[A])" + either of the following...
-       * "RGB = REPLACE (1-CONSTANT)" or
-       * "RGB = REPLACE (1-CONSTANT[A])"
-       *
-       * can be combined as:
-       * "RGBA = REPLACE (1-CONSTANT)" or
-       * "RGBA = REPLACE (1-CONSTANT[A])"
-       */
-      switch (big_state->texture_combine_alpha_op[i])
-        {
-        case GL_SRC_ALPHA:
-          switch (big_state->texture_combine_rgb_op[i])
-            {
-            case GL_SRC_COLOR:
-            case GL_SRC_ALPHA:
-              break;
-            default:
-              return FALSE;
-            }
-          break;
-        case GL_ONE_MINUS_SRC_ALPHA:
-          switch (big_state->texture_combine_rgb_op[i])
-            {
-            case GL_ONE_MINUS_SRC_COLOR:
-            case GL_ONE_MINUS_SRC_ALPHA:
-              break;
-            default:
-              return FALSE;
-            }
-          break;
-        default:
-          return FALSE;	/* impossible */
-        }
-    }
-
-   return FALSE;
 }
 
 /* This tries to find the oldest ancestor whose pipeline and layer
@@ -3884,9 +2875,9 @@ _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context)
 {
   CoglPipelineLayerState state =
     (COGL_PIPELINE_LAYER_STATE_COMBINE |
-     COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET |
-     COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS |
-     COGL_PIPELINE_LAYER_STATE_UNIT);
+     COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE |
+     COGL_PIPELINE_LAYER_STATE_UNIT |
+     COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);
 
   if (context->driver == COGL_DRIVER_GLES2)
     state |= COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
@@ -3898,10 +2889,43 @@ CoglPipelineState
 _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context)
 {
   CoglPipelineState state = (COGL_PIPELINE_STATE_LAYERS |
-                             COGL_PIPELINE_STATE_USER_SHADER);
+                             COGL_PIPELINE_STATE_USER_SHADER |
+                             COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
 
   if (context->driver == COGL_DRIVER_GLES2)
     state |= COGL_PIPELINE_STATE_ALPHA_FUNC;
 
   return state;
+}
+
+int
+cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
+                                    const char *uniform_name)
+{
+  void *location_ptr;
+  char *uniform_name_copy;
+
+  _COGL_GET_CONTEXT (ctx, -1);
+
+  /* This API is designed as if the uniform locations are specific to
+     a pipeline but they are actually unique across a whole
+     CoglContext. Potentially this could just be
+     cogl_context_get_uniform_location but it seems to make sense to
+     keep the API this way so that we can change the internals if need
+     be. */
+
+  /* Look for an existing uniform with this name */
+  if (g_hash_table_lookup_extended (ctx->uniform_name_hash,
+                                    uniform_name,
+                                    NULL,
+                                    &location_ptr))
+    return GPOINTER_TO_INT (location_ptr);
+
+  uniform_name_copy = g_strdup (uniform_name);
+  g_ptr_array_add (ctx->uniform_names, uniform_name_copy);
+  g_hash_table_insert (ctx->uniform_name_hash,
+                       uniform_name_copy,
+                       GINT_TO_POINTER (ctx->n_uniform_names));
+
+  return ctx->n_uniform_names++;
 }

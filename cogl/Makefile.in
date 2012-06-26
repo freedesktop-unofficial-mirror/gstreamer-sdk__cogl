@@ -58,7 +58,7 @@ host_triplet = @host@
 DIST_COMMON = $(am__coglinclude_HEADERS_DIST) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/cogl-1.0.pc.in \
 	$(srcdir)/cogl-2.0-experimental.pc.in \
-	$(srcdir)/cogl-defines.h.in \
+	$(srcdir)/cogl-defines.h.in $(srcdir)/cogl.rc.in \
 	$(top_srcdir)/build/autotools/Makefile.am.enums \
 	$(top_srcdir)/build/autotools/Makefile.am.silent
 @COGL_DRIVER_GL_SUPPORTED_TRUE@am__append_1 = \
@@ -71,48 +71,91 @@ DIST_COMMON = $(am__coglinclude_HEADERS_DIST) $(srcdir)/Makefile.am \
 @COGL_DRIVER_GLES_SUPPORTED_TRUE@	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
 @COGL_DRIVER_GLES_SUPPORTED_TRUE@	$(NULL)
 
-@SUPPORT_XLIB_TRUE@am__append_3 = \
+@USE_GLIB_TRUE@am__append_3 = \
+@USE_GLIB_TRUE@	$(srcdir)/cogl-glib-source.h
+
+@USE_GLIB_TRUE@am__append_4 = \
+@USE_GLIB_TRUE@	$(srcdir)/cogl-glib-source.c
+
+@SUPPORT_XLIB_TRUE@am__append_5 = \
+@SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-clutter-xlib.h \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib-renderer.h
 
-@SUPPORT_XLIB_TRUE@am__append_4 = \
+@SUPPORT_XLIB_TRUE@am__append_6 = \
 @SUPPORT_XLIB_TRUE@       $(srcdir)/winsys/cogl-texture-pixmap-x11.h \
 @SUPPORT_XLIB_TRUE@       $(srcdir)/cogl-xlib.h
 
-@SUPPORT_XLIB_TRUE@am__append_5 = \
+@SUPPORT_XLIB_TRUE@am__append_7 = \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-x11-renderer-private.h \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib-renderer-private.h \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib-renderer.c \
-@SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib-display-private.h \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib.c \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/cogl-xlib-private.h \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/winsys/cogl-texture-pixmap-x11.c \
 @SUPPORT_XLIB_TRUE@	$(srcdir)/winsys/cogl-texture-pixmap-x11-private.h
 
-@SUPPORT_GLX_TRUE@am__append_6 = \
+@SUPPORT_GLX_TRUE@am__append_8 = \
 @SUPPORT_GLX_TRUE@	$(srcdir)/cogl-glx-renderer-private.h \
 @SUPPORT_GLX_TRUE@	$(srcdir)/cogl-glx-display-private.h \
 @SUPPORT_GLX_TRUE@	$(srcdir)/winsys/cogl-winsys-glx-feature-functions.h \
+@SUPPORT_GLX_TRUE@	$(srcdir)/winsys/cogl-winsys-glx-private.h \
 @SUPPORT_GLX_TRUE@	$(srcdir)/winsys/cogl-winsys-glx.c
 
-@SUPPORT_WGL_TRUE@am__append_7 = \
+@SUPPORT_WGL_TRUE@am__append_9 = \
 @SUPPORT_WGL_TRUE@	$(srcdir)/cogl-win32-renderer.h
 
-@SUPPORT_WGL_TRUE@am__append_8 = \
+@SUPPORT_WGL_TRUE@am__append_10 = \
 @SUPPORT_WGL_TRUE@	$(srcdir)/cogl-win32-renderer.c \
+@SUPPORT_WGL_TRUE@	$(srcdir)/winsys/cogl-winsys-wgl-private.h \
 @SUPPORT_WGL_TRUE@	$(srcdir)/winsys/cogl-winsys-wgl.c \
 @SUPPORT_WGL_TRUE@	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h
 
-@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@am__append_9 = \
-@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	$(srcdir)/cogl-wayland-renderer.h
+@SUPPORT_WAYLAND_EGL_SERVER_TRUE@am__append_11 = \
+@SUPPORT_WAYLAND_EGL_SERVER_TRUE@	$(srcdir)/cogl-wayland-server.h
 
-@SUPPORT_EGL_TRUE@am__append_10 = \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@am__append_12 = \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	$(srcdir)/cogl-wayland-renderer.h \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	$(srcdir)/cogl-wayland-client.h
+
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@am__append_13 = \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-wayland.c \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h
+
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@am__append_14 = \
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@	$(srcdir)/cogl-kms-renderer.h
+
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@am__append_15 = \
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h
+
+@SUPPORT_EGL_PLATFORM_XLIB_TRUE@am__append_16 = \
+@SUPPORT_EGL_PLATFORM_XLIB_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-x11.c \
+@SUPPORT_EGL_PLATFORM_XLIB_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-x11-private.h
+
+@SUPPORT_EGL_PLATFORM_POWERVR_NULL_TRUE@am__append_17 = \
+@SUPPORT_EGL_PLATFORM_POWERVR_NULL_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-null.c \
+@SUPPORT_EGL_PLATFORM_POWERVR_NULL_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-null-private.h
+
+@SUPPORT_EGL_PLATFORM_GDL_TRUE@am__append_18 = \
+@SUPPORT_EGL_PLATFORM_GDL_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-gdl.c \
+@SUPPORT_EGL_PLATFORM_GDL_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-gdl-private.h
+
+@SUPPORT_EGL_PLATFORM_ANDROID_TRUE@am__append_19 = \
+@SUPPORT_EGL_PLATFORM_ANDROID_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-android.c \
+@SUPPORT_EGL_PLATFORM_ANDROID_TRUE@	$(srcdir)/winsys/cogl-winsys-egl-android-private.h
+
+@SUPPORT_EGL_TRUE@am__append_20 = \
 @SUPPORT_EGL_TRUE@       $(srcdir)/winsys/cogl-winsys-egl.c \
 @SUPPORT_EGL_TRUE@       $(srcdir)/winsys/cogl-winsys-egl-feature-functions.h \
 @SUPPORT_EGL_TRUE@       $(srcdir)/winsys/cogl-winsys-egl-private.h
 
-@SUPPORT_GLX_TRUE@am__append_11 = -ldl
-@HAVE_INTROSPECTION_TRUE@am__append_12 = Cogl-1.0.gir
-@HAVE_INTROSPECTION_TRUE@am__append_13 = $(gir_DATA) $(typelib_DATA)
+@SUPPORT_SDL_TRUE@am__append_21 = \
+@SUPPORT_SDL_TRUE@       $(srcdir)/winsys/cogl-winsys-sdl-private.h \
+@SUPPORT_SDL_TRUE@       $(srcdir)/winsys/cogl-winsys-sdl.c
+
+@SUPPORT_GLX_TRUE@am__append_22 = -ldl
+@HAVE_INTROSPECTION_TRUE@am__append_23 = Cogl-1.0.gir
+@HAVE_INTROSPECTION_TRUE@am__append_24 = $(gir_DATA) $(typelib_DATA)
 subdir = cogl
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps =  \
@@ -140,7 +183,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = cogl-1.0.pc cogl-2.0-experimental.pc \
-	cogl-defines.h
+	cogl-defines.h cogl.rc
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -206,7 +249,8 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/cogl-object.h $(srcdir)/cogl-object.c \
 	$(srcdir)/cogl-util.h $(srcdir)/cogl-util.c \
 	$(srcdir)/cogl-bitmap-private.h $(srcdir)/cogl-bitmap.c \
-	$(srcdir)/cogl-bitmap-fallback.c \
+	$(srcdir)/cogl-bitmap-conversion.c \
+	$(srcdir)/cogl-bitmap-packing.h \
 	$(srcdir)/cogl-primitives-private.h \
 	$(srcdir)/cogl-primitives.h $(srcdir)/cogl-primitives.c \
 	$(srcdir)/cogl-path-private.h $(srcdir)/cogl-path.h \
@@ -215,8 +259,7 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/cogl-clip-stack.h $(srcdir)/cogl-clip-stack.c \
 	$(srcdir)/cogl-clip-state-private.h \
 	$(srcdir)/cogl-clip-state.h $(srcdir)/cogl-clip-state.c \
-	$(srcdir)/cogl2-clip-state.h $(srcdir)/cogl2-clip-state.c \
-	$(srcdir)/cogl-ext-functions.h \
+	$(srcdir)/cogl2-compatibility.c \
 	$(srcdir)/cogl-feature-private.h \
 	$(srcdir)/cogl-feature-private.c $(srcdir)/cogl-fixed.c \
 	$(srcdir)/cogl-color-private.h $(srcdir)/cogl-color.c \
@@ -237,12 +280,16 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/cogl-quaternion.c $(srcdir)/cogl-matrix-private.h \
 	$(srcdir)/cogl-matrix-stack.c $(srcdir)/cogl-matrix-stack.h \
 	$(srcdir)/cogl-depth-state.c \
-	$(srcdir)/cogl-depth-state-private.h $(srcdir)/cogl-pipeline.c \
+	$(srcdir)/cogl-depth-state-private.h $(srcdir)/cogl-node.c \
+	$(srcdir)/cogl-node-private.h $(srcdir)/cogl-pipeline.c \
 	$(srcdir)/cogl-pipeline-private.h \
+	$(srcdir)/cogl-pipeline-layer.c \
+	$(srcdir)/cogl-pipeline-layer-private.h \
 	$(srcdir)/cogl-pipeline-state.c \
 	$(srcdir)/cogl-pipeline-layer-state-private.h \
 	$(srcdir)/cogl-pipeline-layer-state.c \
 	$(srcdir)/cogl-pipeline-state-private.h \
+	$(srcdir)/cogl-pipeline-debug.c \
 	$(srcdir)/cogl-pipeline-opengl.c \
 	$(srcdir)/cogl-pipeline-opengl-private.h \
 	$(srcdir)/cogl-pipeline-fragend-glsl.c \
@@ -255,8 +302,12 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/cogl-pipeline-vertend-glsl-private.h \
 	$(srcdir)/cogl-pipeline-vertend-fixed.c \
 	$(srcdir)/cogl-pipeline-vertend-fixed-private.h \
+	$(srcdir)/cogl-pipeline-progend-fixed.c \
+	$(srcdir)/cogl-pipeline-progend-fixed-private.h \
 	$(srcdir)/cogl-pipeline-progend-glsl.c \
 	$(srcdir)/cogl-pipeline-progend-glsl-private.h \
+	$(srcdir)/cogl-pipeline-snippet-private.h \
+	$(srcdir)/cogl-pipeline-snippet.c \
 	$(srcdir)/cogl-pipeline-cache.h \
 	$(srcdir)/cogl-pipeline-cache.c \
 	$(srcdir)/cogl-material-compat.c $(srcdir)/cogl-program.c \
@@ -275,11 +326,13 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/cogl-rectangle-map.h $(srcdir)/cogl-rectangle-map.c \
 	$(srcdir)/cogl-atlas.h $(srcdir)/cogl-atlas.c \
 	$(srcdir)/cogl-atlas-texture-private.h \
-	$(srcdir)/cogl-atlas-texture.c $(srcdir)/cogl-blit.h \
-	$(srcdir)/cogl-blit.c $(srcdir)/cogl-spans.h \
-	$(srcdir)/cogl-spans.c $(srcdir)/cogl-journal-private.h \
-	$(srcdir)/cogl-journal.c $(srcdir)/cogl-framebuffer-private.h \
-	$(srcdir)/cogl-framebuffer.c $(srcdir)/cogl-profile.h \
+	$(srcdir)/cogl-atlas-texture.c $(srcdir)/cogl-meta-texture.c \
+	$(srcdir)/cogl-blit.h $(srcdir)/cogl-blit.c \
+	$(srcdir)/cogl-spans.h $(srcdir)/cogl-spans.c \
+	$(srcdir)/cogl-journal-private.h $(srcdir)/cogl-journal.c \
+	$(srcdir)/cogl-framebuffer-private.h \
+	$(srcdir)/cogl-framebuffer.c $(srcdir)/cogl-onscreen-private.h \
+	$(srcdir)/cogl-onscreen.c $(srcdir)/cogl-profile.h \
 	$(srcdir)/cogl-profile.c $(srcdir)/cogl-flags.h \
 	$(srcdir)/cogl-bitmask.h $(srcdir)/cogl-bitmask.c \
 	$(srcdir)/cogl-shader-boilerplate.h \
@@ -290,23 +343,51 @@ am__libcogl_la_SOURCES_DIST = $(srcdir)/driver/gl/cogl-gl.c \
 	$(srcdir)/winsys/cogl-winsys-stub-private.h \
 	$(srcdir)/cogl-queue.h $(srcdir)/winsys/cogl-winsys-stub.c \
 	$(srcdir)/cogl-config-private.h $(srcdir)/cogl-config.c \
+	$(srcdir)/cogl-boxed-value.h $(srcdir)/cogl-boxed-value.c \
+	$(srcdir)/cogl-snippet-private.h $(srcdir)/cogl-snippet.c \
+	$(srcdir)/cogl-poll.c \
+	$(srcdir)/gl-prototypes/cogl-all-functions.h \
+	$(srcdir)/gl-prototypes/cogl-gles1-functions.h \
+	$(srcdir)/gl-prototypes/cogl-gles2-functions.h \
+	$(srcdir)/gl-prototypes/cogl-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles1-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles2-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-fixed-functions.h \
+	$(srcdir)/gl-prototypes/cogl-glsl-functions.h \
+	$(srcdir)/cogl-glib-source.c \
 	$(srcdir)/cogl-x11-renderer-private.h \
 	$(srcdir)/cogl-xlib-renderer-private.h \
-	$(srcdir)/cogl-xlib-renderer.c \
-	$(srcdir)/cogl-xlib-display-private.h $(srcdir)/cogl-xlib.c \
+	$(srcdir)/cogl-xlib-renderer.c $(srcdir)/cogl-xlib.c \
 	$(srcdir)/cogl-xlib-private.h \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11.c \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11-private.h \
 	$(srcdir)/cogl-glx-renderer-private.h \
 	$(srcdir)/cogl-glx-display-private.h \
 	$(srcdir)/winsys/cogl-winsys-glx-feature-functions.h \
+	$(srcdir)/winsys/cogl-winsys-glx-private.h \
 	$(srcdir)/winsys/cogl-winsys-glx.c \
 	$(srcdir)/cogl-win32-renderer.c \
+	$(srcdir)/winsys/cogl-winsys-wgl-private.h \
 	$(srcdir)/winsys/cogl-winsys-wgl.c \
 	$(srcdir)/winsys/cogl-winsys-wgl-feature-functions.h \
+	$(srcdir)/winsys/cogl-winsys-egl-wayland.c \
+	$(srcdir)/winsys/cogl-winsys-egl-wayland-private.h \
+	$(srcdir)/winsys/cogl-winsys-egl-kms.c \
+	$(srcdir)/winsys/cogl-winsys-egl-kms-private.h \
+	$(srcdir)/winsys/cogl-winsys-egl-x11.c \
+	$(srcdir)/winsys/cogl-winsys-egl-x11-private.h \
+	$(srcdir)/winsys/cogl-winsys-egl-null.c \
+	$(srcdir)/winsys/cogl-winsys-egl-null-private.h \
+	$(srcdir)/winsys/cogl-winsys-egl-gdl.c \
+	$(srcdir)/winsys/cogl-winsys-egl-gdl-private.h \
+	$(srcdir)/winsys/cogl-winsys-egl-android.c \
+	$(srcdir)/winsys/cogl-winsys-egl-android-private.h \
 	$(srcdir)/winsys/cogl-winsys-egl.c \
 	$(srcdir)/winsys/cogl-winsys-egl-feature-functions.h \
-	$(srcdir)/winsys/cogl-winsys-egl-private.h
+	$(srcdir)/winsys/cogl-winsys-egl-private.h \
+	$(srcdir)/winsys/cogl-winsys-sdl-private.h \
+	$(srcdir)/winsys/cogl-winsys-sdl.c
 am__objects_1 =
 @COGL_DRIVER_GL_SUPPORTED_TRUE@am__objects_2 = cogl-gl.lo \
 @COGL_DRIVER_GL_SUPPORTED_TRUE@	cogl-texture-driver-gl.lo \
@@ -318,44 +399,64 @@ am__objects_4 = $(am__objects_2) $(am__objects_3)
 am__objects_5 = cogl-winsys.lo $(am__objects_1)
 am__objects_6 = dict.lo geom.lo mesh.lo normal.lo priorityq.lo \
 	render.lo sweep.lo tess.lo tessmono.lo $(am__objects_1)
-@SUPPORT_XLIB_TRUE@am__objects_7 = cogl-xlib-renderer.lo cogl-xlib.lo \
+@USE_GLIB_TRUE@am__objects_7 = cogl-glib-source.lo
+@SUPPORT_XLIB_TRUE@am__objects_8 = cogl-xlib-renderer.lo cogl-xlib.lo \
 @SUPPORT_XLIB_TRUE@	cogl-texture-pixmap-x11.lo
-@SUPPORT_GLX_TRUE@am__objects_8 = cogl-winsys-glx.lo
-@SUPPORT_WGL_TRUE@am__objects_9 = cogl-win32-renderer.lo \
+@SUPPORT_GLX_TRUE@am__objects_9 = cogl-winsys-glx.lo
+@SUPPORT_WGL_TRUE@am__objects_10 = cogl-win32-renderer.lo \
 @SUPPORT_WGL_TRUE@	cogl-winsys-wgl.lo
-@SUPPORT_EGL_TRUE@am__objects_10 = cogl-winsys-egl.lo
-am__objects_11 = $(am__objects_4) $(am__objects_5) $(am__objects_6) \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@am__objects_11 =  \
+@SUPPORT_EGL_PLATFORM_WAYLAND_TRUE@	cogl-winsys-egl-wayland.lo
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@am__objects_12 =  \
+@SUPPORT_EGL_PLATFORM_KMS_TRUE@	cogl-winsys-egl-kms.lo
+@SUPPORT_EGL_PLATFORM_XLIB_TRUE@am__objects_13 =  \
+@SUPPORT_EGL_PLATFORM_XLIB_TRUE@	cogl-winsys-egl-x11.lo
+@SUPPORT_EGL_PLATFORM_POWERVR_NULL_TRUE@am__objects_14 = cogl-winsys-egl-null.lo
+@SUPPORT_EGL_PLATFORM_GDL_TRUE@am__objects_15 =  \
+@SUPPORT_EGL_PLATFORM_GDL_TRUE@	cogl-winsys-egl-gdl.lo
+@SUPPORT_EGL_PLATFORM_ANDROID_TRUE@am__objects_16 =  \
+@SUPPORT_EGL_PLATFORM_ANDROID_TRUE@	cogl-winsys-egl-android.lo
+@SUPPORT_EGL_TRUE@am__objects_17 = cogl-winsys-egl.lo
+@SUPPORT_SDL_TRUE@am__objects_18 = cogl-winsys-sdl.lo
+am__objects_19 = $(am__objects_4) $(am__objects_5) $(am__objects_6) \
 	cogl-context.lo cogl-renderer.lo cogl-swap-chain.lo \
 	cogl-onscreen-template.lo cogl-display.lo cogl.lo \
 	cogl-object.lo cogl-util.lo cogl-bitmap.lo \
-	cogl-bitmap-fallback.lo cogl-primitives.lo cogl-path.lo \
+	cogl-bitmap-conversion.lo cogl-primitives.lo cogl-path.lo \
 	cogl2-path.lo cogl-bitmap-pixbuf.lo cogl-clip-stack.lo \
-	cogl-clip-state.lo cogl2-clip-state.lo cogl-feature-private.lo \
-	cogl-fixed.lo cogl-color.lo cogl-buffer.lo \
-	cogl-pixel-buffer.lo cogl-vertex-buffer.lo \
+	cogl-clip-state.lo cogl2-compatibility.lo \
+	cogl-feature-private.lo cogl-fixed.lo cogl-color.lo \
+	cogl-buffer.lo cogl-pixel-buffer.lo cogl-vertex-buffer.lo \
 	cogl-index-buffer.lo cogl-attribute-buffer.lo cogl-indices.lo \
 	cogl-attribute.lo cogl-primitive.lo cogl-matrix.lo \
 	cogl-vector.lo cogl-euler.lo cogl-quaternion.lo \
-	cogl-matrix-stack.lo cogl-depth-state.lo cogl-pipeline.lo \
-	cogl-pipeline-state.lo cogl-pipeline-layer-state.lo \
+	cogl-matrix-stack.lo cogl-depth-state.lo cogl-node.lo \
+	cogl-pipeline.lo cogl-pipeline-layer.lo cogl-pipeline-state.lo \
+	cogl-pipeline-layer-state.lo cogl-pipeline-debug.lo \
 	cogl-pipeline-opengl.lo cogl-pipeline-fragend-glsl.lo \
 	cogl-pipeline-fragend-arbfp.lo cogl-pipeline-fragend-fixed.lo \
 	cogl-pipeline-vertend-glsl.lo cogl-pipeline-vertend-fixed.lo \
-	cogl-pipeline-progend-glsl.lo cogl-pipeline-cache.lo \
+	cogl-pipeline-progend-fixed.lo cogl-pipeline-progend-glsl.lo \
+	cogl-pipeline-snippet.lo cogl-pipeline-cache.lo \
 	cogl-material-compat.lo cogl-program.lo cogl-blend-string.lo \
 	cogl-debug.lo cogl-sub-texture.lo cogl-texture.lo \
 	cogl-texture-2d.lo cogl-texture-2d-sliced.lo \
 	cogl-texture-3d.lo cogl-texture-rectangle.lo \
 	cogl-rectangle-map.lo cogl-atlas.lo cogl-atlas-texture.lo \
-	cogl-blit.lo cogl-spans.lo cogl-journal.lo cogl-framebuffer.lo \
+	cogl-meta-texture.lo cogl-blit.lo cogl-spans.lo \
+	cogl-journal.lo cogl-framebuffer.lo cogl-onscreen.lo \
 	cogl-profile.lo cogl-bitmask.lo cogl-shader.lo \
 	cogl-point-in-poly.lo cogl-clutter.lo cogl-winsys-stub.lo \
-	cogl-config.lo $(am__objects_1) $(am__objects_7) \
-	$(am__objects_8) $(am__objects_9) $(am__objects_10)
-am_libcogl_la_OBJECTS = $(am__objects_11)
-am__objects_12 = cogl-enum-types.lo
-am__objects_13 = $(am__objects_1) $(am__objects_12)
-nodist_libcogl_la_OBJECTS = $(am__objects_13)
+	cogl-config.lo cogl-boxed-value.lo cogl-snippet.lo \
+	cogl-poll.lo $(am__objects_1) $(am__objects_7) \
+	$(am__objects_8) $(am__objects_9) $(am__objects_10) \
+	$(am__objects_11) $(am__objects_12) $(am__objects_13) \
+	$(am__objects_14) $(am__objects_15) $(am__objects_16) \
+	$(am__objects_17) $(am__objects_18)
+am_libcogl_la_OBJECTS = $(am__objects_19)
+am__objects_20 = cogl-enum-types.lo
+am__objects_21 = $(am__objects_1) $(am__objects_20)
+nodist_libcogl_la_OBJECTS = $(am__objects_21)
 libcogl_la_OBJECTS = $(am_libcogl_la_OBJECTS) \
 	$(nodist_libcogl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -400,32 +501,40 @@ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
 	installcheck-recursive installdirs-recursive pdf-recursive \
 	ps-recursive uninstall-recursive
 DATA = $(gir_DATA) $(pkgconfig_DATA) $(typelib_DATA)
-am__coglinclude_HEADERS_DIST = $(srcdir)/cogl-object.h \
-	$(srcdir)/cogl-bitmap.h $(srcdir)/cogl-buffer.h \
-	$(srcdir)/cogl-color.h $(srcdir)/cogl-fixed.h \
-	$(srcdir)/cogl-depth-state.h $(srcdir)/cogl-material-compat.h \
-	$(srcdir)/cogl-vector.h $(srcdir)/cogl-euler.h \
-	$(srcdir)/cogl-quaternion.h $(srcdir)/cogl-matrix.h \
-	$(srcdir)/cogl-offscreen.h $(srcdir)/cogl-primitives.h \
-	$(srcdir)/cogl-path.h $(srcdir)/cogl-pixel-buffer.h \
-	$(srcdir)/cogl-shader.h $(srcdir)/cogl-texture.h \
-	$(srcdir)/cogl-texture-3d.h $(srcdir)/cogl-texture-2d.h \
-	$(srcdir)/cogl-types.h $(srcdir)/cogl-vertex-buffer.h \
-	$(srcdir)/cogl-index-buffer.h \
+am__coglinclude_HEADERS_DIST = $(srcdir)/cogl1-context.h \
+	$(srcdir)/cogl-bitmap.h $(srcdir)/cogl-color.h \
+	$(srcdir)/cogl-fixed.h $(srcdir)/cogl-material-compat.h \
+	$(srcdir)/cogl-matrix.h $(srcdir)/cogl-offscreen.h \
+	$(srcdir)/cogl-primitives.h $(srcdir)/cogl-path.h \
+	$(srcdir)/cogl-path-functions.h $(srcdir)/cogl-shader.h \
+	$(srcdir)/cogl-texture.h $(srcdir)/cogl-types.h \
+	$(srcdir)/cogl-vertex-buffer.h $(srcdir)/cogl-clutter.h \
+	$(srcdir)/cogl.h $(srcdir)/cogl-clutter-xlib.h \
+	$(srcdir)/cogl-xlib-renderer.h $(srcdir)/cogl-deprecated.h \
+	$(srcdir)/cogl-pango.h $(srcdir)/cogl-object.h \
+	$(srcdir)/cogl-renderer.h $(srcdir)/cogl-swap-chain.h \
+	$(srcdir)/cogl-onscreen-template.h $(srcdir)/cogl-display.h \
+	$(srcdir)/cogl-context.h $(srcdir)/cogl-pipeline.h \
+	$(srcdir)/cogl-pipeline-state.h \
+	$(srcdir)/cogl-pipeline-layer-state.h $(srcdir)/cogl-snippet.h \
+	$(srcdir)/cogl2-path.h $(srcdir)/cogl-index-buffer.h \
 	$(srcdir)/cogl-attribute-buffer.h $(srcdir)/cogl-indices.h \
 	$(srcdir)/cogl-attribute.h $(srcdir)/cogl-primitive.h \
 	$(srcdir)/cogl-clip-state.h $(srcdir)/cogl-framebuffer.h \
-	$(srcdir)/cogl-clutter.h $(srcdir)/cogl.h \
-	$(srcdir)/cogl-xlib-renderer.h $(srcdir)/cogl-win32-renderer.h \
-	$(srcdir)/cogl-wayland-renderer.h $(srcdir)/cogl-deprecated.h \
-	$(srcdir)/cogl-pango.h $(srcdir)/cogl-renderer.h \
-	$(srcdir)/cogl-swap-chain.h $(srcdir)/cogl-onscreen-template.h \
-	$(srcdir)/cogl-display.h $(srcdir)/cogl-context.h \
-	$(srcdir)/cogl-pipeline.h $(srcdir)/cogl-pipeline-state.h \
-	$(srcdir)/cogl-pipeline-layer-state.h $(srcdir)/cogl2-path.h \
-	$(srcdir)/cogl2-clip-state.h $(srcdir)/cogl2-experimental.h \
+	$(srcdir)/cogl-onscreen.h $(srcdir)/cogl-vector.h \
+	$(srcdir)/cogl-euler.h $(srcdir)/cogl-quaternion.h \
+	$(srcdir)/cogl-poll.h $(srcdir)/cogl-texture-3d.h \
+	$(srcdir)/cogl-texture-2d.h $(srcdir)/cogl-texture-rectangle.h \
+	$(srcdir)/cogl-texture-2d-sliced.h \
+	$(srcdir)/cogl-sub-texture.h $(srcdir)/cogl-meta-texture.h \
+	$(srcdir)/cogl-depth-state.h $(srcdir)/cogl-buffer.h \
+	$(srcdir)/cogl-pixel-buffer.h $(srcdir)/cogl2-experimental.h \
+	$(srcdir)/cogl2-compatibility.h $(srcdir)/cogl-glib-source.h \
 	$(srcdir)/winsys/cogl-texture-pixmap-x11.h \
-	$(srcdir)/cogl-xlib.h
+	$(srcdir)/cogl-xlib.h $(srcdir)/cogl-win32-renderer.h \
+	$(srcdir)/cogl-wayland-server.h \
+	$(srcdir)/cogl-wayland-renderer.h \
+	$(srcdir)/cogl-wayland-client.h $(srcdir)/cogl-kms-renderer.h
 HEADERS = $(coglinclude_HEADERS) $(nodist_coglinclude_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
@@ -526,6 +635,7 @@ GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GI_REQ_VERSION = @GI_REQ_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -535,9 +645,14 @@ GMSGFMT_015 = @GMSGFMT_015@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GTK_DOC_REQ_VERSION = @GTK_DOC_REQ_VERSION@
+HAVE_GL = @HAVE_GL@
+HAVE_GLES1 = @HAVE_GLES1@
+HAVE_GLES2 = @HAVE_GLES2@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -680,10 +795,14 @@ EXTRA_DIST = cogl-defines.h.in cogl-1.0.pc.in \
 	cogl-$(COGL_API_VERSION)-experimental.pc.in \
 	$(srcdir)/tesselator/README \
 	$(srcdir)/tesselator/priorityq-heap.c $(NULL) stb_image.c \
-	$(enum_tmpl_h) $(enum_tmpl_c)
-CLEANFILES = stamp-enum-types $(am__append_13)
+	$(enum_tmpl_h) $(enum_tmpl_c) cogl-defines.h.win32 \
+	cogl-defines.h.win32_SDL cogl.symbols cogl.rc.in cogl.rc
+CLEANFILES = stamp-enum-types $(am__append_24)
 DISTCLEANFILES = cogl-defines.h $(pc_files) $(glib_enum_h) \
-	$(glib_enum_c)
+	$(glib_enum_c) ../build/win32/vs9/cogl.vcproj \
+	../build/win32/vs10/cogl.vcxproj \
+	../build/win32/vs10/cogl.vcxproj.filters \
+	../build/win32/gen-enums.bat cogl.rc
 noinst_LTLIBRARIES = 
 lib_LTLIBRARIES = libcogl.la
 INCLUDES = \
@@ -695,8 +814,6 @@ INCLUDES = \
 	$(NULL)
 
 AM_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES 	\
-	-DG_DISABLE_DEPRECATED		\
 	-DG_LOG_DOMAIN=\"Cogl\" 	\
 	-DCLUTTER_COMPILATION		\
 	-DCOGL_GL_LIBNAME=\"$(COGL_GL_LIBNAME)\" \
@@ -715,30 +832,40 @@ pc_files = cogl-1.0.pc cogl-gl-1.0.pc \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 
-# public headers
-cogl_public_h = $(srcdir)/cogl-object.h $(srcdir)/cogl-bitmap.h \
-	$(srcdir)/cogl-buffer.h $(srcdir)/cogl-color.h \
-	$(srcdir)/cogl-fixed.h $(srcdir)/cogl-depth-state.h \
-	$(srcdir)/cogl-material-compat.h $(srcdir)/cogl-vector.h \
-	$(srcdir)/cogl-euler.h $(srcdir)/cogl-quaternion.h \
-	$(srcdir)/cogl-matrix.h $(srcdir)/cogl-offscreen.h \
-	$(srcdir)/cogl-primitives.h $(srcdir)/cogl-path.h \
-	$(srcdir)/cogl-pixel-buffer.h $(srcdir)/cogl-shader.h \
-	$(srcdir)/cogl-texture.h $(srcdir)/cogl-texture-3d.h \
-	$(srcdir)/cogl-texture-2d.h $(srcdir)/cogl-types.h \
-	$(srcdir)/cogl-vertex-buffer.h $(srcdir)/cogl-index-buffer.h \
+# public 1.x api headers
+cogl_1_public_h = $(srcdir)/cogl1-context.h $(srcdir)/cogl-bitmap.h \
+	$(srcdir)/cogl-color.h $(srcdir)/cogl-fixed.h \
+	$(srcdir)/cogl-material-compat.h $(srcdir)/cogl-matrix.h \
+	$(srcdir)/cogl-offscreen.h $(srcdir)/cogl-primitives.h \
+	$(srcdir)/cogl-path.h $(srcdir)/cogl-path-functions.h \
+	$(srcdir)/cogl-shader.h $(srcdir)/cogl-texture.h \
+	$(srcdir)/cogl-types.h $(srcdir)/cogl-vertex-buffer.h \
+	$(srcdir)/cogl-clutter.h $(srcdir)/cogl.h $(NULL) \
+	$(am__append_5)
+
+# experimental 2.0 api headers
+# Note: we don't run glib-mkenums over these headers
+cogl_experimental_h = $(srcdir)/cogl-object.h \
+	$(srcdir)/cogl-renderer.h $(srcdir)/cogl-swap-chain.h \
+	$(srcdir)/cogl-onscreen-template.h $(srcdir)/cogl-display.h \
+	$(srcdir)/cogl-context.h $(srcdir)/cogl-pipeline.h \
+	$(srcdir)/cogl-pipeline-state.h \
+	$(srcdir)/cogl-pipeline-layer-state.h $(srcdir)/cogl-snippet.h \
+	$(srcdir)/cogl2-path.h $(srcdir)/cogl-index-buffer.h \
 	$(srcdir)/cogl-attribute-buffer.h $(srcdir)/cogl-indices.h \
 	$(srcdir)/cogl-attribute.h $(srcdir)/cogl-primitive.h \
 	$(srcdir)/cogl-clip-state.h $(srcdir)/cogl-framebuffer.h \
-	$(srcdir)/cogl-clutter.h $(srcdir)/cogl.h $(NULL) \
-	$(am__append_3) $(am__append_7) $(am__append_9)
-cogl_experimental_h = $(srcdir)/cogl-renderer.h \
-	$(srcdir)/cogl-swap-chain.h $(srcdir)/cogl-onscreen-template.h \
-	$(srcdir)/cogl-display.h $(srcdir)/cogl-context.h \
-	$(srcdir)/cogl-pipeline.h $(srcdir)/cogl-pipeline-state.h \
-	$(srcdir)/cogl-pipeline-layer-state.h $(srcdir)/cogl2-path.h \
-	$(srcdir)/cogl2-clip-state.h $(srcdir)/cogl2-experimental.h \
-	$(NULL) $(am__append_4)
+	$(srcdir)/cogl-onscreen.h $(srcdir)/cogl-vector.h \
+	$(srcdir)/cogl-euler.h $(srcdir)/cogl-quaternion.h \
+	$(srcdir)/cogl-poll.h $(srcdir)/cogl-texture-3d.h \
+	$(srcdir)/cogl-texture-2d.h $(srcdir)/cogl-texture-rectangle.h \
+	$(srcdir)/cogl-texture-2d-sliced.h \
+	$(srcdir)/cogl-sub-texture.h $(srcdir)/cogl-meta-texture.h \
+	$(srcdir)/cogl-depth-state.h $(srcdir)/cogl-buffer.h \
+	$(srcdir)/cogl-pixel-buffer.h $(srcdir)/cogl2-experimental.h \
+	$(srcdir)/cogl2-compatibility.h $(NULL) $(am__append_3) \
+	$(am__append_6) $(am__append_9) $(am__append_11) \
+	$(am__append_12) $(am__append_14)
 
 # driver sources
 cogl_driver_sources = $(am__append_1) $(am__append_2)
@@ -798,7 +925,8 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/cogl-object.h $(srcdir)/cogl-object.c \
 	$(srcdir)/cogl-util.h $(srcdir)/cogl-util.c \
 	$(srcdir)/cogl-bitmap-private.h $(srcdir)/cogl-bitmap.c \
-	$(srcdir)/cogl-bitmap-fallback.c \
+	$(srcdir)/cogl-bitmap-conversion.c \
+	$(srcdir)/cogl-bitmap-packing.h \
 	$(srcdir)/cogl-primitives-private.h \
 	$(srcdir)/cogl-primitives.h $(srcdir)/cogl-primitives.c \
 	$(srcdir)/cogl-path-private.h $(srcdir)/cogl-path.h \
@@ -807,8 +935,7 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/cogl-clip-stack.h $(srcdir)/cogl-clip-stack.c \
 	$(srcdir)/cogl-clip-state-private.h \
 	$(srcdir)/cogl-clip-state.h $(srcdir)/cogl-clip-state.c \
-	$(srcdir)/cogl2-clip-state.h $(srcdir)/cogl2-clip-state.c \
-	$(srcdir)/cogl-ext-functions.h \
+	$(srcdir)/cogl2-compatibility.c \
 	$(srcdir)/cogl-feature-private.h \
 	$(srcdir)/cogl-feature-private.c $(srcdir)/cogl-fixed.c \
 	$(srcdir)/cogl-color-private.h $(srcdir)/cogl-color.c \
@@ -829,12 +956,16 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/cogl-quaternion.c $(srcdir)/cogl-matrix-private.h \
 	$(srcdir)/cogl-matrix-stack.c $(srcdir)/cogl-matrix-stack.h \
 	$(srcdir)/cogl-depth-state.c \
-	$(srcdir)/cogl-depth-state-private.h $(srcdir)/cogl-pipeline.c \
+	$(srcdir)/cogl-depth-state-private.h $(srcdir)/cogl-node.c \
+	$(srcdir)/cogl-node-private.h $(srcdir)/cogl-pipeline.c \
 	$(srcdir)/cogl-pipeline-private.h \
+	$(srcdir)/cogl-pipeline-layer.c \
+	$(srcdir)/cogl-pipeline-layer-private.h \
 	$(srcdir)/cogl-pipeline-state.c \
 	$(srcdir)/cogl-pipeline-layer-state-private.h \
 	$(srcdir)/cogl-pipeline-layer-state.c \
 	$(srcdir)/cogl-pipeline-state-private.h \
+	$(srcdir)/cogl-pipeline-debug.c \
 	$(srcdir)/cogl-pipeline-opengl.c \
 	$(srcdir)/cogl-pipeline-opengl-private.h \
 	$(srcdir)/cogl-pipeline-fragend-glsl.c \
@@ -847,8 +978,12 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/cogl-pipeline-vertend-glsl-private.h \
 	$(srcdir)/cogl-pipeline-vertend-fixed.c \
 	$(srcdir)/cogl-pipeline-vertend-fixed-private.h \
+	$(srcdir)/cogl-pipeline-progend-fixed.c \
+	$(srcdir)/cogl-pipeline-progend-fixed-private.h \
 	$(srcdir)/cogl-pipeline-progend-glsl.c \
 	$(srcdir)/cogl-pipeline-progend-glsl-private.h \
+	$(srcdir)/cogl-pipeline-snippet-private.h \
+	$(srcdir)/cogl-pipeline-snippet.c \
 	$(srcdir)/cogl-pipeline-cache.h \
 	$(srcdir)/cogl-pipeline-cache.c \
 	$(srcdir)/cogl-material-compat.c $(srcdir)/cogl-program.c \
@@ -867,11 +1002,13 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/cogl-rectangle-map.h $(srcdir)/cogl-rectangle-map.c \
 	$(srcdir)/cogl-atlas.h $(srcdir)/cogl-atlas.c \
 	$(srcdir)/cogl-atlas-texture-private.h \
-	$(srcdir)/cogl-atlas-texture.c $(srcdir)/cogl-blit.h \
-	$(srcdir)/cogl-blit.c $(srcdir)/cogl-spans.h \
-	$(srcdir)/cogl-spans.c $(srcdir)/cogl-journal-private.h \
-	$(srcdir)/cogl-journal.c $(srcdir)/cogl-framebuffer-private.h \
-	$(srcdir)/cogl-framebuffer.c $(srcdir)/cogl-profile.h \
+	$(srcdir)/cogl-atlas-texture.c $(srcdir)/cogl-meta-texture.c \
+	$(srcdir)/cogl-blit.h $(srcdir)/cogl-blit.c \
+	$(srcdir)/cogl-spans.h $(srcdir)/cogl-spans.c \
+	$(srcdir)/cogl-journal-private.h $(srcdir)/cogl-journal.c \
+	$(srcdir)/cogl-framebuffer-private.h \
+	$(srcdir)/cogl-framebuffer.c $(srcdir)/cogl-onscreen-private.h \
+	$(srcdir)/cogl-onscreen.c $(srcdir)/cogl-profile.h \
 	$(srcdir)/cogl-profile.c $(srcdir)/cogl-flags.h \
 	$(srcdir)/cogl-bitmask.h $(srcdir)/cogl-bitmask.c \
 	$(srcdir)/cogl-shader-boilerplate.h \
@@ -882,17 +1019,31 @@ cogl_sources_c = $(cogl_driver_sources) $(cogl_winsys_common_sources) \
 	$(srcdir)/winsys/cogl-winsys-stub-private.h \
 	$(srcdir)/cogl-queue.h $(srcdir)/winsys/cogl-winsys-stub.c \
 	$(srcdir)/cogl-config-private.h $(srcdir)/cogl-config.c \
-	$(NULL) $(am__append_5) $(am__append_6) $(am__append_8) \
-	$(am__append_10)
+	$(srcdir)/cogl-boxed-value.h $(srcdir)/cogl-boxed-value.c \
+	$(srcdir)/cogl-snippet-private.h $(srcdir)/cogl-snippet.c \
+	$(srcdir)/cogl-poll.c \
+	$(srcdir)/gl-prototypes/cogl-all-functions.h \
+	$(srcdir)/gl-prototypes/cogl-gles1-functions.h \
+	$(srcdir)/gl-prototypes/cogl-gles2-functions.h \
+	$(srcdir)/gl-prototypes/cogl-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles1-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-in-gles2-core-functions.h \
+	$(srcdir)/gl-prototypes/cogl-fixed-functions.h \
+	$(srcdir)/gl-prototypes/cogl-glsl-functions.h $(NULL) \
+	$(am__append_4) $(am__append_7) $(am__append_8) \
+	$(am__append_10) $(am__append_13) $(am__append_15) \
+	$(am__append_16) $(am__append_17) $(am__append_18) \
+	$(am__append_19) $(am__append_20) $(am__append_21)
 
 # glib-mkenums rules
 glib_enum_h = cogl-enum-types.h
 glib_enum_c = cogl-enum-types.c
-glib_enum_headers = $(cogl_public_h)
+glib_enum_headers = $(cogl_1_public_h)
 enum_tmpl_h = $(addprefix $(srcdir)/, $(glib_enum_h:.h=.h.in))
 enum_tmpl_c = $(addprefix $(srcdir)/, $(glib_enum_c:.c=.c.in))
 libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS) \
-	$(am__append_11)
+	$(am__append_22)
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
@@ -906,7 +1057,7 @@ nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
 
 # Cogl installed headers
 cogl_headers = \
-	$(cogl_public_h) \
+	$(cogl_1_public_h) \
 	$(srcdir)/cogl-deprecated.h \
 	$(srcdir)/cogl-pango.h \
 	$(NULL)
@@ -914,12 +1065,12 @@ cogl_headers = \
 coglincludedir = $(includedir)/cogl/cogl
 coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
 nodist_coglinclude_HEADERS = cogl-defines.h cogl-enum-types.h
-INTROSPECTION_GIRS = $(am__append_12)
+INTROSPECTION_GIRS = $(am__append_23)
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_NAMESPACE = Cogl
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_VERSION = 1.0
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_LIBS = libcogl.la
-@HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_FILES = $(cogl_public_h) cogl-enum-types.h
-@HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS)
+@HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
+@HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 @HAVE_INTROSPECTION_TRUE@Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
@@ -967,6 +1118,8 @@ cogl-1.0.pc: $(top_builddir)/config.status $(srcdir)/cogl-1.0.pc.in
 cogl-2.0-experimental.pc: $(top_builddir)/config.status $(srcdir)/cogl-2.0-experimental.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 cogl-defines.h: $(top_builddir)/config.status $(srcdir)/cogl-defines.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+cogl.rc: $(top_builddir)/config.status $(srcdir)/cogl.rc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
@@ -1021,12 +1174,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-atlas.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-attribute-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-attribute.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-bitmap-fallback.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-bitmap-conversion.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-bitmap-pixbuf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-bitmap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-bitmask.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-blend-string.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-blit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-boxed-value.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-clip-stack.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-clip-state.Plo@am__quote@
@@ -1044,28 +1198,37 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-framebuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-gl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-gles.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-glib-source.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-index-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-indices.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-journal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-material-compat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-matrix-stack.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-matrix.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-meta-texture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-node.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-object.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-onscreen-template.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-onscreen.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-path.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-cache.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-debug.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-fragend-arbfp.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-fragend-fixed.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-fragend-glsl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-layer-state.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-layer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-opengl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-progend-fixed.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-progend-glsl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-snippet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-state.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-vertend-fixed.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline-vertend-glsl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pipeline.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-pixel-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-point-in-poly.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-poll.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-primitive.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-primitives.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-profile.Plo@am__quote@
@@ -1074,6 +1237,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-rectangle-map.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-renderer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-shader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-snippet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-spans.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-sub-texture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-swap-chain.Plo@am__quote@
@@ -1089,15 +1253,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-vector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-vertex-buffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-win32-renderer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-android.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-gdl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-kms.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-null.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-wayland.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl-x11.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-egl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-glx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-sdl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-stub.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys-wgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-winsys.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-xlib-renderer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-xlib.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl2-clip-state.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl2-compatibility.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl2-path.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dict.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geom.Plo@am__quote@
@@ -1317,13 +1488,13 @@ cogl-bitmap.lo: $(srcdir)/cogl-bitmap.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-bitmap.lo `test -f '$(srcdir)/cogl-bitmap.c' || echo '$(srcdir)/'`$(srcdir)/cogl-bitmap.c
 
-cogl-bitmap-fallback.lo: $(srcdir)/cogl-bitmap-fallback.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-bitmap-fallback.lo -MD -MP -MF $(DEPDIR)/cogl-bitmap-fallback.Tpo -c -o cogl-bitmap-fallback.lo `test -f '$(srcdir)/cogl-bitmap-fallback.c' || echo '$(srcdir)/'`$(srcdir)/cogl-bitmap-fallback.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-bitmap-fallback.Tpo $(DEPDIR)/cogl-bitmap-fallback.Plo
+cogl-bitmap-conversion.lo: $(srcdir)/cogl-bitmap-conversion.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-bitmap-conversion.lo -MD -MP -MF $(DEPDIR)/cogl-bitmap-conversion.Tpo -c -o cogl-bitmap-conversion.lo `test -f '$(srcdir)/cogl-bitmap-conversion.c' || echo '$(srcdir)/'`$(srcdir)/cogl-bitmap-conversion.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-bitmap-conversion.Tpo $(DEPDIR)/cogl-bitmap-conversion.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-bitmap-fallback.c' object='cogl-bitmap-fallback.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-bitmap-conversion.c' object='cogl-bitmap-conversion.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-bitmap-fallback.lo `test -f '$(srcdir)/cogl-bitmap-fallback.c' || echo '$(srcdir)/'`$(srcdir)/cogl-bitmap-fallback.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-bitmap-conversion.lo `test -f '$(srcdir)/cogl-bitmap-conversion.c' || echo '$(srcdir)/'`$(srcdir)/cogl-bitmap-conversion.c
 
 cogl-primitives.lo: $(srcdir)/cogl-primitives.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-primitives.lo -MD -MP -MF $(DEPDIR)/cogl-primitives.Tpo -c -o cogl-primitives.lo `test -f '$(srcdir)/cogl-primitives.c' || echo '$(srcdir)/'`$(srcdir)/cogl-primitives.c
@@ -1373,13 +1544,13 @@ cogl-clip-state.lo: $(srcdir)/cogl-clip-state.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-clip-state.lo `test -f '$(srcdir)/cogl-clip-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl-clip-state.c
 
-cogl2-clip-state.lo: $(srcdir)/cogl2-clip-state.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl2-clip-state.lo -MD -MP -MF $(DEPDIR)/cogl2-clip-state.Tpo -c -o cogl2-clip-state.lo `test -f '$(srcdir)/cogl2-clip-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl2-clip-state.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl2-clip-state.Tpo $(DEPDIR)/cogl2-clip-state.Plo
+cogl2-compatibility.lo: $(srcdir)/cogl2-compatibility.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl2-compatibility.lo -MD -MP -MF $(DEPDIR)/cogl2-compatibility.Tpo -c -o cogl2-compatibility.lo `test -f '$(srcdir)/cogl2-compatibility.c' || echo '$(srcdir)/'`$(srcdir)/cogl2-compatibility.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl2-compatibility.Tpo $(DEPDIR)/cogl2-compatibility.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl2-clip-state.c' object='cogl2-clip-state.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl2-compatibility.c' object='cogl2-compatibility.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl2-clip-state.lo `test -f '$(srcdir)/cogl2-clip-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl2-clip-state.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl2-compatibility.lo `test -f '$(srcdir)/cogl2-compatibility.c' || echo '$(srcdir)/'`$(srcdir)/cogl2-compatibility.c
 
 cogl-feature-private.lo: $(srcdir)/cogl-feature-private.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-feature-private.lo -MD -MP -MF $(DEPDIR)/cogl-feature-private.Tpo -c -o cogl-feature-private.lo `test -f '$(srcdir)/cogl-feature-private.c' || echo '$(srcdir)/'`$(srcdir)/cogl-feature-private.c
@@ -1517,6 +1688,14 @@ cogl-depth-state.lo: $(srcdir)/cogl-depth-state.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-depth-state.lo `test -f '$(srcdir)/cogl-depth-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl-depth-state.c
 
+cogl-node.lo: $(srcdir)/cogl-node.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-node.lo -MD -MP -MF $(DEPDIR)/cogl-node.Tpo -c -o cogl-node.lo `test -f '$(srcdir)/cogl-node.c' || echo '$(srcdir)/'`$(srcdir)/cogl-node.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-node.Tpo $(DEPDIR)/cogl-node.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-node.c' object='cogl-node.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-node.lo `test -f '$(srcdir)/cogl-node.c' || echo '$(srcdir)/'`$(srcdir)/cogl-node.c
+
 cogl-pipeline.lo: $(srcdir)/cogl-pipeline.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline.Tpo -c -o cogl-pipeline.lo `test -f '$(srcdir)/cogl-pipeline.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline.Tpo $(DEPDIR)/cogl-pipeline.Plo
@@ -1524,6 +1703,14 @@ cogl-pipeline.lo: $(srcdir)/cogl-pipeline.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline.c' object='cogl-pipeline.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline.lo `test -f '$(srcdir)/cogl-pipeline.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline.c
+
+cogl-pipeline-layer.lo: $(srcdir)/cogl-pipeline-layer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-layer.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-layer.Tpo -c -o cogl-pipeline-layer.lo `test -f '$(srcdir)/cogl-pipeline-layer.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-layer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline-layer.Tpo $(DEPDIR)/cogl-pipeline-layer.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-layer.c' object='cogl-pipeline-layer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-layer.lo `test -f '$(srcdir)/cogl-pipeline-layer.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-layer.c
 
 cogl-pipeline-state.lo: $(srcdir)/cogl-pipeline-state.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-state.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-state.Tpo -c -o cogl-pipeline-state.lo `test -f '$(srcdir)/cogl-pipeline-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-state.c
@@ -1540,6 +1727,14 @@ cogl-pipeline-layer-state.lo: $(srcdir)/cogl-pipeline-layer-state.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-layer-state.c' object='cogl-pipeline-layer-state.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-layer-state.lo `test -f '$(srcdir)/cogl-pipeline-layer-state.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-layer-state.c
+
+cogl-pipeline-debug.lo: $(srcdir)/cogl-pipeline-debug.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-debug.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-debug.Tpo -c -o cogl-pipeline-debug.lo `test -f '$(srcdir)/cogl-pipeline-debug.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-debug.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline-debug.Tpo $(DEPDIR)/cogl-pipeline-debug.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-debug.c' object='cogl-pipeline-debug.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-debug.lo `test -f '$(srcdir)/cogl-pipeline-debug.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-debug.c
 
 cogl-pipeline-opengl.lo: $(srcdir)/cogl-pipeline-opengl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-opengl.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-opengl.Tpo -c -o cogl-pipeline-opengl.lo `test -f '$(srcdir)/cogl-pipeline-opengl.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-opengl.c
@@ -1589,6 +1784,14 @@ cogl-pipeline-vertend-fixed.lo: $(srcdir)/cogl-pipeline-vertend-fixed.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-vertend-fixed.lo `test -f '$(srcdir)/cogl-pipeline-vertend-fixed.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-vertend-fixed.c
 
+cogl-pipeline-progend-fixed.lo: $(srcdir)/cogl-pipeline-progend-fixed.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-progend-fixed.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-progend-fixed.Tpo -c -o cogl-pipeline-progend-fixed.lo `test -f '$(srcdir)/cogl-pipeline-progend-fixed.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-progend-fixed.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline-progend-fixed.Tpo $(DEPDIR)/cogl-pipeline-progend-fixed.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-progend-fixed.c' object='cogl-pipeline-progend-fixed.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-progend-fixed.lo `test -f '$(srcdir)/cogl-pipeline-progend-fixed.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-progend-fixed.c
+
 cogl-pipeline-progend-glsl.lo: $(srcdir)/cogl-pipeline-progend-glsl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-progend-glsl.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-progend-glsl.Tpo -c -o cogl-pipeline-progend-glsl.lo `test -f '$(srcdir)/cogl-pipeline-progend-glsl.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-progend-glsl.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline-progend-glsl.Tpo $(DEPDIR)/cogl-pipeline-progend-glsl.Plo
@@ -1596,6 +1799,14 @@ cogl-pipeline-progend-glsl.lo: $(srcdir)/cogl-pipeline-progend-glsl.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-progend-glsl.c' object='cogl-pipeline-progend-glsl.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-progend-glsl.lo `test -f '$(srcdir)/cogl-pipeline-progend-glsl.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-progend-glsl.c
+
+cogl-pipeline-snippet.lo: $(srcdir)/cogl-pipeline-snippet.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-snippet.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-snippet.Tpo -c -o cogl-pipeline-snippet.lo `test -f '$(srcdir)/cogl-pipeline-snippet.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-snippet.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-pipeline-snippet.Tpo $(DEPDIR)/cogl-pipeline-snippet.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-pipeline-snippet.c' object='cogl-pipeline-snippet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-pipeline-snippet.lo `test -f '$(srcdir)/cogl-pipeline-snippet.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-snippet.c
 
 cogl-pipeline-cache.lo: $(srcdir)/cogl-pipeline-cache.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-pipeline-cache.lo -MD -MP -MF $(DEPDIR)/cogl-pipeline-cache.Tpo -c -o cogl-pipeline-cache.lo `test -f '$(srcdir)/cogl-pipeline-cache.c' || echo '$(srcdir)/'`$(srcdir)/cogl-pipeline-cache.c
@@ -1709,6 +1920,14 @@ cogl-atlas-texture.lo: $(srcdir)/cogl-atlas-texture.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-atlas-texture.lo `test -f '$(srcdir)/cogl-atlas-texture.c' || echo '$(srcdir)/'`$(srcdir)/cogl-atlas-texture.c
 
+cogl-meta-texture.lo: $(srcdir)/cogl-meta-texture.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-meta-texture.lo -MD -MP -MF $(DEPDIR)/cogl-meta-texture.Tpo -c -o cogl-meta-texture.lo `test -f '$(srcdir)/cogl-meta-texture.c' || echo '$(srcdir)/'`$(srcdir)/cogl-meta-texture.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-meta-texture.Tpo $(DEPDIR)/cogl-meta-texture.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-meta-texture.c' object='cogl-meta-texture.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-meta-texture.lo `test -f '$(srcdir)/cogl-meta-texture.c' || echo '$(srcdir)/'`$(srcdir)/cogl-meta-texture.c
+
 cogl-blit.lo: $(srcdir)/cogl-blit.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-blit.lo -MD -MP -MF $(DEPDIR)/cogl-blit.Tpo -c -o cogl-blit.lo `test -f '$(srcdir)/cogl-blit.c' || echo '$(srcdir)/'`$(srcdir)/cogl-blit.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-blit.Tpo $(DEPDIR)/cogl-blit.Plo
@@ -1740,6 +1959,14 @@ cogl-framebuffer.lo: $(srcdir)/cogl-framebuffer.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-framebuffer.c' object='cogl-framebuffer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-framebuffer.lo `test -f '$(srcdir)/cogl-framebuffer.c' || echo '$(srcdir)/'`$(srcdir)/cogl-framebuffer.c
+
+cogl-onscreen.lo: $(srcdir)/cogl-onscreen.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-onscreen.lo -MD -MP -MF $(DEPDIR)/cogl-onscreen.Tpo -c -o cogl-onscreen.lo `test -f '$(srcdir)/cogl-onscreen.c' || echo '$(srcdir)/'`$(srcdir)/cogl-onscreen.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-onscreen.Tpo $(DEPDIR)/cogl-onscreen.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-onscreen.c' object='cogl-onscreen.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-onscreen.lo `test -f '$(srcdir)/cogl-onscreen.c' || echo '$(srcdir)/'`$(srcdir)/cogl-onscreen.c
 
 cogl-profile.lo: $(srcdir)/cogl-profile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-profile.lo -MD -MP -MF $(DEPDIR)/cogl-profile.Tpo -c -o cogl-profile.lo `test -f '$(srcdir)/cogl-profile.c' || echo '$(srcdir)/'`$(srcdir)/cogl-profile.c
@@ -1797,6 +2024,38 @@ cogl-config.lo: $(srcdir)/cogl-config.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-config.lo `test -f '$(srcdir)/cogl-config.c' || echo '$(srcdir)/'`$(srcdir)/cogl-config.c
 
+cogl-boxed-value.lo: $(srcdir)/cogl-boxed-value.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-boxed-value.lo -MD -MP -MF $(DEPDIR)/cogl-boxed-value.Tpo -c -o cogl-boxed-value.lo `test -f '$(srcdir)/cogl-boxed-value.c' || echo '$(srcdir)/'`$(srcdir)/cogl-boxed-value.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-boxed-value.Tpo $(DEPDIR)/cogl-boxed-value.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-boxed-value.c' object='cogl-boxed-value.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-boxed-value.lo `test -f '$(srcdir)/cogl-boxed-value.c' || echo '$(srcdir)/'`$(srcdir)/cogl-boxed-value.c
+
+cogl-snippet.lo: $(srcdir)/cogl-snippet.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-snippet.lo -MD -MP -MF $(DEPDIR)/cogl-snippet.Tpo -c -o cogl-snippet.lo `test -f '$(srcdir)/cogl-snippet.c' || echo '$(srcdir)/'`$(srcdir)/cogl-snippet.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-snippet.Tpo $(DEPDIR)/cogl-snippet.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-snippet.c' object='cogl-snippet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-snippet.lo `test -f '$(srcdir)/cogl-snippet.c' || echo '$(srcdir)/'`$(srcdir)/cogl-snippet.c
+
+cogl-poll.lo: $(srcdir)/cogl-poll.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-poll.lo -MD -MP -MF $(DEPDIR)/cogl-poll.Tpo -c -o cogl-poll.lo `test -f '$(srcdir)/cogl-poll.c' || echo '$(srcdir)/'`$(srcdir)/cogl-poll.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-poll.Tpo $(DEPDIR)/cogl-poll.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-poll.c' object='cogl-poll.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-poll.lo `test -f '$(srcdir)/cogl-poll.c' || echo '$(srcdir)/'`$(srcdir)/cogl-poll.c
+
+cogl-glib-source.lo: $(srcdir)/cogl-glib-source.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-glib-source.lo -MD -MP -MF $(DEPDIR)/cogl-glib-source.Tpo -c -o cogl-glib-source.lo `test -f '$(srcdir)/cogl-glib-source.c' || echo '$(srcdir)/'`$(srcdir)/cogl-glib-source.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-glib-source.Tpo $(DEPDIR)/cogl-glib-source.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/cogl-glib-source.c' object='cogl-glib-source.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-glib-source.lo `test -f '$(srcdir)/cogl-glib-source.c' || echo '$(srcdir)/'`$(srcdir)/cogl-glib-source.c
+
 cogl-xlib-renderer.lo: $(srcdir)/cogl-xlib-renderer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-xlib-renderer.lo -MD -MP -MF $(DEPDIR)/cogl-xlib-renderer.Tpo -c -o cogl-xlib-renderer.lo `test -f '$(srcdir)/cogl-xlib-renderer.c' || echo '$(srcdir)/'`$(srcdir)/cogl-xlib-renderer.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-xlib-renderer.Tpo $(DEPDIR)/cogl-xlib-renderer.Plo
@@ -1845,6 +2104,54 @@ cogl-winsys-wgl.lo: $(srcdir)/winsys/cogl-winsys-wgl.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-wgl.lo `test -f '$(srcdir)/winsys/cogl-winsys-wgl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-wgl.c
 
+cogl-winsys-egl-wayland.lo: $(srcdir)/winsys/cogl-winsys-egl-wayland.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-wayland.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-wayland.Tpo -c -o cogl-winsys-egl-wayland.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-wayland.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-wayland.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-wayland.Tpo $(DEPDIR)/cogl-winsys-egl-wayland.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-wayland.c' object='cogl-winsys-egl-wayland.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-wayland.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-wayland.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-wayland.c
+
+cogl-winsys-egl-kms.lo: $(srcdir)/winsys/cogl-winsys-egl-kms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-kms.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-kms.Tpo -c -o cogl-winsys-egl-kms.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-kms.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-kms.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-kms.Tpo $(DEPDIR)/cogl-winsys-egl-kms.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-kms.c' object='cogl-winsys-egl-kms.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-kms.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-kms.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-kms.c
+
+cogl-winsys-egl-x11.lo: $(srcdir)/winsys/cogl-winsys-egl-x11.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-x11.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-x11.Tpo -c -o cogl-winsys-egl-x11.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-x11.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-x11.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-x11.Tpo $(DEPDIR)/cogl-winsys-egl-x11.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-x11.c' object='cogl-winsys-egl-x11.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-x11.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-x11.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-x11.c
+
+cogl-winsys-egl-null.lo: $(srcdir)/winsys/cogl-winsys-egl-null.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-null.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-null.Tpo -c -o cogl-winsys-egl-null.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-null.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-null.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-null.Tpo $(DEPDIR)/cogl-winsys-egl-null.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-null.c' object='cogl-winsys-egl-null.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-null.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-null.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-null.c
+
+cogl-winsys-egl-gdl.lo: $(srcdir)/winsys/cogl-winsys-egl-gdl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-gdl.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-gdl.Tpo -c -o cogl-winsys-egl-gdl.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-gdl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-gdl.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-gdl.Tpo $(DEPDIR)/cogl-winsys-egl-gdl.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-gdl.c' object='cogl-winsys-egl-gdl.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-gdl.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-gdl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-gdl.c
+
+cogl-winsys-egl-android.lo: $(srcdir)/winsys/cogl-winsys-egl-android.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl-android.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl-android.Tpo -c -o cogl-winsys-egl-android.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-android.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-android.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl-android.Tpo $(DEPDIR)/cogl-winsys-egl-android.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl-android.c' object='cogl-winsys-egl-android.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl-android.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl-android.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl-android.c
+
 cogl-winsys-egl.lo: $(srcdir)/winsys/cogl-winsys-egl.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-egl.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-egl.Tpo -c -o cogl-winsys-egl.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-egl.Tpo $(DEPDIR)/cogl-winsys-egl.Plo
@@ -1852,6 +2159,14 @@ cogl-winsys-egl.lo: $(srcdir)/winsys/cogl-winsys-egl.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-egl.c' object='cogl-winsys-egl.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-egl.lo `test -f '$(srcdir)/winsys/cogl-winsys-egl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-egl.c
+
+cogl-winsys-sdl.lo: $(srcdir)/winsys/cogl-winsys-sdl.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cogl-winsys-sdl.lo -MD -MP -MF $(DEPDIR)/cogl-winsys-sdl.Tpo -c -o cogl-winsys-sdl.lo `test -f '$(srcdir)/winsys/cogl-winsys-sdl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-sdl.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl-winsys-sdl.Tpo $(DEPDIR)/cogl-winsys-sdl.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(srcdir)/winsys/cogl-winsys-sdl.c' object='cogl-winsys-sdl.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cogl-winsys-sdl.lo `test -f '$(srcdir)/winsys/cogl-winsys-sdl.c' || echo '$(srcdir)/'`$(srcdir)/winsys/cogl-winsys-sdl.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -2152,6 +2467,9 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
+	$(MAKE) $(AM_MAKEFLAGS) \
+	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
+	  dist-hook
 check-am: all-am
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-recursive
@@ -2272,7 +2590,7 @@ uninstall-am: uninstall-coglincludeHEADERS uninstall-girDATA \
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
-	ctags ctags-recursive distclean distclean-compile \
+	ctags ctags-recursive dist-hook distclean distclean-compile \
 	distclean-generic distclean-libtool distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-coglincludeHEADERS install-data install-data-am \
@@ -2320,6 +2638,82 @@ $(glib_enum_c): $(glib_enum_headers) $(glib_enum_h) $(enum_tmpl_c)
 	$(glib_enum_headers) > xgen-ec \
 	&& cp -f xgen-ec $(glib_enum_c) \
 	&& rm -f xgen-ec
+
+dist-hook: ../build/win32/vs9/cogl.vcproj ../build/win32/vs10/cogl.vcxproj ../build/win32/vs10/cogl.vcxproj.filters ../build/win32/gen-enums.bat
+
+# I know those filters below don't look nice, but this is to ensure the right files are in the Project files only *once*
+../build/win32/vs9/cogl.vcproj: $(top_srcdir)/build/win32/vs9/cogl.vcprojin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
+		*.c)	echo '   <File RelativePath="..\..\..\cogl\'$$F'" />' \
+			;; \
+		esac; \
+	done >cogl.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl.vcprojin >$@
+	rm cogl.sourcefiles
+
+../build/win32/vs10/cogl.vcxproj: $(top_srcdir)/build/win32/vs10/cogl.vcxprojin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'" />' \
+			;; \
+		esac; \
+	done >cogl.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxprojin >$@
+	rm cogl.vs10.sourcefiles
+
+../build/win32/vs10/cogl.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin
+	for F in `echo $(cogl_sources_c) $(BUILT_SOURCES) | tr '/' '\\'`; do \
+		case $$F in \
+		*-egl.c|*-egl-*.c|*-glx.c|*-xlib*.c|*-x11.c|*.wgl.c|*-gl.c|*-gles.c|*-kms.c|*-sdl.c|*.h) ;; \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >cogl.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl.vcxproj.filtersin >$@
+	rm cogl.vs10.sourcefiles.filters
+
+cogl.vsenums_h:
+	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ' >vsenums_h.temp1
+	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+		case $$F in \
+		*xlib*.h|*wayland*.h) ;; \
+		*.h) echo '../../cogl'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_h.temp1
+	cat vsenums_h.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_h.temp
+	cat vsenums_h.temp | tr -d '\n' >>$@
+	echo '> ..\..\cogl\cogl-enum-types.h' >>$@
+	rm vsenums_h.temp1
+	rm vsenums_h.temp
+
+cogl.vsenums_c:
+	echo 'perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ' >vsenums_c.temp1
+	for F in `echo $(cogl_1_public_h) $(srcdir)/cogl-win32-renderer.h`; do \
+		case $$F in \
+		*xlib*.h|*wayland*.h) ;; \
+		*.h) echo '../../cogl'$$F' '	\
+			;;	\
+		esac;	\
+	done >>vsenums_c.temp1
+	cat vsenums_c.temp1 | sed 's_/cogl./_/cogl/_' >vsenums_c.temp
+	cat vsenums_c.temp | tr -d '\n' >>$@
+	echo '> ..\..\cogl\cogl-enum-types.c' >>$@
+	rm vsenums_c.temp1
+	rm vsenums_c.temp
+
+../build/win32/gen-enums.bat: cogl.vsenums_h cogl.vsenums_c
+	echo 'if exist ..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H' >$@
+	cat cogl.vsenums_h >>$@
+	echo ':DONE_COGL_ENUMS_H' >>$@
+	echo 'if exist ..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C' >>$@
+	cat cogl.vsenums_c >>$@
+	echo ':DONE_COGL_ENUMS_C' >>$@
+	rm cogl.vsenums_h
+	rm cogl.vsenums_c
 
 -include $(INTROSPECTION_MAKEFILE)
 

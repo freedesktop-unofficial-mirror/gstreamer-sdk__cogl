@@ -1,0 +1,6 @@
+if exist ..\..\cogl\cogl-enum-types.h goto DONE_COGL_ENUMS_H
+perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.h.in ../../cogl/cogl1-context.h ../../cogl/cogl-bitmap.h ../../cogl/cogl-color.h ../../cogl/cogl-fixed.h ../../cogl/cogl-material-compat.h ../../cogl/cogl-matrix.h ../../cogl/cogl-offscreen.h ../../cogl/cogl-primitives.h ../../cogl/cogl-path.h ../../cogl/cogl-path-functions.h ../../cogl/cogl-shader.h ../../cogl/cogl-texture.h ../../cogl/cogl-types.h ../../cogl/cogl-vertex-buffer.h ../../cogl/cogl-clutter.h ../../cogl/cogl.h ../../cogl/cogl-win32-renderer.h > ..\..\cogl\cogl-enum-types.h
+:DONE_COGL_ENUMS_H
+if exist ..\..\cogl\cogl-enum-types.c goto DONE_COGL_ENUMS_C
+perl %1\bin\glib-mkenums --template ../../cogl/cogl-enum-types.c.in ../../cogl/cogl1-context.h ../../cogl/cogl-bitmap.h ../../cogl/cogl-color.h ../../cogl/cogl-fixed.h ../../cogl/cogl-material-compat.h ../../cogl/cogl-matrix.h ../../cogl/cogl-offscreen.h ../../cogl/cogl-primitives.h ../../cogl/cogl-path.h ../../cogl/cogl-path-functions.h ../../cogl/cogl-shader.h ../../cogl/cogl-texture.h ../../cogl/cogl-types.h ../../cogl/cogl-vertex-buffer.h ../../cogl/cogl-clutter.h ../../cogl/cogl.h ../../cogl/cogl-win32-renderer.h > ..\..\cogl\cogl-enum-types.c
+:DONE_COGL_ENUMS_C

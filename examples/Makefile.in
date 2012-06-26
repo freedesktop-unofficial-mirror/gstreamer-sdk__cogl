@@ -17,6 +17,7 @@
 
 # custom rules for quiet builds
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -38,11 +39,15 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/build/autotools/Makefile.am.silent
-noinst_PROGRAMS = hello$(EXEEXT) $(am__EXEEXT_1) $(am__EXEEXT_2) \
-	$(am__EXEEXT_3)
-@BUILD_COGL_PANGO_TRUE@am__append_1 = crate
-@X11_TESTS_TRUE@am__append_2 = x11-foreign x11-tfp
-@SUPPORT_WAYLAND_EGL_SERVER_TRUE@am__append_3 = cogland
+@INSTALL_EXAMPLES_TRUE@am__append_1 = -DCOGL_EXAMPLES_DATA=\""$(pkgdatadir)/examples-data/"\"
+@INSTALL_EXAMPLES_FALSE@am__append_2 = -DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
+@BUILD_COGL_PANGO_TRUE@am__append_3 = cogl-crate
+@BUILD_COGL_PANGO_TRUE@am__append_4 = crate.jpg
+@X11_TESTS_TRUE@am__append_5 = cogl-x11-foreign cogl-x11-tfp
+@SUPPORT_WAYLAND_EGL_SERVER_TRUE@am__append_6 = cogland
+@SUPPORT_SDL_TRUE@am__append_7 = cogl-sdl-hello
+@INSTALL_EXAMPLES_TRUE@bin_PROGRAMS = $(am__EXEEXT_5)
+@INSTALL_EXAMPLES_FALSE@noinst_PROGRAMS = $(am__EXEEXT_5)
 subdir = examples
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps =  \
@@ -71,42 +76,63 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-@BUILD_COGL_PANGO_TRUE@am__EXEEXT_1 = crate$(EXEEXT)
-@X11_TESTS_TRUE@am__EXEEXT_2 = x11-foreign$(EXEEXT) x11-tfp$(EXEEXT)
+@BUILD_COGL_PANGO_TRUE@am__EXEEXT_1 = cogl-crate$(EXEEXT)
+@X11_TESTS_TRUE@am__EXEEXT_2 = cogl-x11-foreign$(EXEEXT) \
+@X11_TESTS_TRUE@	cogl-x11-tfp$(EXEEXT)
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@am__EXEEXT_3 = cogland$(EXEEXT)
-PROGRAMS = $(noinst_PROGRAMS)
+@SUPPORT_SDL_TRUE@am__EXEEXT_4 = cogl-sdl-hello$(EXEEXT)
+am__EXEEXT_5 = cogl-hello$(EXEEXT) cogl-info$(EXEEXT) \
+	cogl-msaa$(EXEEXT) $(am__EXEEXT_1) $(am__EXEEXT_2) \
+	$(am__EXEEXT_3) $(am__EXEEXT_4)
+am__installdirs = "$(DESTDIR)$(bindir)" \
+	"$(DESTDIR)$(examples_datadir)"
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
+am__cogl_crate_SOURCES_DIST = cogl-crate.c
+@BUILD_COGL_PANGO_TRUE@am_cogl_crate_OBJECTS =  \
+@BUILD_COGL_PANGO_TRUE@	cogl_crate-cogl-crate.$(OBJEXT)
+cogl_crate_OBJECTS = $(am_cogl_crate_OBJECTS)
+am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
+	$(top_builddir)/cogl/libcogl.la
+@BUILD_COGL_PANGO_TRUE@cogl_crate_DEPENDENCIES =  \
+@BUILD_COGL_PANGO_TRUE@	$(am__DEPENDENCIES_2) \
+@BUILD_COGL_PANGO_TRUE@	$(am__DEPENDENCIES_1) \
+@BUILD_COGL_PANGO_TRUE@	$(top_builddir)/cogl-pango/libcogl-pango.la
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+cogl_crate_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cogl_crate_CFLAGS) \
+	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+am_cogl_hello_OBJECTS = cogl-hello.$(OBJEXT)
+cogl_hello_OBJECTS = $(am_cogl_hello_OBJECTS)
+cogl_hello_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_cogl_info_OBJECTS = cogl-info.$(OBJEXT)
+cogl_info_OBJECTS = $(am_cogl_info_OBJECTS)
+cogl_info_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_cogl_msaa_OBJECTS = cogl-msaa.$(OBJEXT)
+cogl_msaa_OBJECTS = $(am_cogl_msaa_OBJECTS)
+cogl_msaa_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am__cogl_sdl_hello_SOURCES_DIST = cogl-sdl-hello.c
+@SUPPORT_SDL_TRUE@am_cogl_sdl_hello_OBJECTS =  \
+@SUPPORT_SDL_TRUE@	cogl-sdl-hello.$(OBJEXT)
+cogl_sdl_hello_OBJECTS = $(am_cogl_sdl_hello_OBJECTS)
+@SUPPORT_SDL_TRUE@cogl_sdl_hello_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am__cogl_x11_foreign_SOURCES_DIST = cogl-x11-foreign.c
+@X11_TESTS_TRUE@am_cogl_x11_foreign_OBJECTS =  \
+@X11_TESTS_TRUE@	cogl-x11-foreign.$(OBJEXT)
+cogl_x11_foreign_OBJECTS = $(am_cogl_x11_foreign_OBJECTS)
+@X11_TESTS_TRUE@cogl_x11_foreign_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am__cogl_x11_tfp_SOURCES_DIST = cogl-x11-tfp.c
+@X11_TESTS_TRUE@am_cogl_x11_tfp_OBJECTS = cogl-x11-tfp.$(OBJEXT)
+cogl_x11_tfp_OBJECTS = $(am_cogl_x11_tfp_OBJECTS)
+@X11_TESTS_TRUE@cogl_x11_tfp_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am__cogland_SOURCES_DIST = cogland.c
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@am_cogland_OBJECTS =  \
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@	cogland.$(OBJEXT)
 cogland_OBJECTS = $(am_cogland_OBJECTS)
-am__DEPENDENCIES_1 =
-am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/cogl/libcogl.la
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@cogland_DEPENDENCIES =  \
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@	$(am__DEPENDENCIES_2)
-AM_V_lt = $(am__v_lt_$(V))
-am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
-am__v_lt_0 = --silent
-am__crate_SOURCES_DIST = crate.c
-@BUILD_COGL_PANGO_TRUE@am_crate_OBJECTS = crate-crate.$(OBJEXT)
-crate_OBJECTS = $(am_crate_OBJECTS)
-@BUILD_COGL_PANGO_TRUE@crate_DEPENDENCIES = $(am__DEPENDENCIES_2) \
-@BUILD_COGL_PANGO_TRUE@	$(am__DEPENDENCIES_1) \
-@BUILD_COGL_PANGO_TRUE@	$(top_builddir)/cogl-pango/libcogl-pango.la
-crate_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(crate_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-am_hello_OBJECTS = hello.$(OBJEXT)
-hello_OBJECTS = $(am_hello_OBJECTS)
-hello_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am__x11_foreign_SOURCES_DIST = x11-foreign.c
-@X11_TESTS_TRUE@am_x11_foreign_OBJECTS = x11-foreign.$(OBJEXT)
-x11_foreign_OBJECTS = $(am_x11_foreign_OBJECTS)
-@X11_TESTS_TRUE@x11_foreign_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am__x11_tfp_SOURCES_DIST = x11-tfp.c
-@X11_TESTS_TRUE@am_x11_tfp_OBJECTS = x11-tfp.$(OBJEXT)
-x11_tfp_OBJECTS = $(am_x11_tfp_OBJECTS)
-@X11_TESTS_TRUE@x11_tfp_DEPENDENCIES = $(am__DEPENDENCIES_2)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/build/depcomp
 am__depfiles_maybe = depfiles
@@ -133,11 +159,37 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(cogland_SOURCES) $(crate_SOURCES) $(hello_SOURCES) \
-	$(x11_foreign_SOURCES) $(x11_tfp_SOURCES)
-DIST_SOURCES = $(am__cogland_SOURCES_DIST) $(am__crate_SOURCES_DIST) \
-	$(hello_SOURCES) $(am__x11_foreign_SOURCES_DIST) \
-	$(am__x11_tfp_SOURCES_DIST)
+SOURCES = $(cogl_crate_SOURCES) $(cogl_hello_SOURCES) \
+	$(cogl_info_SOURCES) $(cogl_msaa_SOURCES) \
+	$(cogl_sdl_hello_SOURCES) $(cogl_x11_foreign_SOURCES) \
+	$(cogl_x11_tfp_SOURCES) $(cogland_SOURCES)
+DIST_SOURCES = $(am__cogl_crate_SOURCES_DIST) $(cogl_hello_SOURCES) \
+	$(cogl_info_SOURCES) $(cogl_msaa_SOURCES) \
+	$(am__cogl_sdl_hello_SOURCES_DIST) \
+	$(am__cogl_x11_foreign_SOURCES_DIST) \
+	$(am__cogl_x11_tfp_SOURCES_DIST) $(am__cogland_SOURCES_DIST)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+DATA = $(examples_data_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -206,6 +258,7 @@ GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GI_REQ_VERSION = @GI_REQ_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -215,9 +268,14 @@ GMSGFMT_015 = @GMSGFMT_015@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GTK_DOC_REQ_VERSION = @GTK_DOC_REQ_VERSION@
+HAVE_GL = @HAVE_GL@
+HAVE_GLES1 = @HAVE_GLES1@
+HAVE_GLES2 = @HAVE_GLES2@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -352,35 +410,36 @@ QUIET_COMP = $(QUIET_COMP_$(V))
 QUIET_COMP_ = $(QUIET_COMP_$(AM_DEFAULT_VERBOSITY))
 QUIET_COMP_0 = @echo '  GICOMP '$@;
 INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_srcdir)/clutter/cogl \
-	-I$(top_builddir)/clutter/cogl
+	-I$(top_srcdir)
 
-AM_CFLAGS = \
-	$(COGL_DEP_CFLAGS) \
-	$(COGL_EXTRA_CFLAGS) \
-	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API \
-	-DCOGL_EXAMPLES_DATA=\""$(abs_top_srcdir)/examples/"\"
-
-AM_CPPFLAGS = \
-	-DG_DISABLE_SINGLE_INCLUDES \
-	-DCOGL_DISABLE_DEPRECATED
-
+AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) \
+	-DCOGL_ENABLE_EXPERIMENTAL_2_0_API $(am__append_1) \
+	$(am__append_2)
 common_ldadd = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la
 
-hello_SOURCES = hello.c
-hello_LDADD = $(common_ldadd)
-@BUILD_COGL_PANGO_TRUE@crate_SOURCES = crate.c
-@BUILD_COGL_PANGO_TRUE@crate_LDADD = $(common_ldadd) $(COGL_PANGO_DEP_LIBS) $(top_builddir)/cogl-pango/libcogl-pango.la
-@BUILD_COGL_PANGO_TRUE@crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
-@X11_TESTS_TRUE@x11_foreign_SOURCES = x11-foreign.c
-@X11_TESTS_TRUE@x11_foreign_LDADD = $(common_ldadd)
-@X11_TESTS_TRUE@x11_tfp_SOURCES = x11-tfp.c
-@X11_TESTS_TRUE@x11_tfp_LDADD = $(common_ldadd)
+programs = cogl-hello cogl-info cogl-msaa $(am__append_3) \
+	$(am__append_5) $(am__append_6) $(am__append_7)
+examples_datadir = $(pkgdatadir)/examples-data
+examples_data_DATA = $(am__append_4)
+cogl_hello_SOURCES = cogl-hello.c
+cogl_hello_LDADD = $(common_ldadd)
+cogl_info_SOURCES = cogl-info.c
+cogl_info_LDADD = $(common_ldadd)
+cogl_msaa_SOURCES = cogl-msaa.c
+cogl_msaa_LDADD = $(common_ldadd)
+@BUILD_COGL_PANGO_TRUE@cogl_crate_SOURCES = cogl-crate.c
+@BUILD_COGL_PANGO_TRUE@cogl_crate_LDADD = $(common_ldadd) $(COGL_PANGO_DEP_LIBS) $(top_builddir)/cogl-pango/libcogl-pango.la
+@BUILD_COGL_PANGO_TRUE@cogl_crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
+@X11_TESTS_TRUE@cogl_x11_foreign_SOURCES = cogl-x11-foreign.c
+@X11_TESTS_TRUE@cogl_x11_foreign_LDADD = $(common_ldadd)
+@X11_TESTS_TRUE@cogl_x11_tfp_SOURCES = cogl-x11-tfp.c
+@X11_TESTS_TRUE@cogl_x11_tfp_LDADD = $(common_ldadd)
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@cogland_SOURCES = cogland.c
 @SUPPORT_WAYLAND_EGL_SERVER_TRUE@cogland_LDADD = $(common_ldadd)
+@SUPPORT_SDL_TRUE@cogl_sdl_hello_SOURCES = cogl-sdl-hello.c
+@SUPPORT_SDL_TRUE@cogl_sdl_hello_LDADD = $(common_ldadd)
 EXTRA_DIST = \
 	crate.jpg \
 	android/hello/AndroidManifest.xml \
@@ -425,6 +484,49 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	for p in $$list; do echo "$$p $$p"; done | \
+	sed 's/$(EXEEXT)$$//' | \
+	while read p p1; do if test -f $$p || test -f $$p1; \
+	  then echo "$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
+	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
+	sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
+	    else { print "f", $$3 "/" $$4, $$1; } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	    test -z "$$files" || { \
+	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	    } \
+	; done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
+	      -e 's/$$/$(EXEEXT)/' `; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindir)" && rm -f $$files
+
+clean-binPROGRAMS:
+	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
 
 clean-noinstPROGRAMS:
 	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
@@ -434,21 +536,30 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+cogl-crate$(EXEEXT): $(cogl_crate_OBJECTS) $(cogl_crate_DEPENDENCIES) 
+	@rm -f cogl-crate$(EXEEXT)
+	$(AM_V_CCLD)$(cogl_crate_LINK) $(cogl_crate_OBJECTS) $(cogl_crate_LDADD) $(LIBS)
+cogl-hello$(EXEEXT): $(cogl_hello_OBJECTS) $(cogl_hello_DEPENDENCIES) 
+	@rm -f cogl-hello$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_hello_OBJECTS) $(cogl_hello_LDADD) $(LIBS)
+cogl-info$(EXEEXT): $(cogl_info_OBJECTS) $(cogl_info_DEPENDENCIES) 
+	@rm -f cogl-info$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_info_OBJECTS) $(cogl_info_LDADD) $(LIBS)
+cogl-msaa$(EXEEXT): $(cogl_msaa_OBJECTS) $(cogl_msaa_DEPENDENCIES) 
+	@rm -f cogl-msaa$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_msaa_OBJECTS) $(cogl_msaa_LDADD) $(LIBS)
+cogl-sdl-hello$(EXEEXT): $(cogl_sdl_hello_OBJECTS) $(cogl_sdl_hello_DEPENDENCIES) 
+	@rm -f cogl-sdl-hello$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_sdl_hello_OBJECTS) $(cogl_sdl_hello_LDADD) $(LIBS)
+cogl-x11-foreign$(EXEEXT): $(cogl_x11_foreign_OBJECTS) $(cogl_x11_foreign_DEPENDENCIES) 
+	@rm -f cogl-x11-foreign$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_x11_foreign_OBJECTS) $(cogl_x11_foreign_LDADD) $(LIBS)
+cogl-x11-tfp$(EXEEXT): $(cogl_x11_tfp_OBJECTS) $(cogl_x11_tfp_DEPENDENCIES) 
+	@rm -f cogl-x11-tfp$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(cogl_x11_tfp_OBJECTS) $(cogl_x11_tfp_LDADD) $(LIBS)
 cogland$(EXEEXT): $(cogland_OBJECTS) $(cogland_DEPENDENCIES) 
 	@rm -f cogland$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(cogland_OBJECTS) $(cogland_LDADD) $(LIBS)
-crate$(EXEEXT): $(crate_OBJECTS) $(crate_DEPENDENCIES) 
-	@rm -f crate$(EXEEXT)
-	$(AM_V_CCLD)$(crate_LINK) $(crate_OBJECTS) $(crate_LDADD) $(LIBS)
-hello$(EXEEXT): $(hello_OBJECTS) $(hello_DEPENDENCIES) 
-	@rm -f hello$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(hello_OBJECTS) $(hello_LDADD) $(LIBS)
-x11-foreign$(EXEEXT): $(x11_foreign_OBJECTS) $(x11_foreign_DEPENDENCIES) 
-	@rm -f x11-foreign$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(x11_foreign_OBJECTS) $(x11_foreign_LDADD) $(LIBS)
-x11-tfp$(EXEEXT): $(x11_tfp_OBJECTS) $(x11_tfp_DEPENDENCIES) 
-	@rm -f x11-tfp$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(x11_tfp_OBJECTS) $(x11_tfp_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -456,11 +567,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-hello.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-info.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-msaa.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-sdl-hello.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-x11-foreign.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl-x11-tfp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogl_crate-cogl-crate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cogland.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crate-crate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hello.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/x11-foreign.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/x11-tfp.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -486,27 +600,47 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-crate-crate.o: crate.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(crate_CFLAGS) $(CFLAGS) -MT crate-crate.o -MD -MP -MF $(DEPDIR)/crate-crate.Tpo -c -o crate-crate.o `test -f 'crate.c' || echo '$(srcdir)/'`crate.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/crate-crate.Tpo $(DEPDIR)/crate-crate.Po
+cogl_crate-cogl-crate.o: cogl-crate.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cogl_crate_CFLAGS) $(CFLAGS) -MT cogl_crate-cogl-crate.o -MD -MP -MF $(DEPDIR)/cogl_crate-cogl-crate.Tpo -c -o cogl_crate-cogl-crate.o `test -f 'cogl-crate.c' || echo '$(srcdir)/'`cogl-crate.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl_crate-cogl-crate.Tpo $(DEPDIR)/cogl_crate-cogl-crate.Po
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='crate.c' object='crate-crate.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cogl-crate.c' object='cogl_crate-cogl-crate.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(crate_CFLAGS) $(CFLAGS) -c -o crate-crate.o `test -f 'crate.c' || echo '$(srcdir)/'`crate.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cogl_crate_CFLAGS) $(CFLAGS) -c -o cogl_crate-cogl-crate.o `test -f 'cogl-crate.c' || echo '$(srcdir)/'`cogl-crate.c
 
-crate-crate.obj: crate.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(crate_CFLAGS) $(CFLAGS) -MT crate-crate.obj -MD -MP -MF $(DEPDIR)/crate-crate.Tpo -c -o crate-crate.obj `if test -f 'crate.c'; then $(CYGPATH_W) 'crate.c'; else $(CYGPATH_W) '$(srcdir)/crate.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/crate-crate.Tpo $(DEPDIR)/crate-crate.Po
+cogl_crate-cogl-crate.obj: cogl-crate.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cogl_crate_CFLAGS) $(CFLAGS) -MT cogl_crate-cogl-crate.obj -MD -MP -MF $(DEPDIR)/cogl_crate-cogl-crate.Tpo -c -o cogl_crate-cogl-crate.obj `if test -f 'cogl-crate.c'; then $(CYGPATH_W) 'cogl-crate.c'; else $(CYGPATH_W) '$(srcdir)/cogl-crate.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cogl_crate-cogl-crate.Tpo $(DEPDIR)/cogl_crate-cogl-crate.Po
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='crate.c' object='crate-crate.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cogl-crate.c' object='cogl_crate-cogl-crate.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(crate_CFLAGS) $(CFLAGS) -c -o crate-crate.obj `if test -f 'crate.c'; then $(CYGPATH_W) 'crate.c'; else $(CYGPATH_W) '$(srcdir)/crate.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cogl_crate_CFLAGS) $(CFLAGS) -c -o cogl_crate-cogl-crate.obj `if test -f 'cogl-crate.c'; then $(CYGPATH_W) 'cogl-crate.c'; else $(CYGPATH_W) '$(srcdir)/cogl-crate.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-examples_dataDATA: $(examples_data_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(examples_datadir)" || $(MKDIR_P) "$(DESTDIR)$(examples_datadir)"
+	@list='$(examples_data_DATA)'; test -n "$(examples_datadir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(examples_datadir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(examples_datadir)" || exit $$?; \
+	done
+
+uninstall-examples_dataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(examples_data_DATA)'; test -n "$(examples_datadir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(examples_datadir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(examples_datadir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -592,8 +726,11 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs:
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(examples_datadir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -621,8 +758,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
-	mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool \
+	clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -642,13 +779,13 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-examples_dataDATA
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-binPROGRAMS
 
 install-html: install-html-am
 
@@ -688,22 +825,24 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-binPROGRAMS uninstall-examples_dataDATA
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-noinstPROGRAMS ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
+	clean-generic clean-libtool clean-noinstPROGRAMS ctags \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-binPROGRAMS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-examples_dataDATA install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-binPROGRAMS uninstall-examples_dataDATA
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

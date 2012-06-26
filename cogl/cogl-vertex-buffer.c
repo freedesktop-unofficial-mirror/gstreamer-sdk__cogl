@@ -96,7 +96,6 @@
 #include <string.h>
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
@@ -108,6 +107,7 @@
 #include "cogl-primitives.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
+#include "cogl1-context.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -144,7 +144,7 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
   if (!cogl_is_vertex_buffer (handle))
     return 0;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   return buffer->n_vertices;
 }
@@ -451,7 +451,7 @@ cogl_vertex_buffer_add (CoglHandle         handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   cogl_attribute_name = canonize_attribute_name (attribute_name);
@@ -577,7 +577,7 @@ cogl_vertex_buffer_delete (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   /* The submit function works by diffing between submitted_attributes
@@ -618,7 +618,7 @@ set_attribute_enable (CoglHandle handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
   buffer->dirty_attributes = TRUE;
 
   /* NB: If a buffer is currently being edited, then there can be two seperate
@@ -1133,8 +1133,10 @@ cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
 
   if (!found_target_vbo)
     {
+      _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
       new_cogl_vbo->attribute_buffer =
-        cogl_attribute_buffer_new (new_cogl_vbo->buffer_bytes, NULL);
+        cogl_attribute_buffer_new (ctx, new_cogl_vbo->buffer_bytes, NULL);
 
       upload_attributes (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
@@ -1163,7 +1165,7 @@ update_primitive_attributes (CoglVertexBuffer *buffer)
         ;
     }
 
-  g_return_if_fail (n_attributes > 0);
+  _COGL_RETURN_IF_FAIL (n_attributes > 0);
 
   attributes = g_alloca (sizeof (CoglAttribute *) * n_attributes);
 
@@ -1467,7 +1469,7 @@ cogl_vertex_buffer_submit (CoglHandle handle)
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   cogl_vertex_buffer_submit_real (buffer);
 }
@@ -1590,9 +1592,9 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
   cogl_primitive_set_n_vertices (buffer->primitive, count);
 
   if (buffer_indices)
-    cogl_primitive_set_indices (buffer->primitive, buffer_indices->indices);
+    cogl_primitive_set_indices (buffer->primitive, buffer_indices->indices, count);
   else
-    cogl_primitive_set_indices (buffer->primitive, NULL);
+    cogl_primitive_set_indices (buffer->primitive, NULL, count);
 
   cogl_vertex_buffer_submit_real (buffer);
 
@@ -1618,9 +1620,18 @@ update_primitive_and_draw (CoglVertexBuffer *buffer,
                                    pipeline_priv);
     }
 
+  /* XXX: although this may seem redundant, we need to do this since
+   * CoglVertexBuffers can be used with legacy state and its the source stack
+   * which track whether legacy state is enabled.
+   *
+   * (We only have a CoglDrawFlag to disable legacy state not one
+   *  to enable it) */
   cogl_push_source (pipeline_priv->real_source);
 
-  cogl_primitive_draw (buffer->primitive);
+  _cogl_framebuffer_draw_primitive (cogl_get_draw_framebuffer (),
+                                    pipeline_priv->real_source,
+                                    buffer->primitive,
+                                    0 /* no draw flags */);
 
   cogl_pop_source ();
 }
@@ -1636,7 +1647,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   update_primitive_and_draw (buffer, mode, first, count, NULL);
 }
@@ -1656,8 +1667,11 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
                                 int              indices_len)
 {
-  CoglIndices *indices =
-    cogl_indices_new (indices_type, indices_array, indices_len);
+  CoglIndices *indices;
+
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+
+  indices = cogl_indices_new (ctx, indices_type, indices_array, indices_len);
   return _cogl_vertex_buffer_indices_new_real (indices);
 }
 
@@ -1669,8 +1683,7 @@ cogl_vertex_buffer_indices_get_type (CoglHandle indices_handle)
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return COGL_INDICES_TYPE_UNSIGNED_SHORT;
 
-  buffer_indices =
-    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices = indices_handle;
 
   return cogl_indices_get_type (buffer_indices->indices);
 }
@@ -1697,13 +1710,12 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
   if (!cogl_is_vertex_buffer (handle))
     return;
 
-  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+  buffer = handle;
 
   if (!cogl_is_vertex_buffer_indices (indices_handle))
     return;
 
-  buffer_indices =
-    _cogl_vertex_buffer_indices_pointer_from_handle (indices_handle);
+  buffer_indices = indices_handle;
 
   update_primitive_and_draw (buffer, mode, indices_offset, count,
                              buffer_indices);
@@ -1738,7 +1750,7 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
       if (ctx->quad_buffer_indices_byte == COGL_INVALID_HANDLE)
         {
           /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
-          CoglIndices *indices = cogl_get_rectangle_indices (256 / 4);
+          CoglIndices *indices = cogl_get_rectangle_indices (ctx, 256 / 4);
           cogl_object_ref (indices);
           ctx->quad_buffer_indices_byte =
             _cogl_vertex_buffer_indices_new_real (indices);
@@ -1758,7 +1770,8 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
       if (ctx->quad_buffer_indices == COGL_INVALID_HANDLE)
         {
           /* NB: cogl_get_quad_indices takes n_quads not n_indices... */
-          CoglIndices *indices = cogl_get_rectangle_indices (n_indices / 6);
+          CoglIndices *indices =
+            cogl_get_rectangle_indices (ctx, n_indices / 6);
           cogl_object_ref (indices);
           ctx->quad_buffer_indices =
             _cogl_vertex_buffer_indices_new_real (indices);

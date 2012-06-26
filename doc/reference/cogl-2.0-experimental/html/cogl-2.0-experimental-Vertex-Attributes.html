@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-buffer-layout-apis.html" title="Describing the layout of GPU Memory">
 <link rel="prev" href="cogl-buffer-layout-apis.html" title="Describing the layout of GPU Memory">
 <link rel="next" href="cogl-2.0-experimental-Indices.html" title="Indices">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -45,6 +45,12 @@
                                                          <em class="parameter"><code><span class="type">int</span> components</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglAttributeType" title="enum CoglAttributeType"><span class="type">CoglAttributeType</span></a> type</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-is-attribute" title="cogl_is_attribute ()">cogl_is_attribute</a>                   (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-set-normalized" title="cogl_attribute_set_normalized ()">cogl_attribute_set_normalized</a>       (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> normalized</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-get-normalized" title="cogl_attribute_get_normalized ()">cogl_attribute_get_normalized</a>       (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>);
+<a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-get-buffer" title="cogl_attribute_get_buffer ()">cogl_attribute_get_buffer</a>         (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-set-buffer" title="cogl_attribute_set_buffer ()">cogl_attribute_set_buffer</a>           (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> *attribute_buffer</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -227,10 +233,114 @@ Gets whether the given object references a <span class="type">CoglAttribute</spa
 </tbody>
 </table></div>
 </div>
+<hr>
+<div class="refsect2">
+<a name="cogl-attribute-set-normalized"></a><h3>cogl_attribute_set_normalized ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_attribute_set_normalized       (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> normalized</code></em>);</pre>
+<p>
+Sets whether fixed point attribute types are mapped to the range
+0→1. For example when this property is TRUE and a
+<a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-ATTRIBUTE-TYPE-UNSIGNED-BYTE:CAPS"><code class="literal">COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE</code></a> type is used then the value 255
+will be mapped to 1.0.
+</p>
+<p>
+The default value of this property depends on the name of the
+attribute. For the builtin properties cogl_color_in and
+cogl_normal_in it will default to TRUE and for all other names it
+will default to FALSE.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td>A <span class="type">CoglAttribute</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>normalized</code></em> :</span></p></td>
+<td>The new value for the normalized property.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-attribute-get-normalized"></a><h3>cogl_attribute_get_normalized ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_attribute_get_normalized       (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td>A <span class="type">CoglAttribute</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the value of the normalized property set with
+<a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-set-normalized" title="cogl_attribute_set_normalized ()"><code class="function">cogl_attribute_set_normalized()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-attribute-get-buffer"></a><h3>cogl_attribute_get_buffer ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * cogl_attribute_get_buffer         (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td>A <span class="type">CoglAttribute</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> that was set with
+<a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-set-buffer" title="cogl_attribute_set_buffer ()"><code class="function">cogl_attribute_set_buffer()</code></a> or <a class="link" href="cogl-2.0-experimental-Vertex-Attributes.html#cogl-attribute-new" title="cogl_attribute_new ()"><code class="function">cogl_attribute_new()</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-attribute-set-buffer"></a><h3>cogl_attribute_set_buffer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_attribute_set_buffer           (<em class="parameter"><code><span class="type">CoglAttribute</span> *attribute</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> *attribute_buffer</code></em>);</pre>
+<p>
+Sets a new <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> for the attribute.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute</code></em> :</span></p></td>
+<td>A <span class="type">CoglAttribute</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>attribute_buffer</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

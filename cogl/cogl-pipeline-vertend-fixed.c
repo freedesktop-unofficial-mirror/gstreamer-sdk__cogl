@@ -29,12 +29,13 @@
 #include "config.h"
 #endif
 
+#include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-pipeline-state-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
 #ifdef COGL_PIPELINE_VERTEND_FIXED
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
@@ -45,7 +46,8 @@ const CoglPipelineVertend _cogl_pipeline_fixed_vertend;
 static gboolean
 _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long pipelines_difference)
+                                    unsigned long pipelines_difference,
+                                    int n_tex_coord_attribs)
 {
   CoglProgram *user_program;
 
@@ -55,6 +57,10 @@ _cogl_pipeline_vertend_fixed_start (CoglPipeline *pipeline,
     return FALSE;
 
   if (ctx->driver == COGL_DRIVER_GLES2)
+    return FALSE;
+
+  /* Vertex snippets are only supported in the GLSL fragend */
+  if (_cogl_pipeline_has_vertex_snippets (pipeline))
     return FALSE;
 
   /* If there is a user program with a vertex shader then the
@@ -79,6 +85,8 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
   CoglTextureUnit *unit = _cogl_get_texture_unit (unit_index);
 
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
   if (layers_difference & COGL_PIPELINE_LAYER_STATE_USER_MATRIX)
     {
       CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_USER_MATRIX;
@@ -90,7 +98,9 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
 
       _cogl_set_active_texture_unit (unit_index);
 
-      _cogl_matrix_stack_flush_to_gl (unit->matrix_stack, COGL_MATRIX_TEXTURE);
+      _cogl_matrix_stack_flush_to_gl_builtins (ctx, unit->matrix_stack,
+                                               COGL_MATRIX_TEXTURE,
+                                               FALSE /* enable flip */);
     }
 
   return TRUE;
@@ -107,11 +117,7 @@ _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
 
-      if (ctx->point_size_cache != authority->big_state->point_size)
-        {
-          GE( ctx, glPointSize (authority->big_state->point_size) );
-          ctx->point_size_cache = authority->big_state->point_size;
-        }
+      GE( ctx, glPointSize (authority->big_state->point_size) );
     }
 
   return TRUE;

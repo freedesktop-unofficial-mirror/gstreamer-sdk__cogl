@@ -25,6 +25,7 @@
 #define __COGL_SHADER_H
 
 #include "cogl-handle.h"
+#include "cogl-shader.h"
 
 typedef struct _CoglShader CoglShader;
 
@@ -43,8 +44,6 @@ struct _CoglShader
   CoglShaderLanguage language;
   char              *source;
 };
-
-CoglShader *_cogl_shader_pointer_from_handle (CoglHandle handle);
 
 void
 _cogl_shader_compile_real (CoglHandle handle, int n_tex_coord_attribs);

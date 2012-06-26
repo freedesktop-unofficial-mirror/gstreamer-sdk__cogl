@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
 <link rel="next" href="ch01.html" title="Cogl - a modern 3D graphics API">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <div><p class="copyright">Copyright © 2008 OpenedHand LTD</p></div>
 <div><p class="copyright">Copyright © 2009, 2010, 2011 Intel Corporation</p></div>
 <div><div class="legalnotice">
-<a name="id459941"></a><p>
+<a name="id316089"></a><p>
         Permission is granted to copy, distribute and/or modify this
         document under the terms of the <em class="citetitle">GNU Free
         Documentation License</em>, Version 1.1 or any later
@@ -52,6 +52,10 @@
 <dt>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-The-Top-Level-Context.html">The Top-Level Context</a></span><span class="refpurpose"> — The top level application context.</span>
 </dt>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-Main-loop-integeration.html">Main loop integeration</a></span><span class="refpurpose"> — Functions for integrating Cogl with an
+  application's main loop</span>
+</dt>
 <dt><span class="section"><a href="cogl-pipeline-apis.html">Setting Up A GPU Pipeline</a></span></dt>
 <dd><dl>
 <dt>
@@ -61,6 +65,9 @@ combining functions.</span>
 <dt>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-Pipeline.html">Pipeline</a></span><span class="refpurpose"> — Functions for creating and manipulating the GPU
                     pipeline</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-Shader-snippets.html">Shader snippets</a></span><span class="refpurpose"> — Functions for creating and manipulating shader snippets</span>
 </dt>
 </dl></dd>
 <dt><span class="section"><a href="cogl-buffer-apis.html">Allocating GPU Memory</a></span></dt>
@@ -96,12 +103,6 @@ indices.</span>
 <dt>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-Path-Primitives.html">Path Primitives</a></span><span class="refpurpose"> — Functions for constructing and drawing 2D paths.</span>
 </dt>
-</dl></dd>
-<dt><span class="section"><a href="cogl-drawing-apis.html">Drawing</a></span></dt>
-<dd><dl>
-<dt>
-<span class="refentrytitle"><a href="cogl-2.0-experimental-Draw-Vertex-Attributes.html">Draw Vertex Attributes</a></span><span class="refpurpose"></span>
-</dt>
 <dt>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-Rectangles.html">Rectangles</a></span><span class="refpurpose"></span>
 </dt>
@@ -112,12 +113,37 @@ indices.</span>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-The-Texture-Interface.html">The Texture Interface</a></span><span class="refpurpose"> — Fuctions for creating and manipulating textures</span>
 </dt>
 <dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-2D-textures.html">2D textures</a></span><span class="refpurpose"> — Functions for creating and manipulating 2D textures</span>
+</dt>
+<dt>
 <span class="refentrytitle"><a href="cogl-2.0-experimental-3D-textures.html">3D textures</a></span><span class="refpurpose"> — Fuctions for creating and manipulating 3D textures</span>
 </dt>
-</dl></dd>
 <dt>
-<span class="refentrytitle"><a href="cogl-2.0-experimental-Clipping.html">Clipping</a></span><span class="refpurpose"> — Fuctions for manipulating a stack of clipping regions</span>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html">Rectangle textures (non-normalized coordinates)</a></span><span class="refpurpose"> — Functions for creating and manipulating rectangle
+                    textures for use with non-normalized coordinates.</span>
 </dt>
+</dl></dd>
+<dt><span class="section"><a href="cogl-meta-textures.html">Meta Textures</a></span></dt>
+<dd><dl>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-High-Level-Meta-Textures.html">High Level Meta Textures</a></span><span class="refpurpose"> — Interface for high-level textures built from
+                    low-level textures like <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a> and
+                    <a class="link" href="cogl-2.0-experimental-3D-textures.html#CoglTexture3D" title="CoglTexture3D"><span class="type">CoglTexture3D</span></a>.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-Sub-Textures.html">Sub Textures</a></span><span class="refpurpose"> — Functions for creating and manipulating
+                    sub-textures.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-Sliced-Textures.html">Sliced Textures</a></span><span class="refpurpose"> — Functions for creating and manipulating 2D meta
+                    textures that may internally be comprised of
+                    multiple 2D textures with power-of-two sizes.</span>
+</dt>
+<dt>
+<span class="refentrytitle"><a href="cogl-2.0-experimental-X11-Texture-From-Pixmap.html">X11 Texture From Pixmap</a></span><span class="refpurpose"> — Functions for creating and manipulating 2D meta
+                    textures derived from X11 pixmaps.</span>
+</dt>
+</dl></dd>
 <dt><span class="section"><a href="cogl-framebuffer-apis.html">Framebuffers</a></span></dt>
 <dd><dl>
 <dt>
@@ -166,6 +192,6 @@ quaternions.</span>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

@@ -30,7 +30,6 @@
 
 #include <string.h>
 
-#include "cogl.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
 #include "cogl-internal.h"
@@ -42,12 +41,6 @@
 static void _cogl_display_free (CoglDisplay *display);
 
 COGL_OBJECT_DEFINE (Display, display);
-
-GQuark
-cogl_display_error_quark (void)
-{
-  return g_quark_from_static_string ("cogl-display-error-quark");
-}
 
 static const CoglWinsysVtable *
 _cogl_display_get_winsys (CoglDisplay *display)
@@ -98,13 +91,7 @@ cogl_display_new (CoglRenderer *renderer,
     display->renderer = cogl_renderer_new ();
 
   if (!cogl_renderer_connect (display->renderer, &error))
-    {
-      g_warning ("Failed to connect renderer: %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (display->renderer);
-      g_slice_free (CoglDisplay, display);
-      return NULL;
-    }
+    g_error ("Failed to connect to renderer: %s\n", error->message);
 
   display->onscreen_template = onscreen_template;
   if (onscreen_template)
@@ -150,7 +137,7 @@ void
 cogl_gdl_display_set_plane (CoglDisplay *display,
                             gdl_plane_id_t plane)
 {
-  g_return_if_fail (display->setup == FALSE);
+  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
 
   display->gdl_plane = plane;
 }
@@ -161,7 +148,7 @@ void
 cogl_wayland_display_set_compositor_display (CoglDisplay *display,
                                              struct wl_display *wayland_display)
 {
-  g_return_if_fail (display->setup == FALSE);
+  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
 
   display->wayland_compositor_display = wayland_display;
 }

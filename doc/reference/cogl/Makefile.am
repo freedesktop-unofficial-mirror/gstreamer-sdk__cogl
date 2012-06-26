@@ -59,6 +59,7 @@ IGNORE_HFILES=\
 	cogl-color-private.h			\
 	cogl-feature-private.h			\
 	cogl-framebuffer-private.h		\
+	cogl-onscreen-private.h			\
 	cogl-gtype-private.h			\
 	cogl-index-buffer-private.h		\
 	cogl-indices-private.h			\
@@ -94,7 +95,6 @@ IGNORE_HFILES=\
 	cogl-vertex-buffer-private.h		\
 	cogl-blend-string.h 			\
 	cogl-clip-stack.h 			\
-	cogl-context.h 				\
 	cogl-debug.h 				\
 	cogl-defines.h 				\
 	cogl-deprecated.h 			\

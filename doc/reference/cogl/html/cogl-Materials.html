@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="prev" href="cogl-Blend-Strings.html" title="Material Blend Strings">
 <link rel="next" href="cogl-Primitives.html" title="Primitives">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -127,7 +127,7 @@ enum                <a class="link" href="cogl-Materials.html#CoglMaterialFilter
                                                          <em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialFilter" title="enum CoglMaterialFilter"><span class="type">CoglMaterialFilter</span></a> min_filter</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialFilter" title="enum CoglMaterialFilter"><span class="type">CoglMaterialFilter</span></a> mag_filter</code></em>);
 enum                <a class="link" href="cogl-Materials.html#CoglMaterialLayerType" title="enum CoglMaterialLayerType">CoglMaterialLayerType</a>;
-<a class="link" href="cogl-Materials.html#CoglMaterialLayerType" title="enum CoglMaterialLayerType"><span class="returnvalue">CoglMaterialLayerType</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-layer-get-type" title="cogl_material_layer_get_type ()">cogl_material_layer_get_type</a>     (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);
+<a class="link" href="cogl-Materials.html#CoglMaterialLayerType" title="enum CoglMaterialLayerType"><span class="returnvalue">CoglMaterialLayerType</span></a> <a class="link" href="cogl-Materials.html#cogl-material-layer-get-type" title="cogl_material_layer_get_type ()">cogl_material_layer_get_type</a>      (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);
 <a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Materials.html#cogl-material-layer-get-texture" title="cogl_material_layer_get_texture ()">cogl_material_layer_get_texture</a>     (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);
 <a class="link" href="cogl-Materials.html#CoglMaterialFilter" title="enum CoglMaterialFilter"><span class="returnvalue">CoglMaterialFilter</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-layer-get-min-filter" title="cogl_material_layer_get_min_filter ()">cogl_material_layer_get_min_filter</a>  (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);
 <a class="link" href="cogl-Materials.html#CoglMaterialFilter" title="enum CoglMaterialFilter"><span class="returnvalue">CoglMaterialFilter</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-layer-get-mag-filter" title="cogl_material_layer_get_mag_filter ()">cogl_material_layer_get_mag_filter</a>  (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);
@@ -144,13 +144,13 @@ enum                <a class="link" href="cogl-Materials.html#CoglMaterialWrapMo
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Materials.html#cogl-material-set-layer-wrap-mode-p" title="cogl_material_set_layer_wrap_mode_p ()">cogl_material_set_layer_wrap_mode_p</a> (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="type">CoglMaterialWrapMode</span></a> mode</code></em>);
-<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-s" title="cogl_material_get_layer_wrap_mode_s ()">cogl_material_get_layer_wrap_mode_s</a>
+<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-s" title="cogl_material_get_layer_wrap_mode_s ()">cogl_material_get_layer_wrap_mode_s</a>
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
-<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-t" title="cogl_material_get_layer_wrap_mode_t ()">cogl_material_get_layer_wrap_mode_t</a>
+<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-t" title="cogl_material_get_layer_wrap_mode_t ()">cogl_material_get_layer_wrap_mode_t</a>
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
-<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-p" title="cogl_material_get_layer_wrap_mode_p ()">cogl_material_get_layer_wrap_mode_p</a>
+<a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> <a class="link" href="cogl-Materials.html#cogl-material-get-layer-wrap-mode-p" title="cogl_material_get_layer_wrap_mode_p ()">cogl_material_get_layer_wrap_mode_p</a>
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
 <a href="http://library.gnome.org/devel/gobject/unstable/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>               <a class="link" href="cogl-Materials.html#cogl-material-wrap-mode-get-type" title="cogl_material_wrap_mode_get_type ()">cogl_material_wrap_mode_get_type</a>    (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -833,7 +833,8 @@ to compare incoming fragments to.</td>
 <hr>
 <div class="refsect2">
 <a name="CoglBlendStringError"></a><h3>enum CoglBlendStringError</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_BLEND_STRING_ERROR &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_BLEND_STRING_ERROR &gt;*/
   COGL_BLEND_STRING_ERROR_PARSE_ERROR,
   COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
   COGL_BLEND_STRING_ERROR_INVALID_ERROR,
@@ -1600,7 +1601,7 @@ might be expanded in later versions.
 <hr>
 <div class="refsect2">
 <a name="cogl-material-layer-get-type"></a><h3>cogl_material_layer_get_type ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialLayerType" title="enum CoglMaterialLayerType"><span class="returnvalue">CoglMaterialLayerType</span></a>  cogl_material_layer_get_type     (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);</pre>
+<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialLayerType" title="enum CoglMaterialLayerType"><span class="returnvalue">CoglMaterialLayerType</span></a> cogl_material_layer_get_type      (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterialLayer" title="CoglMaterialLayer"><span class="type">CoglMaterialLayer</span></a> *layer</code></em>);</pre>
 <p>
 Retrieves the type of the layer
 </p>
@@ -1870,7 +1871,7 @@ this layer. 'p' is the third coordinate.
 <hr>
 <div class="refsect2">
 <a name="cogl-material-get-layer-wrap-mode-s"></a><h3>cogl_material_get_layer_wrap_mode_s ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  cogl_material_get_layer_wrap_mode_s
+<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> cogl_material_get_layer_wrap_mode_s
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
 <p>
@@ -1900,7 +1901,7 @@ this layer.</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-material-get-layer-wrap-mode-t"></a><h3>cogl_material_get_layer_wrap_mode_t ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  cogl_material_get_layer_wrap_mode_t
+<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> cogl_material_get_layer_wrap_mode_t
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
 <p>
@@ -1930,7 +1931,7 @@ this layer.</td>
 <hr>
 <div class="refsect2">
 <a name="cogl-material-get-layer-wrap-mode-p"></a><h3>cogl_material_get_layer_wrap_mode_p ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a>  cogl_material_get_layer_wrap_mode_p
+<pre class="programlisting"><a class="link" href="cogl-Materials.html#CoglMaterialWrapMode" title="enum CoglMaterialWrapMode"><span class="returnvalue">CoglMaterialWrapMode</span></a> cogl_material_get_layer_wrap_mode_p
                                                         (<em class="parameter"><code><a class="link" href="cogl-Materials.html#CoglMaterial" title="CoglMaterial"><span class="type">CoglMaterial</span></a> *material</code></em>,
                                                          <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
 <p>
@@ -2113,6 +2114,6 @@ index</td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

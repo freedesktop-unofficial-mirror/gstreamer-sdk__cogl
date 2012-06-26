@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sliced Textures</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-meta-textures.html" title="Meta Textures">
+<link rel="prev" href="cogl-2.0-experimental-Sub-Textures.html" title="Sub Textures">
+<link rel="next" href="cogl-2.0-experimental-X11-Texture-From-Pixmap.html" title="X11 Texture From Pixmap">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-Sub-Textures.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-meta-textures.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-X11-Texture-From-Pixmap.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Sliced-Textures.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Sliced-Textures.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Sliced-Textures"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Sliced-Textures.top_of_page"></a>Sliced Textures</span></h2>
+<p>Sliced Textures — Functions for creating and manipulating 2D meta
+                    textures that may internally be comprised of
+                    multiple 2D textures with power-of-two sizes.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Sliced-Textures.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced">CoglTexture2DSliced</a>;
+<a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced"><span class="returnvalue">CoglTexture2DSliced</span></a> * <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#cogl-texture-2d-sliced-new-with-size" title="cogl_texture_2d_sliced_new_with_size ()">cogl_texture_2d_sliced_new_with_size</a>
+                                                        (<em class="parameter"><code><span class="type">CoglContext</span> *ctx</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> max_waste</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#cogl-is-texture-2d-sliced" title="cogl_is_texture_2d_sliced ()">cogl_is_texture_2d_sliced</a>           (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Sliced-Textures.description"></a><h2>Description</h2>
+<p>
+These functions allow high-level meta textures (See the
+<a class="link" href="cogl-2.0-experimental-High-Level-Meta-Textures.html#CoglMetaTexture" title="CoglMetaTexture"><span class="type">CoglMetaTexture</span></a> interface) to be allocated that may internally be
+comprised of multiple 2D texture "slices" with power-of-two sizes.
+</p>
+<p>
+This API can be useful when working with GPUs that don't have
+native support for non-power-of-two textures or if you want to load
+a texture that is larger than the GPUs maximum texture size limits.
+</p>
+<p>
+The algorithm for slicing works by first trying to map a virtual
+size to the next larger power-of-two size and then seeing how many
+wasted pixels that would result in. For example if you have a
+virtual texture that's 259 texels wide, the next pot size = 512 and
+the amount of waste would be 253 texels. If the amount of waste is
+above a max-waste threshold then we would next slice that texture
+into one that's 256 texels and then looking at how many more texels
+remain unallocated after that we choose the next power-of-two size.
+For the example of a 259 texel image that would mean having a 256
+texel wide texture, leaving 3 texels unallocated so we'd then
+create a 4 texel wide texture - now there is only one texel of
+waste. The algorithm continues to slice the right most textures
+until the amount of waste is less than or equal to a specfied
+max-waste threshold. The same logic for slicing from left to right
+is also applied from top to bottom.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Sliced-Textures.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglTexture2DSliced"></a><h3>CoglTexture2DSliced</h3>
+<pre class="programlisting">typedef struct _CoglTexture2DSliced CoglTexture2DSliced;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-2d-sliced-new-with-size"></a><h3>cogl_texture_2d_sliced_new_with_size ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced"><span class="returnvalue">CoglTexture2DSliced</span></a> * cogl_texture_2d_sliced_new_with_size
+                                                        (<em class="parameter"><code><span class="type">CoglContext</span> *ctx</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
+                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> max_waste</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Creates a <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced"><span class="type">CoglTexture2DSliced</span></a> that may internally be comprised of
+1 or more <a class="link" href="cogl-2.0-experimental-2D-textures.html#CoglTexture2D" title="CoglTexture2D"><span class="type">CoglTexture2D</span></a> textures with power-of-two sizes.
+<em class="parameter"><code>max_waste</code></em> is used as a threshold for recursively slicing the
+right-most or bottom-most slices into smaller power-of-two sizes
+until the wasted padding at the bottom and right of the
+power-of-two textures is less than specified.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ctx</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>The virtual width of your sliced texture.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>The virtual height of your sliced texture.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>max_waste</code></em> :</span></p></td>
+<td>The threshold of how wide a strip of wasted texels
+are allowed in the non-power-of-two textures before
+they must be sliced to reduce the amount of waste.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>The format of the texture</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> for exceptions.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced"><span class="type">CoglTexture2DSliced</span></a> or if there was
+an error allocating any of the internal slices <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is
+returned and <em class="parameter"><code>error</code></em> is updated.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-texture-2d-sliced"></a><h3>cogl_is_texture_2d_sliced ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_texture_2d_sliced           (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
+<p>
+Gets whether the given object references a <span class="type">CoglTexture2dSliced</span>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the object references a <span class="type">CoglTexture2dSliced</span>
+and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

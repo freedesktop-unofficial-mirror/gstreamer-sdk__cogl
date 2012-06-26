@@ -30,6 +30,7 @@
 
 #include "cogl-object-private.h"
 #include "cogl-attribute-buffer-private.h"
+#include "cogl-attribute-private.h"
 
 struct _CoglPrimitive
 {
@@ -39,9 +40,14 @@ struct _CoglPrimitive
   int first_vertex;
   int n_vertices;
   CoglIndices *indices;
-  GArray *attributes;
 
   int immutable_ref;
+
+  CoglAttribute **attributes;
+  int n_attributes;
+
+  int n_embedded_attributes;
+  CoglAttribute *embedded_attribute;
 };
 
 CoglPrimitive *
@@ -49,6 +55,10 @@ _cogl_primitive_immutable_ref (CoglPrimitive *primitive);
 
 void
 _cogl_primitive_immutable_unref (CoglPrimitive *primitive);
+
+void
+_cogl_primitive_draw (CoglPrimitive *primitive,
+                      CoglDrawFlags flags);
 
 #endif /* __COGL_PRIMITIVE_PRIVATE_H */
 

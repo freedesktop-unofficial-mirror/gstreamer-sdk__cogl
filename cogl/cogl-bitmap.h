@@ -30,6 +30,8 @@
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-buffer.h>
+#include <cogl/cogl-context.h>
+#include <cogl/cogl-pixel-buffer.h>
 
 G_BEGIN_DECLS
 
@@ -65,7 +67,6 @@ cogl_bitmap_new_from_file (const char *filename,
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
-#define cogl_bitmap_new_from_buffer cogl_bitmap_new_from_buffer_EXP
 /**
  * cogl_bitmap_new_from_buffer:
  * @buffer: A #CoglBuffer containing image data
@@ -92,7 +93,131 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
                              int height,
                              int rowstride,
                              int offset);
-#endif
+
+/**
+ * cogl_bitmap_new_with_size:
+ * @context: A #CoglContext
+ * @width: width of the bitmap in pixels
+ * @height: height of the bitmap in pixels
+ * @format: the format of the pixels the array will store
+ *
+ * Creates a new #CoglBitmap with the given width, height and format.
+ * The initial contents of the bitmap are undefined.
+ *
+ * The data for the bitmap will be stored in a newly created
+ * #CoglPixelBuffer. You can get a pointer to the pixel buffer using
+ * cogl_bitmap_get_pixel_buffer(). The #CoglBuffer API can then be
+ * used to fill the bitmap with data.
+ *
+ * <note>Cogl will try its best to provide a hardware array you can
+ * map, write into and effectively do a zero copy upload when creating
+ * a texture from it with cogl_texture_new_from_bitmap(). For various
+ * reasons, such arrays are likely to have a stride larger than width
+ * * bytes_per_pixel. The user must take the stride into account when
+ * writing into it. The stride can be retrieved with
+ * cogl_bitmap_get_rowstride().</note>
+ *
+ * Return value: a #CoglPixelBuffer representing the newly created array or
+ *               %NULL on failure
+ *
+ * Since: 1.10
+ * Stability: Unstable
+ */
+CoglBitmap *
+cogl_bitmap_new_with_size (CoglContext *context,
+                           unsigned int width,
+                           unsigned int height,
+                           CoglPixelFormat format);
+
+/**
+ * cogl_bitmap_new_for_data:
+ * @context: A #CoglContext
+ * @width: The width of the bitmap.
+ * @height: The height of the bitmap.
+ * @format: The format of the pixel data.
+ * @rowstride: The rowstride of the bitmap (the number of bytes from
+ *   the start of one row of the bitmap to the next).
+ * @data: A pointer to the data. The bitmap will take ownership of this data.
+ *
+ * Creates a bitmap using some existing data. The data is not copied
+ * so the application must keep the buffer alive for the lifetime of
+ * the #CoglBitmap. This can be used for example with
+ * cogl_framebuffer_read_pixels_into_bitmap() to read data directly
+ * into an application buffer with the specified rowstride.
+ *
+ * Return value: A new #CoglBitmap.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglBitmap *
+cogl_bitmap_new_for_data (CoglContext *context,
+                          int width,
+                          int height,
+                          CoglPixelFormat format,
+                          int rowstride,
+                          guint8 *data);
+
+/**
+ * cogl_bitmap_get_format:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the #CoglPixelFormat that the data for the bitmap is in.
+ * Since: 1.10
+ * Stability: unstable
+ */
+CoglPixelFormat
+cogl_bitmap_get_format (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_width:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the width of the bitmap
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_width (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_height:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the height of the bitmap
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_height (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_rowstride:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the rowstride of the bitmap. This is the number of
+ *   bytes between the address of start of one row to the address of the
+ *   next row in the image.
+ * Since: 1.10
+ * Stability: unstable
+ */
+int
+cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
+
+/**
+ * cogl_bitmap_get_buffer:
+ * @bitmap: A #CoglBitmap
+ *
+ * Return value: the #CoglPixelBuffer that this buffer uses for
+ *   storage. Note that if the bitmap was created with
+ *   cogl_bitmap_new_from_file() then it will not actually be using a
+ *   pixel buffer and this function will return %NULL.
+ * Stability: unstable
+ * Since: 1.10
+ */
+CoglPixelBuffer *
+cogl_bitmap_get_buffer (CoglBitmap *bitmap);
+
+#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 /**
  * cogl_bitmap_get_size_from_file:

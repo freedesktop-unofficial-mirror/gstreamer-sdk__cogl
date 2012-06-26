@@ -32,19 +32,22 @@
 
 #include <string.h>
 
+#include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-pipeline-layer-private.h"
 #include "cogl-shader-private.h"
 #include "cogl-blend-string.h"
+#include "cogl-snippet-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
 #include "cogl-shader-private.h"
 #include "cogl-program-private.h"
 #include "cogl-pipeline-cache.h"
+#include "cogl-pipeline-fragend-glsl-private.h"
 
 #include <glib.h>
 
@@ -101,6 +104,11 @@ typedef struct
      program changes then we may need to redecide whether to generate
      a shader at all */
   unsigned int user_program_age;
+
+  /* The number of tex coord attributes that the shader was generated
+     for. If this changes on GLES2 then we need to regenerate the
+     shader */
+  int n_tex_coord_attribs;
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
@@ -174,6 +182,38 @@ _cogl_pipeline_fragend_glsl_get_shader (CoglPipeline *pipeline)
     return 0;
 }
 
+static CoglPipelineSnippetList *
+get_fragment_snippets (CoglPipeline *pipeline)
+{
+  pipeline =
+    _cogl_pipeline_get_authority (pipeline,
+                                  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
+
+  return &pipeline->big_state->fragment_snippets;
+}
+
+static CoglPipelineSnippetList *
+get_layer_fragment_snippets (CoglPipelineLayer *layer)
+{
+  unsigned long state = COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS;
+  layer = _cogl_pipeline_layer_get_authority (layer, state);
+
+  return &layer->big_state->fragment_snippets;
+}
+
+static gboolean
+has_replace_hook (CoglPipelineLayer *layer,
+                  CoglSnippetHook hook)
+{
+  CoglPipelineSnippet *snippet;
+
+  COGL_LIST_FOREACH (snippet, get_layer_fragment_snippets (layer), list_node)
+    if (snippet->snippet->hook == hook && snippet->snippet->replace)
+      return TRUE;
+
+  return FALSE;
+}
+
 static gboolean
 _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
@@ -188,7 +228,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  if (!cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
     return FALSE;
 
   user_program = cogl_pipeline_get_user_program (pipeline);
@@ -266,9 +306,14 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
     {
       /* If we already have a valid GLSL shader then we don't need to
          generate a new one. However if there's a user program and it
-         has changed since the last link then we do need a new shader */
-      if (user_program == NULL ||
-          shader_state->user_program_age == user_program->age)
+         has changed since the last link then we do need a new
+         shader. If the number of tex coord attribs changes on GLES2
+         then we need to regenerate the shader with a different boiler
+         plate */
+      if ((user_program == NULL ||
+           shader_state->user_program_age == user_program->age)
+          && (ctx->driver != COGL_DRIVER_GLES2 ||
+              shader_state->n_tex_coord_attribs == n_tex_coord_attribs))
         return TRUE;
 
       /* We need to recreate the shader so destroy the existing one */
@@ -282,6 +327,8 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 
   if (user_program)
     shader_state->user_program_age = user_program->age;
+
+  shader_state->n_tex_coord_attribs = n_tex_coord_attribs;
 
   /* If the user program contains a fragment shader then we don't need
      to generate one */
@@ -302,7 +349,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
 
   g_string_append (shader_state->source,
                    "void\n"
-                   "main ()\n"
+                   "cogl_generated_source ()\n"
                    "{\n");
 
   for (i = 0; i < n_layers; i++)
@@ -320,20 +367,47 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
                      CoglPipelineLayer *layer,
                      const char *swizzle)
 {
-  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+  g_string_append_printf (shader_state->header,
+                          "_cogl_layer_constant_%i.%s",
+                          layer->index, swizzle);
+}
 
-  /* Create a sampler uniform for this layer if we haven't already */
-  if (!shader_state->unit_state[unit_index].combine_constant_used)
+static void
+get_texture_target_string (CoglTextureType texture_type,
+                           const char **target_string_out,
+                           const char **swizzle_out)
+{
+  const char *target_string, *tex_coord_swizzle;
+
+  switch (texture_type)
     {
-      g_string_append_printf (shader_state->header,
-                              "uniform vec4 _cogl_layer_constant_%i;\n",
-                              unit_index);
-      shader_state->unit_state[unit_index].combine_constant_used = TRUE;
+#if 0 /* TODO */
+    case COGL_TEXTURE_TYPE_1D:
+      target_string = "1D";
+      tex_coord_swizzle = "s";
+      break;
+#endif
+
+    case COGL_TEXTURE_TYPE_2D:
+      target_string = "2D";
+      tex_coord_swizzle = "st";
+      break;
+
+    case COGL_TEXTURE_TYPE_3D:
+      target_string = "3D";
+      tex_coord_swizzle = "stp";
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      target_string = "2DRect";
+      tex_coord_swizzle = "st";
+      break;
     }
 
-  g_string_append_printf (shader_state->source,
-                          "_cogl_layer_constant_%i.%s",
-                          unit_index, swizzle);
+  if (target_string_out)
+    *target_string_out = target_string;
+  if (swizzle_out)
+    *swizzle_out = tex_coord_swizzle;
 }
 
 static void
@@ -341,8 +415,9 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                                  CoglPipeline *pipeline,
                                  CoglPipelineLayer *layer)
 {
-  CoglHandle texture;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+  CoglPipelineSnippetData snippet_data;
+  CoglTextureType texture_type;
   const char *target_string, *tex_coord_swizzle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -350,72 +425,24 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
   if (shader_state->unit_state[unit_index].sampled)
     return;
 
+  texture_type =
+    _cogl_pipeline_layer_get_texture_type (layer);
+  get_texture_target_string (texture_type,
+                             &target_string,
+                             &tex_coord_swizzle);
+
   shader_state->unit_state[unit_index].sampled = TRUE;
 
-  g_string_append_printf (shader_state->source,
-                          "  vec4 texel%i = ",
-                          unit_index);
-
-  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
-    {
-      g_string_append (shader_state->source,
-                       "vec4 (1.0, 1.0, 1.0, 1.0);\n");
-
-      return;
-    }
-
-  texture = _cogl_pipeline_layer_get_texture (layer);
-
-  if (texture == COGL_INVALID_HANDLE)
-    {
-      target_string = "2D";
-      tex_coord_swizzle = "st";
-    }
-  else
-    {
-      GLenum gl_target;
-
-      cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      switch (gl_target)
-        {
-#ifdef HAVE_COGL_GL
-        case GL_TEXTURE_1D:
-          target_string = "1D";
-          tex_coord_swizzle = "s";
-          break;
-#endif
-
-        case GL_TEXTURE_2D:
-          target_string = "2D";
-          tex_coord_swizzle = "st";
-          break;
-
-#ifdef GL_ARB_texture_rectangle
-        case GL_TEXTURE_RECTANGLE_ARB:
-          target_string = "2DRect";
-          tex_coord_swizzle = "st";
-          break;
-#endif
-
-        case GL_TEXTURE_3D:
-          target_string = "3D";
-          tex_coord_swizzle = "stp";
-          break;
-
-        default:
-          g_assert_not_reached ();
-        }
-    }
-
-  /* Create a sampler uniform */
   g_string_append_printf (shader_state->header,
-                          "uniform sampler%s _cogl_sampler_%i;\n",
-                          target_string,
-                          unit_index);
+                          "vec4 cogl_texel%i;\n",
+                          layer->index);
 
   g_string_append_printf (shader_state->source,
-                          "texture%s (_cogl_sampler_%i, ",
-                          target_string, unit_index);
+                          "  cogl_texel%i = cogl_texture_lookup%i ("
+                          "cogl_sampler%i, ",
+                          layer->index,
+                          layer->index,
+                          layer->index);
 
   /* If point sprite coord generation is being used then divert to the
      built-in varying var for that instead of the texture
@@ -429,14 +456,62 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
       cogl_pipeline_get_layer_point_sprite_coords_enabled (pipeline,
                                                            layer->index))
     g_string_append_printf (shader_state->source,
-                            "gl_PointCoord.%s",
-                            tex_coord_swizzle);
+                            "gl_PointCoord");
   else
     g_string_append_printf (shader_state->source,
-                            "cogl_tex_coord_in[%d].%s",
-                            unit_index, tex_coord_swizzle);
+                            "cogl_tex_coord_in[%d]",
+                            unit_index);
 
   g_string_append (shader_state->source, ");\n");
+
+  /* There's no need to generate the real texture lookup if it's going
+     to be replaced */
+  if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_TEXTURE_LOOKUP))
+    {
+      g_string_append_printf (shader_state->header,
+                              "vec4\n"
+                              "cogl_real_texture_lookup%i (sampler%s tex,\n"
+                              "                            vec4 coords)\n"
+                              "{\n"
+                              "  return ",
+                              layer->index,
+                              target_string);
+
+      if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_TEXTURING)))
+        g_string_append (shader_state->header,
+                         "vec4 (1.0, 1.0, 1.0, 1.0);\n");
+      else
+        g_string_append_printf (shader_state->header,
+                                "texture%s (tex, coords.%s);\n",
+                                target_string, tex_coord_swizzle);
+
+      g_string_append (shader_state->header, "}\n");
+    }
+
+  /* Wrap the texture lookup in any snippets that have been hooked */
+  memset (&snippet_data, 0, sizeof (snippet_data));
+  snippet_data.snippets = get_layer_fragment_snippets (layer);
+  snippet_data.hook = COGL_SNIPPET_HOOK_TEXTURE_LOOKUP;
+  snippet_data.chain_function = g_strdup_printf ("cogl_real_texture_lookup%i",
+                                                 layer->index);
+  snippet_data.final_name = g_strdup_printf ("cogl_texture_lookup%i",
+                                             layer->index);
+  snippet_data.function_prefix = g_strdup_printf ("cogl_texture_lookup_hook%i",
+                                                  layer->index);
+  snippet_data.return_type = "vec4";
+  snippet_data.return_variable = "cogl_texel";
+  snippet_data.arguments = "cogl_sampler, cogl_tex_coord";
+  snippet_data.argument_declarations =
+    g_strdup_printf ("sampler%s cogl_sampler, vec4 cogl_tex_coord",
+                     target_string);
+  snippet_data.source_buf = shader_state->header;
+
+  _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+  g_free ((char *) snippet_data.chain_function);
+  g_free ((char *) snippet_data.final_name);
+  g_free ((char *) snippet_data.function_prefix);
+  g_free ((char *) snippet_data.argument_declarations);
 }
 
 static void
@@ -448,7 +523,7 @@ add_arg (CoglPipelineShaderState *shader_state,
          CoglPipelineCombineOp operand,
          const char *swizzle)
 {
-  GString *shader_source = shader_state->source;
+  GString *shader_source = shader_state->header;
   char alpha_swizzle[5] = "aaaa";
 
   g_string_append_c (shader_source, '(');
@@ -472,8 +547,8 @@ add_arg (CoglPipelineShaderState *shader_state,
     {
     case COGL_PIPELINE_COMBINE_SOURCE_TEXTURE:
       g_string_append_printf (shader_source,
-                              "texel%i.%s",
-                              _cogl_pipeline_layer_get_unit_index (layer),
+                              "cogl_texel%i.%s",
+                              layer->index,
                               swizzle);
       break;
 
@@ -488,7 +563,7 @@ add_arg (CoglPipelineShaderState *shader_state,
       if (previous_layer_index >= 0)
         {
           g_string_append_printf (shader_source,
-                                  "layer%i.%s",
+                                  "cogl_layer%i.%s",
                                   previous_layer_index,
                                   swizzle);
           break;
@@ -499,41 +574,35 @@ add_arg (CoglPipelineShaderState *shader_state,
       break;
 
     default:
-      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
-          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
-        g_string_append_printf (shader_source,
-                                "texel%i.%s",
-                                src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0,
-                                swizzle);
+      {
+        int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+        CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+        CoglPipelineLayer *other_layer =
+          _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
+
+        if (other_layer == NULL)
+          {
+            static gboolean warning_seen = FALSE;
+            if (!warning_seen)
+              {
+                g_warning ("The application is trying to use a texture "
+                           "combine with a layer number that does not exist");
+                warning_seen = TRUE;
+              }
+            g_string_append_printf (shader_source,
+                                    "vec4 (1.0, 1.0, 1.0, 1.0).%s",
+                                    swizzle);
+          }
+        else
+          g_string_append_printf (shader_source,
+                                  "cogl_texel%i.%s",
+                                  other_layer->index,
+                                  swizzle);
+      }
       break;
     }
 
   g_string_append_c (shader_source, ')');
-}
-
-
-typedef struct
-{
-  int unit_index;
-  CoglPipelineLayer *layer;
-} FindPipelineLayerData;
-
-static gboolean
-find_pipeline_layer_cb (CoglPipelineLayer *layer,
-                        void *user_data)
-{
-  FindPipelineLayerData *data = user_data;
-  int unit_index;
-
-  unit_index = _cogl_pipeline_layer_get_unit_index (layer);
-
-  if (unit_index == data->unit_index)
-    {
-      data->layer = layer;
-      return FALSE;
-    }
-
-  return TRUE;
 }
 
 static void
@@ -546,9 +615,22 @@ ensure_arg_generated (CoglPipeline *pipeline,
 
   switch (src)
     {
-    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
     case COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR:
-      /* These don't involve any other layers */
+      /* This doesn't involve any other layers */
+      break;
+
+    case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
+      {
+        int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+        /* Create a sampler uniform for this layer if we haven't already */
+        if (!shader_state->unit_state[unit_index].combine_constant_used)
+          {
+            g_string_append_printf (shader_state->header,
+                                    "uniform vec4 _cogl_layer_constant_%i;\n",
+                                    layer->index);
+            shader_state->unit_state[unit_index].combine_constant_used = TRUE;
+          }
+      }
       break;
 
     case COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS:
@@ -563,24 +645,34 @@ ensure_arg_generated (CoglPipeline *pipeline,
       break;
 
     default:
-      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 &&
-          src < COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0 + 32)
+      if (src >= COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0)
         {
-          FindPipelineLayerData data;
+          int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+          CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+          CoglPipelineLayer *other_layer =
+            _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
 
-          data.unit_index = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
-          data.layer = layer;
-
-          _cogl_pipeline_foreach_layer_internal (pipeline,
-                                                 find_pipeline_layer_cb,
-                                                 &data);
-
-          ensure_texture_lookup_generated (shader_state,
-                                           pipeline,
-                                           data.layer);
+          if (other_layer)
+            ensure_texture_lookup_generated (shader_state,
+                                             pipeline,
+                                             other_layer);
         }
       break;
     }
+}
+
+static void
+ensure_args_for_func (CoglPipeline *pipeline,
+                      CoglPipelineLayer *layer,
+                      int previous_layer_index,
+                      CoglPipelineCombineFunc function,
+                      CoglPipelineCombineSource *src)
+{
+  int n_args = _cogl_get_n_args_for_combine_func (function);
+  int i;
+
+  for (i = 0; i < n_args; i++)
+    ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
 }
 
 static void
@@ -593,18 +685,10 @@ append_masked_combine (CoglPipeline *pipeline,
                        CoglPipelineCombineOp *op)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
-  GString *shader_source = shader_state->source;
-  int n_args;
-  int i;
+  GString *shader_source = shader_state->header;
 
-  n_args = _cogl_get_n_args_for_combine_func (function);
-
-  for (i = 0; i < n_args; i++)
-    ensure_arg_generated (pipeline, layer, previous_layer_index, src[i]);
-
-  g_string_append_printf (shader_state->source,
-                          "  layer%i.%s = ",
-                          layer->index,
+  g_string_append_printf (shader_state->header,
+                          "  cogl_layer.%s = ",
                           swizzle);
 
   switch (function)
@@ -701,6 +785,7 @@ ensure_layer_generated (CoglPipeline *pipeline,
   CoglPipelineLayer *combine_authority;
   CoglPipelineLayerBigState *big_state;
   CoglPipelineLayer *layer;
+  CoglPipelineSnippetData snippet_data;
   LayerData *layer_data;
 
   /* Find the layer that corresponds to this layer_num */
@@ -726,40 +811,97 @@ ensure_layer_generated (CoglPipeline *pipeline,
                                         COGL_PIPELINE_LAYER_STATE_COMBINE);
   big_state = combine_authority->big_state;
 
-  g_string_append_printf (shader_state->source,
-                          "  vec4 layer%i;\n",
+  /* Make a global variable for the result of the layer code */
+  g_string_append_printf (shader_state->header,
+                          "vec4 cogl_layer%i;\n",
                           layer_index);
 
-  if (!_cogl_pipeline_need_texture_combine_separate (combine_authority) ||
-      /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
-       * since if you use it, it overrides your ALPHA function...
-       */
-      big_state->texture_combine_rgb_func ==
-      COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
-    append_masked_combine (pipeline,
-                           layer,
-                           layer_data->previous_layer_index,
-                           "rgba",
-                           big_state->texture_combine_rgb_func,
-                           big_state->texture_combine_rgb_src,
-                           big_state->texture_combine_rgb_op);
-  else
+  /* Skip the layer generation if there is a snippet that replaces the
+     default layer code. This is important because generating this
+     code may cause the code for other layers to be generated and
+     stored in the global variable. If this code isn't actually used
+     then the global variables would be uninitialised and they may be
+     used from other layers */
+  if (!has_replace_hook (layer, COGL_SNIPPET_HOOK_LAYER_FRAGMENT))
     {
-      append_masked_combine (pipeline,
-                             layer,
-                             layer_data->previous_layer_index,
-                             "rgb",
-                             big_state->texture_combine_rgb_func,
-                             big_state->texture_combine_rgb_src,
-                             big_state->texture_combine_rgb_op);
-      append_masked_combine (pipeline,
-                             layer,
-                             layer_data->previous_layer_index,
-                             "a",
-                             big_state->texture_combine_alpha_func,
-                             big_state->texture_combine_alpha_src,
-                             big_state->texture_combine_alpha_op);
+      ensure_args_for_func (pipeline,
+                            layer,
+                            layer_data->previous_layer_index,
+                            big_state->texture_combine_rgb_func,
+                            big_state->texture_combine_rgb_src);
+      ensure_args_for_func (pipeline,
+                            layer,
+                            layer_data->previous_layer_index,
+                            big_state->texture_combine_alpha_func,
+                            big_state->texture_combine_alpha_src);
+
+      g_string_append_printf (shader_state->header,
+                              "vec4\n"
+                              "cogl_real_generate_layer%i ()\n"
+                              "{\n"
+                              "  vec4 cogl_layer;\n",
+                              layer_index);
+
+      if (!_cogl_pipeline_layer_needs_combine_separate (combine_authority) ||
+          /* GL_DOT3_RGBA Is a bit weird as a GL_COMBINE_RGB function
+           * since if you use it, it overrides your ALPHA function...
+           */
+          big_state->texture_combine_rgb_func ==
+          COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA)
+        append_masked_combine (pipeline,
+                               layer,
+                               layer_data->previous_layer_index,
+                               "rgba",
+                               big_state->texture_combine_rgb_func,
+                               big_state->texture_combine_rgb_src,
+                               big_state->texture_combine_rgb_op);
+      else
+        {
+          append_masked_combine (pipeline,
+                                 layer,
+                                 layer_data->previous_layer_index,
+                                 "rgb",
+                                 big_state->texture_combine_rgb_func,
+                                 big_state->texture_combine_rgb_src,
+                                 big_state->texture_combine_rgb_op);
+          append_masked_combine (pipeline,
+                                 layer,
+                                 layer_data->previous_layer_index,
+                                 "a",
+                                 big_state->texture_combine_alpha_func,
+                                 big_state->texture_combine_alpha_src,
+                                 big_state->texture_combine_alpha_op);
+        }
+
+      g_string_append (shader_state->header,
+                       "  return cogl_layer;\n"
+                       "}\n");
     }
+
+  /* Wrap the layer code in any snippets that have been hooked */
+  memset (&snippet_data, 0, sizeof (snippet_data));
+  snippet_data.snippets = get_layer_fragment_snippets (layer);
+  snippet_data.hook = COGL_SNIPPET_HOOK_LAYER_FRAGMENT;
+  snippet_data.chain_function = g_strdup_printf ("cogl_real_generate_layer%i",
+                                                 layer_index);
+  snippet_data.final_name = g_strdup_printf ("cogl_generate_layer%i",
+                                             layer_index);
+  snippet_data.function_prefix = g_strdup_printf ("cogl_generate_layer%i",
+                                                  layer_index);
+  snippet_data.return_type = "vec4";
+  snippet_data.return_variable = "cogl_layer";
+  snippet_data.source_buf = shader_state->header;
+
+  _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+  g_free ((char *) snippet_data.chain_function);
+  g_free ((char *) snippet_data.final_name);
+  g_free ((char *) snippet_data.function_prefix);
+
+  g_string_append_printf (shader_state->source,
+                          "  cogl_layer%i = cogl_generate_layer%i ();\n",
+                          layer_index,
+                          layer_index);
 
   g_slice_free (LayerData, layer_data);
 }
@@ -857,7 +999,7 @@ add_alpha_test_snippet (CoglPipeline *pipeline,
 
 #endif /*  HAVE_COGL_GLES2 */
 
-gboolean
+static gboolean
 _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference)
 {
@@ -871,8 +1013,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       GLint lengths[2];
       GLint compile_status;
       GLuint shader;
-      int n_tex_coord_attribs = 0;
-      int i, n_layers;
+      CoglPipelineSnippetData snippet_data;
 
       COGL_STATIC_COUNTER (fragend_glsl_compile_counter,
                            "glsl fragment compile counter",
@@ -890,11 +1031,29 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
           CoglPipelineLayer *last_layer;
           LayerData *layer_data, *tmp;
 
+          /* We always emit sampler uniforms in case there will be custom
+           * layer snippets that want to sample arbitrary layers. */
+
+          COGL_LIST_FOREACH (layer_data, &shader_state->layers, list_node)
+            {
+              CoglPipelineLayer *layer = layer_data->layer;
+              CoglTextureType texture_type =
+                _cogl_pipeline_layer_get_texture_type (layer);
+              const char *target_string;
+
+              get_texture_target_string (texture_type, &target_string, NULL);
+
+              g_string_append_printf (shader_state->header,
+                                      "uniform sampler%s cogl_sampler%i;\n",
+                                      target_string,
+                                      layer->index);
+            }
+
           last_layer = COGL_LIST_FIRST (&shader_state->layers)->layer;
 
           ensure_layer_generated (pipeline, last_layer->index);
           g_string_append_printf (shader_state->source,
-                                  "  cogl_color_out = layer%i;\n",
+                                  "  cogl_color_out = cogl_layer%i;\n",
                                   last_layer->index);
 
           COGL_LIST_FOREACH_SAFE (layer_data, &shader_state->layers,
@@ -910,7 +1069,18 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
         add_alpha_test_snippet (pipeline, shader_state);
 #endif
 
+      /* Close the function surrounding the generated fragment processing */
       g_string_append (shader_state->source, "}\n");
+
+      /* Add all of the hooks for fragment processing */
+      memset (&snippet_data, 0, sizeof (snippet_data));
+      snippet_data.snippets = get_fragment_snippets (pipeline);
+      snippet_data.hook = COGL_SNIPPET_HOOK_FRAGMENT;
+      snippet_data.chain_function = "cogl_generated_source";
+      snippet_data.final_name = "main";
+      snippet_data.function_prefix = "cogl_fragment_hook";
+      snippet_data.source_buf = shader_state->source;
+      _cogl_pipeline_snippet_generate_code (&snippet_data);
 
       GE_RET( shader, ctx, glCreateShader (GL_FRAGMENT_SHADER) );
 
@@ -919,15 +1089,9 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       lengths[1] = shader_state->source->len;
       source_strings[1] = shader_state->source->str;
 
-      /* Find the highest texture unit that is sampled to pass as the
-         number of texture coordinate attributes */
-      n_layers = cogl_pipeline_get_n_layers (pipeline);
-      for (i = 0; i < n_layers; i++)
-        if (shader_state->unit_state[i].sampled)
-          n_tex_coord_attribs = i + 1;
-
       _cogl_shader_set_source_with_boilerplate (shader, GL_FRAGMENT_SHADER,
-                                                n_tex_coord_attribs,
+                                                shader_state
+                                                ->n_tex_coord_attribs,
                                                 2, /* count */
                                                 source_strings, lengths);
 

@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2008,2009,2010,2011 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,18 +28,19 @@
 #ifndef __COGL_PIPELINE_PRIVATE_H
 #define __COGL_PIPELINE_PRIVATE_H
 
-#include "cogl.h"
-
+#include "cogl-node-private.h"
+#include "cogl-pipeline-layer-private.h"
 #include "cogl-pipeline.h"
 #include "cogl-matrix.h"
 #include "cogl-object-private.h"
 #include "cogl-profile.h"
 #include "cogl-queue.h"
+#include "cogl-internal.h"
+#include "cogl-boxed-value.h"
+#include "cogl-pipeline-snippet-private.h"
+#include "cogl-pipeline-state.h"
 
 #include <glib.h>
-
-typedef struct _CoglPipelineLayer     CoglPipelineLayer;
-#define COGL_PIPELINE_LAYER(OBJECT) ((CoglPipelineLayer *)OBJECT)
 
 #ifdef HAVE_COGL_GL
 
@@ -137,11 +138,21 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 
 /* If we have either of the GLSL backends then we also need a GLSL
    progend to combine the shaders generated into a single
-   program. Currently there is only one progend but if we ever add
-   other languages they would likely need their own progend too. The
-   progends are different from the other backends because there can be
-   more than one in use for each pipeline. All of the progends are
-   invoked whenever a pipeline is flushed. */
+   program. Same goes for the fixed progends which are used to flush
+   the matrices */
+#ifdef COGL_PIPELINE_FRAGEND_FIXED
+
+#define COGL_PIPELINE_PROGEND_FIXED      0
+
+#ifdef COGL_PIPELINE_FRAGEND_GLSL
+#define COGL_PIPELINE_PROGEND_GLSL       1
+#define COGL_PIPELINE_N_PROGENDS         2
+#else
+#define COGL_PIPELINE_N_PROGENDS         1
+#endif
+
+#else /* COGL_PIPELINE_FRAGEND_FIXED */
+
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 #define COGL_PIPELINE_PROGEND_GLSL       0
 #define COGL_PIPELINE_N_PROGENDS         1
@@ -149,267 +160,7 @@ typedef struct _CoglPipelineLayer     CoglPipelineLayer;
 #define COGL_PIPELINE_N_PROGENDS         0
 #endif
 
-/* XXX: should I rename these as
- * COGL_PIPELINE_LAYER_STATE_INDEX_XYZ... ?
- */
-typedef enum
-{
-  /* sparse state */
-  COGL_PIPELINE_LAYER_STATE_UNIT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
-  COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
-  COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
-  COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
-  COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX,
-  COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX,
-
-  /* note: layers don't currently have any non-sparse state */
-
-  COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT,
-  COGL_PIPELINE_LAYER_STATE_COUNT = COGL_PIPELINE_LAYER_STATE_SPARSE_COUNT
-} CoglPipelineLayerStateIndex;
-
-/* XXX: If you add or remove state groups here you may need to update
- * some of the state masks following this enum too!
- *
- * FIXME: perhaps it would be better to rename this enum to
- * CoglPipelineLayerStateGroup to better convey the fact that a single
- * enum here can map to multiple properties.
- */
-typedef enum
-{
-  COGL_PIPELINE_LAYER_STATE_UNIT =
-    1L<<COGL_PIPELINE_LAYER_STATE_UNIT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET =
-    1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_TARGET_INDEX,
-  COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA =
-    1L<<COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX,
-  COGL_PIPELINE_LAYER_STATE_FILTERS =
-    1L<<COGL_PIPELINE_LAYER_STATE_FILTERS_INDEX,
-  COGL_PIPELINE_LAYER_STATE_WRAP_MODES =
-    1L<<COGL_PIPELINE_LAYER_STATE_WRAP_MODES_INDEX,
-
-  COGL_PIPELINE_LAYER_STATE_COMBINE =
-    1L<<COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX,
-  COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT =
-    1L<<COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX,
-  COGL_PIPELINE_LAYER_STATE_USER_MATRIX =
-    1L<<COGL_PIPELINE_LAYER_STATE_USER_MATRIX_INDEX,
-
-  COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS =
-    1L<<COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX,
-
-  /* COGL_PIPELINE_LAYER_STATE_TEXTURE_INTERN   = 1L<<8, */
-
-} CoglPipelineLayerState;
-
-/*
- * Various special masks that tag state-groups in different ways...
- */
-
-#define COGL_PIPELINE_LAYER_STATE_ALL \
-  ((1L<<COGL_PIPELINE_LAYER_STATE_COUNT) - 1)
-
-#define COGL_PIPELINE_LAYER_STATE_ALL_SPARSE \
-  COGL_PIPELINE_LAYER_STATE_ALL
-
-#define COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE \
-  (COGL_PIPELINE_LAYER_STATE_COMBINE | \
-   COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT | \
-   COGL_PIPELINE_LAYER_STATE_USER_MATRIX | \
-   COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS)
-
-#define COGL_PIPELINE_LAYER_STATE_MULTI_PROPERTY \
-  (COGL_PIPELINE_LAYER_STATE_FILTERS | \
-   COGL_PIPELINE_LAYER_STATE_WRAP_MODES | \
-   COGL_PIPELINE_LAYER_STATE_COMBINE)
-
-#define COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN 0
-
-
-typedef enum
-{
-  /* These are the same values as GL */
-  COGL_PIPELINE_COMBINE_FUNC_ADD         = 0x0104,
-  COGL_PIPELINE_COMBINE_FUNC_ADD_SIGNED  = 0x8574,
-  COGL_PIPELINE_COMBINE_FUNC_SUBTRACT    = 0x84E7,
-  COGL_PIPELINE_COMBINE_FUNC_INTERPOLATE = 0x8575,
-  COGL_PIPELINE_COMBINE_FUNC_REPLACE     = 0x1E01,
-  COGL_PIPELINE_COMBINE_FUNC_MODULATE    = 0x2100,
-  COGL_PIPELINE_COMBINE_FUNC_DOT3_RGB    = 0x86AE,
-  COGL_PIPELINE_COMBINE_FUNC_DOT3_RGBA   = 0x86AF
-} CoglPipelineCombineFunc;
-
-typedef enum
-{
-  /* These are the same values as GL */
-  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE       = 0x1702,
-  COGL_PIPELINE_COMBINE_SOURCE_CONSTANT      = 0x8576,
-  COGL_PIPELINE_COMBINE_SOURCE_PRIMARY_COLOR = 0x8577,
-  COGL_PIPELINE_COMBINE_SOURCE_PREVIOUS      = 0x8578,
-  COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0      = 0x84C0
-} CoglPipelineCombineSource;
-
-typedef enum
-{
-  /* These are the same values as GL */
-  COGL_PIPELINE_COMBINE_OP_SRC_COLOR           = 0x0300,
-  COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_COLOR = 0x0301,
-  COGL_PIPELINE_COMBINE_OP_SRC_ALPHA           = 0x0302,
-  COGL_PIPELINE_COMBINE_OP_ONE_MINUS_SRC_ALPHA = 0x0303
-} CoglPipelineCombineOp;
-
-typedef struct
-{
-  /* The texture combine state determines how the color of individual
-   * texture fragments are calculated. */
-  CoglPipelineCombineFunc texture_combine_rgb_func;
-  CoglPipelineCombineSource texture_combine_rgb_src[3];
-  CoglPipelineCombineOp texture_combine_rgb_op[3];
-
-  CoglPipelineCombineFunc texture_combine_alpha_func;
-  CoglPipelineCombineSource texture_combine_alpha_src[3];
-  CoglPipelineCombineOp texture_combine_alpha_op[3];
-
-  float texture_combine_constant[4];
-
-  /* The texture matrix dscribes how to transform texture coordinates */
-  CoglMatrix matrix;
-
-  gboolean point_sprite_coords;
-
-} CoglPipelineLayerBigState;
-
-typedef struct _CoglPipelineNode CoglPipelineNode;
-
-COGL_LIST_HEAD (CoglPipelineNodeList, CoglPipelineNode);
-
-/* Materials and layers represent their state in a tree structure where
- * some of the state relating to a given pipeline or layer may actually
- * be owned by one if is ancestors in the tree. We have a common data
- * type to track the tree heirachy so we can share code... */
-struct _CoglPipelineNode
-{
-  /* the parent in terms of class hierarchy, so anything inheriting
-   * from CoglPipelineNode also inherits from CoglObject. */
-  CoglObject _parent;
-
-  /* The parent pipeline/layer */
-  CoglPipelineNode *parent;
-
-  /* The list entry here contains pointers to the node's siblings */
-  COGL_LIST_ENTRY (CoglPipelineNode) list_node;
-
-  /* List of children */
-  CoglPipelineNodeList children;
-
-  /* TRUE if the node took a strong reference on its parent. Weak
-   * pipelines for instance don't take a reference on their parent. */
-  gboolean has_parent_reference;
-};
-
-#define COGL_PIPELINE_NODE(X) ((CoglPipelineNode *)(X))
-
-typedef void (*CoglPipelineNodeUnparentVFunc) (CoglPipelineNode *node);
-
-typedef gboolean (*CoglPipelineNodeChildCallback) (CoglPipelineNode *child,
-                                                   void *user_data);
-
-void
-_cogl_pipeline_node_foreach_child (CoglPipelineNode *node,
-                                   CoglPipelineNodeChildCallback callback,
-                                   void *user_data);
-
-/* This isn't defined in the GLES headers */
-#ifndef GL_CLAMP_TO_BORDER
-#define GL_CLAMP_TO_BORDER 0x812d
-#endif
-
-/* GL_ALWAYS is just used here as a value that is known not to clash
- * with any valid GL wrap modes.
- *
- * XXX: keep the values in sync with the CoglPipelineWrapMode enum
- * so no conversion is actually needed.
- */
-typedef enum _CoglPipelineWrapModeInternal
-{
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_REPEAT = GL_REPEAT,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER,
-  COGL_PIPELINE_WRAP_MODE_INTERNAL_AUTOMATIC = GL_ALWAYS
-} CoglPipelineWrapModeInternal;
-
-struct _CoglPipelineLayer
-{
-  /* XXX: Please think twice about adding members that *have* be
-   * initialized during a _cogl_pipeline_layer_copy. We are aiming
-   * to have copies be as cheap as possible and copies may be
-   * done by the primitives APIs which means they may happen
-   * in performance critical code paths.
-   *
-   * XXX: If you are extending the state we track please consider if
-   * the state is expected to vary frequently across many pipelines or
-   * if the state can be shared among many derived pipelines instead.
-   * This will determine if the state should be added directly to this
-   * structure which will increase the memory overhead for *all*
-   * layers or if instead it can go under ->big_state.
-   */
-
-  /* Layers represent their state in a tree structure where some of
-   * the state relating to a given pipeline or layer may actually be
-   * owned by one if is ancestors in the tree. We have a common data
-   * type to track the tree heirachy so we can share code... */
-  CoglPipelineNode _parent;
-
-  /* Some layers have a pipeline owner, which is to say that the layer
-   * is referenced in that pipelines->layer_differences list.  A layer
-   * doesn't always have an owner and may simply be an ancestor for
-   * other layers that keeps track of some shared state. */
-  CoglPipeline      *owner;
-
-  /* The lowest index is blended first then others on top */
-  int	             index;
-
-  /* A mask of which state groups are different in this layer
-   * in comparison to its parent. */
-  unsigned long             differences;
-
-  /* Common differences
-   *
-   * As a basic way to reduce memory usage we divide the layer
-   * state into two groups; the minimal state modified in 90% of
-   * all layers and the rest, so that the second group can
-   * be allocated dynamically when required.
-   */
-
-  /* Each layer is directly associated with a single texture unit */
-  int                        unit_index;
-
-  /* The texture for this layer, or COGL_INVALID_HANDLE for an empty
-   * layer */
-  CoglHandle                 texture;
-  GLenum                     target;
-
-  CoglPipelineFilter         mag_filter;
-  CoglPipelineFilter         min_filter;
-
-  CoglPipelineWrapModeInternal wrap_mode_s;
-  CoglPipelineWrapModeInternal wrap_mode_t;
-  CoglPipelineWrapModeInternal wrap_mode_p;
-
-  /* Infrequent differences aren't currently tracked in
-   * a separate, dynamically allocated structure as they are
-   * for pipelines... */
-  CoglPipelineLayerBigState *big_state;
-
-  /* bitfields */
-
-  /* Determines if layer->big_state is valid */
-  unsigned int          has_big_state:1;
-
-};
+#endif /* COGL_PIPELINE_FRAGEND_FIXED */
 
 /* XXX: should I rename these as
  * COGL_PIPELINE_STATE_INDEX_XYZ... ?
@@ -430,13 +181,17 @@ typedef enum
   COGL_PIPELINE_STATE_POINT_SIZE_INDEX,
   COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
   COGL_PIPELINE_STATE_CULL_FACE_INDEX,
+  COGL_PIPELINE_STATE_UNIFORMS_INDEX,
+  COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
+  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
 
   /* non-sparse */
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
 
-  COGL_PIPELINE_STATE_COUNT,
-  COGL_PIPELINE_STATE_SPARSE_COUNT = COGL_PIPELINE_STATE_COUNT - 1,
+  COGL_PIPELINE_STATE_COUNT
 } CoglPipelineStateIndex;
+
+#define COGL_PIPELINE_STATE_SPARSE_COUNT (COGL_PIPELINE_STATE_COUNT - 1)
 
 /* Used in pipeline->differences masks and for notifying pipeline
  * state changes.
@@ -477,6 +232,12 @@ typedef enum _CoglPipelineState
     1L<<COGL_PIPELINE_STATE_LOGIC_OPS_INDEX,
   COGL_PIPELINE_STATE_CULL_FACE =
     1L<<COGL_PIPELINE_STATE_CULL_FACE_INDEX,
+  COGL_PIPELINE_STATE_UNIFORMS =
+    1L<<COGL_PIPELINE_STATE_UNIFORMS_INDEX,
+  COGL_PIPELINE_STATE_VERTEX_SNIPPETS =
+    1L<<COGL_PIPELINE_STATE_VERTEX_SNIPPETS_INDEX,
+  COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS =
+    1L<<COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS_INDEX,
 
   COGL_PIPELINE_STATE_REAL_BLEND_ENABLE =
     1L<<COGL_PIPELINE_STATE_REAL_BLEND_ENABLE_INDEX,
@@ -500,7 +261,9 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_LAYERS | \
    COGL_PIPELINE_STATE_LIGHTING | \
    COGL_PIPELINE_STATE_BLEND | \
-   COGL_PIPELINE_STATE_USER_SHADER)
+   COGL_PIPELINE_STATE_USER_SHADER | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_NEEDS_BIG_STATE \
   (COGL_PIPELINE_STATE_LIGHTING | \
@@ -512,7 +275,10 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_POINT_SIZE | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
-   COGL_PIPELINE_STATE_CULL_FACE)
+   COGL_PIPELINE_STATE_CULL_FACE | \
+   COGL_PIPELINE_STATE_UNIFORMS | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_MULTI_PROPERTY \
   (COGL_PIPELINE_STATE_LAYERS | \
@@ -521,11 +287,15 @@ typedef enum _CoglPipelineState
    COGL_PIPELINE_STATE_DEPTH | \
    COGL_PIPELINE_STATE_FOG | \
    COGL_PIPELINE_STATE_LOGIC_OPS | \
-   COGL_PIPELINE_STATE_CULL_FACE)
+   COGL_PIPELINE_STATE_CULL_FACE | \
+   COGL_PIPELINE_STATE_UNIFORMS | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS | \
+   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
 
 #define COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN \
   (COGL_PIPELINE_STATE_LAYERS | \
-   COGL_PIPELINE_STATE_USER_SHADER)
+   COGL_PIPELINE_STATE_USER_SHADER | \
+   COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
 
 typedef enum
 {
@@ -561,20 +331,6 @@ typedef enum _CoglPipelineBlendEnable
   COGL_PIPELINE_BLEND_ENABLE_DISABLED,
   COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC
 } CoglPipelineBlendEnable;
-
-typedef enum
-{
-  COGL_PIPELINE_CULL_FACE_MODE_NONE,
-  COGL_PIPELINE_CULL_FACE_MODE_FRONT,
-  COGL_PIPELINE_CULL_FACE_MODE_BACK,
-  COGL_PIPELINE_CULL_FACE_MODE_BOTH
-} CoglPipelineCullFaceMode;
-
-typedef enum
-{
-  COGL_WINDING_CLOCKWISE,
-  COGL_WINDING_COUNTER_CLOCKWISE
-} CoglWinding;
 
 typedef struct
 {
@@ -613,6 +369,20 @@ typedef struct
 
 typedef struct
 {
+  CoglBitmask override_mask;
+
+  /* This is an array of values. Only the uniforms that have a bit set
+     in override_mask have a corresponding value here. The uniform's
+     location is implicit from the order in this array */
+  CoglBoxedValue *override_values;
+
+  /* Uniforms that have been modified since this pipeline was last
+     flushed */
+  CoglBitmask changed_mask;
+} CoglPipelineUniformsState;
+
+typedef struct
+{
   CoglPipelineLightingState lighting_state;
   CoglPipelineAlphaFuncState alpha_state;
   CoglPipelineBlendState blend_state;
@@ -622,6 +392,9 @@ typedef struct
   float point_size;
   CoglPipelineLogicOpsState logic_ops_state;
   CoglPipelineCullFaceState cull_face_state;
+  CoglPipelineUniformsState uniforms_state;
+  CoglPipelineSnippetList vertex_snippets;
+  CoglPipelineSnippetList fragment_snippets;
 } CoglPipelineBigState;
 
 typedef enum
@@ -635,14 +408,6 @@ typedef struct
   CoglPipeline *owner;
   CoglPipelineLayer *layer;
 } CoglPipelineLayerCacheEntry;
-
-/* Sometimes when evaluating pipelines, either during comparisons or
- * if calculating a hash value we need to tweak the evaluation
- * semantics */
-typedef enum _CoglPipelineEvalFlags
-{
-  COGL_PIPELINE_EVAL_FLAG_NONE = 0
-} CoglPipelineEvalFlags;
 
 typedef struct _CoglPipelineHashState
 {
@@ -682,7 +447,7 @@ struct _CoglPipeline
    * the state relating to a given pipeline or layer may actually be
    * owned by one if is ancestors in the tree. We have a common data
    * type to track the tree heirachy so we can share code... */
-  CoglPipelineNode _parent;
+  CoglNode _parent;
 
   /* We need to track if a pipeline is referenced in the journal
    * because we can't allow modification to these pipelines without
@@ -814,7 +579,8 @@ typedef struct _CoglPipelineVertend
 {
   gboolean (*start) (CoglPipeline *pipeline,
                      int n_layers,
-                     unsigned long pipelines_difference);
+                     unsigned long pipelines_difference,
+                     int n_tex_coord_attribs);
   gboolean (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference);
@@ -863,13 +629,10 @@ _cogl_pipeline_progends[];
 void
 _cogl_pipeline_init_default_pipeline (void);
 
-void
-_cogl_pipeline_init_default_layers (void);
-
 static inline CoglPipeline *
 _cogl_pipeline_get_parent (CoglPipeline *pipeline)
 {
-  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (pipeline)->parent;
+  CoglNode *parent_node = COGL_NODE (pipeline)->parent;
   return COGL_PIPELINE (parent_node);
 }
 
@@ -885,11 +648,6 @@ _cogl_pipeline_get_authority (CoglPipeline *pipeline,
 
 typedef gboolean (*CoglPipelineStateComparitor) (CoglPipeline *authority0,
                                                  CoglPipeline *authority1);
-
-typedef gboolean
-(*CoglPipelineLayerStateComparitor) (CoglPipelineLayer *authority0,
-                                     CoglPipelineLayer *authority1);
-
 
 void
 _cogl_pipeline_update_authority (CoglPipeline *pipeline,
@@ -909,27 +667,21 @@ _cogl_pipeline_prune_redundant_ancestry (CoglPipeline *pipeline);
 void _cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
                                          CoglPipelineState changes);
 
+typedef enum
+{
+  COGL_PIPELINE_GET_LAYER_NO_CREATE
+} CoglPipelineGetLayerFlags;
+
 CoglPipelineLayer *
-_cogl_pipeline_get_layer (CoglPipeline *pipeline,
-                          int layer_index);
+_cogl_pipeline_get_layer_with_flags (CoglPipeline *pipeline,
+                                     int layer_index,
+                                     CoglPipelineGetLayerFlags flags);
+
+#define _cogl_pipeline_get_layer(p, l) \
+  _cogl_pipeline_get_layer_with_flags (p, l, 0)
 
 gboolean
 _cogl_is_pipeline_layer (void *object);
-
-static inline CoglPipelineLayer *
-_cogl_pipeline_layer_get_parent (CoglPipelineLayer *layer)
-{
-  CoglPipelineNode *parent_node = COGL_PIPELINE_NODE (layer)->parent;
-  return COGL_PIPELINE_LAYER (parent_node);
-}
-
-CoglPipelineLayer *
-_cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
-                                        CoglPipelineLayer *layer,
-                                        CoglPipelineLayerState change);
-
-void
-_cogl_pipeline_layer_prune_redundant_ancestry (CoglPipelineLayer *layer);
 
 void
 _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
@@ -948,18 +700,6 @@ _cogl_pipeline_prune_empty_layer_difference (CoglPipeline *layers_authority,
 
 gboolean
 _cogl_pipeline_get_real_blend_enabled (CoglPipeline *pipeline);
-
-gboolean
-_cogl_pipeline_layer_has_user_matrix (CoglPipeline *pipeline,
-                                      int layer_index);
-
-/*
- * Calls the pre_paint method on the layer texture if there is
- * one. This will determine whether mipmaps are needed based on the
- * filter settings.
- */
-void
-_cogl_pipeline_layer_pre_paint (CoglPipelineLayer *layerr);
 
 /*
  * Calls the pre_paint method on the layer texture if there is
@@ -1006,7 +746,7 @@ typedef struct _CoglPipelineFlushOptions
 
   guint32                       fallback_layers;
   guint32                       disable_layers;
-  CoglHandle                    layer0_override_texture;
+  CoglTexture                  *layer0_override_texture;
 } CoglPipelineFlushOptions;
 
 void
@@ -1181,20 +921,12 @@ _cogl_pipeline_journal_ref (CoglPipeline *pipeline);
 void
 _cogl_pipeline_journal_unref (CoglPipeline *pipeline);
 
-CoglPipelineFilter
-_cogl_pipeline_get_layer_min_filter (CoglPipeline *pipeline,
-                                     int layer_index);
-
-CoglPipelineFilter
-_cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
-                                     int layer_index);
-
 const CoglMatrix *
 _cogl_pipeline_get_layer_matrix (CoglPipeline *pipeline,
                                  int layer_index);
 
 void
-_cogl_pipeline_texture_storage_change_notify (CoglHandle texture);
+_cogl_pipeline_texture_storage_change_notify (CoglTexture *texture);
 
 void
 _cogl_pipeline_apply_legacy_state (CoglPipeline *pipeline);
@@ -1224,14 +956,20 @@ CoglPipeline *
 _cogl_pipeline_get_authority (CoglPipeline *pipeline,
                               unsigned long difference);
 
+void
+_cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
+                                     CoglPipelineLayer *layer,
+                                     gboolean inc_n_layers);
+
+void
+_cogl_pipeline_remove_layer_difference (CoglPipeline *pipeline,
+                                        CoglPipelineLayer *layer,
+                                        gboolean dec_n_layers);
+
 CoglPipeline *
 _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
                                        CoglPipelineState pipeline_state,
                                        CoglPipelineLayerState layer_state);
-
-CoglHandle
-_cogl_pipeline_get_layer_texture (CoglPipeline *pipeline,
-                                  int layer_index);
 
 void
 _cogl_pipeline_get_layer_combine_constant (CoglPipeline *pipeline,
@@ -1249,62 +987,6 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n);
 const GList *
 _cogl_pipeline_get_layers (CoglPipeline *pipeline);
 
-void
-_cogl_pipeline_layer_get_wrap_modes (CoglPipelineLayer *layer,
-                                     CoglPipelineWrapModeInternal *wrap_mode_s,
-                                     CoglPipelineWrapModeInternal *wrap_mode_t,
-                                     CoglPipelineWrapModeInternal *wrap_mode_r);
-
-void
-_cogl_pipeline_layer_get_filters (CoglPipelineLayer *layer,
-                                  CoglPipelineFilter *min_filter,
-                                  CoglPipelineFilter *mag_filter);
-
-void
-_cogl_pipeline_get_layer_filters (CoglPipeline *pipeline,
-                                  int layer_index,
-                                  CoglPipelineFilter *min_filter,
-                                  CoglPipelineFilter *mag_filter);
-
-typedef enum {
-  COGL_PIPELINE_LAYER_TYPE_TEXTURE
-} CoglPipelineLayerType;
-
-CoglPipelineLayerType
-_cogl_pipeline_layer_get_type (CoglPipelineLayer *layer);
-
-CoglHandle
-_cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer);
-
-CoglHandle
-_cogl_pipeline_layer_get_texture_real (CoglPipelineLayer *layer);
-
-CoglPipelineFilter
-_cogl_pipeline_layer_get_min_filter (CoglPipelineLayer *layer);
-
-CoglPipelineFilter
-_cogl_pipeline_layer_get_mag_filter (CoglPipelineLayer *layer);
-
-CoglPipelineWrapMode
-_cogl_pipeline_layer_get_wrap_mode_s (CoglPipelineLayer *layer);
-
-CoglPipelineWrapMode
-_cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer);
-
-CoglPipelineWrapMode
-_cogl_pipeline_layer_get_wrap_mode_p (CoglPipelineLayer *layer);
-
-unsigned long
-_cogl_pipeline_layer_compare_differences (CoglPipelineLayer *layer0,
-                                          CoglPipelineLayer *layer1);
-
-CoglPipelineLayer *
-_cogl_pipeline_layer_get_authority (CoglPipelineLayer *layer,
-                                    unsigned long difference);
-
-CoglHandle
-_cogl_pipeline_layer_get_texture (CoglPipelineLayer *layer);
-
 typedef gboolean (*CoglPipelineInternalLayerCallback) (CoglPipelineLayer *layer,
                                                        void *user_data);
 
@@ -1312,9 +994,6 @@ void
 _cogl_pipeline_foreach_layer_internal (CoglPipeline *pipeline,
                                        CoglPipelineInternalLayerCallback callback,
                                        void *user_data);
-
-int
-_cogl_pipeline_layer_get_unit_index (CoglPipelineLayer *layer);
 
 gboolean
 _cogl_pipeline_need_texture_combine_separate
@@ -1326,11 +1005,26 @@ _cogl_pipeline_init_state_hash_functions (void);
 void
 _cogl_pipeline_init_layer_state_hash_functions (void);
 
+void
+_cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change);
+
 CoglPipelineLayerState
 _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context);
 
 CoglPipelineState
 _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context);
+
+void
+_cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change);
+
+void
+_cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
+                                            CoglPipelineLayer *layer,
+                                            CoglPipelineLayerState change);
 
 #endif /* __COGL_PIPELINE_PRIVATE_H */
 

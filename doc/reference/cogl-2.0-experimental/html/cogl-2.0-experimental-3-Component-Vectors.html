@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-utilities.html" title="Utilities">
 <link rel="prev" href="cogl-2.0-experimental-Matrices.html" title="Matrices">
 <link rel="next" href="cogl-2.0-experimental-Quaternions-(Rotations).html" title="Quaternions (Rotations)">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -38,22 +38,38 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-3-Component-Vectors.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init" title="cogl_vector3_init">cogl_vector3_init</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init-zero" title="cogl_vector3_init_zero">cogl_vector3_init_zero</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal" title="cogl_vector3_equal">cogl_vector3_equal</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal-with-epsilon" title="cogl_vector3_equal_with_epsilon">cogl_vector3_equal_with_epsilon</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-copy" title="cogl_vector3_copy">cogl_vector3_copy</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free">cogl_vector3_free</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-invert" title="cogl_vector3_invert">cogl_vector3_invert</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-add" title="cogl_vector3_add">cogl_vector3_add</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-subtract" title="cogl_vector3_subtract">cogl_vector3_subtract</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-multiply-scalar" title="cogl_vector3_multiply_scalar">cogl_vector3_multiply_scalar</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-divide-scalar" title="cogl_vector3_divide_scalar">cogl_vector3_divide_scalar</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-normalize" title="cogl_vector3_normalize">cogl_vector3_normalize</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-magnitude" title="cogl_vector3_magnitude">cogl_vector3_magnitude</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-cross-product" title="cogl_vector3_cross_product">cogl_vector3_cross_product</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-dot-product" title="cogl_vector3_dot_product">cogl_vector3_dot_product</a>
-#define             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-distance" title="cogl_vector3_distance">cogl_vector3_distance</a>
+<pre class="synopsis"><span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init" title="cogl_vector3_init ()">cogl_vector3_init</a>                   (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-init-zero" title="cogl_vector3_init_zero ()">cogl_vector3_init_zero</a>              (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal" title="cogl_vector3_equal ()">cogl_vector3_equal</a>                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstpointer"><span class="type">gconstpointer</span></a> v1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstpointer"><span class="type">gconstpointer</span></a> v2</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-equal-with-epsilon" title="cogl_vector3_equal_with_epsilon ()">cogl_vector3_equal_with_epsilon</a>     (<em class="parameter"><code>const <span class="type">float</span> *vector0</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *vector1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> epsilon</code></em>);
+<span class="returnvalue">float</span> *             <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-copy" title="cogl_vector3_copy ()">cogl_vector3_copy</a>                   (<em class="parameter"><code>const <span class="type">float</span> *vector</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free ()">cogl_vector3_free</a>                   (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-invert" title="cogl_vector3_invert ()">cogl_vector3_invert</a>                 (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-add" title="cogl_vector3_add ()">cogl_vector3_add</a>                    (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-subtract" title="cogl_vector3_subtract ()">cogl_vector3_subtract</a>               (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-multiply-scalar" title="cogl_vector3_multiply_scalar ()">cogl_vector3_multiply_scalar</a>        (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> scalar</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-divide-scalar" title="cogl_vector3_divide_scalar ()">cogl_vector3_divide_scalar</a>          (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> scalar</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-normalize" title="cogl_vector3_normalize ()">cogl_vector3_normalize</a>              (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-magnitude" title="cogl_vector3_magnitude ()">cogl_vector3_magnitude</a>              (<em class="parameter"><code>const <span class="type">float</span> *vector</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-cross-product" title="cogl_vector3_cross_product ()">cogl_vector3_cross_product</a>          (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *u</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *v</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-dot-product" title="cogl_vector3_dot_product ()">cogl_vector3_dot_product</a>            (<em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-distance" title="cogl_vector3_distance ()">cogl_vector3_distance</a>               (<em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -66,9 +82,11 @@ component float vectors.
 <div class="refsect1">
 <a name="cogl-2.0-experimental-3-Component-Vectors.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="cogl-vector3-init"></a><h3>cogl_vector3_init</h3>
-<pre class="programlisting">#define cogl_vector3_init cogl_vector3_init_EXP
-</pre>
+<a name="cogl-vector3-init"></a><h3>cogl_vector3_init ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_init                   (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> y</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> z</code></em>);</pre>
 <p>
 Initializes a 3 component, single precision float vector which can
 then be manipulated with the cogl_vector convenience APIs. Vectors
@@ -79,7 +97,7 @@ can also be used in places where a "point" is often desired.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to initialize</td>
+<td>The 3 component vector you want to initialize</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
@@ -100,9 +118,8 @@ can also be used in places where a "point" is often desired.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-init-zero"></a><h3>cogl_vector3_init_zero</h3>
-<pre class="programlisting">#define cogl_vector3_init_zero cogl_vector3_init_zero_EXP
-</pre>
+<a name="cogl-vector3-init-zero"></a><h3>cogl_vector3_init_zero ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_init_zero              (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);</pre>
 <p>
 Initializes a 3 component, single precision float vector with zero
 for each component.
@@ -111,7 +128,7 @@ for each component.
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to initialize</td>
+<td>The 3 component vector you want to initialize</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.4</p>
@@ -119,9 +136,9 @@ for each component.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-equal"></a><h3>cogl_vector3_equal</h3>
-<pre class="programlisting">#define cogl_vector3_equal cogl_vector3_equal_EXP
-</pre>
+<a name="cogl-vector3-equal"></a><h3>cogl_vector3_equal ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_vector3_equal                  (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstpointer"><span class="type">gconstpointer</span></a> v1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gconstpointer"><span class="type">gconstpointer</span></a> v2</code></em>);</pre>
 <p>
 Compares the components of two vectors and returns TRUE if they are
 the same.
@@ -138,11 +155,11 @@ differences due to the way they have been manipulated.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>v1</code></em> :</span></p></td>
-<td>The first CoglVector3 you want to compare</td>
+<td>The first 3 component vector you want to compare</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>v2</code></em> :</span></p></td>
-<td>The second CoglVector3 you want to compare</td>
+<td>The second 3 component vector you want to compare</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -155,9 +172,10 @@ differences due to the way they have been manipulated.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-equal-with-epsilon"></a><h3>cogl_vector3_equal_with_epsilon</h3>
-<pre class="programlisting">#define cogl_vector3_equal_with_epsilon cogl_vector3_equal_with_epsilon_EXP
-</pre>
+<a name="cogl-vector3-equal-with-epsilon"></a><h3>cogl_vector3_equal_with_epsilon ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_vector3_equal_with_epsilon     (<em class="parameter"><code>const <span class="type">float</span> *vector0</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *vector1</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> epsilon</code></em>);</pre>
 <p>
 Compares the components of two vectors using the given epsilon and
 returns TRUE if they are the same, using an internal epsilon for
@@ -184,11 +202,11 @@ Each component is compared against the epsilon value in this way:
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector0</code></em> :</span></p></td>
-<td>The first CoglVector3 you want to compare</td>
+<td>The first 3 component vector you want to compare</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector1</code></em> :</span></p></td>
-<td>The second CoglVector3 you want to compare</td>
+<td>The second 3 component vector you want to compare</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>epsilon</code></em> :</span></p></td>
@@ -206,25 +224,24 @@ considered equal</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-copy"></a><h3>cogl_vector3_copy</h3>
-<pre class="programlisting">#define cogl_vector3_copy cogl_vector3_copy_EXP
-</pre>
+<a name="cogl-vector3-copy"></a><h3>cogl_vector3_copy ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span> *             cogl_vector3_copy                   (<em class="parameter"><code>const <span class="type">float</span> *vector</code></em>);</pre>
 <p>
-Allocates a new <span class="type">CoglVector3</span> structure on the heap initializing the
-components from the given <em class="parameter"><code>vector</code></em> and returns a pointer to the newly
-allocated vector. You should free the memory using
-<a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free"><code class="function">cogl_vector3_free()</code></a>
+Allocates a new 3 component float vector on the heap initializing
+the components from the given <em class="parameter"><code>vector</code></em> and returns a pointer to the
+newly allocated vector. You should free the memory using
+<a class="link" href="cogl-2.0-experimental-3-Component-Vectors.html#cogl-vector3-free" title="cogl_vector3_free ()"><code class="function">cogl_vector3_free()</code></a>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to copy</td>
+<td>The 3 component vector you want to copy</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A newly allocated <span class="type">CoglVector3</span>.</td>
+<td>A newly allocated 3 component float vector</td>
 </tr>
 </tbody>
 </table></div>
@@ -233,18 +250,17 @@ allocated vector. You should free the memory using
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-free"></a><h3>cogl_vector3_free</h3>
-<pre class="programlisting">#define cogl_vector3_free cogl_vector3_free_EXP
-</pre>
+<a name="cogl-vector3-free"></a><h3>cogl_vector3_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_free                   (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);</pre>
 <p>
-Frees a <span class="type">CoglVector3</span> that was previously allocated with
+Frees a 3 component vector that was previously allocated with
 <code class="function">cogl_vector_copy()</code>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to free</td>
+<td>The 3 component you want to free</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.4</p>
@@ -252,9 +268,8 @@ Frees a <span class="type">CoglVector3</span> that was previously allocated with
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-invert"></a><h3>cogl_vector3_invert</h3>
-<pre class="programlisting">#define cogl_vector3_invert cogl_vector3_invert_EXP
-</pre>
+<a name="cogl-vector3-invert"></a><h3>cogl_vector3_invert ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_invert                 (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);</pre>
 <p>
 Inverts/negates all the components of the given <em class="parameter"><code>vector</code></em>.
 </p>
@@ -262,7 +277,7 @@ Inverts/negates all the components of the given <em class="parameter"><code>vect
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to manipulate</td>
+<td>The 3 component vector you want to manipulate</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.4</p>
@@ -270,9 +285,10 @@ Inverts/negates all the components of the given <em class="parameter"><code>vect
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-add"></a><h3>cogl_vector3_add</h3>
-<pre class="programlisting">#define cogl_vector3_add cogl_vector3_add_EXP
-</pre>
+<a name="cogl-vector3-add"></a><h3>cogl_vector3_add ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_add                    (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);</pre>
 <p>
 Adds each of the corresponding components in vectors <em class="parameter"><code>a</code></em> and <em class="parameter"><code>b</code></em>
 storing the results in <em class="parameter"><code>result</code></em>.
@@ -299,9 +315,10 @@ storing the results in <em class="parameter"><code>result</code></em>.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-subtract"></a><h3>cogl_vector3_subtract</h3>
-<pre class="programlisting">#define cogl_vector3_subtract cogl_vector3_subtract_EXP
-</pre>
+<a name="cogl-vector3-subtract"></a><h3>cogl_vector3_subtract ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_subtract               (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);</pre>
 <p>
 Subtracts each of the corresponding components in vector <em class="parameter"><code>b</code></em> from
 <em class="parameter"><code>a</code></em> storing the results in <em class="parameter"><code>result</code></em>.
@@ -328,9 +345,9 @@ Subtracts each of the corresponding components in vector <em class="parameter"><
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-multiply-scalar"></a><h3>cogl_vector3_multiply_scalar</h3>
-<pre class="programlisting">#define cogl_vector3_multiply_scalar cogl_vector3_multiply_scalar_EXP
-</pre>
+<a name="cogl-vector3-multiply-scalar"></a><h3>cogl_vector3_multiply_scalar ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_multiply_scalar        (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> scalar</code></em>);</pre>
 <p>
 Multiplies each of the <em class="parameter"><code>vector</code></em> components by the given scalar.
 </p>
@@ -339,7 +356,7 @@ Multiplies each of the <em class="parameter"><code>vector</code></em> components
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to manipulate</td>
+<td>The 3 component vector you want to manipulate</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scalar</code></em> :</span></p></td>
@@ -352,9 +369,9 @@ Multiplies each of the <em class="parameter"><code>vector</code></em> components
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-divide-scalar"></a><h3>cogl_vector3_divide_scalar</h3>
-<pre class="programlisting">#define cogl_vector3_divide_scalar cogl_vector3_divide_scalar_EXP
-</pre>
+<a name="cogl-vector3-divide-scalar"></a><h3>cogl_vector3_divide_scalar ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_divide_scalar          (<em class="parameter"><code><span class="type">float</span> *vector</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> scalar</code></em>);</pre>
 <p>
 Divides each of the <em class="parameter"><code>vector</code></em> components by the given scalar.
 </p>
@@ -363,7 +380,7 @@ Divides each of the <em class="parameter"><code>vector</code></em> components by
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to manipulate</td>
+<td>The 3 component vector you want to manipulate</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>scalar</code></em> :</span></p></td>
@@ -376,9 +393,8 @@ Divides each of the <em class="parameter"><code>vector</code></em> components by
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-normalize"></a><h3>cogl_vector3_normalize</h3>
-<pre class="programlisting">#define cogl_vector3_normalize cogl_vector3_normalize_EXP
-</pre>
+<a name="cogl-vector3-normalize"></a><h3>cogl_vector3_normalize ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_normalize              (<em class="parameter"><code><span class="type">float</span> *vector</code></em>);</pre>
 <p>
 Updates the vector so it is a "unit vector" such that the
 <em class="parameter"><code>vector</code></em>s magnitude or length is equal to 1.
@@ -387,7 +403,7 @@ Updates the vector so it is a "unit vector" such that the
 <col align="left" valign="top">
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want to manipulate</td>
+<td>The 3 component vector you want to manipulate</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.4</p>
@@ -395,9 +411,8 @@ Updates the vector so it is a "unit vector" such that the
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-magnitude"></a><h3>cogl_vector3_magnitude</h3>
-<pre class="programlisting">#define cogl_vector3_magnitude cogl_vector3_magnitude_EXP
-</pre>
+<a name="cogl-vector3-magnitude"></a><h3>cogl_vector3_magnitude ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               cogl_vector3_magnitude              (<em class="parameter"><code>const <span class="type">float</span> *vector</code></em>);</pre>
 <p>
 Calculates the scalar magnitude or length of <em class="parameter"><code>vector</code></em>.
 </p>
@@ -406,7 +421,7 @@ Calculates the scalar magnitude or length of <em class="parameter"><code>vector<
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>vector</code></em> :</span></p></td>
-<td>The CoglVector3 you want the magnitude for</td>
+<td>The 3 component vector you want the magnitude for</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -419,9 +434,10 @@ Calculates the scalar magnitude or length of <em class="parameter"><code>vector<
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-cross-product"></a><h3>cogl_vector3_cross_product</h3>
-<pre class="programlisting">#define cogl_vector3_cross_product cogl_vector3_cross_product_EXP
-</pre>
+<a name="cogl-vector3-cross-product"></a><h3>cogl_vector3_cross_product ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_vector3_cross_product          (<em class="parameter"><code><span class="type">float</span> *result</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *u</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *v</code></em>);</pre>
 <p>
 Calculates the cross product between the two vectors <em class="parameter"><code>u</code></em> and <em class="parameter"><code>v</code></em>.
 </p>
@@ -451,11 +467,11 @@ points along your extended thumb.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>u</code></em> :</span></p></td>
-<td>Your first CoglVector3</td>
+<td>Your first 3 component vector</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>v</code></em> :</span></p></td>
-<td>Your second CoglVector3</td>
+<td>Your second 3 component vector</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -468,11 +484,11 @@ points along your extended thumb.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-dot-product"></a><h3>cogl_vector3_dot_product</h3>
-<pre class="programlisting">#define cogl_vector3_dot_product cogl_vector3_dot_product_EXP
-</pre>
+<a name="cogl-vector3-dot-product"></a><h3>cogl_vector3_dot_product ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               cogl_vector3_dot_product            (<em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);</pre>
 <p>
-Calculates the dot product of the two <span class="type">CoglVector3</span>s. This
+Calculates the dot product of the two 3 component vectors. This
 can be used to determine the magnitude of one vector projected onto
 another. (for example a surface normal)
 </p>
@@ -532,11 +548,11 @@ angle between two vectors as:
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
-<td>Your first CoglVector3</td>
+<td>Your first 3 component vector</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
-<td>Your second CoglVector3</td>
+<td>Your second 3 component vector</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -549,9 +565,9 @@ angle between two vectors as:
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-vector3-distance"></a><h3>cogl_vector3_distance</h3>
-<pre class="programlisting">#define cogl_vector3_distance cogl_vector3_distance_EXP
-</pre>
+<a name="cogl-vector3-distance"></a><h3>cogl_vector3_distance ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               cogl_vector3_distance               (<em class="parameter"><code>const <span class="type">float</span> *a</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *b</code></em>);</pre>
 <p>
 If you consider the two given vectors as (x,y,z) points instead
 then this will compute the distance between those two points.
@@ -569,7 +585,8 @@ then this will compute the distance between those two points.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The distance between two points given as <em class="parameter"><code>CoglVector3</code></em>s</td>
+<td>The distance between two points given as 3 component
+vectors.</td>
 </tr>
 </tbody>
 </table></div>
@@ -580,6 +597,6 @@ then this will compute the distance between those two points.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

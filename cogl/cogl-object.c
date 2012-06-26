@@ -30,6 +30,7 @@
 #include <glib.h>
 #include <string.h>
 
+#include "cogl-util.h"
 #include "cogl-types.h"
 #include "cogl-object-private.h"
 
@@ -38,7 +39,7 @@ cogl_object_ref (void *object)
 {
   CoglObject *obj = object;
 
-  g_return_val_if_fail (object != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (object != NULL, NULL);
 
   obj->ref_count++;
   return object;
@@ -51,12 +52,12 @@ cogl_handle_ref (CoglHandle handle)
 }
 
 void
-cogl_object_unref (void *object)
+_cogl_object_default_unref (void *object)
 {
   CoglObject *obj = object;
 
-  g_return_if_fail (object != NULL);
-  g_return_if_fail (obj->ref_count > 0);
+  _COGL_RETURN_IF_FAIL (object != NULL);
+  _COGL_RETURN_IF_FAIL (obj->ref_count > 0);
 
   if (--obj->ref_count < 1)
     {
@@ -94,6 +95,13 @@ cogl_object_unref (void *object)
       free_func = obj->klass->virt_free;
       free_func (obj);
     }
+}
+
+void
+cogl_object_unref (void *obj)
+{
+  void (* unref_func) (void *) = ((CoglObject *) obj)->klass->virt_unref;
+  unref_func (obj);
 }
 
 void
@@ -182,6 +190,12 @@ _cogl_object_set_user_data (CoglObject *object,
     }
   else
     {
+      /* NB: Setting a value of NULL is documented to delete the
+       * corresponding entry so we can return immediately in this
+       * case. */
+      if (user_data == NULL)
+        return;
+
       if (G_LIKELY (object->n_user_data_entries <
                     COGL_OBJECT_N_PRE_ALLOCATED_USER_DATA_ENTRIES))
         entry = &object->user_data_entry[object->n_user_data_entries++];

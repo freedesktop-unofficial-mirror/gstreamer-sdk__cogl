@@ -33,7 +33,6 @@
 
 #include <glib.h>
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-debug.h"
@@ -950,6 +949,10 @@ struct _TestString
   const char *string;
   CoglBlendStringContext context;
 };
+
+/* FIXME: this should probably be moved to a unit test */
+int
+_cogl_blend_string_test (void);
 
 int
 _cogl_blend_string_test (void)

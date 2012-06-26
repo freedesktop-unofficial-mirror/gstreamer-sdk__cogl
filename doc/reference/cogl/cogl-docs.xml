@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY version "1.8.2">
+<!ENTITY version "1.10.2">
 ]>
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
 
@@ -168,6 +168,11 @@
   <index role="1.6">
     <title>Index of new symbols in 1.6</title>
     <xi:include href="xml/api-index-1.6.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <index role="1.8">
+    <title>Index of new symbols in 1.8</title>
+    <xi:include href="xml/api-index-1.8.xml"><xi:fallback /></xi:include>
   </index>
 
   <appendix id="license">

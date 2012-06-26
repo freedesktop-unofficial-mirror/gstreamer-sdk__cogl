@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Cogl deprecated API">
 <link rel="prev" href="cogl-Vertex-Buffers-(Deprecated).html" title="Vertex Buffers (Deprecated)">
 <link rel="next" href="cogl-Offscreen-Buffers-(Deprecated).html" title="Offscreen Buffers (Deprecated)">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -72,7 +72,7 @@
 <pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_shader_ref                     (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_shader_ref</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">cogl_shader_ref</code> has been deprecated since version 1.0 and should not be used in newly-written code. Please use <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()"><code class="function">cogl_handle_ref()</code></a> instead.</p>
 </div>
 <p>
 Add an extra reference to a shader.
@@ -97,7 +97,7 @@ Add an extra reference to a shader.
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_shader_unref                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_shader_unref</code> is deprecated and should not be used in newly-written code.</p>
+<p><code class="literal">cogl_shader_unref</code> has been deprecated since version 1.0 and should not be used in newly-written code. Please use <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()"><code class="function">cogl_handle_unref()</code></a> instead.</p>
 </div>
 <p>
 Removes a reference to a shader. If it was the last reference the
@@ -115,6 +115,10 @@ shader object will be destroyed.
 <div class="refsect2">
 <a name="cogl-program-ref"></a><h3>cogl_program_ref ()</h3>
 <pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_program_ref                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_ref</code> has been deprecated since version 1.0 and should not be used in newly-written code. Please use <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()"><code class="function">cogl_handle_ref()</code></a> instead.</p>
+</div>
 <p>
 Add an extra reference to a program.
 </p>
@@ -136,6 +140,10 @@ Add an extra reference to a program.
 <div class="refsect2">
 <a name="cogl-program-unref"></a><h3>cogl_program_unref ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_unref                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">cogl_program_unref</code> has been deprecated since version 1.0 and should not be used in newly-written code. Please use <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()"><code class="function">cogl_handle_unref()</code></a> instead.</p>
+</div>
 <p>
 Removes a reference to a program. If it was the last reference the
 program object will be destroyed.
@@ -156,6 +164,12 @@ program object will be destroyed.
 Activate a specific shader program replacing that part of the GL
 rendering pipeline, if passed in <a class="link" href="cogl-General-API.html#COGL-INVALID-HANDLE:CAPS" title="COGL_INVALID_HANDLE"><code class="literal">COGL_INVALID_HANDLE</code></a> the default
 behavior of GL is reinstated.
+</p>
+<p>
+This function affects the global state of the current Cogl
+context. It is much more efficient to attach the shader to a
+specific material used for rendering instead by calling
+<a class="link" href="cogl-Materials.html#cogl-material-set-user-program" title="cogl_material_set_user_program ()"><code class="function">cogl_material_set_user_program()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -343,6 +357,6 @@ parameter is used to determine the square size of the matrix.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

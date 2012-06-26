@@ -27,7 +27,6 @@
 
 #include <string.h>
 
-#include "cogl.h"
 #include "cogl-context-private.h"
 
 #include "cogl-feature-private.h"
@@ -159,7 +158,7 @@ error:
 #define COGL_EXT_END()                      \
   { NULL, 0 },                                  \
   };
-#include "cogl-ext-functions.h"
+#include "gl-prototypes/cogl-all-functions.h"
 
 /* Define an array of features */
 #undef COGL_EXT_BEGIN
@@ -178,7 +177,7 @@ error:
 static const CoglFeatureData
 cogl_feature_ext_functions_data[] =
   {
-#include "cogl-ext-functions.h"
+#include "gl-prototypes/cogl-all-functions.h"
   };
 
 void

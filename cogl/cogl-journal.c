@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-debug.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
@@ -39,6 +38,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl-point-in-poly-private.h"
 #include "cogl-private.h"
+#include "cogl1-context.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -96,8 +96,6 @@ typedef struct _CoglJournalFlushState
 {
   CoglJournal         *journal;
 
-  CoglFramebuffer     *framebuffer;
-
   CoglAttributeBuffer *attribute_buffer;
   GArray              *attributes;
   int                  current_attribute;
@@ -112,7 +110,7 @@ typedef struct _CoglJournalFlushState
   CoglMatrixStack     *modelview_stack;
   CoglMatrixStack     *projection_stack;
 
-  CoglPipeline        *source;
+  CoglPipeline        *pipeline;
 } CoglJournalFlushState;
 
 typedef void (*CoglJournalBatchCallback) (CoglJournalEntry *start,
@@ -123,7 +121,7 @@ typedef gboolean (*CoglJournalBatchTest) (CoglJournalEntry *entry0,
 
 static void _cogl_journal_free (CoglJournal *journal);
 
-COGL_OBJECT_DEFINE (Journal, journal);
+COGL_OBJECT_INTERNAL_DEFINE (Journal, journal);
 
 static void
 _cogl_journal_free (CoglJournal *journal)
@@ -143,9 +141,17 @@ _cogl_journal_free (CoglJournal *journal)
 }
 
 CoglJournal *
-_cogl_journal_new (void)
+_cogl_journal_new (CoglFramebuffer *framebuffer)
 {
   CoglJournal *journal = g_slice_new0 (CoglJournal);
+
+  /* The journal keeps a pointer back to the framebuffer because there
+     is effectively a 1:1 mapping between journals and framebuffers.
+     However, to avoid a circular reference the journal doesn't take a
+     reference unless it is non-empty. The framebuffer has a special
+     unref implementation to ensure that the journal is flushed when
+     the journal is the only thing keeping it alive */
+  journal->framebuffer = framebuffer;
 
   journal->entries = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   journal->vertices = g_array_new (FALSE, FALSE, sizeof (float));
@@ -270,10 +276,12 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                            void             *data)
 {
   CoglJournalFlushState *state = data;
+  CoglFramebuffer *framebuffer = state->journal->framebuffer;
   CoglAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
                               COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
+                              COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH |
+                              COGL_DRAW_SKIP_LEGACY_STATE);
 
   COGL_STATIC_TIMER (time_flush_modelview_and_entries,
                      "flush: pipeline+entries", /* parent */
@@ -292,47 +300,52 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     {
       _cogl_matrix_stack_set (state->modelview_stack,
                               &batch_start->model_view);
-      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
-                                      COGL_MATRIX_MODELVIEW);
+      _cogl_context_set_current_modelview (ctx, state->modelview_stack);
     }
 
   attributes = (CoglAttribute **)state->attributes->data;
-  _cogl_push_source (state->source, FALSE);
 
-  if (!_cogl_pipeline_get_real_blend_enabled (state->source))
+  if (!_cogl_pipeline_get_real_blend_enabled (state->pipeline))
     draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
 
 #ifdef HAVE_COGL_GL
   if (ctx->driver == COGL_DRIVER_GL)
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
-      _cogl_draw_attributes (GL_QUADS,
-                             state->current_vertex, batch_len * 4,
-                             attributes,
-                             state->attributes->len,
-                             draw_flags);
+      _cogl_framebuffer_draw_attributes (framebuffer,
+                                         state->pipeline,
+                                         GL_QUADS,
+                                         state->current_vertex, batch_len * 4,
+                                         attributes,
+                                         state->attributes->len,
+                                         draw_flags);
     }
   else
 #endif /* HAVE_COGL_GL */
     {
       if (batch_len > 1)
         {
-          _cogl_draw_indexed_attributes (COGL_VERTICES_MODE_TRIANGLES,
-                                         state->current_vertex * 6 / 4,
-                                         batch_len * 6,
-                                         state->indices,
-                                         attributes,
-                                         state->attributes->len,
-                                         draw_flags);
-
+          CoglVerticesMode mode = COGL_VERTICES_MODE_TRIANGLES;
+          int first_vertex = state->current_vertex * 6 / 4;
+          _cogl_framebuffer_draw_indexed_attributes (framebuffer,
+                                                     state->pipeline,
+                                                     mode,
+                                                     first_vertex,
+                                                     batch_len * 6,
+                                                     state->indices,
+                                                     attributes,
+                                                     state->attributes->len,
+                                                     draw_flags);
         }
       else
         {
-          _cogl_draw_attributes (COGL_VERTICES_MODE_TRIANGLE_FAN,
-                                 state->current_vertex, 4,
-                                 attributes,
-                                 state->attributes->len,
-                                 draw_flags);
+          _cogl_framebuffer_draw_attributes (framebuffer,
+                                             state->pipeline,
+                                             COGL_VERTICES_MODE_TRIANGLE_FAN,
+                                             state->current_vertex, 4,
+                                             attributes,
+                                             state->attributes->len,
+                                             draw_flags);
         }
     }
 
@@ -352,7 +365,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
       if (outline == NULL)
-        outline = cogl_pipeline_new ();
+        outline = cogl_pipeline_new (ctxt);
 
       /* The least significant three bits represent the three
          components so that the order of colours goes red, green,
@@ -370,15 +383,16 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                   (ctxt->journal_rectangles_color & 4) ?
                                   color_intensity : 0,
                                   0xff);
-      cogl_set_source (outline);
 
       loop_attributes[0] = attributes[0]; /* we just want the position */
       for (i = 0; i < batch_len; i++)
-        _cogl_draw_attributes (COGL_VERTICES_MODE_LINE_LOOP,
-                               4 * i + state->current_vertex, 4,
-                               loop_attributes,
-                               1,
-                               draw_flags);
+        _cogl_framebuffer_draw_attributes (framebuffer,
+                                           outline,
+                                           COGL_VERTICES_MODE_LINE_LOOP,
+                                           4 * i + state->current_vertex, 4,
+                                           loop_attributes,
+                                           1,
+                                           draw_flags);
 
       /* Go to the next color */
       do
@@ -390,8 +404,6 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     }
 
   state->current_vertex += (4 * batch_len);
-
-  cogl_pop_source ();
 
   COGL_TIMER_STOP (_cogl_uprof_context, time_flush_modelview_and_entries);
 }
@@ -439,7 +451,7 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:    pipeline batch len = %d\n", batch_len);
 
-  state->source = batch_start->pipeline;
+  state->pipeline = batch_start->pipeline;
 
   /* If we haven't transformed the quads in software then we need to also break
    * up batches according to changes in the modelview matrix... */
@@ -571,6 +583,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                                              void             *data)
 {
   CoglJournalFlushState   *state = data;
+  CoglContext             *ctx = state->journal->framebuffer->context;
   gsize                    stride;
   int                      i;
   CoglAttribute          **attribute_entry;
@@ -580,8 +593,6 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                      "The time spent flushing vbo + texcoord offsets + "
                      "pipeline + entries",
                      0 /* no application private data */);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context,
                     time_flush_vbo_texcoord_pipeline_entries);
@@ -625,7 +636,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                         COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
   if (ctx->driver != COGL_DRIVER_GL)
-    state->indices = cogl_get_rectangle_indices (batch_len);
+    state->indices = cogl_get_rectangle_indices (ctx, batch_len);
 
   /* We only create new Attributes when the stride within the
    * AttributeBuffer changes. (due to a change in the number of pipeline
@@ -707,7 +718,13 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING:  clip stack batch len = %d\n", batch_len);
 
-  _cogl_clip_stack_flush (batch_start->clip_stack, state->framebuffer);
+  _cogl_clip_stack_flush (batch_start->clip_stack, state->journal->framebuffer);
+
+  /* XXX: Because we are manually flushing clip state here we need to
+   * make sure that the clip state gets updated the next time we flush
+   * framebuffer state by marking the current framebuffer's clip state
+   * as changed. */
+  ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
 
   _cogl_matrix_stack_push (state->modelview_stack);
 
@@ -718,15 +735,13 @@ _cogl_journal_flush_clip_stacks_and_entries (CoglJournalEntry *batch_start,
   if (G_LIKELY (!(COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_TRANSFORM))))
     {
       _cogl_matrix_stack_load_identity (state->modelview_stack);
-      _cogl_matrix_stack_flush_to_gl (state->modelview_stack,
-                                      COGL_MATRIX_MODELVIEW);
+      _cogl_context_set_current_modelview (ctx, state->modelview_stack);
     }
 
   /* Setting up the clip state can sometimes also flush the projection
      matrix so we should flush it again. This will be a no-op if the
      clip code didn't modify the projection */
-  _cogl_matrix_stack_flush_to_gl (state->projection_stack,
-                                  COGL_MATRIX_PROJECTION);
+  _cogl_context_set_current_projection (ctx, state->projection_stack);
 
   batch_and_call (batch_start,
                   batch_len,
@@ -1118,24 +1133,26 @@ create_attribute_buffer (CoglJournal *journal,
 {
   CoglAttributeBuffer *vbo;
 
+  _COGL_GET_CONTEXT (ctx, NULL);
+
   /* If CoglBuffers are being emulated with malloc then there's not
      really any point in using the pool so we'll just allocate the
      buffer directly */
-  if (!cogl_features_available (COGL_FEATURE_VBOS))
-    return cogl_attribute_buffer_new (n_bytes, NULL);
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
+    return cogl_attribute_buffer_new (ctx, n_bytes, NULL);
 
   vbo = journal->vbo_pool[journal->next_vbo_in_pool];
 
   if (vbo == NULL)
     {
-      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      vbo = cogl_attribute_buffer_new (ctx, n_bytes, NULL);
       journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
     }
   else if (cogl_buffer_get_size (COGL_BUFFER (vbo)) < n_bytes)
     {
       /* If the buffer is too small then we'll just recreate it */
       cogl_object_unref (vbo);
-      vbo = cogl_attribute_buffer_new (n_bytes, NULL);
+      vbo = cogl_attribute_buffer_new (ctx, n_bytes, NULL);
       journal->vbo_pool[journal->next_vbo_in_pool] = vbo;
     }
 
@@ -1244,6 +1261,9 @@ _cogl_journal_discard (CoglJournal *journal)
 {
   int i;
 
+  if (journal->entries->len <= 0)
+    return;
+
   for (i = 0; i < journal->entries->len; i++)
     {
       CoglJournalEntry *entry =
@@ -1256,6 +1276,10 @@ _cogl_journal_discard (CoglJournal *journal)
   g_array_set_size (journal->vertices, 0);
   journal->needed_vbo_len = 0;
   journal->fast_read_pixel_count = 0;
+
+  /* The journal only holds a reference to the framebuffer while the
+     journal is not empty */
+  cogl_object_unref (journal->framebuffer);
 }
 
 /* Note: A return value of FALSE doesn't mean 'no' it means
@@ -1331,8 +1355,7 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
  * is undefined.
  */
 void
-_cogl_journal_flush (CoglJournal *journal,
-                     CoglFramebuffer *framebuffer)
+_cogl_journal_flush (CoglJournal *journal)
 {
   CoglJournalFlushState state;
   int                   i;
@@ -1352,32 +1375,32 @@ _cogl_journal_flush (CoglJournal *journal,
    * framebuffers which may require that we flush the journals
    * associated with those framebuffers before we can flush
    * this journal... */
-  _cogl_framebuffer_flush_dependency_journals (framebuffer);
+  _cogl_framebuffer_flush_dependency_journals (journal->framebuffer);
 
   /* Note: we start the timer after flushing dependency journals so
    * that the timer isn't started recursively. */
   COGL_TIMER_START (_cogl_uprof_context, flush_timer);
-
-  state.framebuffer = framebuffer;
-  cogl_push_framebuffer (framebuffer);
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_BATCHING)))
     g_print ("BATCHING: journal len = %d\n", journal->entries->len);
 
   /* NB: the journal deals with flushing the modelview stack and clip
      state manually */
-  _cogl_framebuffer_flush_state (framebuffer,
-                                 framebuffer,
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_MODELVIEW |
-                                 COGL_FRAMEBUFFER_FLUSH_SKIP_CLIP_STATE);
+  _cogl_framebuffer_flush_state (journal->framebuffer,
+                                 journal->framebuffer,
+                                 COGL_FRAMEBUFFER_STATE_ALL &
+                                 ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
+                                   COGL_FRAMEBUFFER_STATE_CLIP));
 
   state.journal = journal;
 
   state.attributes = ctx->journal_flush_attributes_array;
 
-  modelview_stack = _cogl_framebuffer_get_modelview_stack (framebuffer);
+  modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (journal->framebuffer);
   state.modelview_stack = modelview_stack;
-  state.projection_stack = _cogl_framebuffer_get_projection_stack (framebuffer);
+  state.projection_stack =
+    _cogl_framebuffer_get_projection_stack (journal->framebuffer);
 
   if (G_UNLIKELY ((COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SOFTWARE_CLIP)) == 0))
     {
@@ -1440,8 +1463,6 @@ _cogl_journal_flush (CoglJournal *journal,
 
   _cogl_journal_discard (journal);
 
-  cogl_pop_framebuffer ();
-
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
 
@@ -1449,7 +1470,7 @@ static gboolean
 add_framebuffer_deps_cb (CoglPipelineLayer *layer, void *user_data)
 {
   CoglFramebuffer *framebuffer = user_data;
-  CoglHandle texture = _cogl_pipeline_layer_get_texture_real (layer);
+  CoglTexture *texture = _cogl_pipeline_layer_get_texture_real (layer);
   const GList *l;
 
   if (!texture)
@@ -1466,19 +1487,20 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                         const float  *position,
                         CoglPipeline *pipeline,
                         int           n_layers,
-                        CoglHandle    layer0_override_texture,
+                        CoglTexture  *layer0_override_texture,
                         const float  *tex_coords,
                         unsigned int  tex_coords_len)
 {
-  gsize            stride;
-  int               next_vert;
-  float            *v;
-  int               i;
-  int               next_entry;
-  guint32           disable_layers;
+  CoglFramebuffer *framebuffer = journal->framebuffer;
+  gsize stride;
+  int next_vert;
+  float *v;
+  int i;
+  int next_entry;
+  guint32 disable_layers;
   CoglJournalEntry *entry;
-  CoglPipeline     *source;
-  CoglClipStack    *clip_stack;
+  CoglPipeline *final_pipeline;
+  CoglClipStack *clip_stack;
   CoglPipelineFlushOptions flush_options;
   COGL_STATIC_TIMER (log_timer,
                      "Mainloop", /* parent */
@@ -1486,9 +1508,13 @@ _cogl_journal_log_quad (CoglJournal  *journal,
                      "The time spent logging in the Cogl journal",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   COGL_TIMER_START (_cogl_uprof_context, log_timer);
+
+  /* If the framebuffer was previously empty then we'll take a
+     reference to the current framebuffer. This reference will be
+     removed when the journal is flushed */
+  if (journal->vertices->len == 0)
+    cogl_object_ref (framebuffer);
 
   /* The vertex data is logged into a separate array. The data needs
      to be copied into a vertex array before it's given to GL so we
@@ -1543,7 +1569,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
   entry->n_layers = n_layers;
   entry->array_offset = next_vert;
 
-  source = pipeline;
+  final_pipeline = pipeline;
 
   flush_options.flags = 0;
   if (G_UNLIKELY (cogl_pipeline_get_n_layers (pipeline) != n_layers))
@@ -1561,37 +1587,34 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   if (G_UNLIKELY (flush_options.flags))
     {
-      source = cogl_pipeline_copy (pipeline);
-      _cogl_pipeline_apply_overrides (source, &flush_options);
+      final_pipeline = cogl_pipeline_copy (pipeline);
+      _cogl_pipeline_apply_overrides (final_pipeline, &flush_options);
     }
 
-  entry->pipeline = _cogl_pipeline_journal_ref (source);
+  entry->pipeline = _cogl_pipeline_journal_ref (final_pipeline);
 
-  clip_stack = _cogl_framebuffer_get_clip_stack (cogl_get_draw_framebuffer ());
+  clip_stack = _cogl_framebuffer_get_clip_stack (framebuffer);
   entry->clip_stack = _cogl_clip_stack_ref (clip_stack);
 
-  if (G_UNLIKELY (source != pipeline))
-    cogl_handle_unref (source);
+  if (G_UNLIKELY (final_pipeline != pipeline))
+    cogl_handle_unref (final_pipeline);
 
-  cogl_get_modelview_matrix (&entry->model_view);
+  cogl_framebuffer_get_modelview_matrix (framebuffer,
+                                         &entry->model_view);
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
-                                         cogl_get_draw_framebuffer ());
+                                         framebuffer);
 
-  /* XXX: It doesn't feel very nice that in this case we just assume
-   * that the journal is associated with the current framebuffer. I
-   * think a journal->framebuffer reference would seem nicer here but
-   * the reason we don't have that currently is that it would
-   * introduce a circular reference. */
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BATCHING)))
-    _cogl_framebuffer_flush_journal (cogl_get_draw_framebuffer ());
+    _cogl_journal_flush (journal);
 
   COGL_TIMER_STOP (_cogl_uprof_context, log_timer);
 }
 
 static void
-entry_to_screen_polygon (const CoglJournalEntry *entry,
+entry_to_screen_polygon (CoglFramebuffer *framebuffer,
+                         const CoglJournalEntry *entry,
                          float *vertices,
                          float *poly)
 {
@@ -1636,7 +1659,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                                 4 /* n_points */);
 
   projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
+    _cogl_framebuffer_get_projection_stack (framebuffer);
   _cogl_matrix_stack_get (projection_stack, &projection);
 
   cogl_matrix_project_points (&projection,
@@ -1648,7 +1671,7 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
                               poly, /* points_out */
                               4 /* n_points */);
 
-  cogl_framebuffer_get_viewport4fv (cogl_get_draw_framebuffer (), viewport);
+  cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
 
 /* Scale from OpenGL normalized device coordinates (ranging from -1 to 1)
  * to Cogl window/framebuffer coordinates (ranging from 0 to buffer-size) with
@@ -1682,7 +1705,8 @@ entry_to_screen_polygon (const CoglJournalEntry *entry,
 }
 
 static gboolean
-try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
+try_checking_point_hits_entry_after_clipping (CoglFramebuffer *framebuffer,
+                                              CoglJournalEntry *entry,
                                               float *vertices,
                                               float x,
                                               float y,
@@ -1744,7 +1768,7 @@ try_checking_point_hits_entry_after_clipping (CoglJournalEntry *entry,
         return FALSE;
 
       software_clip_entry (entry, vertices, &clip_bounds);
-      entry_to_screen_polygon (entry, vertices, poly);
+      entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
       *hit = _cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4);
       return TRUE;
@@ -1757,10 +1781,10 @@ gboolean
 _cogl_journal_try_read_pixel (CoglJournal *journal,
                               int x,
                               int y,
-                              CoglPixelFormat format,
-                              guint8 *pixel,
+                              CoglBitmap *bitmap,
                               gboolean *found_intersection)
 {
+  CoglPixelFormat format;
   int i;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
@@ -1775,6 +1799,8 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
    * up faster in the end. */
   if (journal->fast_read_pixel_count > 50)
     return FALSE;
+
+  format = cogl_bitmap_get_format (bitmap);
 
   if (format != COGL_PIXEL_FORMAT_RGBA_8888_PRE &&
       format != COGL_PIXEL_FORMAT_RGBA_8888)
@@ -1797,22 +1823,21 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
                                                 entry->array_offset);
       float *vertices = (float *)color + 1;
       float poly[16];
+      CoglFramebuffer *framebuffer = journal->framebuffer;
+      guint8 *pixel;
 
-      entry_to_screen_polygon (entry, vertices, poly);
+      entry_to_screen_polygon (framebuffer, entry, vertices, poly);
 
       if (!_cogl_util_point_in_screen_poly (x, y, poly, sizeof (float) * 4, 4))
         continue;
 
-      /* FIXME: the journal should have a back pointer to the
-       * associated framebuffer, because it should be possible to read
-       * a pixel from arbitrary framebuffers without needing to
-       * internally call _cogl_push/pop_framebuffer.
-       */
       if (entry->clip_stack)
         {
           gboolean hit;
 
-          if (!try_checking_point_hits_entry_after_clipping (entry, vertices,
+          if (!try_checking_point_hits_entry_after_clipping (framebuffer,
+                                                             entry,
+                                                             vertices,
                                                              x, y, &hit))
             return FALSE; /* hit couldn't be determined */
 
@@ -1838,10 +1863,18 @@ _cogl_journal_try_read_pixel (CoglJournal *journal,
       if (color[3] != 0xff)
         return FALSE;
 
+      pixel = _cogl_bitmap_map (bitmap,
+                                COGL_BUFFER_ACCESS_WRITE,
+                                COGL_BUFFER_MAP_HINT_DISCARD);
+      if (pixel == NULL)
+        return FALSE;
+
       pixel[0] = color[0];
       pixel[1] = color[1];
       pixel[2] = color[2];
       pixel[3] = color[3];
+
+      _cogl_bitmap_unmap (bitmap);
 
       goto success;
     }

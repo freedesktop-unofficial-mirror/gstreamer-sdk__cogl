@@ -31,9 +31,6 @@
 #include <glib-object.h>
 
 #include <cogl/cogl-defines.h>
-#ifdef COGL_HAS_XLIB
-#include <X11/Xlib.h>
-#endif
 
 G_BEGIN_DECLS
 
@@ -166,15 +163,77 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
 
 /* Enum declarations */
 
-#define COGL_PIXEL_FORMAT_24    2
-#define COGL_PIXEL_FORMAT_32    3
 #define COGL_A_BIT              (1 << 4)
 #define COGL_BGR_BIT            (1 << 5)
 #define COGL_AFIRST_BIT         (1 << 6)
 #define COGL_PREMULT_BIT        (1 << 7)
-#define COGL_UNORDERED_MASK     0x0F
-#define COGL_UNPREMULT_MASK     0x7F
 
+/* XXX: Notes to those adding new formats here...
+ *
+ * First this diagram outlines how we allocate the 32bits of a
+ * CoglPixelFormat currently...
+ *
+ *                             4 bits for flags
+ *                             |--|
+ *  enum        unused             4 bits for the bytes-per-pixel
+ *                                 and component alignment info
+ *  |------| |---------------|     |--|
+ *  00000000 xxxxxxxx xxxxxxxx PFBA0000
+ *                             ^ premult
+ *                              ^ alpha first
+ *                               ^ bgr order
+ *                                ^ has alpha
+ *
+ * The most awkward part about the formats is how we use the last 4
+ * bits to encode the bytes per pixel and component alignment
+ * information. Ideally we should have had 3 bits for the bpp and a
+ * flag for alignment but we didn't plan for that in advance so we
+ * instead use a small lookup table to query the bpp and whether the
+ * components are byte aligned or not.
+ *
+ * The mapping is the following (see discussion on bug #660188):
+ *
+ * 0     = undefined
+ * 1, 8  = 1 bpp (e.g. A_8, G_8)
+ * 2     = 3 bpp, aligned (e.g. 888)
+ * 3     = 4 bpp, aligned (e.g. 8888)
+ * 4-6   = 2 bpp, not aligned (e.g. 565, 4444, 5551)
+ * 7     = YUV: undefined bpp, undefined alignment
+ * 9     = 2 bpp, aligned
+ * 10    = undefined
+ * 11    = undefined
+ * 12    = 3 bpp, not aligned
+ * 13    = 4 bpp, not aligned (e.g. 2101010)
+ * 14-15 = undefined
+ *
+ * Note: the gap at 10-11 is just because we wanted to maintain that
+ * all non-aligned formats have the third bit set in case that's
+ * useful later.
+ *
+ * Since we don't want to waste bits adding more and more flags, we'd
+ * like to see most new pixel formats that can't be represented
+ * uniquely with the existing flags in the least significant byte
+ * simply be enumerated with sequential values in the most significant
+ * enum byte.
+ *
+ * Note: Cogl avoids exposing any padded XRGB or RGBX formats and
+ * instead we leave it up to applications to decided whether they
+ * consider the A component as padding or valid data. We shouldn't
+ * change this policy without good reasoning.
+ *
+ * So to add a new format:
+ * 1) Use the mapping table above to figure out what to but in
+ *    the lowest nibble.
+ * 2) OR in the COGL_PREMULT_BIT, COGL_AFIRST_BIT, COGL_A_BIT and
+ *    COGL_BGR_BIT flags as appropriate.
+ * 3) If the result is not yet unique then also combine with an
+ *    increment of the last sequence number in the most significant
+ *    byte.
+ *
+ * The last sequence number used was 0 (i.e. no formats currently need
+ *                                      a sequence number)
+ * Update this note whenever a new sequence number is used.
+ */
 /**
  * CoglPixelFormat:
  * @COGL_PIXEL_FORMAT_ANY: Any format
@@ -190,26 +249,35 @@ typedef struct _CoglTextureVertex       CoglTextureVertex;
  * @COGL_PIXEL_FORMAT_BGRA_8888: BGRA, 32 bits
  * @COGL_PIXEL_FORMAT_ARGB_8888: ARGB, 32 bits
  * @COGL_PIXEL_FORMAT_ABGR_8888: ABGR, 32 bits
+ * @COGL_PIXEL_FORMAT_RGBA_1010102 : RGBA, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_BGRA_1010102 : BGRA, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_ARGB_2101010 : ARGB, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_ABGR_2101010 : ABGR, 32 bits, 10 bpc
  * @COGL_PIXEL_FORMAT_RGBA_8888_PRE: Premultiplied RGBA, 32 bits
  * @COGL_PIXEL_FORMAT_BGRA_8888_PRE: Premultiplied BGRA, 32 bits
  * @COGL_PIXEL_FORMAT_ARGB_8888_PRE: Premultiplied ARGB, 32 bits
  * @COGL_PIXEL_FORMAT_ABGR_8888_PRE: Premultiplied ABGR, 32 bits
  * @COGL_PIXEL_FORMAT_RGBA_4444_PRE: Premultiplied RGBA, 16 bits
  * @COGL_PIXEL_FORMAT_RGBA_5551_PRE: Premultiplied RGBA, 16 bits
+ * @COGL_PIXEL_FORMAT_RGBA_1010102_PRE: Premultiplied RGBA, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_BGRA_1010102_PRE: Premultiplied BGRA, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_ARGB_2101010_PRE: Premultiplied ARGB, 32 bits, 10 bpc
+ * @COGL_PIXEL_FORMAT_ABGR_2101010_PRE: Premultiplied ABGR, 32 bits, 10 bpc
  *
- * Pixel formats used by COGL. For the formats with a byte per
+ * Pixel formats used by Cogl. For the formats with a byte per
  * component, the order of the components specify the order in
  * increasing memory addresses. So for example
  * %COGL_PIXEL_FORMAT_RGB_888 would have the red component in the
  * lowest address, green in the next address and blue after that
- * regardless of the endinanness of the system.
+ * regardless of the endianness of the system.
  *
- * For the 16-bit formats the component order specifies the order
- * within a 16-bit number from most significant bit to least
- * significant. So for %COGL_PIXEL_FORMAT_RGB_565, the red component
- * would be in bits 11-15, the green component would be in 6-11 and
- * the blue component would be in 1-5. Therefore the order in memory
- * depends on the endianness of the system.
+ * For the formats with non byte aligned components the component
+ * order specifies the order within a 16-bit or 32-bit number from
+ * most significant bit to least significant. So for
+ * %COGL_PIXEL_FORMAT_RGB_565, the red component would be in bits
+ * 11-15, the green component would be in 6-11 and the blue component
+ * would be in 1-5. Therefore the order in memory depends on the
+ * endianness of the system.
  *
  * When uploading a texture %COGL_PIXEL_FORMAT_ANY can be used as the
  * internal format. Cogl will try to pick the best format to use
@@ -227,20 +295,30 @@ typedef enum { /*< prefix=COGL_PIXEL_FORMAT >*/
   COGL_PIXEL_FORMAT_YUV           = 7,
   COGL_PIXEL_FORMAT_G_8           = 8,
 
-  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
-  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_RGB_888       = 2,
+  COGL_PIXEL_FORMAT_BGR_888       = (2 | COGL_BGR_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_8888     = (3 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (3 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_1010102  = (13 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102  = (13 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010  = (13 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010  = (13 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
   COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT)
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_1010102_PRE = (COGL_PIXEL_FORMAT_RGBA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102_PRE = (COGL_PIXEL_FORMAT_BGRA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010_PRE = (COGL_PIXEL_FORMAT_ARGB_2101010 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010_PRE = (COGL_PIXEL_FORMAT_ABGR_2101010 | COGL_PREMULT_BIT)
 } CoglPixelFormat;
 
 /**
@@ -471,6 +549,8 @@ cogl_blend_string_error_quark (void);
  * CoglError:
  * @COGL_ERROR_UNSUPPORTED: You tried to use a feature or
  *    configuration not currently available.
+ * @COGL_ERROR_NO_MEMORY: You tried to allocate a resource
+ *    such as a texture and there wasn't enough memory.
  *
  * Error enumeration for Cogl
  *
@@ -480,7 +560,7 @@ cogl_blend_string_error_quark (void);
  * <itemizedlist>
  *  <listitem><para>You've tried to use a feature that is not
  *   advertised by cogl_get_features(). This could happen if you create
- *   a non-sliced texture with a non-power-of-two size when
+ *   a 2d texture with a non-power-of-two size when
  *   %COGL_FEATURE_TEXTURE_NPOT is not advertised.</para></listitem>
  *  <listitem><para>The GPU can not handle the configuration you have
  *   requested. An example might be if you try to use too many texture
@@ -493,9 +573,11 @@ cogl_blend_string_error_quark (void);
  * this enum should also be considered experimental.
  *
  * Since: 1.4
+ * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_ERROR >*/
-  COGL_ERROR_UNSUPPORTED
+  COGL_ERROR_UNSUPPORTED,
+  COGL_ERROR_NO_MEMORY
 } CoglError;
 
 GQuark
@@ -700,6 +782,49 @@ typedef enum
    * this onto multiple lines! *sigh* */
   COGL_COLOR_MASK_ALL = (COGL_COLOR_MASK_RED | COGL_COLOR_MASK_GREEN | COGL_COLOR_MASK_BLUE | COGL_COLOR_MASK_ALPHA)
 } CoglColorMask;
+
+/**
+ * CoglWinding:
+ * @COGL_WINDING_CLOCKWISE: Vertices are in a clockwise order
+ * @COGL_WINDING_COUNTER_CLOCKWISE: Vertices are in a counter-clockwise order
+ *
+ * Enum used to represent the two directions of rotation. This can be
+ * used to set the front face for culling by calling
+ * cogl_pipeline_set_front_face_winding().
+ */
+typedef enum
+{
+  COGL_WINDING_CLOCKWISE,
+  COGL_WINDING_COUNTER_CLOCKWISE
+} CoglWinding;
+
+/**
+ * CoglBufferBit:
+ * @COGL_BUFFER_BIT_COLOR: Selects the primary color buffer
+ * @COGL_BUFFER_BIT_DEPTH: Selects the depth buffer
+ * @COGL_BUFFER_BIT_STENCIL: Selects the stencil buffer
+ *
+ * Types of auxiliary buffers
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  COGL_BUFFER_BIT_COLOR   = 1L<<0,
+  COGL_BUFFER_BIT_DEPTH   = 1L<<1,
+  COGL_BUFFER_BIT_STENCIL = 1L<<2
+} CoglBufferBit;
+
+/**
+ * CoglReadPixelsFlags:
+ * @COGL_READ_PIXELS_COLOR_BUFFER: Read from the color buffer
+ *
+ * Flags for cogl_read_pixels()
+ *
+ * Since: 1.0
+ */
+typedef enum { /*< prefix=COGL_READ_PIXELS >*/
+  COGL_READ_PIXELS_COLOR_BUFFER = 1L << 0
+} CoglReadPixelsFlags;
 
 G_END_DECLS
 

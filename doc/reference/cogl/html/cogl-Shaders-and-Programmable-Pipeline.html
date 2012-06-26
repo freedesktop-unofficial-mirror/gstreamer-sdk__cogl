@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="prev" href="cogl-Matrices.html" title="Matrices">
 <link rel="next" href="cogl-Offscreen-Buffers.html" title="Offscreen Buffers">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -81,11 +81,181 @@
 <div class="refsect1">
 <a name="cogl-Shaders-and-Programmable-Pipeline.description"></a><h2>Description</h2>
 <p>
-COGL allows accessing the GL programmable pipeline in order to create
+Cogl allows accessing the GL programmable pipeline in order to create
 vertex and fragment shaders.
 </p>
 <p>
-The only supported format is GLSL shaders.
+The shader source code can either be GLSL or ARBfp. If the source
+code is ARBfp, it must begin with the string “!!ARBfp1.0”. The
+application should check for the <a class="link" href="cogl-General-API.html#COGL-FEATURE-SHADERS-GLSL:CAPS"><code class="literal">COGL_FEATURE_SHADERS_GLSL</code></a> or
+<a class="link" href="cogl-General-API.html#COGL-FEATURE-SHADERS-ARBFP:CAPS"><code class="literal">COGL_FEATURE_SHADERS_ARBFP</code></a> features before using shaders.
+</p>
+<p>
+When using GLSL Cogl provides replacement names for most of the
+builtin varyings and uniforms. It is recommended to use these names
+wherever possible to increase portability between OpenGL 2.0 and
+GLES 2.0. GLES 2.0 does not have most of the builtins under their
+original names so they will only work with the Cogl names.
+</p>
+<p>
+For use in all GLSL shaders, the Cogl builtins are as follows:
+</p>
+<p>
+</p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<div class="glosslist"><dl>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_modelview_matrix</em></span>
+</dt>
+<dd><p>
+   The current modelview matrix. This is equivalent to
+   <span class="type">gl_ModelViewMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_projection_matrix</em></span>
+</dt>
+<dd><p>
+   The current projection matrix. This is equivalent to
+   <span class="type">gl_ProjectionMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_modelview_projection_matrix</em></span>
+</dt>
+<dd><p>
+   The combined modelview and projection matrix. A vertex shader
+   would typically use this to transform the incoming vertex
+   position. The separate modelview and projection matrices are
+   usually only needed for lighting calculations. This is
+   equivalent to <span class="type">gl_ModelViewProjectionMatrix</span>.
+  </p></dd>
+<dt>uniform mat4
+        <span class="emphasis"><em>cogl_texture_matrix</em></span>[]</dt>
+<dd><p>
+   An array of matrices for transforming the texture
+   coordinates. This is equivalent to <span class="type">gl_TextureMatrix</span>.
+  </p></dd>
+</dl></div>
+</div>
+<p>
+</p>
+<p>
+In a vertex shader, the following are also available:
+</p>
+<p>
+</p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<div class="glosslist"><dl>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_position_in</em></span>
+</dt>
+<dd><p>
+   The incoming vertex position. This is equivalent to <span class="type">gl_Vertex</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_color_in</em></span>
+</dt>
+<dd><p>
+   The incoming vertex color. This is equivalent to <span class="type">gl_Color</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_tex_coord_in</em></span>
+</dt>
+<dd><p>
+   The texture coordinate for the first texture unit. This is
+   equivalent to <span class="type">gl_MultiTexCoord0</span>.
+  </p></dd>
+<dt>attribute vec4
+        <span class="emphasis"><em>cogl_tex_coord0_in</em></span>
+</dt>
+<dd><p>
+   The texture coordinate for the first texture unit. This is
+   equivalent to <span class="type">gl_MultiTexCoord0</span>. There is also
+   <span class="type">cogl_tex_coord1_in</span> and so on.
+  </p></dd>
+<dt>attribute vec3
+        <span class="emphasis"><em>cogl_normal_in</em></span>
+</dt>
+<dd><p>
+   The normal of the vertex. This is equivalent to <span class="type">gl_Normal</span>.
+  </p></dd>
+<dt>vec4
+        <span class="emphasis"><em>cogl_position_out</em></span>
+</dt>
+<dd><p>
+   The calculated position of the vertex. This must be written to
+   in all vertex shaders. This is equivalent to <span class="type">gl_Position</span>.
+  </p></dd>
+<dt>float
+        <span class="emphasis"><em>cogl_point_size_out</em></span>
+</dt>
+<dd><p>
+   The calculated size of a point. This is equivalent to <span class="type">gl_PointSize</span>.
+  </p></dd>
+<dt>varying vec4
+        <span class="emphasis"><em>cogl_color_out</em></span>
+</dt>
+<dd><p>
+   The calculated color of a vertex. This is equivalent to <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>varying vec4
+        <span class="emphasis"><em>cogl_tex_coord_out</em></span>[]</dt>
+<dd><p>
+   An array of calculated texture coordinates for a vertex. This is
+   equivalent to <span class="type">gl_TexCoord</span>.
+  </p></dd>
+</dl></div>
+</div>
+<p>
+</p>
+<p>
+In a fragment shader, the following are also available:
+</p>
+<p>
+</p>
+<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Tip</h3>
+<div class="glosslist"><dl>
+<dt>varying vec4 <span class="emphasis"><em>cogl_color_in</em></span>
+</dt>
+<dd><p>
+   The calculated color of a vertex. This is equivalent to <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>varying vec4
+             <span class="emphasis"><em>cogl_tex_coord_in</em></span>[]</dt>
+<dd><p>
+   An array of calculated texture coordinates for a vertex. This is
+   equivalent to <span class="type">gl_TexCoord</span>.
+  </p></dd>
+<dt>vec4 <span class="emphasis"><em>cogl_color_out</em></span>
+</dt>
+<dd><p>
+   The final calculated color of the fragment. All fragment shaders
+   must write to this variable. This is equivalent to
+   <span class="type">gl_FrontColor</span>.
+  </p></dd>
+<dt>float <span class="emphasis"><em>cogl_depth_out</em></span>
+</dt>
+<dd><p>
+   An optional output variable specifying the depth value to use
+   for this fragment. This is equivalent to <span class="type">gl_FragDepth</span>.
+  </p></dd>
+<dt>bool <span class="emphasis"><em>cogl_front_facing</em></span>
+</dt>
+<dd><p>
+   A readonly variable that will be true if the current primitive
+   is front facing. This can be used to implement two-sided
+   coloring algorithms. This is equivalent to <span class="type">gl_FrontFacing</span>.
+  </p></dd>
+</dl></div>
+</div>
+<p>
+</p>
+<p>
+It's worth nothing that this API isn't what Cogl would like to have
+in the long term and it may be removed in Cogl 2.0. The
+experimental <span class="type">CoglShader</span> API is the proposed replacement.
 </p>
 </div>
 <div class="refsect1">
@@ -122,8 +292,8 @@ Types of shaders
 <a name="cogl-create-shader"></a><h3>cogl_create_shader ()</h3>
 <pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_create_shader                  (<em class="parameter"><code><a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#CoglShaderType" title="enum CoglShaderType"><span class="type">CoglShaderType</span></a> shader_type</code></em>);</pre>
 <p>
-Create a new shader handle, use <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-shader-source" title="cogl_shader_source ()"><span class="type">cogl_shader_source</span></a> to set the source code
-to be used on it.
+Create a new shader handle, use <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-shader-source" title="cogl_shader_source ()"><code class="function">cogl_shader_source()</code></a> to set the
+source code to be used on it.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -168,8 +338,12 @@ Gets whether the given handle references an existing shader object.
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_shader_source                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> shader</code></em>,
                                                          <em class="parameter"><code>const <span class="type">char</span> *source</code></em>);</pre>
 <p>
-Replaces the current GLSL source associated with a shader with a new
+Replaces the current source associated with a shader with a new
 one.
+</p>
+<p>
+Please see <a class="link" href="cogl-Shaders-and-Programmable-Pipeline.html#cogl-Shaders-and-Programmable-Pipeline.description" title="Description">above</a>
+for a description of the recommended format for the shader code.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -181,7 +355,7 @@ one.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>source</code></em> :</span></p></td>
-<td>GLSL shader source.</td>
+<td>Shader source.</td>
 </tr>
 </tbody>
 </table></div>
@@ -191,8 +365,10 @@ one.
 <a name="cogl-shader-compile"></a><h3>cogl_shader_compile ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_shader_compile                 (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <p>
-Compiles the shader, no return value, but the shader is now ready for
-linking into a program.
+Compiles the shader, no return value, but the shader is now ready
+for linking into a program. Note that calling this function is
+optional. If it is not called then the shader will be automatically
+compiled when it is linked.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -321,8 +497,10 @@ Gets whether the given handle references an existing program object.
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_attach_shader          (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> program_handle</code></em>,
                                                          <em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> shader_handle</code></em>);</pre>
 <p>
-Attaches a shader to a program object, a program can have one vertex shader
-and one fragment shader attached.
+Attaches a shader to a program object. A program can have multiple
+vertex or fragment shaders but only one of them may provide a
+<code class="function">main()</code> function. It is allowed to use a program with only a vertex
+shader or only a fragment shader.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -343,7 +521,9 @@ and one fragment shader attached.
 <a name="cogl-program-link"></a><h3>cogl_program_link ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_program_link                   (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <p>
-Links a program making it ready for use.
+Links a program making it ready for use. Note that calling this
+function is optional. If it is not called the program will
+automatically be linked the first time it is used.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -581,6 +761,6 @@ pass 1</td>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

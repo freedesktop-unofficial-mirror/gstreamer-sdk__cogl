@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-shader-private.h"
 #include "cogl-shader-boilerplate.h"
 #include "cogl-internal.h"
@@ -131,7 +130,7 @@ cogl_shader_source (CoglHandle   handle,
   if (!cogl_is_shader (handle))
     return;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (strncmp (source, "!!ARBfp1.0", 10) == 0)
@@ -203,7 +202,7 @@ _cogl_shader_set_source_with_boilerplate (GLuint shader_gl_handle,
     }
 
   if (ctx->driver == COGL_DRIVER_GLES2 &&
-      cogl_features_available (COGL_FEATURE_TEXTURE_3D))
+      cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
       static const char texture_3d_extension[] =
         "#extension GL_OES_texture_3D : enable\n";
@@ -342,7 +341,7 @@ _cogl_shader_compile_real (CoglHandle handle,
 #ifdef HAVE_COGL_GLES2
           &&
           (ctx->driver != COGL_DRIVER_GLES2 ||
-           shader->n_tex_coord_attribs >= n_tex_coord_attribs)
+           shader->n_tex_coord_attribs == n_tex_coord_attribs)
 #endif
          )
         return;
@@ -385,6 +384,7 @@ _cogl_shader_compile_real (CoglHandle handle,
           g_warning ("Failed to compile GLSL program:\nsrc:\n%s\nerror:\n%s\n",
                      shader->source,
                      log);
+          g_free (log);
         }
 #endif
     }
@@ -400,7 +400,7 @@ cogl_shader_get_info_log (CoglHandle handle)
   if (!cogl_is_shader (handle))
     return NULL;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
@@ -424,9 +424,11 @@ cogl_shader_get_info_log (CoglHandle handle)
        * Here we force an early compile if the user is interested in
        * log information to increase the chance that the log will be
        * useful! We have to guess the number of texture coordinate
-       * attributes that may be used (normally less than 4) since that
-       * affects the boilerplate.
-       */
+       * attributes that may be used since that affects the
+       * boilerplate. We use four so that the shader will still
+       * compile if the user is using more than one
+       * layer. Unfortunately this is likely to end up causing it to
+       * be compiled again when we know the actual number of layers */
       if (!shader->gl_handle)
         _cogl_shader_compile_real (handle, 4);
 
@@ -449,7 +451,7 @@ cogl_shader_get_type (CoglHandle  handle)
       return COGL_SHADER_TYPE_VERTEX;
     }
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
   return shader->type;
 }
 
@@ -465,7 +467,7 @@ cogl_shader_is_compiled (CoglHandle handle)
   if (!cogl_is_shader (handle))
     return FALSE;
 
-  shader = _cogl_shader_pointer_from_handle (handle);
+  shader = handle;
 
 #ifdef HAVE_COGL_GL
   if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)

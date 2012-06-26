@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
 <link rel="prev" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
 <link rel="next" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html" title="CoglAttributeBuffer: Buffers of vertex attributes">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -41,29 +41,24 @@ Unstable, unless otherwise indicated
 </div>
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-is-buffer" title="cogl_is_buffer">cogl_is_buffer</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-size" title="cogl_buffer_get_size">cogl_buffer_get_size</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-usage-hint" title="cogl_buffer_set_usage_hint">cogl_buffer_set_usage_hint</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-usage-hint" title="cogl_buffer_get_usage_hint">cogl_buffer_get_usage_hint</a>
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-is-buffer" title="cogl_is_buffer ()">cogl_is_buffer</a>                      (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
+unsigned <span class="returnvalue">int</span>        <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-size" title="cogl_buffer_get_size ()">cogl_buffer_get_size</a>                (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);
 enum                <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint">CoglBufferUpdateHint</a>;
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint">cogl_buffer_set_update_hint</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-update-hint" title="cogl_buffer_get_update_hint">cogl_buffer_get_update_hint</a>
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint ()">cogl_buffer_set_update_hint</a>         (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint"><span class="type">CoglBufferUpdateHint</span></a> hint</code></em>);
+<a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint"><span class="returnvalue">CoglBufferUpdateHint</span></a> <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-get-update-hint" title="cogl_buffer_get_update_hint ()">cogl_buffer_get_update_hint</a>        (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);
 enum                <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferAccess" title="enum CoglBufferAccess">CoglBufferAccess</a>;
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map">cogl_buffer_map</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-unmap" title="cogl_buffer_unmap">cogl_buffer_unmap</a>
-#define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data" title="cogl_buffer_set_data">cogl_buffer_set_data</a>
+<span class="returnvalue">void</span> *              <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()">cogl_buffer_map</a>                     (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferAccess" title="enum CoglBufferAccess"><span class="type">CoglBufferAccess</span></a> access</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglBufferMapHint</span> hints</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-unmap" title="cogl_buffer_unmap ()">cogl_buffer_unmap</a>                   (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data" title="cogl_buffer_set_data ()">cogl_buffer_set_data</a>                (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> offset</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>);
 
 #define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-pixel-buffer-new" title="cogl_pixel_buffer_new">cogl_pixel_buffer_new</a>
 #define             <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-is-pixel-buffer" title="cogl_is_pixel_buffer">cogl_is_pixel_buffer</a>
-
-<a href="../cogl/cogl-General-API.html#CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-texture-new-from-buffer" title="cogl_texture_new_from_buffer ()">cogl_texture_new_from_buffer</a>        (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> buffer</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> offset</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -91,9 +86,8 @@ without blocking other Cogl operations.
 <div class="refsect1">
 <a name="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="cogl-is-buffer"></a><h3>cogl_is_buffer</h3>
-<pre class="programlisting">#define cogl_is_buffer  cogl_is_buffer_EXP
-</pre>
+<a name="cogl-is-buffer"></a><h3>cogl_is_buffer ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_buffer                      (<em class="parameter"><code><span class="type">void</span> *object</code></em>);</pre>
 <p>
 Checks whether <em class="parameter"><code>buffer</code></em> is a buffer object.
 </p>
@@ -101,7 +95,7 @@ Checks whether <em class="parameter"><code>buffer</code></em> is a buffer object
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
 <td>a buffer object</td>
 </tr>
 <tr>
@@ -116,9 +110,8 @@ Checks whether <em class="parameter"><code>buffer</code></em> is a buffer object
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-get-size"></a><h3>cogl_buffer_get_size</h3>
-<pre class="programlisting">#define cogl_buffer_get_size cogl_buffer_get_size_EXP
-</pre>
+<a name="cogl-buffer-get-size"></a><h3>cogl_buffer_get_size ()</h3>
+<pre class="programlisting">unsigned <span class="returnvalue">int</span>        cogl_buffer_get_size                (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);</pre>
 <p>
 Retrieves the size of buffer
 </p>
@@ -140,20 +133,9 @@ Retrieves the size of buffer
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-set-usage-hint"></a><h3>cogl_buffer_set_usage_hint</h3>
-<pre class="programlisting">#define cogl_buffer_set_usage_hint cogl_buffer_set_usage_hint_EXP
-</pre>
-</div>
-<hr>
-<div class="refsect2">
-<a name="cogl-buffer-get-usage-hint"></a><h3>cogl_buffer_get_usage_hint</h3>
-<pre class="programlisting">#define cogl_buffer_get_usage_hint cogl_buffer_get_usage_hint_EXP
-</pre>
-</div>
-<hr>
-<div class="refsect2">
 <a name="CoglBufferUpdateHint"></a><h3>enum CoglBufferUpdateHint</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_BUFFER_UPDATE_HINT &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_BUFFER_UPDATE_HINT &gt;*/
   COGL_BUFFER_UPDATE_HINT_STATIC,
   COGL_BUFFER_UPDATE_HINT_DYNAMIC,
   COGL_BUFFER_UPDATE_HINT_STREAM
@@ -189,9 +171,9 @@ the buffer data is going to be updated.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-set-update-hint"></a><h3>cogl_buffer_set_update_hint</h3>
-<pre class="programlisting">#define cogl_buffer_set_update_hint cogl_buffer_set_update_hint_EXP
-</pre>
+<a name="cogl-buffer-set-update-hint"></a><h3>cogl_buffer_set_update_hint ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_buffer_set_update_hint         (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint"><span class="type">CoglBufferUpdateHint</span></a> hint</code></em>);</pre>
 <p>
 Sets the update hint on a buffer. See <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint"><span class="type">CoglBufferUpdateHint</span></a> for a description
 of the available hints.
@@ -214,11 +196,10 @@ of the available hints.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-get-update-hint"></a><h3>cogl_buffer_get_update_hint</h3>
-<pre class="programlisting">#define cogl_buffer_get_update_hint cogl_buffer_get_update_hint_EXP
-</pre>
+<a name="cogl-buffer-get-update-hint"></a><h3>cogl_buffer_get_update_hint ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferUpdateHint" title="enum CoglBufferUpdateHint"><span class="returnvalue">CoglBufferUpdateHint</span></a> cogl_buffer_get_update_hint        (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);</pre>
 <p>
-Retrieves the update hints set using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint"><code class="function">cogl_buffer_set_update_hint()</code></a>
+Retrieves the update hints set using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint ()"><code class="function">cogl_buffer_set_update_hint()</code></a>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -239,14 +220,15 @@ Retrieves the update hints set using <a class="link" href="cogl-2.0-experimental
 <hr>
 <div class="refsect2">
 <a name="CoglBufferAccess"></a><h3>enum CoglBufferAccess</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_BUFFER_ACCESS &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_BUFFER_ACCESS &gt;*/
  COGL_BUFFER_ACCESS_READ       = 1 &lt;&lt; 0,
  COGL_BUFFER_ACCESS_WRITE      = 1 &lt;&lt; 1,
  COGL_BUFFER_ACCESS_READ_WRITE = COGL_BUFFER_ACCESS_READ | COGL_BUFFER_ACCESS_WRITE
 } CoglBufferAccess;
 </pre>
 <p>
-The access hints for <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint"><code class="function">cogl_buffer_set_update_hint()</code></a>
+The access hints for <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-update-hint" title="cogl_buffer_set_update_hint ()"><code class="function">cogl_buffer_set_update_hint()</code></a>
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -274,9 +256,10 @@ The access hints for <a class="link" href="cogl-2.0-experimental-CoglBuffer---Th
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-map"></a><h3>cogl_buffer_map</h3>
-<pre class="programlisting">#define cogl_buffer_map cogl_buffer_map_EXP
-</pre>
+<a name="cogl-buffer-map"></a><h3>cogl_buffer_map ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_buffer_map                     (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#CoglBufferAccess" title="enum CoglBufferAccess"><span class="type">CoglBufferAccess</span></a> access</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglBufferMapHint</span> hints</code></em>);</pre>
 <p>
 Maps the buffer into the application address space for direct access.
 </p>
@@ -320,11 +303,10 @@ the data will be modified once mapped.</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-unmap"></a><h3>cogl_buffer_unmap</h3>
-<pre class="programlisting">#define cogl_buffer_unmap cogl_buffer_unmap_EXP
-</pre>
+<a name="cogl-buffer-unmap"></a><h3>cogl_buffer_unmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_buffer_unmap                   (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>);</pre>
 <p>
-Unmaps a buffer previously mapped by <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a>.
+Unmaps a buffer previously mapped by <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a>.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -338,9 +320,11 @@ Unmaps a buffer previously mapped by <a class="link" href="cogl-2.0-experimental
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-buffer-set-data"></a><h3>cogl_buffer_set_data</h3>
-<pre class="programlisting">#define cogl_buffer_set_data cogl_buffer_set_data_EXP
-</pre>
+<a name="cogl-buffer-set-data"></a><h3>cogl_buffer_set_data ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_buffer_set_data                (<em class="parameter"><code><span class="type">CoglBuffer</span> *buffer</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> offset</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">void</span> *data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>);</pre>
 <p>
 Updates part of the buffer with new data from <em class="parameter"><code>data</code></em>. Where to put this new
 data is controlled by <em class="parameter"><code>offset</code></em> and <em class="parameter"><code>offset</code></em> + <em class="parameter"><code>data</code></em> should be less than the
@@ -380,6 +364,36 @@ buffer size.
 <a name="cogl-pixel-buffer-new"></a><h3>cogl_pixel_buffer_new</h3>
 <pre class="programlisting">#define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
 </pre>
+<p>
+Declares a new <span class="type">CoglPixelBuffer</span> of <em class="parameter"><code>size</code></em> bytes to contain arrays of
+pixels. Once declared, data can be set using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data" title="cogl_buffer_set_data ()"><code class="function">cogl_buffer_set_data()</code></a>
+or by mapping it into the application's address space using
+<a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a>.
+</p>
+<p>
+If <em class="parameter"><code>data</code></em> isn't <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> then <em class="parameter"><code>size</code></em> bytes will be read from <em class="parameter"><code>data</code></em> and
+immediately copied into the new buffer.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>The number of bytes to allocate for the pixel data.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>An optional pointer to vertex data to upload immediately</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -407,82 +421,10 @@ otherwise</td>
 <p class="since">Since 1.2</p>
 <p class="stability">Stability Level: Unstable</p>
 </div>
-<hr>
-<div class="refsect2">
-<a name="cogl-texture-new-from-buffer"></a><h3>cogl_texture_new_from_buffer ()</h3>
-<pre class="programlisting"><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_new_from_buffer        (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> buffer</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> width</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> height</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureFlags" title="enum CoglTextureFlags"><span class="type">CoglTextureFlags</span></a> flags</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> format</code></em>,
-                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> internal_format</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> rowstride</code></em>,
-                                                         <em class="parameter"><code>unsigned <span class="type">int</span> offset</code></em>);</pre>
-<p>
-Creates a new texture using the buffer specified by <em class="parameter"><code>handle</code></em>. If the buffer
-has been created using <code class="function">cogl_pixel_buffer_new_for_size()</code> it's possible to omit
-the height and width values already specified at creation time.
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
-<td>the <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> of a pixel buffer</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
-<td>width of texture in pixels or 0</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
-<td>height of texture in pixels or 0</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
-<td>optional flags for the texture, or <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#COGL-TEXTURE-NONE:CAPS"><code class="literal">COGL_TEXTURE_NONE</code></a>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
-<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> the buffer is stored in in RAM</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
-<td>the <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglPixelFormat" title="enum CoglPixelFormat"><span class="type">CoglPixelFormat</span></a> that will be used for storing
-the buffer on the GPU. If <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-ANY:CAPS"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></a> is given then a
-premultiplied format similar to the format of the source data will
-be used. The default blending equations of Cogl expect premultiplied
-color data; the main use of passing a non-premultiplied format here
-is if you have non-premultiplied source data and are going to adjust
-the blend mode (see <a href="../cogl/cogl-Materials.html#cogl-material-set-blend"><code class="function">cogl_material_set_blend()</code></a>) or use the data for
-something other than straight blending</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>rowstride</code></em> :</span></p></td>
-<td>the memory offset in bytes between the starts of
-scanlines in <em class="parameter"><code>data</code></em>. If 0 is given the row stride will be deduced from
-<em class="parameter"><code>width</code></em> and <em class="parameter"><code>format</code></em> or the stride given by <code class="function">cogl_pixel_buffer_new_for_size()</code>
-</td>
-</tr>
-<tr>
-<td><p><span class="term"><em class="parameter"><code>offset</code></em> :</span></p></td>
-<td>offset in bytes in <em class="parameter"><code>buffer</code></em> from where the texture data starts</td>
-</tr>
-<tr>
-<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> to the new texture or <a href="../cogl/cogl-General-API.html#COGL-INVALID-HANDLE:CAPS"><code class="literal">COGL_INVALID_HANDLE</code></a> on
-failure</td>
-</tr>
-</tbody>
-</table></div>
-<p class="since">Since 1.2</p>
-<p class="stability">Stability Level: Unstable</p>
-</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="prev" href="ch01.html" title="Cogl - a modern 3D graphics API">
 <link rel="next" href="cogl-Color-Type.html" title="Color Type">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -126,7 +126,7 @@ enum                <a class="link" href="cogl-General-API.html#CoglFogMode" tit
                                                          <em class="parameter"><code><span class="type">float</span> green</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> blue</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> alpha</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-texture" title="cogl_set_source_texture ()">cogl_set_source_texture</a>             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-set-source-texture" title="cogl_set_source_texture ()">cogl_set_source_texture</a>             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
 <span class="returnvalue">void</span> *              <a class="link" href="cogl-General-API.html#cogl-get-source" title="cogl_get_source ()">cogl_get_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-push-source" title="cogl_push_source ()">cogl_push_source</a>                    (<em class="parameter"><code><span class="type">void</span> *material</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-General-API.html#cogl-pop-source" title="cogl_pop_source ()">cogl_pop_source</a>                     (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -341,7 +341,8 @@ actual arguments and return type may be different.
 <hr>
 <div class="refsect2">
 <a name="CoglPixelFormat"></a><h3>enum CoglPixelFormat</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
   COGL_PIXEL_FORMAT_ANY           = 0,
   COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
 
@@ -351,37 +352,48 @@ actual arguments and return type may be different.
   COGL_PIXEL_FORMAT_YUV           = 7,
   COGL_PIXEL_FORMAT_G_8           = 8,
 
-  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
-  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_RGB_888       = 2,
+  COGL_PIXEL_FORMAT_BGR_888       = (2 | COGL_BGR_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_8888     = (3 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (3 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_1010102  = (13 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102  = (13 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010  = (13 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010  = (13 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
   COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT)
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_1010102_PRE = (COGL_PIXEL_FORMAT_RGBA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102_PRE = (COGL_PIXEL_FORMAT_BGRA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010_PRE = (COGL_PIXEL_FORMAT_ARGB_2101010 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010_PRE = (COGL_PIXEL_FORMAT_ABGR_2101010 | COGL_PREMULT_BIT)
 } CoglPixelFormat;
 </pre>
 <p>
-Pixel formats used by COGL. For the formats with a byte per
+Pixel formats used by Cogl. For the formats with a byte per
 component, the order of the components specify the order in
 increasing memory addresses. So for example
 <a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-888:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></a> would have the red component in the
 lowest address, green in the next address and blue after that
-regardless of the endinanness of the system.
+regardless of the endianness of the system.
 </p>
 <p>
-For the 16-bit formats the component order specifies the order
-within a 16-bit number from most significant bit to least
-significant. So for <a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component
-would be in bits 11-15, the green component would be in 6-11 and
-the blue component would be in 1-5. Therefore the order in memory
-depends on the endianness of the system.
+For the formats with non byte aligned components the component
+order specifies the order within a 16-bit or 32-bit number from
+most significant bit to least significant. So for
+<a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component would be in bits
+11-15, the green component would be in 6-11 and the blue component
+would be in 1-5. Therefore the order in memory depends on the
+endianness of the system.
 </p>
 <p>
 When uploading a texture <a class="link" href="cogl-General-API.html#COGL-PIXEL-FORMAT-ANY:CAPS"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></a> can be used as the
@@ -457,6 +469,26 @@ internally and convert the texture data if necessary.
 </td>
 </tr>
 <tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-1010102:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_1010102</code></span></p></td>
+<td>RGBA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-1010102:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_1010102</code></span></p></td>
+<td>BGRA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-2101010:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_2101010</code></span></p></td>
+<td>ARGB, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-2101010:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_2101010</code></span></p></td>
+<td>ABGR, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
 <td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888_PRE</code></span></p></td>
 <td>Premultiplied RGBA, 32 bits
 </td>
@@ -486,6 +518,26 @@ internally and convert the texture data if necessary.
 <td>Premultiplied RGBA, 16 bits
 </td>
 </tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-1010102-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_1010102_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-1010102-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_1010102_PRE</code></span></p></td>
+<td>Premultiplied BGRA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-2101010-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_2101010_PRE</code></span></p></td>
+<td>Premultiplied ARGB, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-2101010-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_2101010_PRE</code></span></p></td>
+<td>Premultiplied ABGR, 32 bits, 10 bpc
+</td>
+</tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
@@ -493,8 +545,7 @@ internally and convert the texture data if necessary.
 <hr>
 <div class="refsect2">
 <a name="CoglBufferTarget"></a><h3>enum CoglBufferTarget</h3>
-<pre class="programlisting">typedef enum
-{
+<pre class="programlisting">typedef enum {
   COGL_WINDOW_BUFFER      = (1 &lt;&lt; 1),
   COGL_OFFSCREEN_BUFFER   = (1 &lt;&lt; 2)
 } CoglBufferTarget;
@@ -604,8 +655,7 @@ Data types for the components of a vertex attribute.
 <hr>
 <div class="refsect2">
 <a name="CoglFeatureFlags"></a><h3>enum CoglFeatureFlags</h3>
-<pre class="programlisting">typedef enum
-{
+<pre class="programlisting">typedef enum {
   COGL_FEATURE_TEXTURE_RECTANGLE      = (1 &lt;&lt; 1),
   COGL_FEATURE_TEXTURE_NPOT           = (1 &lt;&lt; 2),
   COGL_FEATURE_TEXTURE_YUV            = (1 &lt;&lt; 3),
@@ -753,13 +803,13 @@ Flags for the supported features.
 </tr>
 <tr>
 <td><p><a name="COGL-FEATURE-MAP-BUFFER-FOR-READ:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_MAP_BUFFER_FOR_READ</code></span></p></td>
-<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a> is
+<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a> is
     supported with CoglBufferAccess including read support.
 </td>
 </tr>
 <tr>
 <td><p><a name="COGL-FEATURE-MAP-BUFFER-FOR-WRITE:CAPS"></a><span class="term"><code class="literal">COGL_FEATURE_MAP_BUFFER_FOR_WRITE</code></span></p></td>
-<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a> is
+<td>Whether <a class="link" href="cogl-Buffers.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a> is
     supported with CoglBufferAccess including write support.
 </td>
 </tr>
@@ -841,8 +891,8 @@ function is not available.</td>
 <a name="cogl-get-option-group"></a><h3>cogl_get_option_group ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="returnvalue">GOptionGroup</span></a> *      cogl_get_option_group               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
-Retrieves the <a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="type">GOptionGroup</span></a> used by COGL to parse the command
-line options. Clutter uses this to handle the COGL command line
+Retrieves the <a href="http://library.gnome.org/devel/glib/unstable/glib-Commandline-option-parser.html#GOptionGroup"><span class="type">GOptionGroup</span></a> used by Cogl to parse the command
+line options. Clutter uses this to handle the Cogl command line
 options during its initialization process.
 </p>
 <div class="variablelist"><table border="0">
@@ -991,34 +1041,39 @@ Multiplies the current model-view matrix by the given matrix.
                                                          <em class="parameter"><code><span class="type">float</span> z_far</code></em>);</pre>
 <p>
 Replaces the current projection matrix with a perspective matrix
-for the given viewing frustum.
+for a given viewing frustum defined by 4 side clip planes that
+all cross through the origin and 2 near and far clip planes.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>left</code></em> :</span></p></td>
-<td>Left clipping plane</td>
+<td>X position of the left clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>right</code></em> :</span></p></td>
-<td>Right clipping plane</td>
+<td>X position of the right clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bottom</code></em> :</span></p></td>
-<td>Bottom clipping plane</td>
+<td>Y position of the bottom clipping plane where it
+intersects the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>top</code></em> :</span></p></td>
-<td>Top clipping plane</td>
+<td>Y position of the top clipping plane where it intersects
+the near clipping plane</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>Nearest visible point</td>
+<td>The distance to the near clipping plane (Must be positive)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>Furthest visible point along the z-axis</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
@@ -1035,24 +1090,33 @@ for the given viewing frustum.
 Replaces the current projection matrix with a perspective matrix
 based on the provided values.
 </p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>You should be careful not to have to great a <em class="parameter"><code>z_far</code></em> / <em class="parameter"><code>z_near</code></em>
+ratio since that will reduce the effectiveness of depth testing
+since there wont be enough precision to identify the depth of
+objects near to each other.</div>
+<p>
+</p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>fovy</code></em> :</span></p></td>
-<td>Vertical of view angle in degrees.</td>
+<td>Vertical field of view angle in degrees.</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>aspect</code></em> :</span></p></td>
-<td>Aspect ratio of diesplay</td>
+<td>The (width over height) aspect ratio for display</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_near</code></em> :</span></p></td>
-<td>Nearest visible point</td>
+<td>The distance to the near clipping plane (Must be positive)</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>z_far</code></em> :</span></p></td>
-<td>Furthest visible point along the z-axis</td>
+<td>The distance to the far clipping plane (Must be positive)</td>
 </tr>
 </tbody>
 </table></div>
@@ -1581,10 +1645,10 @@ range, they will be clamped.
 <hr>
 <div class="refsect2">
 <a name="cogl-set-source-texture"></a><h3>cogl_set_source_texture ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_texture             (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> texture_handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_set_source_texture             (<em class="parameter"><code><a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
 <p>
 This is a convenience function for creating a material with the first
-layer set to <span class="type">texture_handle</span> and setting that material as the source with
+layer set to <em class="parameter"><code>texture</code></em> and setting that material as the source with
 cogl_set_source.
 </p>
 <p>
@@ -1603,8 +1667,8 @@ cogl_set_source (material);
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>texture_handle</code></em> :</span></p></td>
-<td>The Cogl texture you want as your source</td>
+<td><p><span class="term"><em class="parameter"><code>texture</code></em> :</span></p></td>
+<td>The <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a> you want as your source</td>
 </tr></tbody>
 </table></div>
 <p class="since">Since 1.0</p>
@@ -1669,7 +1733,8 @@ later primitives as defined by <a class="link" href="cogl-General-API.html#cogl-
 <hr>
 <div class="refsect2">
 <a name="CoglReadPixelsFlags"></a><h3>enum CoglReadPixelsFlags</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_READ_PIXELS &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_READ_PIXELS &gt;*/
   COGL_READ_PIXELS_COLOR_BUFFER = 1L &lt;&lt; 0
 } CoglReadPixelsFlags;
 </pre>
@@ -1933,6 +1998,6 @@ code using raw OpenGL. Please refer to <a class="link" href="cogl-General-API.ht
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

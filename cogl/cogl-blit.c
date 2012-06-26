@@ -30,12 +30,13 @@
 
 #include <string.h>
 
-#include "cogl.h"
+#include "cogl-util.h"
 #include "cogl-blit.h"
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-private.h"
+#include "cogl1-context.h"
 
 static const CoglBlitMode *_cogl_blit_default_mode = NULL;
 
@@ -53,6 +54,12 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
 
   if (fbo == COGL_INVALID_HANDLE)
     return FALSE;
+
+  if (!cogl_framebuffer_allocate (fbo, NULL))
+    {
+      cogl_handle_unref (fbo);
+      return FALSE;
+    }
 
   cogl_push_framebuffer (fbo);
   cogl_handle_unref (fbo);
@@ -74,7 +81,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
      program */
   if (ctx->blit_texture_pipeline == NULL)
     {
-      ctx->blit_texture_pipeline = cogl_pipeline_new ();
+      ctx->blit_texture_pipeline = cogl_pipeline_new (ctx);
 
       cogl_pipeline_set_layer_filters (ctx->blit_texture_pipeline, 0,
                                        COGL_PIPELINE_FILTER_NEAREST,
@@ -140,6 +147,7 @@ static gboolean
 _cogl_blit_framebuffer_begin (CoglBlitData *data)
 {
   CoglHandle dst_fbo, src_fbo;
+  gboolean ret;
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
@@ -147,29 +155,42 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
      format and the blit framebuffer extension is supported */
   if ((cogl_texture_get_format (data->src_tex) & ~COGL_A_BIT) !=
       (cogl_texture_get_format (data->dst_tex) & ~COGL_A_BIT) ||
-      !cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT))
+      !(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT))
     return FALSE;
 
   dst_fbo = _cogl_offscreen_new_to_texture_full
     (data->dst_tex, COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL, 0 /* level */);
 
   if (dst_fbo == COGL_INVALID_HANDLE)
-    return FALSE;
-
-  src_fbo = _cogl_offscreen_new_to_texture_full
-    (data->src_tex, COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL, 0 /* level */);
-
-  if (src_fbo == COGL_INVALID_HANDLE)
+    ret = FALSE;
+  else
     {
+      if (!cogl_framebuffer_allocate (dst_fbo, NULL))
+        ret = FALSE;
+      else
+        {
+          src_fbo = _cogl_offscreen_new_to_texture_full
+            (data->src_tex,
+             COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
+             0 /* level */);
+
+          if (src_fbo == COGL_INVALID_HANDLE)
+            ret = FALSE;
+          else
+            {
+              if (!cogl_framebuffer_allocate (src_fbo, NULL))
+                ret = FALSE;
+              else
+                _cogl_push_framebuffers (dst_fbo, src_fbo);
+
+              cogl_handle_unref (src_fbo);
+            }
+        }
+
       cogl_handle_unref (dst_fbo);
-      return FALSE;
     }
 
-  _cogl_push_framebuffers (dst_fbo, src_fbo);
-  cogl_handle_unref (src_fbo);
-  cogl_handle_unref (dst_fbo);
-
-  return TRUE;
+  return ret;
 }
 
 static void
@@ -209,6 +230,12 @@ _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
   if (fbo == COGL_INVALID_HANDLE)
     return FALSE;
 
+  if (!cogl_framebuffer_allocate (fbo, NULL))
+    {
+      cogl_handle_unref (fbo);
+      return FALSE;
+    }
+
   cogl_push_framebuffer (fbo);
   cogl_handle_unref (fbo);
 
@@ -240,7 +267,7 @@ static gboolean
 _cogl_blit_get_tex_data_begin (CoglBlitData *data)
 {
   data->format = cogl_texture_get_format (data->src_tex);
-  data->bpp = _cogl_get_format_bpp (data->format);
+  data->bpp = _cogl_pixel_format_get_bytes_per_pixel (data->format);
 
   data->image_data = g_malloc (data->bpp * data->src_width *
                                data->src_height);
@@ -369,7 +396,7 @@ _cogl_blit_begin (CoglBlitData *data,
                      _cogl_blit_modes[i].name);
 
       /* The last blit mode can't fail so this should never happen */
-      g_return_if_fail (i < G_N_ELEMENTS (_cogl_blit_modes));
+      _COGL_RETURN_IF_FAIL (i < G_N_ELEMENTS (_cogl_blit_modes));
     }
 
   data->blit_mode = _cogl_blit_default_mode;

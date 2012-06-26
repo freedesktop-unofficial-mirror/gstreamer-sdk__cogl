@@ -144,6 +144,7 @@ GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 GI_REQ_VERSION = @GI_REQ_VERSION@
 GLIB_CFLAGS = @GLIB_CFLAGS@
+GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
 GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
 GLIB_LIBS = @GLIB_LIBS@
 GLIB_MKENUMS = @GLIB_MKENUMS@
@@ -153,9 +154,14 @@ GMSGFMT_015 = @GMSGFMT_015@
 GOBJECT_QUERY = @GOBJECT_QUERY@
 GREP = @GREP@
 GTKDOC_CHECK = @GTKDOC_CHECK@
+GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
+GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
 GTK_DOC_REQ_VERSION = @GTK_DOC_REQ_VERSION@
+HAVE_GL = @HAVE_GL@
+HAVE_GLES1 = @HAVE_GLES1@
+HAVE_GLES2 = @HAVE_GLES2@
 HTML_DIR = @HTML_DIR@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -324,7 +330,8 @@ FIXXREF_OPTIONS = \
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB = \
 	$(top_srcdir)/cogl/*.h \
-	$(top_builddir)/cogl/*.h
+	$(top_builddir)/cogl/*.h \
+	$(top_srcdir)/cogl/winsys/*.h
 
 CFILE_GLOB = $(top_srcdir)/cogl/*.c
 
@@ -338,6 +345,7 @@ IGNORE_HFILES = \
 	cogl-color-private.h			\
 	cogl-feature-private.h			\
 	cogl-framebuffer-private.h		\
+	cogl-onscreen-private.h			\
 	cogl-gtype-private.h			\
 	cogl-index-array-private.h		\
 	cogl-indices-private.h			\
@@ -366,6 +374,7 @@ IGNORE_HFILES = \
 	cogl-program.h				\
 	cogl-shader-private.h			\
 	cogl-shader.h				\
+	cogl-snippet-private.h			\
 	cogl-sub-texture-private.h		\
 	cogl-texture-2d-private.h		\
 	cogl-texture-2d-sliced-private.h	\
@@ -389,8 +398,7 @@ IGNORE_HFILES = \
 	cogl-profile.h				\
 	cogl-util.h 				\
 	driver 					\
-	tesselator				\
-	winsys
+	tesselator
 
 EXTRA_HFILES = 
 
@@ -424,10 +432,10 @@ expand_content_files = \
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 INCLUDES = -I$(top_srcdir) -I$(top_builddir)/cogl -DCOGL_ENABLE_EXPERIMENTAL_API $(COGL_DEP_CFLAGS)
 GTKDOC_LIBS = $(top_builddir)/cogl/libcogl.la $(COGL_DEP_LIBS)
-@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_CC = $(CC) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
-@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_CC = $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_LD = $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+@BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
 @BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_FALSE@GTKDOC_RUN = 
 @BUILD_GTK_DOC_TRUE@@GTK_DOC_USE_LIBTOOL_TRUE@GTKDOC_RUN = $(LIBTOOL) --mode=execute
 
@@ -453,11 +461,11 @@ GTKDOC_LIBS = $(top_builddir)/cogl/libcogl.la $(COGL_DEP_LIBS)
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-@BUILD_GTK_DOC_TRUE@EXTRA_DIST = $(SETUP_FILES) $(HTML_IMAGES) \
-@BUILD_GTK_DOC_TRUE@	$(content_files)
+@BUILD_GTK_DOC_TRUE@EXTRA_DIST = $(HTML_IMAGES) $(SETUP_FILES) \
+@BUILD_GTK_DOC_TRUE@	$(HTML_IMAGES) $(content_files)
 @BUILD_GTK_DOC_TRUE@DOC_STAMPS = setup-build.stamp scan-build.stamp sgml-build.stamp \
 @BUILD_GTK_DOC_TRUE@	html-build.stamp pdf-build.stamp \
-@BUILD_GTK_DOC_TRUE@	setup.stamp sgml.stamp html.stamp pdf.stamp
+@BUILD_GTK_DOC_TRUE@	sgml.stamp html.stamp pdf.stamp
 
 @BUILD_GTK_DOC_TRUE@SCANOBJ_FILES = \
 @BUILD_GTK_DOC_TRUE@	$(DOC_MODULE).args 	 \
@@ -689,34 +697,40 @@ uninstall-am: uninstall-local
 
 @BUILD_GTK_DOC_TRUE@setup-build.stamp:
 @BUILD_GTK_DOC_TRUE@	-@if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
-@BUILD_GTK_DOC_TRUE@	   echo 'gtk-doc: Preparing build'; \
-@BUILD_GTK_DOC_TRUE@	   files=`echo $(SETUP_FILES) $(expand_content_files) $(DOC_MODULE).types`; \
-@BUILD_GTK_DOC_TRUE@	   if test "x$$files" != "x" ; then \
-@BUILD_GTK_DOC_TRUE@	       for file in $$files ; do \
-@BUILD_GTK_DOC_TRUE@	           test -f $(abs_srcdir)/$$file && \
-@BUILD_GTK_DOC_TRUE@	               cp -p $(abs_srcdir)/$$file $(abs_builddir)/; \
-@BUILD_GTK_DOC_TRUE@	       done \
-@BUILD_GTK_DOC_TRUE@	   fi \
+@BUILD_GTK_DOC_TRUE@	    echo '  DOC   Preparing build'; \
+@BUILD_GTK_DOC_TRUE@	    files=`echo $(SETUP_FILES) $(expand_content_files) $(DOC_MODULE).types`; \
+@BUILD_GTK_DOC_TRUE@	    if test "x$$files" != "x" ; then \
+@BUILD_GTK_DOC_TRUE@	        for file in $$files ; do \
+@BUILD_GTK_DOC_TRUE@	            test -f $(abs_srcdir)/$$file && \
+@BUILD_GTK_DOC_TRUE@	                cp -pu $(abs_srcdir)/$$file $(abs_builddir)/ || true; \
+@BUILD_GTK_DOC_TRUE@	        done; \
+@BUILD_GTK_DOC_TRUE@	    fi; \
 @BUILD_GTK_DOC_TRUE@	fi
 @BUILD_GTK_DOC_TRUE@	@touch setup-build.stamp
-
-@BUILD_GTK_DOC_TRUE@setup.stamp: setup-build.stamp
-@BUILD_GTK_DOC_TRUE@	@true
 
 #### scan ####
 
 @BUILD_GTK_DOC_TRUE@scan-build.stamp: $(HFILE_GLOB) $(CFILE_GLOB)
-@BUILD_GTK_DOC_TRUE@	@echo 'gtk-doc: Scanning header files'
+@BUILD_GTK_DOC_TRUE@	@echo '  DOC   Scanning header files'
 @BUILD_GTK_DOC_TRUE@	@_source_dir='' ; \
 @BUILD_GTK_DOC_TRUE@	for i in $(DOC_SOURCE_DIR) ; do \
 @BUILD_GTK_DOC_TRUE@	    _source_dir="$${_source_dir} --source-dir=$$i" ; \
 @BUILD_GTK_DOC_TRUE@	done ; \
 @BUILD_GTK_DOC_TRUE@	gtkdoc-scan --module=$(DOC_MODULE) --ignore-headers="$(IGNORE_HFILES)" $${_source_dir} $(SCAN_OPTIONS) $(EXTRA_HFILES)
 @BUILD_GTK_DOC_TRUE@	@if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null 2>&1 ; then \
-@BUILD_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)" CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)" LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)" gtkdoc-scangobj $(SCANGOBJ_OPTIONS) --module=$(DOC_MODULE) ; \
+@BUILD_GTK_DOC_TRUE@	    echo "  DOC   Introspecting gobjects"; \
+@BUILD_GTK_DOC_TRUE@	    scanobj_options=""; \
+@BUILD_GTK_DOC_TRUE@	    gtkdoc-scangobj 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+@BUILD_GTK_DOC_TRUE@	    if test "$(?)" = "0"; then \
+@BUILD_GTK_DOC_TRUE@	        if test "x$(V)" = "x1"; then \
+@BUILD_GTK_DOC_TRUE@	            scanobj_options="--verbose"; \
+@BUILD_GTK_DOC_TRUE@	        fi; \
+@BUILD_GTK_DOC_TRUE@	    fi; \
+@BUILD_GTK_DOC_TRUE@	    CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)" CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)" LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)" \
+@BUILD_GTK_DOC_TRUE@	    gtkdoc-scangobj $(SCANGOBJ_OPTIONS) $$scanobj_options --module=$(DOC_MODULE); \
 @BUILD_GTK_DOC_TRUE@	else \
 @BUILD_GTK_DOC_TRUE@	    for i in $(SCANOBJ_FILES) ; do \
-@BUILD_GTK_DOC_TRUE@                 test -f $$i || touch $$i ; \
+@BUILD_GTK_DOC_TRUE@	        test -f $$i || touch $$i ; \
 @BUILD_GTK_DOC_TRUE@	    done \
 @BUILD_GTK_DOC_TRUE@	fi
 @BUILD_GTK_DOC_TRUE@	@touch scan-build.stamp
@@ -726,8 +740,8 @@ uninstall-am: uninstall-local
 
 #### xml ####
 
-@BUILD_GTK_DOC_TRUE@sgml-build.stamp: setup.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt $(expand_content_files)
-@BUILD_GTK_DOC_TRUE@	@echo 'gtk-doc: Building XML'
+@BUILD_GTK_DOC_TRUE@sgml-build.stamp: setup-build.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt $(expand_content_files)
+@BUILD_GTK_DOC_TRUE@	@echo '  DOC   Building XML'
 @BUILD_GTK_DOC_TRUE@	@_source_dir='' ; \
 @BUILD_GTK_DOC_TRUE@	for i in $(DOC_SOURCE_DIR) ; do \
 @BUILD_GTK_DOC_TRUE@	    _source_dir="$${_source_dir} --source-dir=$$i" ; \
@@ -741,13 +755,19 @@ uninstall-am: uninstall-local
 #### html ####
 
 @BUILD_GTK_DOC_TRUE@html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-@BUILD_GTK_DOC_TRUE@	@echo 'gtk-doc: Building HTML'
+@BUILD_GTK_DOC_TRUE@	@echo '  DOC   Building HTML'
 @BUILD_GTK_DOC_TRUE@	@rm -rf html
 @BUILD_GTK_DOC_TRUE@	@mkdir html
 @BUILD_GTK_DOC_TRUE@	@mkhtml_options=""; \
+@BUILD_GTK_DOC_TRUE@	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+@BUILD_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
+@BUILD_GTK_DOC_TRUE@	  if test "x$(V)" = "x1"; then \
+@BUILD_GTK_DOC_TRUE@	    mkhtml_options="$$mkhtml_options --verbose"; \
+@BUILD_GTK_DOC_TRUE@	  fi; \
+@BUILD_GTK_DOC_TRUE@	fi; \
 @BUILD_GTK_DOC_TRUE@	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-path"; \
 @BUILD_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
-@BUILD_GTK_DOC_TRUE@	  mkhtml_options=--path="$(abs_srcdir)"; \
+@BUILD_GTK_DOC_TRUE@	  mkhtml_options="$$mkhtml_options --path=\"$(abs_srcdir)\""; \
 @BUILD_GTK_DOC_TRUE@	fi; \
 @BUILD_GTK_DOC_TRUE@	cd html && gtkdoc-mkhtml $$mkhtml_options $(MKHTML_OPTIONS) $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 @BUILD_GTK_DOC_TRUE@	-@test "x$(HTML_IMAGES)" = "x" || \
@@ -759,48 +779,54 @@ uninstall-am: uninstall-local
 @BUILD_GTK_DOC_TRUE@	    cp $(abs_builddir)/$$file $(abs_builddir)/html; \
 @BUILD_GTK_DOC_TRUE@	  fi; \
 @BUILD_GTK_DOC_TRUE@	done;
-@BUILD_GTK_DOC_TRUE@	@echo 'gtk-doc: Fixing cross-references'
+@BUILD_GTK_DOC_TRUE@	@echo '  DOC   Fixing cross-references'
 @BUILD_GTK_DOC_TRUE@	@gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 @BUILD_GTK_DOC_TRUE@	@touch html-build.stamp
 
 #### pdf ####
 
 @BUILD_GTK_DOC_TRUE@pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files)
-@BUILD_GTK_DOC_TRUE@	@echo 'gtk-doc: Building PDF'
-@BUILD_GTK_DOC_TRUE@	@rm -rf $(DOC_MODULE).pdf
-@BUILD_GTK_DOC_TRUE@	@mkpdf_imgdirs=""; \
+@BUILD_GTK_DOC_TRUE@	@echo '  DOC   Building PDF'
+@BUILD_GTK_DOC_TRUE@	@rm -f $(DOC_MODULE).pdf
+@BUILD_GTK_DOC_TRUE@	@mkpdf_options=""; \
+@BUILD_GTK_DOC_TRUE@	gtkdoc-mkpdf 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+@BUILD_GTK_DOC_TRUE@	if test "$(?)" = "0"; then \
+@BUILD_GTK_DOC_TRUE@	  if test "x$(V)" = "x1"; then \
+@BUILD_GTK_DOC_TRUE@	    mkpdf_options="$$mkpdf_options --verbose"; \
+@BUILD_GTK_DOC_TRUE@	  fi; \
+@BUILD_GTK_DOC_TRUE@	fi; \
 @BUILD_GTK_DOC_TRUE@	if test "x$(HTML_IMAGES)" != "x"; then \
 @BUILD_GTK_DOC_TRUE@	  for img in $(HTML_IMAGES); do \
 @BUILD_GTK_DOC_TRUE@	    part=`dirname $$img`; \
-@BUILD_GTK_DOC_TRUE@	    echo $$mkpdf_imgdirs | grep >/dev/null "\-\-imgdir=$$part "; \
+@BUILD_GTK_DOC_TRUE@	    echo $$mkpdf_options | grep >/dev/null "\-\-imgdir=$$part "; \
 @BUILD_GTK_DOC_TRUE@	    if test $$? != 0; then \
-@BUILD_GTK_DOC_TRUE@	      mkpdf_imgdirs="$$mkpdf_imgdirs --imgdir=$$part"; \
+@BUILD_GTK_DOC_TRUE@	      mkpdf_options="$$mkpdf_options --imgdir=$$part"; \
 @BUILD_GTK_DOC_TRUE@	    fi; \
 @BUILD_GTK_DOC_TRUE@	  done; \
 @BUILD_GTK_DOC_TRUE@	fi; \
-@BUILD_GTK_DOC_TRUE@	gtkdoc-mkpdf --path="$(abs_srcdir)" $$mkpdf_imgdirs $(DOC_MODULE) $(DOC_MAIN_SGML_FILE) $(MKPDF_OPTIONS)
+@BUILD_GTK_DOC_TRUE@	gtkdoc-mkpdf --path="$(abs_srcdir)" $$mkpdf_options $(DOC_MODULE) $(DOC_MAIN_SGML_FILE) $(MKPDF_OPTIONS)
 @BUILD_GTK_DOC_TRUE@	@touch pdf-build.stamp
 
 ##############
 
 @BUILD_GTK_DOC_TRUE@clean-local:
-@BUILD_GTK_DOC_TRUE@	rm -f *~ *.bak
-@BUILD_GTK_DOC_TRUE@	rm -rf .libs
+@BUILD_GTK_DOC_TRUE@	@rm -f *~ *.bak
+@BUILD_GTK_DOC_TRUE@	@rm -rf .libs
 
 @BUILD_GTK_DOC_TRUE@distclean-local:
-@BUILD_GTK_DOC_TRUE@	rm -rf xml html $(REPORT_FILES) $(DOC_MODULE).pdf \
+@BUILD_GTK_DOC_TRUE@	@rm -rf xml html $(REPORT_FILES) $(DOC_MODULE).pdf \
 @BUILD_GTK_DOC_TRUE@	    $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt
-@BUILD_GTK_DOC_TRUE@	if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
+@BUILD_GTK_DOC_TRUE@	@if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
 @BUILD_GTK_DOC_TRUE@	    rm -f $(SETUP_FILES) $(expand_content_files) $(DOC_MODULE).types; \
 @BUILD_GTK_DOC_TRUE@	fi
 
 @BUILD_GTK_DOC_TRUE@maintainer-clean-local: clean
-@BUILD_GTK_DOC_TRUE@	rm -rf xml html
+@BUILD_GTK_DOC_TRUE@	@rm -rf xml html
 
 @BUILD_GTK_DOC_TRUE@install-data-local:
 @BUILD_GTK_DOC_TRUE@	@installfiles=`echo $(builddir)/html/*`; \
-@BUILD_GTK_DOC_TRUE@	if test "$$installfiles" = '$(srcdir)/html/*'; \
-@BUILD_GTK_DOC_TRUE@	then echo '-- Nothing to install' ; \
+@BUILD_GTK_DOC_TRUE@	if test "$$installfiles" = '$(builddir)/html/*'; \
+@BUILD_GTK_DOC_TRUE@	then echo 1>&2 'Nothing to install' ; \
 @BUILD_GTK_DOC_TRUE@	else \
 @BUILD_GTK_DOC_TRUE@	  if test -n "$(DOC_MODULE_VERSION)"; then \
 @BUILD_GTK_DOC_TRUE@	    installdir="$(DESTDIR)$(TARGET_DIR)-$(DOC_MODULE_VERSION)"; \
@@ -809,14 +835,12 @@ uninstall-am: uninstall-local
 @BUILD_GTK_DOC_TRUE@	  fi; \
 @BUILD_GTK_DOC_TRUE@	  $(mkinstalldirs) $${installdir} ; \
 @BUILD_GTK_DOC_TRUE@	  for i in $$installfiles; do \
-@BUILD_GTK_DOC_TRUE@	    echo '-- Installing '$$i ; \
+@BUILD_GTK_DOC_TRUE@	    echo ' $(INSTALL_DATA) '$$i ; \
 @BUILD_GTK_DOC_TRUE@	    $(INSTALL_DATA) $$i $${installdir}; \
 @BUILD_GTK_DOC_TRUE@	  done; \
 @BUILD_GTK_DOC_TRUE@	  if test -n "$(DOC_MODULE_VERSION)"; then \
 @BUILD_GTK_DOC_TRUE@	    mv -f $${installdir}/$(DOC_MODULE).devhelp2 \
 @BUILD_GTK_DOC_TRUE@	      $${installdir}/$(DOC_MODULE)-$(DOC_MODULE_VERSION).devhelp2; \
-@BUILD_GTK_DOC_TRUE@	    mv -f $${installdir}/$(DOC_MODULE).devhelp \
-@BUILD_GTK_DOC_TRUE@	      $${installdir}/$(DOC_MODULE)-$(DOC_MODULE_VERSION).devhelp; \
 @BUILD_GTK_DOC_TRUE@	  fi; \
 @BUILD_GTK_DOC_TRUE@	  $(GTKDOC_REBASE) --relative --dest-dir=$(DESTDIR) --html-dir=$${installdir}; \
 @BUILD_GTK_DOC_TRUE@	fi
@@ -838,13 +862,13 @@ uninstall-am: uninstall-local
 @BUILD_GTK_DOC_TRUE@@ENABLE_GTK_DOC_FALSE@	@false
 
 @BUILD_GTK_DOC_TRUE@dist-hook: dist-check-gtkdoc dist-hook-local
-@BUILD_GTK_DOC_TRUE@	mkdir $(distdir)/html
-@BUILD_GTK_DOC_TRUE@	cp $(builddir)/html/* $(distdir)/html
-@BUILD_GTK_DOC_TRUE@	-cp $(builddir)/$(DOC_MODULE).pdf $(distdir)/
-@BUILD_GTK_DOC_TRUE@	-cp $(builddir)/$(DOC_MODULE).types $(distdir)/
-@BUILD_GTK_DOC_TRUE@	-cp $(builddir)/$(DOC_MODULE)-sections.txt $(distdir)/
-@BUILD_GTK_DOC_TRUE@	cd $(distdir) && rm -f $(DISTCLEANFILES)
-@BUILD_GTK_DOC_TRUE@	$(GTKDOC_REBASE) --online --relative --html-dir=$(distdir)/html
+@BUILD_GTK_DOC_TRUE@	@mkdir $(distdir)/html
+@BUILD_GTK_DOC_TRUE@	@cp ./html/* $(distdir)/html
+@BUILD_GTK_DOC_TRUE@	@-cp ./$(DOC_MODULE).pdf $(distdir)/
+@BUILD_GTK_DOC_TRUE@	@-cp ./$(DOC_MODULE).types $(distdir)/
+@BUILD_GTK_DOC_TRUE@	@-cp ./$(DOC_MODULE)-sections.txt $(distdir)/
+@BUILD_GTK_DOC_TRUE@	@cd $(distdir) && rm -f $(DISTCLEANFILES)
+@BUILD_GTK_DOC_TRUE@	@$(GTKDOC_REBASE) --online --relative --html-dir=$(distdir)/html
 
 @BUILD_GTK_DOC_TRUE@.PHONY : dist-hook-local docs
 

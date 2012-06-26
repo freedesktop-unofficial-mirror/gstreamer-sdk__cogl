@@ -7,8 +7,8 @@
 <link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
 <link rel="up" href="cogl-pipeline-apis.html" title="Setting Up A GPU Pipeline">
 <link rel="prev" href="cogl-Blend-Strings.html" title="Blend Strings">
-<link rel="next" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<link rel="next" href="cogl-2.0-experimental-Shader-snippets.html" title="Shader snippets">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -18,7 +18,7 @@
 <td><a accesskey="u" href="cogl-pipeline-apis.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
 <th width="100%" align="center">Cogl 2.0 Reference Manual</th>
-<td><a accesskey="n" href="cogl-buffer-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<td><a accesskey="n" href="cogl-2.0-experimental-Shader-snippets.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr>
 <tr><td colspan="5" class="shortcuts">
 <a href="#cogl-2.0-experimental-Pipeline.synopsis" class="shortcut">Top</a>
@@ -38,47 +38,152 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-Pipeline.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis">#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new">cogl_pipeline_new</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy">cogl_pipeline_copy</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-is-pipeline" title="cogl_is_pipeline">cogl_is_pipeline</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color">cogl_pipeline_set_color</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4ub" title="cogl_pipeline_set_color4ub">cogl_pipeline_set_color4ub</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4f" title="cogl_pipeline_set_color4f">cogl_pipeline_set_color4f</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color" title="cogl_pipeline_get_color">cogl_pipeline_get_color</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient">cogl_pipeline_set_ambient</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-ambient" title="cogl_pipeline_get_ambient">cogl_pipeline_get_ambient</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse">cogl_pipeline_set_diffuse</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-diffuse" title="cogl_pipeline_get_diffuse">cogl_pipeline_get_diffuse</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient-and-diffuse" title="cogl_pipeline_set_ambient_and_diffuse">cogl_pipeline_set_ambient_and_diffuse</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-emission" title="cogl_pipeline_set_emission">cogl_pipeline_set_emission</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-emission" title="cogl_pipeline_get_emission">cogl_pipeline_get_emission</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-specular" title="cogl_pipeline_set_specular">cogl_pipeline_set_specular</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-specular" title="cogl_pipeline_get_specular">cogl_pipeline_get_specular</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-shininess" title="cogl_pipeline_set_shininess">cogl_pipeline_set_shininess</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-shininess" title="cogl_pipeline_get_shininess">cogl_pipeline_get_shininess</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-alpha-test-function" title="cogl_pipeline_set_alpha_test_function">cogl_pipeline_set_alpha_test_function</a>
+<pre class="synopsis"><span class="returnvalue">CoglPipeline</span> *      <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new ()">cogl_pipeline_new</a>                   (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>);
+<span class="returnvalue">CoglPipeline</span> *      <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy ()">cogl_pipeline_copy</a>                  (<em class="parameter"><code><span class="type">CoglPipeline</span> *source</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-is-pipeline" title="cogl_is_pipeline ()">cogl_is_pipeline</a>                    (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color ()">cogl_pipeline_set_color</a>             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4ub" title="cogl_pipeline_set_color4ub ()">cogl_pipeline_set_color4ub</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> blue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color4f" title="cogl_pipeline_set_color4f ()">cogl_pipeline_set_color4f</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> red</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> green</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color" title="cogl_pipeline_get_color ()">cogl_pipeline_get_color</a>             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient ()">cogl_pipeline_set_ambient</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *ambient</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-ambient" title="cogl_pipeline_get_ambient ()">cogl_pipeline_get_ambient</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *ambient</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse ()">cogl_pipeline_set_diffuse</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *diffuse</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-diffuse" title="cogl_pipeline_get_diffuse ()">cogl_pipeline_get_diffuse</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *diffuse</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient-and-diffuse" title="cogl_pipeline_set_ambient_and_diffuse ()">cogl_pipeline_set_ambient_and_diffuse</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-emission" title="cogl_pipeline_set_emission ()">cogl_pipeline_set_emission</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *emission</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-emission" title="cogl_pipeline_get_emission ()">cogl_pipeline_get_emission</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *emission</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-specular" title="cogl_pipeline_set_specular ()">cogl_pipeline_set_specular</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *specular</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-specular" title="cogl_pipeline_get_specular ()">cogl_pipeline_get_specular</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *specular</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-shininess" title="cogl_pipeline_set_shininess ()">cogl_pipeline_set_shininess</a>         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> shininess</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-shininess" title="cogl_pipeline_get_shininess ()">cogl_pipeline_get_shininess</a>         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-alpha-test-function" title="cogl_pipeline_set_alpha_test_function ()">cogl_pipeline_set_alpha_test_function</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineAlphaFunc</span> alpha_func</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha_reference</code></em>);
 #define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-BLEND-STRING-ERROR:CAPS" title="COGL_BLEND_STRING_ERROR">COGL_BLEND_STRING_ERROR</a>
 enum                <a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglBlendStringError" title="enum CoglBlendStringError">CoglBlendStringError</a>;
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend" title="cogl_pipeline_set_blend">cogl_pipeline_set_blend</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant">cogl_pipeline_set_blend_constant</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-point-size" title="cogl_pipeline_set_point_size">cogl_pipeline_set_point_size</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-point-size" title="cogl_pipeline_get_point_size">cogl_pipeline_get_point_size</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color-mask" title="cogl_pipeline_get_color_mask">cogl_pipeline_get_color_mask</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask">cogl_pipeline_set_color_mask</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-texture" title="cogl_pipeline_set_layer_texture">cogl_pipeline_set_layer_texture</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters" title="cogl_pipeline_set_layer_filters">cogl_pipeline_set_layer_filters</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode" title="cogl_pipeline_set_layer_wrap_mode">cogl_pipeline_set_layer_wrap_mode</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s">cogl_pipeline_set_layer_wrap_mode_s</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t">cogl_pipeline_set_layer_wrap_mode_t</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p">cogl_pipeline_set_layer_wrap_mode_p</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine" title="cogl_pipeline_set_layer_combine">cogl_pipeline_set_layer_combine</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine-constant" title="cogl_pipeline_set_layer_combine_constant">cogl_pipeline_set_layer_combine_constant</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-matrix" title="cogl_pipeline_set_layer_matrix">cogl_pipeline_set_layer_matrix</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-point-sprite-coords-enabled" title="cogl_pipeline_set_layer_point_sprite_coords_enabled">cogl_pipeline_set_layer_point_sprite_coords_enabled</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-point-sprite-coords-enabled" title="cogl_pipeline_get_layer_point_sprite_coords_enabled">cogl_pipeline_get_layer_point_sprite_coords_enabled</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-remove-layer" title="cogl_pipeline_remove_layer">cogl_pipeline_remove_layer</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-n-layers" title="cogl_pipeline_get_n_layers">cogl_pipeline_get_n_layers</a>
-#define             <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-foreach-layer" title="cogl_pipeline_foreach_layer">cogl_pipeline_foreach_layer</a>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend" title="cogl_pipeline_set_blend ()">cogl_pipeline_set_blend</a>             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *blend_string</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant ()">cogl_pipeline_set_blend_constant</a>    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *constant_color</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-point-size" title="cogl_pipeline_set_point_size ()">cogl_pipeline_set_point_size</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> point_size</code></em>);
+<span class="returnvalue">float</span>               <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-point-size" title="cogl_pipeline_get_point_size ()">cogl_pipeline_get_point_size</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);
+<a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="returnvalue">CoglColorMask</span></a>       <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-color-mask" title="cogl_pipeline_get_color_mask ()">cogl_pipeline_get_color_mask</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask ()">cogl_pipeline_set_color_mask</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> color_mask</code></em>);
+enum                <a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglPipelineCullFaceMode" title="enum CoglPipelineCullFaceMode">CoglPipelineCullFaceMode</a>;
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-cull-face-mode" title="cogl_pipeline_set_cull_face_mode ()">cogl_pipeline_set_cull_face_mode</a>    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglPipelineCullFaceMode" title="enum CoglPipelineCullFaceMode"><span class="type">CoglPipelineCullFaceMode</span></a> cull_face_mode</code></em>);
+enum                <a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglWinding" title="enum CoglWinding">CoglWinding</a>;
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-front-face-winding" title="cogl_pipeline_set_front_face_winding ()">cogl_pipeline_set_front_face_winding</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglWinding" title="enum CoglWinding"><span class="type">CoglWinding</span></a> front_winding</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-texture" title="cogl_pipeline_set_layer_texture ()">cogl_pipeline_set_layer_texture</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-null-texture" title="cogl_pipeline_set_layer_null_texture ()">cogl_pipeline_set_layer_null_texture</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureType" title="enum CoglTextureType"><span class="type">CoglTextureType</span></a> texure_type</code></em>);
+<a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-texture" title="cogl_pipeline_get_layer_texture ()">cogl_pipeline_get_layer_texture</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters" title="cogl_pipeline_set_layer_filters ()">cogl_pipeline_set_layer_filters</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineFilter</span> min_filter</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineFilter</span> mag_filter</code></em>);
+<span class="returnvalue">CoglPipelineFilter</span>  <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-min-filter" title="cogl_pipeline_get_layer_min_filter ()">cogl_pipeline_get_layer_min_filter</a>  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
+<span class="returnvalue">CoglPipelineFilter</span>  <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-mag-filter" title="cogl_pipeline_get_layer_mag_filter ()">cogl_pipeline_get_layer_mag_filter</a>  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode" title="cogl_pipeline_set_layer_wrap_mode ()">cogl_pipeline_set_layer_wrap_mode</a>   (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s ()">cogl_pipeline_set_layer_wrap_mode_s</a> (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t ()">cogl_pipeline_set_layer_wrap_mode_t</a> (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p ()">cogl_pipeline_set_layer_wrap_mode_p</a> (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine" title="cogl_pipeline_set_layer_combine ()">cogl_pipeline_set_layer_combine</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *blend_string</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-combine-constant" title="cogl_pipeline_set_layer_combine_constant ()">cogl_pipeline_set_layer_combine_constant</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *constant</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-matrix" title="cogl_pipeline_set_layer_matrix ()">cogl_pipeline_set_layer_matrix</a>      (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-point-sprite-coords-enabled" title="cogl_pipeline_set_layer_point_sprite_coords_enabled ()">cogl_pipeline_set_layer_point_sprite_coords_enabled</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-layer-point-sprite-coords-enabled" title="cogl_pipeline_get_layer_point_sprite_coords_enabled ()">cogl_pipeline_get_layer_point_sprite_coords_enabled</a>
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-remove-layer" title="cogl_pipeline_remove_layer ()">cogl_pipeline_remove_layer</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-n-layers" title="cogl_pipeline_get_n_layers ()">cogl_pipeline_get_n_layers</a>          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-foreach-layer" title="cogl_pipeline_foreach_layer ()">cogl_pipeline_foreach_layer</a>         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineLayerCallback</span> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);
+<span class="returnvalue">int</span>                 <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()">cogl_pipeline_get_uniform_location</a>  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *uniform_name</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-1f" title="cogl_pipeline_set_uniform_1f ()">cogl_pipeline_set_uniform_1f</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-1i" title="cogl_pipeline_set_uniform_1i ()">cogl_pipeline_set_uniform_1i</a>        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-float" title="cogl_pipeline_set_uniform_float ()">cogl_pipeline_set_uniform_float</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-int" title="cogl_pipeline_set_uniform_int ()">cogl_pipeline_set_uniform_int</a>       (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">int</span> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-matrix" title="cogl_pipeline_set_uniform_matrix ()">cogl_pipeline_set_uniform_matrix</a>    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> dimensions</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> transpose</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-snippet" title="cogl_pipeline_add_snippet ()">cogl_pipeline_add_snippet</a>           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-layer-snippet" title="cogl_pipeline_add_layer_snippet ()">cogl_pipeline_add_layer_snippet</a>     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -96,36 +201,41 @@ mapping. Finally it blends the result with the framebuffer.
 <div class="refsect1">
 <a name="cogl-2.0-experimental-Pipeline.details"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="cogl-pipeline-new"></a><h3>cogl_pipeline_new</h3>
-<pre class="programlisting">#define cogl_pipeline_new cogl_pipeline_new_EXP
-</pre>
+<a name="cogl-pipeline-new"></a><h3>cogl_pipeline_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglPipeline</span> *      cogl_pipeline_new                   (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>);</pre>
 <p>
 Allocates and initializes a default simple pipeline that will color
 a primitive white.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody><tr>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>a <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a pointer to a new <span class="type">CoglPipeline</span>
 </td>
-</tr></tbody>
+</tr>
+</tbody>
 </table></div>
 <p class="since">Since 2.0</p>
 <p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-copy"></a><h3>cogl_pipeline_copy</h3>
-<pre class="programlisting">#define cogl_pipeline_copy cogl_pipeline_copy_EXP
-</pre>
+<a name="cogl-pipeline-copy"></a><h3>cogl_pipeline_copy ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglPipeline</span> *      cogl_pipeline_copy                  (<em class="parameter"><code><span class="type">CoglPipeline</span> *source</code></em>);</pre>
 <p>
 Creates a new pipeline with the configuration copied from the
 source pipeline.
 </p>
 <p>
 We would strongly advise developers to always aim to use
-<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy"><code class="function">cogl_pipeline_copy()</code></a> instead of <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new"><code class="function">cogl_pipeline_new()</code></a> whenever there will
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy ()"><code class="function">cogl_pipeline_copy()</code></a> instead of <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-new" title="cogl_pipeline_new ()"><code class="function">cogl_pipeline_new()</code></a> whenever there will
 be any similarity between two pipelines. Copying a pipeline helps Cogl
 keep track of a pipelines ancestry which we may use to help minimize GPU
 state changes.
@@ -149,9 +259,8 @@ state changes.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-is-pipeline"></a><h3>cogl_is_pipeline</h3>
-<pre class="programlisting">#define cogl_is_pipeline cogl_is_pipeline_EXP
-</pre>
+<a name="cogl-is-pipeline"></a><h3>cogl_is_pipeline ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_is_pipeline                    (<em class="parameter"><code><a href="../cogl/cogl-General-API.html#CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
 <p>
 Gets whether the given handle references an existing pipeline object.
 </p>
@@ -175,9 +284,9 @@ Gets whether the given handle references an existing pipeline object.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-color"></a><h3>cogl_pipeline_set_color</h3>
-<pre class="programlisting">#define cogl_pipeline_set_color cogl_pipeline_set_color_EXP
-</pre>
+<a name="cogl-pipeline-set-color"></a><h3>cogl_pipeline_set_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_color             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);</pre>
 <p>
 Sets the basic color of the pipeline, used when no lighting is enabled.
 </p>
@@ -208,9 +317,12 @@ The default value is (1.0, 1.0, 1.0, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-color4ub"></a><h3>cogl_pipeline_set_color4ub</h3>
-<pre class="programlisting">#define cogl_pipeline_set_color4ub cogl_pipeline_set_color4ub_EXP
-</pre>
+<a name="cogl-pipeline-set-color4ub"></a><h3>cogl_pipeline_set_color4ub ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_color4ub          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> red</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> green</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> blue</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint8"><span class="type">guint8</span></a> alpha</code></em>);</pre>
 <p>
 Sets the basic color of the pipeline, used when no lighting is enabled.
 </p>
@@ -247,9 +359,12 @@ The default value is (0xff, 0xff, 0xff, 0xff)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-color4f"></a><h3>cogl_pipeline_set_color4f</h3>
-<pre class="programlisting">#define cogl_pipeline_set_color4f cogl_pipeline_set_color4f_EXP
-</pre>
+<a name="cogl-pipeline-set-color4f"></a><h3>cogl_pipeline_set_color4f ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_color4f           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> red</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> green</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> blue</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha</code></em>);</pre>
 <p>
 Sets the basic color of the pipeline, used when no lighting is enabled.
 </p>
@@ -286,9 +401,9 @@ The default value is (1.0, 1.0, 1.0, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-color"></a><h3>cogl_pipeline_get_color</h3>
-<pre class="programlisting">#define cogl_pipeline_get_color cogl_pipeline_get_color_EXP
-</pre>
+<a name="cogl-pipeline-get-color"></a><h3>cogl_pipeline_get_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_get_color             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);</pre>
 <p>
 Retrieves the current pipeline color.
 </p>
@@ -311,9 +426,9 @@ Retrieves the current pipeline color.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-ambient"></a><h3>cogl_pipeline_set_ambient</h3>
-<pre class="programlisting">#define cogl_pipeline_set_ambient cogl_pipeline_set_ambient_EXP
-</pre>
+<a name="cogl-pipeline-set-ambient"></a><h3>cogl_pipeline_set_ambient ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_ambient           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *ambient</code></em>);</pre>
 <p>
 Sets the pipeline's ambient color, in the standard OpenGL lighting
 model. The ambient color affects the overall color of the object.
@@ -344,9 +459,9 @@ The default value is (0.2, 0.2, 0.2, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-ambient"></a><h3>cogl_pipeline_get_ambient</h3>
-<pre class="programlisting">#define cogl_pipeline_get_ambient cogl_pipeline_get_ambient_EXP
-</pre>
+<a name="cogl-pipeline-get-ambient"></a><h3>cogl_pipeline_get_ambient ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_get_ambient           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *ambient</code></em>);</pre>
 <p>
 Retrieves the current ambient color for <em class="parameter"><code>pipeline</code></em>
 </p>
@@ -368,9 +483,9 @@ Retrieves the current ambient color for <em class="parameter"><code>pipeline</co
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-diffuse"></a><h3>cogl_pipeline_set_diffuse</h3>
-<pre class="programlisting">#define cogl_pipeline_set_diffuse cogl_pipeline_set_diffuse_EXP
-</pre>
+<a name="cogl-pipeline-set-diffuse"></a><h3>cogl_pipeline_set_diffuse ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_diffuse           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *diffuse</code></em>);</pre>
 <p>
 Sets the pipeline's diffuse color, in the standard OpenGL lighting
 model. The diffuse color is most intense where the light hits the
@@ -397,9 +512,9 @@ The default value is (0.8, 0.8, 0.8, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-diffuse"></a><h3>cogl_pipeline_get_diffuse</h3>
-<pre class="programlisting">#define cogl_pipeline_get_diffuse cogl_pipeline_get_diffuse_EXP
-</pre>
+<a name="cogl-pipeline-get-diffuse"></a><h3>cogl_pipeline_get_diffuse ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_get_diffuse           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *diffuse</code></em>);</pre>
 <p>
 Retrieves the current diffuse color for <em class="parameter"><code>pipeline</code></em>
 </p>
@@ -421,11 +536,13 @@ Retrieves the current diffuse color for <em class="parameter"><code>pipeline</co
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-ambient-and-diffuse"></a><h3>cogl_pipeline_set_ambient_and_diffuse</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_ambient_and_diffuse</pre>
+<a name="cogl-pipeline-set-ambient-and-diffuse"></a><h3>cogl_pipeline_set_ambient_and_diffuse ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_ambient_and_diffuse
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *color</code></em>);</pre>
 <p>
 Conveniently sets the diffuse and ambient color of <em class="parameter"><code>pipeline</code></em> at the same
-time. See <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient"><code class="function">cogl_pipeline_set_ambient()</code></a> and <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse"><code class="function">cogl_pipeline_set_diffuse()</code></a>.
+time. See <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-ambient" title="cogl_pipeline_set_ambient ()"><code class="function">cogl_pipeline_set_ambient()</code></a> and <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-diffuse" title="cogl_pipeline_set_diffuse ()"><code class="function">cogl_pipeline_set_diffuse()</code></a>.
 </p>
 <p>
 The default ambient color is (0.2, 0.2, 0.2, 1.0)
@@ -451,9 +568,9 @@ The default diffuse color is (0.8, 0.8, 0.8, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-emission"></a><h3>cogl_pipeline_set_emission</h3>
-<pre class="programlisting">#define cogl_pipeline_set_emission cogl_pipeline_set_emission_EXP
-</pre>
+<a name="cogl-pipeline-set-emission"></a><h3>cogl_pipeline_set_emission ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_emission          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *emission</code></em>);</pre>
 <p>
 Sets the pipeline's emissive color, in the standard OpenGL lighting
 model. It will look like the surface is a light source emitting this
@@ -480,9 +597,9 @@ The default value is (0.0, 0.0, 0.0, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-emission"></a><h3>cogl_pipeline_get_emission</h3>
-<pre class="programlisting">#define cogl_pipeline_get_emission cogl_pipeline_get_emission_EXP
-</pre>
+<a name="cogl-pipeline-get-emission"></a><h3>cogl_pipeline_get_emission ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_get_emission          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *emission</code></em>);</pre>
 <p>
 Retrieves the pipelines current emission color.
 </p>
@@ -504,9 +621,9 @@ Retrieves the pipelines current emission color.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-specular"></a><h3>cogl_pipeline_set_specular</h3>
-<pre class="programlisting">#define cogl_pipeline_set_specular cogl_pipeline_set_specular_EXP
-</pre>
+<a name="cogl-pipeline-set-specular"></a><h3>cogl_pipeline_set_specular ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_specular          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *specular</code></em>);</pre>
 <p>
 Sets the pipeline's specular color, in the standard OpenGL lighting
 model. The intensity of the specular color depends on the viewport
@@ -533,9 +650,9 @@ The default value is (0.0, 0.0, 0.0, 1.0)
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-specular"></a><h3>cogl_pipeline_get_specular</h3>
-<pre class="programlisting">#define cogl_pipeline_get_specular cogl_pipeline_get_specular_EXP
-</pre>
+<a name="cogl-pipeline-get-specular"></a><h3>cogl_pipeline_get_specular ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_get_specular          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *specular</code></em>);</pre>
 <p>
 Retrieves the pipelines current specular color.
 </p>
@@ -557,9 +674,9 @@ Retrieves the pipelines current specular color.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-shininess"></a><h3>cogl_pipeline_set_shininess</h3>
-<pre class="programlisting">#define cogl_pipeline_set_shininess cogl_pipeline_set_shininess_EXP
-</pre>
+<a name="cogl-pipeline-set-shininess"></a><h3>cogl_pipeline_set_shininess ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_shininess         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> shininess</code></em>);</pre>
 <p>
 Sets the shininess of the pipeline, in the standard OpenGL lighting
 model, which determines the size of the specular highlights. A
@@ -587,9 +704,8 @@ The default value is 0.0
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-shininess"></a><h3>cogl_pipeline_get_shininess</h3>
-<pre class="programlisting">#define cogl_pipeline_get_shininess cogl_pipeline_get_shininess_EXP
-</pre>
+<a name="cogl-pipeline-get-shininess"></a><h3>cogl_pipeline_get_shininess ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               cogl_pipeline_get_shininess         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);</pre>
 <p>
 Retrieves the pipelines current emission color.
 </p>
@@ -611,8 +727,11 @@ Retrieves the pipelines current emission color.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-alpha-test-function"></a><h3>cogl_pipeline_set_alpha_test_function</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_alpha_test_function</pre>
+<a name="cogl-pipeline-set-alpha-test-function"></a><h3>cogl_pipeline_set_alpha_test_function ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_alpha_test_function
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineAlphaFunc</span> alpha_func</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> alpha_reference</code></em>);</pre>
 <p>
 Before a primitive is blended with the framebuffer, it goes through an
 alpha test stage which lets you discard fragments based on the current
@@ -657,7 +776,8 @@ to compare incoming fragments to.</td>
 <hr>
 <div class="refsect2">
 <a name="CoglBlendStringError"></a><h3>enum CoglBlendStringError</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_BLEND_STRING_ERROR &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_BLEND_STRING_ERROR &gt;*/
   COGL_BLEND_STRING_ERROR_PARSE_ERROR,
   COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
   COGL_BLEND_STRING_ERROR_INVALID_ERROR,
@@ -697,9 +817,10 @@ Error enumeration for the blend strings parser
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-blend"></a><h3>cogl_pipeline_set_blend</h3>
-<pre class="programlisting">#define cogl_pipeline_set_blend cogl_pipeline_set_blend_EXP
-</pre>
+<a name="cogl-pipeline-set-blend"></a><h3>cogl_pipeline_set_blend ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_pipeline_set_blend             (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *blend_string</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 If not already familiar; please refer <a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">here</a>
 for an overview of what blend strings are, and their syntax.
@@ -733,7 +854,7 @@ This is the list of source-names usable as blend factors:
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem"><p>SRC_COLOR: The color of the in comming fragment</p></li>
 <li class="listitem"><p>DST_COLOR: The color of the framebuffer</p></li>
-<li class="listitem"><p>CONSTANT: The constant set via <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant"><code class="function">cogl_pipeline_set_blend_constant()</code></a></p></li>
+<li class="listitem"><p>CONSTANT: The constant set via <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-blend-constant" title="cogl_pipeline_set_blend_constant ()"><code class="function">cogl_pipeline_set_blend_constant()</code></a></p></li>
 </ul></div>
 <p>
 </p>
@@ -845,9 +966,9 @@ present).</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-blend-constant"></a><h3>cogl_pipeline_set_blend_constant</h3>
-<pre class="programlisting">#define cogl_pipeline_set_blend_constant cogl_pipeline_set_blend_constant_EXP
-</pre>
+<a name="cogl-pipeline-set-blend-constant"></a><h3>cogl_pipeline_set_blend_constant ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_blend_constant    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *constant_color</code></em>);</pre>
 <p>
 When blending is setup to reference a CONSTANT blend factor then
 blending will depend on the constant set with this function.
@@ -870,9 +991,9 @@ blending will depend on the constant set with this function.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-point-size"></a><h3>cogl_pipeline_set_point_size</h3>
-<pre class="programlisting">#define cogl_pipeline_set_point_size cogl_pipeline_set_point_size_EXP
-</pre>
+<a name="cogl-pipeline-set-point-size"></a><h3>cogl_pipeline_set_point_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_point_size        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> point_size</code></em>);</pre>
 <p>
 Changes the size of points drawn when <a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-POINTS:CAPS"><code class="literal">COGL_VERTICES_MODE_POINTS</code></a> is
 used with the vertex buffer API. Note that typically the GPU will
@@ -900,9 +1021,8 @@ transformations. The default point size is 1.0.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-point-size"></a><h3>cogl_pipeline_get_point_size</h3>
-<pre class="programlisting">#define cogl_pipeline_get_point_size cogl_pipeline_get_point_size_EXP
-</pre>
+<a name="cogl-pipeline-get-point-size"></a><h3>cogl_pipeline_get_point_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">float</span>               cogl_pipeline_get_point_size        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);</pre>
 <p>
 Get the size of points drawn when <a href="../cogl/cogl-Vertex-Buffers.html#COGL-VERTICES-MODE-POINTS:CAPS"><code class="literal">COGL_VERTICES_MODE_POINTS</code></a> is
 used with the vertex buffer API.
@@ -925,9 +1045,8 @@ used with the vertex buffer API.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-color-mask"></a><h3>cogl_pipeline_get_color_mask</h3>
-<pre class="programlisting">#define cogl_pipeline_get_color_mask cogl_pipeline_get_color_mask_EXP
-</pre>
+<a name="cogl-pipeline-get-color-mask"></a><h3>cogl_pipeline_get_color_mask ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="returnvalue">CoglColorMask</span></a>       cogl_pipeline_get_color_mask        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);</pre>
 <p>
 Gets the current <a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> of which channels would be written to the
 current framebuffer. Each bit set in the mask means that the
@@ -952,9 +1071,9 @@ corresponding color would be written.
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-color-mask"></a><h3>cogl_pipeline_set_color_mask</h3>
-<pre class="programlisting">#define cogl_pipeline_set_color_mask cogl_pipeline_set_color_mask_EXP
-</pre>
+<a name="cogl-pipeline-set-color-mask"></a><h3>cogl_pipeline_set_color_mask ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_color_mask        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Common-Types.html#CoglColorMask" title="enum CoglColorMask"><span class="type">CoglColorMask</span></a> color_mask</code></em>);</pre>
 <p>
 Defines a bit mask of which color channels should be written to the
 current framebuffer. If a bit is set in <em class="parameter"><code>color_mask</code></em> that means that
@@ -979,15 +1098,215 @@ the current framebuffer.</td>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-texture"></a><h3>cogl_pipeline_set_layer_texture</h3>
-<pre class="programlisting">#define cogl_pipeline_set_layer_texture cogl_pipeline_set_layer_texture_EXP
+<a name="CoglPipelineCullFaceMode"></a><h3>enum CoglPipelineCullFaceMode</h3>
+<pre class="programlisting">typedef enum {
+  COGL_PIPELINE_CULL_FACE_MODE_NONE,
+  COGL_PIPELINE_CULL_FACE_MODE_FRONT,
+  COGL_PIPELINE_CULL_FACE_MODE_BACK,
+  COGL_PIPELINE_CULL_FACE_MODE_BOTH
+} CoglPipelineCullFaceMode;
 </pre>
+<p>
+Specifies which faces should be culled. This can be set on a
+pipeline using <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-cull-face-mode" title="cogl_pipeline_set_cull_face_mode ()"><code class="function">cogl_pipeline_set_cull_face_mode()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-PIPELINE-CULL-FACE-MODE-NONE:CAPS"></a><span class="term"><code class="literal">COGL_PIPELINE_CULL_FACE_MODE_NONE</code></span></p></td>
+<td>Neither face will be
+ culled. This is the default.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIPELINE-CULL-FACE-MODE-FRONT:CAPS"></a><span class="term"><code class="literal">COGL_PIPELINE_CULL_FACE_MODE_FRONT</code></span></p></td>
+<td>Front faces will be culled.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIPELINE-CULL-FACE-MODE-BACK:CAPS"></a><span class="term"><code class="literal">COGL_PIPELINE_CULL_FACE_MODE_BACK</code></span></p></td>
+<td>Back faces will be culled.
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIPELINE-CULL-FACE-MODE-BOTH:CAPS"></a><span class="term"><code class="literal">COGL_PIPELINE_CULL_FACE_MODE_BOTH</code></span></p></td>
+<td>All faces will be culled.
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-filters"></a><h3>cogl_pipeline_set_layer_filters</h3>
-<pre class="programlisting">#define cogl_pipeline_set_layer_filters cogl_pipeline_set_layer_filters_EXP
+<a name="cogl-pipeline-set-cull-face-mode"></a><h3>cogl_pipeline_set_cull_face_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_cull_face_mode    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglPipelineCullFaceMode" title="enum CoglPipelineCullFaceMode"><span class="type">CoglPipelineCullFaceMode</span></a> cull_face_mode</code></em>);</pre>
+<p>
+Sets which faces will be culled when drawing. Face culling can be
+used to increase efficiency by avoiding drawing faces that would
+get overridden. For example, if a model has gaps so that it is
+impossible to see the inside then faces which are facing away from
+the screen will never be seen so there is no point in drawing
+them. This can be acheived by setting the cull face mode to
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-PIPELINE-CULL-FACE-MODE-BACK:CAPS"><code class="literal">COGL_PIPELINE_CULL_FACE_MODE_BACK</code></a>.
+</p>
+<p>
+Face culling relies on the primitives being drawn with a specific
+order to represent which faces are facing inside and outside the
+model. This order can be specified by calling
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-front-face-winding" title="cogl_pipeline_set_front_face_winding ()"><code class="function">cogl_pipeline_set_front_face_winding()</code></a>.
+</p>
+<p>
+Status: Unstable
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cull_face_mode</code></em> :</span></p></td>
+<td>The new mode to set</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglWinding"></a><h3>enum CoglWinding</h3>
+<pre class="programlisting">typedef enum {
+  COGL_WINDING_CLOCKWISE,
+  COGL_WINDING_COUNTER_CLOCKWISE
+} CoglWinding;
 </pre>
+<p>
+Enum used to represent the two directions of rotation. This can be
+used to set the front face for culling by calling
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-front-face-winding" title="cogl_pipeline_set_front_face_winding ()"><code class="function">cogl_pipeline_set_front_face_winding()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><a name="COGL-WINDING-CLOCKWISE:CAPS"></a><span class="term"><code class="literal">COGL_WINDING_CLOCKWISE</code></span></p></td>
+<td>Vertices are in a clockwise order
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-WINDING-COUNTER-CLOCKWISE:CAPS"></a><span class="term"><code class="literal">COGL_WINDING_COUNTER_CLOCKWISE</code></span></p></td>
+<td>Vertices are in a counter-clockwise order
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-front-face-winding"></a><h3>cogl_pipeline_set_front_face_winding ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_front_face_winding
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Pipeline.html#CoglWinding" title="enum CoglWinding"><span class="type">CoglWinding</span></a> front_winding</code></em>);</pre>
+<p>
+The order of the vertices within a primitive specifies whether it
+is considered to be front or back facing. This function specifies
+which order is considered to be the front
+faces. <a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-WINDING-COUNTER-CLOCKWISE:CAPS"><code class="literal">COGL_WINDING_COUNTER_CLOCKWISE</code></a> sets the front faces to
+primitives with vertices in a counter-clockwise order and
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-WINDING-CLOCKWISE:CAPS"><code class="literal">COGL_WINDING_CLOCKWISE</code></a> sets them to be clockwise. The default is
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#COGL-WINDING-COUNTER-CLOCKWISE:CAPS"><code class="literal">COGL_WINDING_COUNTER_CLOCKWISE</code></a>.
+</p>
+<p>
+Status: Unstable
+</p>
+<p class="since">Since 2.0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-texture"></a><h3>cogl_pipeline_set_layer_texture ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_texture     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a> *texture</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-null-texture"></a><h3>cogl_pipeline_set_layer_null_texture ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_null_texture
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTextureType" title="enum CoglTextureType"><span class="type">CoglTextureType</span></a> texure_type</code></em>);</pre>
+<p>
+Sets the texture for this layer to be the default texture for the
+given type. This is equivalent to calling
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-texture" title="cogl_pipeline_set_layer_texture ()"><code class="function">cogl_pipeline_set_layer_texture()</code></a> with <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for the texture
+argument except that you can also specify the type of default
+texture to use. The default texture is a 1x1 pixel white texture.
+</p>
+<p>
+This function is mostly useful if you want to create a base
+pipeline that you want to create multiple copies from using
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-copy" title="cogl_pipeline_copy ()"><code class="function">cogl_pipeline_copy()</code></a>. In that case this function can be used to
+specify the texture type so that any pipeline copies can share the
+internal texture type state for efficiency.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>The layer number to modify</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>texture_type</code></em> :</span></p></td>
+<td>The type of the default texture to use</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-layer-texture"></a><h3>cogl_pipeline_get_layer_texture ()</h3>
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="returnvalue">CoglTexture</span></a> *       cogl_pipeline_get_layer_texture     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the index of the layer</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the texture that was set for the given layer of the
+pipeline or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if no texture was set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-filters"></a><h3>cogl_pipeline_set_layer_filters ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_filters     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineFilter</span> min_filter</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineFilter</span> mag_filter</code></em>);</pre>
 <p>
 Changes the decimation and interpolation filters used when a texture is
 drawn at other scales than 100%.
@@ -1013,17 +1332,91 @@ drawn at other scales than 100%.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-wrap-mode"></a><h3>cogl_pipeline_set_layer_wrap_mode</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode</pre>
+<a name="cogl-pipeline-get-layer-min-filter"></a><h3>cogl_pipeline_get_layer_min_filter ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglPipelineFilter</span>  cogl_pipeline_get_layer_min_filter  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
+<p>
+Retrieves the currently set minification <span class="type">CoglPipelineFilter</span> set on
+the specified layer. The miniifcation filter determines how the
+layer should be sampled when down-scaled.
+</p>
+<p>
+The default filter is <code class="literal">COGL_PIPELINE_FILTER_LINEAR</code> but this can be
+changed using <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters" title="cogl_pipeline_set_layer_filters ()"><code class="function">cogl_pipeline_set_layer_filters()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The minification <span class="type">CoglPipelineFilter</span> for the
+specified layer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-layer-mag-filter"></a><h3>cogl_pipeline_get_layer_mag_filter ()</h3>
+<pre class="programlisting"><span class="returnvalue">CoglPipelineFilter</span>  cogl_pipeline_get_layer_mag_filter  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
+<p>
+Retrieves the currently set magnification <span class="type">CoglPipelineFilter</span> set on
+the specified layer. The magnification filter determines how the
+layer should be sampled when up-scaled.
+</p>
+<p>
+The default filter is <code class="literal">COGL_PIPELINE_FILTER_LINEAR</code> but this can be
+changed using <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-filters" title="cogl_pipeline_set_layer_filters ()"><code class="function">cogl_pipeline_set_layer_filters()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer_index</code></em> :</span></p></td>
+<td>the layer number to change.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>The magnification <span class="type">CoglPipelineFilter</span> for the
+specified layer.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-layer-wrap-mode"></a><h3>cogl_pipeline_set_layer_wrap_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_wrap_mode   (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);</pre>
 <p>
 Sets the wrap mode for all three coordinates of texture lookups on
 this layer. This is equivalent to calling
-<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s"><code class="function">cogl_pipeline_set_layer_wrap_mode_s()</code></a>,
-<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t"><code class="function">cogl_pipeline_set_layer_wrap_mode_t()</code></a> and
-<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p"><code class="function">cogl_pipeline_set_layer_wrap_mode_p()</code></a> separately.
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-s" title="cogl_pipeline_set_layer_wrap_mode_s ()"><code class="function">cogl_pipeline_set_layer_wrap_mode_s()</code></a>,
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-t" title="cogl_pipeline_set_layer_wrap_mode_t ()"><code class="function">cogl_pipeline_set_layer_wrap_mode_t()</code></a> and
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-layer-wrap-mode-p" title="cogl_pipeline_set_layer_wrap_mode_p ()"><code class="function">cogl_pipeline_set_layer_wrap_mode_p()</code></a> separately.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
@@ -1043,11 +1436,14 @@ this layer. This is equivalent to calling
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-wrap-mode-s"></a><h3>cogl_pipeline_set_layer_wrap_mode_s</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_s</pre>
+<a name="cogl-pipeline-set-layer-wrap-mode-s"></a><h3>cogl_pipeline_set_layer_wrap_mode_s ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_wrap_mode_s (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);</pre>
 <p>
 Sets the wrap mode for the 's' coordinate of texture lookups on this layer.
 </p>
@@ -1069,11 +1465,14 @@ Sets the wrap mode for the 's' coordinate of texture lookups on this layer.
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-wrap-mode-t"></a><h3>cogl_pipeline_set_layer_wrap_mode_t</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_t</pre>
+<a name="cogl-pipeline-set-layer-wrap-mode-t"></a><h3>cogl_pipeline_set_layer_wrap_mode_t ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_wrap_mode_t (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);</pre>
 <p>
 Sets the wrap mode for the 't' coordinate of texture lookups on this layer.
 </p>
@@ -1095,11 +1494,14 @@ Sets the wrap mode for the 't' coordinate of texture lookups on this layer.
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-wrap-mode-p"></a><h3>cogl_pipeline_set_layer_wrap_mode_p</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_wrap_mode_p</pre>
+<a name="cogl-pipeline-set-layer-wrap-mode-p"></a><h3>cogl_pipeline_set_layer_wrap_mode_p ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_wrap_mode_p (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineWrapMode</span> mode</code></em>);</pre>
 <p>
 Sets the wrap mode for the 'p' coordinate of texture lookups on
 this layer. 'p' is the third coordinate.
@@ -1122,12 +1524,15 @@ this layer. 'p' is the third coordinate.
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-combine"></a><h3>cogl_pipeline_set_layer_combine</h3>
-<pre class="programlisting">#define cogl_pipeline_set_layer_combine cogl_pipeline_set_layer_combine_EXP
-</pre>
+<a name="cogl-pipeline-set-layer-combine"></a><h3>cogl_pipeline_set_layer_combine ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_pipeline_set_layer_combine     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *blend_string</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 If not already familiar; you can refer
 <a class="link" href="cogl-Blend-Strings.html" title="Blend Strings">here</a> for an overview of what blend
@@ -1182,14 +1587,14 @@ are:
 <tr>
 <td><p><span class="term">PRIMARY</span></p></td>
 <td>Use the color of the pipeline as set with
-    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color"><code class="function">cogl_pipeline_set_color()</code></a>
+    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color ()"><code class="function">cogl_pipeline_set_color()</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term">PREVIOUS</span></p></td>
 <td>Either use the texture color from the previous layer, or
     if this is layer 0, use the color of the pipeline as set with
-    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color"><code class="function">cogl_pipeline_set_color()</code></a>
+    <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color" title="cogl_pipeline_set_color ()"><code class="function">cogl_pipeline_set_color()</code></a>
 </td>
 </tr>
 </tbody>
@@ -1268,11 +1673,15 @@ or hardware. On failure, <a href="http://library.gnome.org/devel/glib/unstable/g
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-combine-constant"></a><h3>cogl_pipeline_set_layer_combine_constant</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_combine_constant</pre>
+<a name="cogl-pipeline-set-layer-combine-constant"></a><h3>cogl_pipeline_set_layer_combine_constant ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_combine_constant
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Color-Type.html#CoglColor" title="struct CoglColor"><span class="type">CoglColor</span></a> *constant</code></em>);</pre>
 <p>
 When you are using the 'CONSTANT' color source in a layer combine
 description then you can use this function to define its value.
@@ -1296,12 +1705,14 @@ for texture combining</td>
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-matrix"></a><h3>cogl_pipeline_set_layer_matrix</h3>
-<pre class="programlisting">#define cogl_pipeline_set_layer_matrix cogl_pipeline_set_layer_matrix_EXP
-</pre>
+<a name="cogl-pipeline-set-layer-matrix"></a><h3>cogl_pipeline_set_layer_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_layer_matrix      (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> *matrix</code></em>);</pre>
 <p>
 This function lets you set a matrix that can be used to e.g. translate
 and rotate a single layer of a pipeline used to fill your geometry.
@@ -1324,11 +1735,17 @@ and rotate a single layer of a pipeline used to fill your geometry.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-set-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_set_layer_point_sprite_coords_enabled</h3>
-<pre class="programlisting">#define             cogl_pipeline_set_layer_point_sprite_coords_enabled</pre>
+<a name="cogl-pipeline-set-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_set_layer_point_sprite_coords_enabled ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_pipeline_set_layer_point_sprite_coords_enabled
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 When rendering points, if <em class="parameter"><code>enable</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> then the texture
 coordinates for this layer will be replaced with coordinates that
@@ -1369,11 +1786,14 @@ return <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macro
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_get_layer_point_sprite_coords_enabled</h3>
-<pre class="programlisting">#define             cogl_pipeline_get_layer_point_sprite_coords_enabled</pre>
+<a name="cogl-pipeline-get-layer-point-sprite-coords-enabled"></a><h3>cogl_pipeline_get_layer_point_sprite_coords_enabled ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cogl_pipeline_get_layer_point_sprite_coords_enabled
+                                                        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
 <p>
 Gets whether point sprite coordinate generation is enabled for this
 texture layer.
@@ -1397,12 +1817,13 @@ point sprite coordinates.</td>
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-remove-layer"></a><h3>cogl_pipeline_remove_layer</h3>
-<pre class="programlisting">#define cogl_pipeline_remove_layer cogl_pipeline_remove_layer_EXP
-</pre>
+<a name="cogl-pipeline-remove-layer"></a><h3>cogl_pipeline_remove_layer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_remove_layer          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer_index</code></em>);</pre>
 <p>
 This function removes a layer from your pipeline
 </p>
@@ -1419,12 +1840,13 @@ This function removes a layer from your pipeline
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-get-n-layers"></a><h3>cogl_pipeline_get_n_layers</h3>
-<pre class="programlisting">#define cogl_pipeline_get_n_layers cogl_pipeline_get_n_layers_EXP
-</pre>
+<a name="cogl-pipeline-get-n-layers"></a><h3>cogl_pipeline_get_n_layers ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_pipeline_get_n_layers          (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>);</pre>
 <p>
 Retrieves the number of layers defined for the given <em class="parameter"><code>pipeline</code></em>
 </p>
@@ -1442,12 +1864,14 @@ Retrieves the number of layers defined for the given <em class="parameter"><code
 </tbody>
 </table></div>
 <p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
 </div>
 <hr>
 <div class="refsect2">
-<a name="cogl-pipeline-foreach-layer"></a><h3>cogl_pipeline_foreach_layer</h3>
-<pre class="programlisting">#define cogl_pipeline_foreach_layer cogl_pipeline_foreach_layer_EXP
-</pre>
+<a name="cogl-pipeline-foreach-layer"></a><h3>cogl_pipeline_foreach_layer ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_foreach_layer         (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">CoglPipelineLayerCallback</span> callback</code></em>,
+                                                         <em class="parameter"><code><span class="type">void</span> *user_data</code></em>);</pre>
 <p>
 Iterates all the layer indices of the given <em class="parameter"><code>pipeline</code></em>.
 </p>
@@ -1472,10 +1896,352 @@ index</td>
 <p class="since">Since 2.0</p>
 <p class="stability">Stability Level: Unstable</p>
 </div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-get-uniform-location"></a><h3>cogl_pipeline_get_uniform_location ()</h3>
+<pre class="programlisting"><span class="returnvalue">int</span>                 cogl_pipeline_get_uniform_location  (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">char</span> *uniform_name</code></em>);</pre>
+<p>
+This is used to get an integer representing the uniform with the
+name <em class="parameter"><code>uniform_name</code></em>. The integer can be passed to functions such as
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-uniform-1f" title="cogl_pipeline_set_uniform_1f ()"><code class="function">cogl_pipeline_set_uniform_1f()</code></a> to set the value of a uniform.
+</p>
+<p>
+This function will always return a valid integer. Ie, unlike
+OpenGL, it does not return -1 if the uniform is not available in
+this pipeline so it can not be used to test whether uniforms are
+present. It is not necessary to set the program on the pipeline
+before calling this function.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_name</code></em> :</span></p></td>
+<td>The name of a uniform</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A integer representing the location of the given uniform.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-uniform-1f"></a><h3>cogl_pipeline_set_uniform_1f ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_uniform_1f        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">float</span> value</code></em>);</pre>
+<p>
+Sets a new value for the uniform at <em class="parameter"><code>uniform_location</code></em>. If this
+pipeline has a user program attached and is later used as a source
+for drawing, the given value will be assigned to the uniform which
+can be accessed from the shader's source. The value for
+<em class="parameter"><code>uniform_location</code></em> should be retrieved from the string name of the
+uniform by calling <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()"><code class="function">cogl_pipeline_get_uniform_location()</code></a>.
+</p>
+<p>
+This function should be used to set uniforms that are of type
+float. It can also be used to set a single member of a float array
+uniform.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_location</code></em> :</span></p></td>
+<td>The uniform's location identifier</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>The new value for the uniform</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-uniform-1i"></a><h3>cogl_pipeline_set_uniform_1i ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_uniform_1i        (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> value</code></em>);</pre>
+<p>
+Sets a new value for the uniform at <em class="parameter"><code>uniform_location</code></em>. If this
+pipeline has a user program attached and is later used as a source
+for drawing, the given value will be assigned to the uniform which
+can be accessed from the shader's source. The value for
+<em class="parameter"><code>uniform_location</code></em> should be retrieved from the string name of the
+uniform by calling <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()"><code class="function">cogl_pipeline_get_uniform_location()</code></a>.
+</p>
+<p>
+This function should be used to set uniforms that are of type
+int. It can also be used to set a single member of a int array
+uniform or a sampler uniform.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_location</code></em> :</span></p></td>
+<td>The uniform's location identifier</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>The new value for the uniform</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-uniform-float"></a><h3>cogl_pipeline_set_uniform_float ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_uniform_float     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);</pre>
+<p>
+Sets new values for the uniform at <em class="parameter"><code>uniform_location</code></em>. If this
+pipeline has a user program attached and is later used as a source
+for drawing, the given values will be assigned to the uniform which
+can be accessed from the shader's source. The value for
+<em class="parameter"><code>uniform_location</code></em> should be retrieved from the string name of the
+uniform by calling <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()"><code class="function">cogl_pipeline_get_uniform_location()</code></a>.
+</p>
+<p>
+This function can be used to set any floating point type uniform,
+including float arrays and float vectors. For example, to set a
+single vec4 uniform you would use 4 for <em class="parameter"><code>n_components</code></em> and 1 for
+<em class="parameter"><code>count</code></em>. To set an array of 8 float values, you could use 1 for
+<em class="parameter"><code>n_components</code></em> and 8 for <em class="parameter"><code>count</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_location</code></em> :</span></p></td>
+<td>The uniform's location identifier</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_components</code></em> :</span></p></td>
+<td>The number of components in the corresponding uniform's type</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>The number of values to set</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>Pointer to the new values to set</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-uniform-int"></a><h3>cogl_pipeline_set_uniform_int ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_uniform_int       (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_components</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">int</span> *value</code></em>);</pre>
+<p>
+Sets new values for the uniform at <em class="parameter"><code>uniform_location</code></em>. If this
+pipeline has a user program attached and is later used as a source
+for drawing, the given values will be assigned to the uniform which
+can be accessed from the shader's source. The value for
+<em class="parameter"><code>uniform_location</code></em> should be retrieved from the string name of the
+uniform by calling <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()"><code class="function">cogl_pipeline_get_uniform_location()</code></a>.
+</p>
+<p>
+This function can be used to set any integer type uniform,
+including int arrays and int vectors. For example, to set a single
+ivec4 uniform you would use 4 for <em class="parameter"><code>n_components</code></em> and 1 for
+<em class="parameter"><code>count</code></em>. To set an array of 8 int values, you could use 1 for
+<em class="parameter"><code>n_components</code></em> and 8 for <em class="parameter"><code>count</code></em>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_location</code></em> :</span></p></td>
+<td>The uniform's location identifier</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_components</code></em> :</span></p></td>
+<td>The number of components in the corresponding uniform's type</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>The number of values to set</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>Pointer to the new values to set</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-set-uniform-matrix"></a><h3>cogl_pipeline_set_uniform_matrix ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_set_uniform_matrix    (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> uniform_location</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> dimensions</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> count</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> transpose</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">float</span> *value</code></em>);</pre>
+<p>
+Sets new values for the uniform at <em class="parameter"><code>uniform_location</code></em>. If this
+pipeline has a user program attached and is later used as a source
+for drawing, the given values will be assigned to the uniform which
+can be accessed from the shader's source. The value for
+<em class="parameter"><code>uniform_location</code></em> should be retrieved from the string name of the
+uniform by calling <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-get-uniform-location" title="cogl_pipeline_get_uniform_location ()"><code class="function">cogl_pipeline_get_uniform_location()</code></a>.
+</p>
+<p>
+This function can be used to set any matrix type uniform, including
+matrix arrays. For example, to set a single mat4 uniform you would
+use 4 for <em class="parameter"><code>dimensions</code></em> and 1 for <em class="parameter"><code>count</code></em>. To set an array of 8
+mat3 values, you could use 3 for <em class="parameter"><code>dimensions</code></em> and 8 for <em class="parameter"><code>count</code></em>.
+</p>
+<p>
+If <em class="parameter"><code>transpose</code></em> is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> then the matrix is expected to be in
+column-major order or if it is <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> then the matrix is in
+row-major order. You can pass a <a class="link" href="cogl-2.0-experimental-Matrices.html#CoglMatrix" title="CoglMatrix"><span class="type">CoglMatrix</span></a> by calling by passing
+the result of <a class="link" href="cogl-2.0-experimental-Matrices.html#cogl-matrix-get-array" title="cogl_matrix_get_array ()"><code class="function">cogl_matrix_get_array()</code></a> in <em class="parameter"><code>value</code></em> and setting
+<em class="parameter"><code>transpose</code></em> to <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span> object</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uniform_location</code></em> :</span></p></td>
+<td>The uniform's location identifier</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dimensions</code></em> :</span></p></td>
+<td>The size of the matrix</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>The number of values to set</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>transpose</code></em> :</span></p></td>
+<td>Whether to transpose the matrix</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>Pointer to the new values to set</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 2.0</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-add-snippet"></a><h3>cogl_pipeline_add_snippet ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_add_snippet           (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<p>
+Adds a shader snippet to <em class="parameter"><code>pipeline</code></em>. The snippet will wrap around or
+replace some part of the pipeline as defined by the hook point in
+<em class="parameter"><code>snippet</code></em>. Note that some hook points are specific to a layer and
+must be added with <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-layer-snippet" title="cogl_pipeline_add_layer_snippet ()"><code class="function">cogl_pipeline_add_layer_snippet()</code></a> instead.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>The <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> to add to the vertex processing hook</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-pipeline-add-layer-snippet"></a><h3>cogl_pipeline_add_layer_snippet ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_pipeline_add_layer_snippet     (<em class="parameter"><code><span class="type">CoglPipeline</span> *pipeline</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> layer</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a> *snippet</code></em>);</pre>
+<p>
+Adds a shader snippet that will hook on to the given layer of the
+pipeline. The exact part of the pipeline that the snippet wraps
+around depends on the hook that is given to
+<a class="link" href="cogl-2.0-experimental-Shader-snippets.html#cogl-snippet-new" title="cogl_snippet_new ()"><code class="function">cogl_snippet_new()</code></a>. Note that some hooks can't be used with a layer
+and need to be added with <a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-add-snippet" title="cogl_pipeline_add_snippet ()"><code class="function">cogl_pipeline_add_snippet()</code></a> instead.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pipeline</code></em> :</span></p></td>
+<td>A <span class="type">CoglPipeline</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>layer</code></em> :</span></p></td>
+<td>The layer to hook the snippet to</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snippet</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-Shader-snippets.html#CoglSnippet" title="CoglSnippet"><span class="type">CoglSnippet</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

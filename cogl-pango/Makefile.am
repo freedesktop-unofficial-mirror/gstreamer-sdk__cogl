@@ -37,10 +37,10 @@ libcogl_pango_la_LDFLAGS = \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@
 
 INCLUDES = \
-	-DG_DISABLE_SINGLE_INCLUDES	\
 	-DCLUTTER_COMPILATION		\
 	-DG_LOG_DOMAIN=\"CoglPango\"	\
 	-I$(top_srcdir)/cogl		\
+	-I$(top_builddir)/cogl		\
 	-I$(top_srcdir)/cogl/winsys	\
 	-I$(top_srcdir)			\
 	-I$(top_builddir)
@@ -57,6 +57,42 @@ pkgconfig_DATA = $(pc_files)
 EXTRA_DIST += cogl-pango.pc.in
 DISTCLEANFILES += $(pc_files)
 
+dist-hook: ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters
+
+../build/win32/vs9/cogl-pango.vcproj: $(top_srcdir)/build/win32/vs9/cogl-pango.vcprojin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '   <File RelativePath="..\..\..\cogl-pango\'$$F'" />' \
+			;; \
+		esac; \
+	done >coglpango.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/cogl-pango.vcprojin >$@
+	rm coglpango.sourcefiles
+	
+../build/win32/vs10/cogl-pango.vcxproj: $(top_srcdir)/build/win32/vs10/cogl-pango.vcxprojin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl-pango\'$$F'" />' \
+			;; \
+		esac; \
+	done >coglpango.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl-pango.vcxprojin >$@
+	rm coglpango.vs10.sourcefiles
+	
+../build/win32/vs10/cogl-pango.vcxproj.filters: $(top_srcdir)/build/win32/vs10/cogl-pango.vcxproj.filtersin
+	for F in $(source_c); do \
+		case $$F in \
+		*.c)	echo '    <ClCompile Include="..\..\..\cogl-pango\'$$F'"><Filter>Sources</Filter></ClCompile>' \
+			;; \
+		esac; \
+	done >coglpango.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/cogl-pango.vcxproj.filtersin >$@
+	rm coglpango.vs10.sourcefiles.filters
+
+EXTRA_DIST += cogl-pango.symbols cogl-pango.rc.in cogl-pango.rc
+
+DISTCLEANFILES += ../build/win32/vs9/cogl-pango.vcproj ../build/win32/vs10/cogl-pango.vcxproj ../build/win32/vs10/cogl-pango.vcxproj.filters cogl-pango.rc
+
 -include $(INTROSPECTION_MAKEFILE)
 
 INTROSPECTION_GIRS =
@@ -68,7 +104,7 @@ CoglPango-1.0.gir: libcogl-pango.la Makefile
 
 CoglPango_1_0_gir_NAMESPACE = CoglPango
 CoglPango_1_0_gir_VERSION = 1.0
-CoglPango_1_0_gir_LIBS = libcogl-pango.la
+CoglPango_1_0_gir_LIBS = $(top_builddir)/cogl/libcogl.la libcogl-pango.la
 CoglPango_1_0_gir_FILES = $(source_h) $(source_c)
 CoglPango_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 CoglPango_1_0_gir_INCLUDES = Pango-1.0 PangoCairo-1.0

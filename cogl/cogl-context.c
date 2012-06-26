@@ -25,7 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
 #include "cogl-object.h"
 #include "cogl-internal.h"
 #include "cogl-private.h"
@@ -38,10 +37,16 @@
 #include "cogl-renderer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-2d-private.h"
+#include "cogl-texture-3d-private.h"
+#include "cogl-texture-rectangle-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-onscreen-private.h"
 #include "cogl2-path.h"
+#include "cogl-attribute-private.h"
+#include "cogl1-context.h"
 
 #include <string.h>
 
@@ -74,22 +79,37 @@ static void
 _cogl_init_feature_overrides (CoglContext *ctx)
 {
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_VBOS)))
-    ctx->feature_flags &= ~COGL_FEATURE_VBOS;
+    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_VBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_PBOS)))
-    ctx->feature_flags &= ~COGL_FEATURE_PBOS;
+    ctx->private_feature_flags &= ~COGL_PRIVATE_FEATURE_PBOS;
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ARBFP)))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+    {
+      ctx->feature_flags &= ~COGL_FEATURE_SHADERS_ARBFP;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_ARBFP, FALSE);
+    }
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_GLSL)))
-    ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+    {
+      ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, FALSE);
+    }
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_NPOT_TEXTURES)))
-    ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
-                            COGL_FEATURE_TEXTURE_NPOT_BASIC |
-                            COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
-                            COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+    {
+      ctx->feature_flags &= ~(COGL_FEATURE_TEXTURE_NPOT |
+                              COGL_FEATURE_TEXTURE_NPOT_BASIC |
+                              COGL_FEATURE_TEXTURE_NPOT_MIPMAP |
+                              COGL_FEATURE_TEXTURE_NPOT_REPEAT);
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_TEXTURE_NPOT, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_BASIC, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT, FALSE);
+    }
 }
 
 const CoglWinsysVtable *
@@ -113,7 +133,7 @@ cogl_context_new (CoglDisplay *display,
 {
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
-  unsigned long enable_flags = 0;
+  CoglBitmap *default_texture_bitmap;
   const CoglWinsysVtable *winsys;
   int i;
 
@@ -138,6 +158,11 @@ cogl_context_new (CoglDisplay *display,
   /* Allocate context memory */
   context = g_malloc (sizeof (CoglContext));
 
+  /* Convert the context into an object immediately in case any of the
+     code below wants to verify that the context pointer is a valid
+     object */
+  _cogl_context_object_new (context);
+
   /* XXX: Gross hack!
    * Currently everything in Cogl just assumes there is a default
    * context which it can access via _COGL_GET_CONTEXT() including
@@ -148,6 +173,7 @@ cogl_context_new (CoglDisplay *display,
   _context = context;
 
   /* Init default values */
+  memset (context->features, 0, sizeof (context->features));
   context->feature_flags = 0;
   context->private_feature_flags = 0;
 
@@ -159,7 +185,16 @@ cogl_context_new (CoglDisplay *display,
   memset (context->winsys_features, 0, sizeof (context->winsys_features));
 
   if (!display)
-    display = cogl_display_new (NULL, NULL);
+    {
+      CoglRenderer *renderer = cogl_renderer_new ();
+      if (!cogl_renderer_connect (renderer, error))
+        {
+          g_free (context);
+          return NULL;
+        }
+
+      display = cogl_display_new (renderer, NULL);
+    }
   else
     cogl_object_ref (display);
 
@@ -204,6 +239,21 @@ cogl_context_new (CoglDisplay *display,
       g_assert_not_reached ();
     }
 
+  context->attribute_name_states_hash =
+    g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  context->attribute_name_index_map = NULL;
+  context->n_attribute_names = 0;
+
+  /* The "cogl_color_in" attribute needs a deterministic name_index
+   * so we make sure it's the first attribute name we register */
+  _cogl_attribute_register_attribute_name (context, "cogl_color_in");
+
+
+  context->uniform_names =
+    g_ptr_array_new_with_free_func ((GDestroyNotify) g_free);
+  context->uniform_name_hash = g_hash_table_new (g_str_hash, g_str_equal);
+  context->n_uniform_names = 0;
+
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
 
@@ -212,7 +262,6 @@ cogl_context_new (CoglDisplay *display,
   _cogl_pipeline_init_state_hash_functions ();
   _cogl_pipeline_init_layer_state_hash_functions ();
 
-  context->enable_flags = 0;
   context->current_clip_stack_valid = FALSE;
   context->current_clip_stack = NULL;
 
@@ -234,19 +283,24 @@ cogl_context_new (CoglDisplay *display,
 
   context->legacy_fog_state.enabled = FALSE;
 
-  context->opaque_color_pipeline = cogl_pipeline_new ();
-  context->blended_color_pipeline = cogl_pipeline_new ();
-  context->texture_pipeline = cogl_pipeline_new ();
+  context->opaque_color_pipeline = cogl_pipeline_new (context);
+  context->blended_color_pipeline = cogl_pipeline_new (context);
+  context->texture_pipeline = cogl_pipeline_new (context);
   context->codegen_header_buffer = g_string_new ("");
   context->codegen_source_buffer = g_string_new ("");
   context->source_stack = NULL;
 
   context->legacy_state_set = 0;
 
-  context->default_gl_texture_2d_tex = COGL_INVALID_HANDLE;
-  context->default_gl_texture_rect_tex = COGL_INVALID_HANDLE;
+  context->default_gl_texture_2d_tex = NULL;
+  context->default_gl_texture_3d_tex = NULL;
+  context->default_gl_texture_rect_tex = NULL;
 
   context->framebuffers = NULL;
+  context->current_draw_buffer = NULL;
+  context->current_read_buffer = NULL;
+  context->current_draw_buffer_state_flushed = 0;
+  context->current_draw_buffer_changes = COGL_FRAMEBUFFER_STATE_ALL;
 
   context->journal_flush_attributes_array =
     g_array_new (TRUE, FALSE, sizeof (CoglAttribute *));
@@ -258,14 +312,13 @@ cogl_context_new (CoglDisplay *display,
   context->current_pipeline_changes_since_flush = 0;
   context->current_pipeline_skip_gl_color = FALSE;
 
-  context->pipeline0_nodes =
-    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-  context->pipeline1_nodes =
-    g_array_sized_new (FALSE, FALSE, sizeof (CoglHandle), 20);
-
-  _cogl_bitmask_init (&context->arrays_enabled);
-  _cogl_bitmask_init (&context->temp_bitmask);
-  _cogl_bitmask_init (&context->arrays_to_change);
+  _cogl_bitmask_init (&context->enabled_builtin_attributes);
+  _cogl_bitmask_init (&context->enable_builtin_attributes_tmp);
+  _cogl_bitmask_init (&context->enabled_texcoord_attributes);
+  _cogl_bitmask_init (&context->enable_texcoord_attributes_tmp);
+  _cogl_bitmask_init (&context->enabled_custom_attributes);
+  _cogl_bitmask_init (&context->enable_custom_attributes_tmp);
+  _cogl_bitmask_init (&context->changed_bits_tmp);
 
   context->max_texture_units = -1;
   context->max_activateable_texture_units = -1;
@@ -286,8 +339,6 @@ cogl_context_new (CoglDisplay *display,
   context->depth_writing_enabled_cache = TRUE;
   context->depth_range_near_cache = 0;
   context->depth_range_far_cache = 1;
-
-  context->point_size_cache = 1.0f;
 
   context->legacy_depth_test_enabled = FALSE;
 
@@ -310,11 +361,8 @@ cogl_context_new (CoglDisplay *display,
       cogl_object_unref (COGL_FRAMEBUFFER (window));
     }
 
-  context->dirty_bound_framebuffer = TRUE;
-  context->dirty_gl_viewport = TRUE;
-
   context->current_path = cogl2_path_new ();
-  context->stencil_pipeline = cogl_pipeline_new ();
+  context->stencil_pipeline = cogl_pipeline_new (context);
 
   context->in_begin_gl_block = FALSE;
 
@@ -340,34 +388,43 @@ cogl_context_new (CoglDisplay *display,
     GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
-#ifdef HAVE_COGL_GLES2
-  _context->flushed_modelview_stack = NULL;
-  _context->flushed_projection_stack = NULL;
-#endif
+  _context->current_modelview_stack = NULL;
+  _context->current_projection_stack = NULL;
+  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_projection);
+  _cogl_matrix_stack_init_cache (&_context->builtin_flushed_modelview);
+
+  default_texture_bitmap =
+    cogl_bitmap_new_for_data (_context,
+                              1, 1, /* width/height */
+                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                              4, /* rowstride */
+                              default_texture_data);
 
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
-    cogl_texture_new_from_data (1, /* width */
-                                1, /* height */
-                                COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
-                                /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                0, /* auto calc row stride */
-                                default_texture_data);
+    _cogl_texture_2d_new_from_bitmap (default_texture_bitmap,
+                                      COGL_TEXTURE_NONE,
+                                      /* internal format */
+                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                      NULL);
+  /* If 3D or rectangle textures aren't supported then these should
+     just silently return NULL */
+  context->default_gl_texture_3d_tex =
+    _cogl_texture_3d_new_from_bitmap (context,
+                                      default_texture_bitmap,
+                                      1, /* height */
+                                      1, /* depth */
+                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                      NULL);
   context->default_gl_texture_rect_tex =
-    cogl_texture_new_from_data (1, /* width */
-                                1, /* height */
-                                COGL_TEXTURE_NO_SLICING,
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE, /* data format */
-                                /* internal format */
-                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                0, /* auto calc row stride */
-                                default_texture_data);
+    _cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
+                                             COGL_TEXTURE_NONE,
+                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+
+  cogl_object_unref (default_texture_bitmap);
 
   cogl_push_source (context->opaque_color_pipeline);
   _cogl_pipeline_flush_gl_state (context->opaque_color_pipeline, FALSE, 0);
-  _cogl_enable (enable_flags);
 
   context->atlases = NULL;
   g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));
@@ -383,10 +440,10 @@ cogl_context_new (CoglDisplay *display,
      coords enabled. We don't need to do this for GLES2 because point
      sprites are handled using a builtin varying in the shader. */
   if (_context->driver != COGL_DRIVER_GLES2 &&
-      cogl_features_available (COGL_FEATURE_POINT_SPRITE))
+      cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
-  return _cogl_context_object_new (context);
+  return context;
 }
 
 static void
@@ -396,23 +453,17 @@ _cogl_context_free (CoglContext *context)
 
   winsys->context_deinit (context);
 
-  _cogl_destroy_texture_units ();
-
-  if (context->window_buffer)
-    {
-      cogl_object_unref (context->window_buffer);
-      context->window_buffer = NULL;
-    }
-
   _cogl_free_framebuffer_stack (context->framebuffer_stack);
 
   if (context->current_path)
     cogl_handle_unref (context->current_path);
 
   if (context->default_gl_texture_2d_tex)
-    cogl_handle_unref (context->default_gl_texture_2d_tex);
+    cogl_object_unref (context->default_gl_texture_2d_tex);
+  if (context->default_gl_texture_3d_tex)
+    cogl_object_unref (context->default_gl_texture_3d_tex);
   if (context->default_gl_texture_rect_tex)
-    cogl_handle_unref (context->default_gl_texture_rect_tex);
+    cogl_object_unref (context->default_gl_texture_rect_tex);
 
   if (context->opaque_color_pipeline)
     cogl_handle_unref (context->opaque_color_pipeline);
@@ -458,21 +509,34 @@ _cogl_context_free (CoglContext *context)
   g_slist_free (context->atlases);
   g_hook_list_clear (&context->atlas_reorganize_callbacks);
 
-  _cogl_bitmask_destroy (&context->arrays_enabled);
-  _cogl_bitmask_destroy (&context->temp_bitmask);
-  _cogl_bitmask_destroy (&context->arrays_to_change);
+  _cogl_bitmask_destroy (&context->enabled_builtin_attributes);
+  _cogl_bitmask_destroy (&context->enable_builtin_attributes_tmp);
+  _cogl_bitmask_destroy (&context->enabled_texcoord_attributes);
+  _cogl_bitmask_destroy (&context->enable_texcoord_attributes_tmp);
+  _cogl_bitmask_destroy (&context->enabled_custom_attributes);
+  _cogl_bitmask_destroy (&context->enable_custom_attributes_tmp);
+  _cogl_bitmask_destroy (&context->changed_bits_tmp);
 
   g_slist_free (context->texture_types);
   g_slist_free (context->buffer_types);
 
-#ifdef HAVE_COGL_GLES2
-  if (_context->flushed_modelview_stack)
-    cogl_object_unref (_context->flushed_modelview_stack);
-  if (_context->flushed_projection_stack)
-    cogl_object_unref (_context->flushed_projection_stack);
-#endif
+  if (_context->current_modelview_stack)
+    cogl_object_unref (_context->current_modelview_stack);
+  if (_context->current_projection_stack)
+    cogl_object_unref (_context->current_projection_stack);
+  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_projection);
+  _cogl_matrix_stack_destroy_cache (&context->builtin_flushed_modelview);
 
   cogl_pipeline_cache_free (context->pipeline_cache);
+
+
+  _cogl_destroy_texture_units ();
+
+  g_ptr_array_free (context->uniform_names, TRUE);
+  g_hash_table_destroy (context->uniform_name_hash);
+
+  g_hash_table_destroy (context->attribute_name_states_hash);
+  g_array_free (context->attribute_name_index_map, TRUE);
 
   g_byte_array_free (context->buffer_map_fallback_array, TRUE);
 
@@ -513,7 +577,7 @@ cogl_egl_context_get_egl_display (CoglContext *context)
   const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
 
   /* This should only be called for EGL contexts */
-  g_return_val_if_fail (winsys->context_egl_get_egl_display != NULL, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (winsys->context_egl_get_egl_display != NULL, NULL);
 
   return winsys->context_egl_get_egl_display (context);
 }
@@ -533,4 +597,24 @@ _cogl_context_update_features (CoglContext *context,
 #endif
 
   g_assert_not_reached ();
+}
+
+void
+_cogl_context_set_current_projection (CoglContext *context,
+                                      CoglMatrixStack *stack)
+{
+  cogl_object_ref (stack);
+  if (context->current_projection_stack)
+    cogl_object_unref (context->current_projection_stack);
+  context->current_projection_stack = stack;
+}
+
+void
+_cogl_context_set_current_modelview (CoglContext *context,
+                                     CoglMatrixStack *stack)
+{
+  cogl_object_ref (stack);
+  if (context->current_modelview_stack)
+    cogl_object_unref (context->current_modelview_stack);
+  context->current_modelview_stack = stack;
 }

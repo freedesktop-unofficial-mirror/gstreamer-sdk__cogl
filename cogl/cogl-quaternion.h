@@ -164,7 +164,7 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
 /**
  * cogl_quaternion_init_from_angle_vector:
  * @quaternion: An uninitialized #CoglQuaternion
- * @axis: your axis vector about which you want to rotate.
+ * @axis3f: your 3 component axis vector about which you want to rotate.
  *
  * Initializes a quaternion that rotates @angle degrees around the
  * given @axis vector. The axis vector does not need to be
@@ -178,7 +178,7 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
 void
 cogl_quaternion_init_from_angle_vector (CoglQuaternion *quaternion,
                                         float angle,
-                                        const CoglVector3 *axis);
+                                        const float *axis3f);
 
 /**
  * cogl_quaternion_init_identity:
@@ -251,6 +251,24 @@ void
 cogl_quaternion_init_from_euler (CoglQuaternion *quaternion,
                                  const CoglEuler *euler);
 
+void
+cogl_quaternion_init_from_quaternion (CoglQuaternion *quaternion,
+                                      CoglQuaternion *src);
+
+/**
+ * cogl_quaternion_init_from_matrix:
+ * @quaternion: A Cogl Quaternion
+ * @matrix: A rotation matrix with which to initialize the quaternion
+ *
+ * Initializes a quaternion from a rotation matrix.
+ *
+ * Since: 1.10
+ * Stability: unstable
+ */
+void
+cogl_quaternion_init_from_matrix (CoglQuaternion *quaternion,
+                                  const CoglMatrix *matrix);
+
 /**
  * cogl_quaternion_equal:
  * @v1: A #CoglQuaternion
@@ -316,7 +334,7 @@ cogl_quaternion_get_rotation_angle (const CoglQuaternion *quaternion);
  */
 void
 cogl_quaternion_get_rotation_axis (const CoglQuaternion *quaternion,
-                                   CoglVector3 *vector);
+                                   float *vector3);
 
 /**
  * cogl_quaternion_normalize:
@@ -330,8 +348,8 @@ cogl_quaternion_normalize (CoglQuaternion *quaternion);
 
 /**
  * cogl_quaternion_dot_product:
- * @quaternion: A #CoglQuaternion
- *
+ * @a: A #CoglQuaternion
+ * @b: A #CoglQuaternion
  *
  * Since: 2.0
  */

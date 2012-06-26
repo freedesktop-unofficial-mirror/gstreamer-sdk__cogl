@@ -47,6 +47,7 @@
     <sub name="Index of new symbols in 1.2" link="ix05.html"/>
     <sub name="Index of new symbols in 1.4" link="ix06.html"/>
     <sub name="Index of new symbols in 1.6" link="ix07.html"/>
+    <sub name="Index of new symbols in 1.8" link="ix08.html"/>
     <sub name="License" link="license.html"/>
   </chapters>
   <functions>
@@ -151,7 +152,7 @@
     <keyword type="function" name="cogl_texture_get_width ()" link="cogl-Textures.html#cogl-texture-get-width"/>
     <keyword type="function" name="cogl_texture_get_height ()" link="cogl-Textures.html#cogl-texture-get-height"/>
     <keyword type="function" name="cogl_texture_get_format ()" link="cogl-Textures.html#cogl-texture-get-format"/>
-    <keyword type="function" name="cogl_texture_get_rowstride ()" link="cogl-Textures.html#cogl-texture-get-rowstride"/>
+    <keyword type="function" name="cogl_texture_get_rowstride ()" link="cogl-Textures.html#cogl-texture-get-rowstride" deprecated=""/>
     <keyword type="function" name="cogl_texture_get_max_waste ()" link="cogl-Textures.html#cogl-texture-get-max-waste"/>
     <keyword type="function" name="cogl_texture_is_sliced ()" link="cogl-Textures.html#cogl-texture-is-sliced"/>
     <keyword type="function" name="cogl_texture_get_gl_texture ()" link="cogl-Textures.html#cogl-texture-get-gl-texture"/>
@@ -272,18 +273,19 @@
     <keyword type="function" name="cogl_matrix_equal ()" link="cogl-Matrices.html#cogl-matrix-equal" since="1.4"/>
     <keyword type="function" name="cogl_matrix_free ()" link="cogl-Matrices.html#cogl-matrix-free" since="1.6"/>
     <keyword type="function" name="cogl_matrix_frustum ()" link="cogl-Matrices.html#cogl-matrix-frustum"/>
-    <keyword type="function" name="cogl_matrix_ortho ()" link="cogl-Matrices.html#cogl-matrix-ortho"/>
+    <keyword type="function" name="cogl_matrix_ortho ()" link="cogl-Matrices.html#cogl-matrix-ortho" deprecated="1.10: Use cogl_matrix_orthographic()"/>
     <keyword type="function" name="cogl_matrix_perspective ()" link="cogl-Matrices.html#cogl-matrix-perspective"/>
     <keyword type="function" name="cogl_matrix_multiply ()" link="cogl-Matrices.html#cogl-matrix-multiply"/>
     <keyword type="function" name="cogl_matrix_rotate ()" link="cogl-Matrices.html#cogl-matrix-rotate"/>
     <keyword type="function" name="cogl_matrix_translate ()" link="cogl-Matrices.html#cogl-matrix-translate"/>
     <keyword type="function" name="cogl_matrix_scale ()" link="cogl-Matrices.html#cogl-matrix-scale"/>
+    <keyword type="function" name="cogl_matrix_transpose ()" link="cogl-Matrices.html#cogl-matrix-transpose" since="1.10"/>
     <keyword type="function" name="cogl_matrix_init_from_array ()" link="cogl-Matrices.html#cogl-matrix-init-from-array"/>
     <keyword type="function" name="cogl_matrix_get_array ()" link="cogl-Matrices.html#cogl-matrix-get-array"/>
     <keyword type="function" name="cogl_matrix_get_inverse ()" link="cogl-Matrices.html#cogl-matrix-get-inverse" since="1.2"/>
     <keyword type="function" name="cogl_matrix_transform_point ()" link="cogl-Matrices.html#cogl-matrix-transform-point"/>
-    <keyword type="macro" name="cogl_matrix_project_points" link="cogl-Matrices.html#cogl-matrix-project-points" stability="Unstable"/>
-    <keyword type="macro" name="cogl_matrix_transform_points" link="cogl-Matrices.html#cogl-matrix-transform-points" stability="Unstable"/>
+    <keyword type="function" name="cogl_matrix_project_points ()" link="cogl-Matrices.html#cogl-matrix-project-points" stability="Unstable"/>
+    <keyword type="function" name="cogl_matrix_transform_points ()" link="cogl-Matrices.html#cogl-matrix-transform-points" stability="Unstable"/>
     <keyword type="function" name="cogl_matrix_is_identity ()" link="cogl-Matrices.html#cogl-matrix-is-identity" since="1.8"/>
     <keyword type="enum" name="enum CoglShaderType" link="cogl-Shaders-and-Programmable-Pipeline.html#CoglShaderType" since="1.0"/>
     <keyword type="function" name="cogl_create_shader ()" link="cogl-Shaders-and-Programmable-Pipeline.html#cogl-create-shader"/>
@@ -381,39 +383,36 @@
     <keyword type="function" name="cogl_angle_sin ()" link="cogl-Fixed-Point-API.html#cogl-angle-sin" since="1.0"/>
     <keyword type="function" name="cogl_angle_tan ()" link="cogl-Fixed-Point-API.html#cogl-angle-tan" since="1.0"/>
     <keyword type="function" name="cogl_gtype_matrix_get_type ()" link="cogl-GType-Integration-API.html#cogl-gtype-matrix-get-type"/>
-    <keyword type="macro" name="cogl_is_buffer" link="cogl-Buffers.html#cogl-is-buffer" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_get_size" link="cogl-Buffers.html#cogl-buffer-get-size" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_set_usage_hint" link="cogl-Buffers.html#cogl-buffer-set-usage-hint"/>
-    <keyword type="macro" name="cogl_buffer_get_usage_hint" link="cogl-Buffers.html#cogl-buffer-get-usage-hint"/>
+    <keyword type="function" name="cogl_is_buffer ()" link="cogl-Buffers.html#cogl-is-buffer" since="1.2" stability="Unstable"/>
+    <keyword type="function" name="cogl_buffer_get_size ()" link="cogl-Buffers.html#cogl-buffer-get-size" since="1.2" stability="Unstable"/>
     <keyword type="enum" name="enum CoglBufferUpdateHint" link="cogl-Buffers.html#CoglBufferUpdateHint" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_set_update_hint" link="cogl-Buffers.html#cogl-buffer-set-update-hint" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_get_update_hint" link="cogl-Buffers.html#cogl-buffer-get-update-hint" since="1.2" stability="Unstable"/>
+    <keyword type="function" name="cogl_buffer_set_update_hint ()" link="cogl-Buffers.html#cogl-buffer-set-update-hint" since="1.2" stability="Unstable"/>
+    <keyword type="function" name="cogl_buffer_get_update_hint ()" link="cogl-Buffers.html#cogl-buffer-get-update-hint" since="1.2" stability="Unstable"/>
     <keyword type="enum" name="enum CoglBufferAccess" link="cogl-Buffers.html#CoglBufferAccess" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_map" link="cogl-Buffers.html#cogl-buffer-map" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_unmap" link="cogl-Buffers.html#cogl-buffer-unmap" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_buffer_set_data" link="cogl-Buffers.html#cogl-buffer-set-data" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_pixel_buffer_new" link="cogl-Buffers.html#cogl-pixel-buffer-new"/>
+    <keyword type="function" name="cogl_buffer_map ()" link="cogl-Buffers.html#cogl-buffer-map" since="1.2" stability="Unstable"/>
+    <keyword type="function" name="cogl_buffer_unmap ()" link="cogl-Buffers.html#cogl-buffer-unmap" since="1.2" stability="Unstable"/>
+    <keyword type="function" name="cogl_buffer_set_data ()" link="cogl-Buffers.html#cogl-buffer-set-data" since="1.2" stability="Unstable"/>
+    <keyword type="macro" name="cogl_pixel_buffer_new" link="cogl-Buffers.html#cogl-pixel-buffer-new" since="1.10" stability="Unstable"/>
     <keyword type="macro" name="cogl_is_pixel_buffer" link="cogl-Buffers.html#cogl-is-pixel-buffer" since="1.2" stability="Unstable"/>
-    <keyword type="function" name="cogl_texture_new_from_buffer ()" link="cogl-Buffers.html#cogl-texture-new-from-buffer" since="1.2" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_init" link="cogl-Vectors.html#cogl-vector3-init" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_init_zero" link="cogl-Vectors.html#cogl-vector3-init-zero" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_equal" link="cogl-Vectors.html#cogl-vector3-equal" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_equal_with_epsilon" link="cogl-Vectors.html#cogl-vector3-equal-with-epsilon" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_copy" link="cogl-Vectors.html#cogl-vector3-copy" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_free" link="cogl-Vectors.html#cogl-vector3-free" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_invert" link="cogl-Vectors.html#cogl-vector3-invert" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_add" link="cogl-Vectors.html#cogl-vector3-add" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_subtract" link="cogl-Vectors.html#cogl-vector3-subtract" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_multiply_scalar" link="cogl-Vectors.html#cogl-vector3-multiply-scalar" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_divide_scalar" link="cogl-Vectors.html#cogl-vector3-divide-scalar" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_normalize" link="cogl-Vectors.html#cogl-vector3-normalize" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_magnitude" link="cogl-Vectors.html#cogl-vector3-magnitude" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_cross_product" link="cogl-Vectors.html#cogl-vector3-cross-product" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_dot_product" link="cogl-Vectors.html#cogl-vector3-dot-product" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_vector3_distance" link="cogl-Vectors.html#cogl-vector3-distance" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_texture_3d_new_with_size" link="cogl-3D-textures.html#cogl-texture-3d-new-with-size" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_texture_3d_new_from_data" link="cogl-3D-textures.html#cogl-texture-3d-new-from-data" since="1.4" stability="Unstable"/>
-    <keyword type="macro" name="cogl_is_texture_3d" link="cogl-3D-textures.html#cogl-is-texture-3d" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_init ()" link="cogl-Vectors.html#cogl-vector3-init" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_init_zero ()" link="cogl-Vectors.html#cogl-vector3-init-zero" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_equal ()" link="cogl-Vectors.html#cogl-vector3-equal" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_equal_with_epsilon ()" link="cogl-Vectors.html#cogl-vector3-equal-with-epsilon" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_copy ()" link="cogl-Vectors.html#cogl-vector3-copy" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_free ()" link="cogl-Vectors.html#cogl-vector3-free" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_invert ()" link="cogl-Vectors.html#cogl-vector3-invert" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_add ()" link="cogl-Vectors.html#cogl-vector3-add" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_subtract ()" link="cogl-Vectors.html#cogl-vector3-subtract" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_multiply_scalar ()" link="cogl-Vectors.html#cogl-vector3-multiply-scalar" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_divide_scalar ()" link="cogl-Vectors.html#cogl-vector3-divide-scalar" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_normalize ()" link="cogl-Vectors.html#cogl-vector3-normalize" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_magnitude ()" link="cogl-Vectors.html#cogl-vector3-magnitude" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_cross_product ()" link="cogl-Vectors.html#cogl-vector3-cross-product" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_dot_product ()" link="cogl-Vectors.html#cogl-vector3-dot-product" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_vector3_distance ()" link="cogl-Vectors.html#cogl-vector3-distance" since="1.4" stability="Unstable"/>
+    <keyword type="function" name="cogl_texture_3d_new_with_size ()" link="cogl-3D-textures.html#cogl-texture-3d-new-with-size" since="1.10" stability="Unstable"/>
+    <keyword type="function" name="cogl_texture_3d_new_from_data ()" link="cogl-3D-textures.html#cogl-texture-3d-new-from-data" since="1.10" stability="Unstable"/>
+    <keyword type="function" name="cogl_is_texture_3d ()" link="cogl-3D-textures.html#cogl-is-texture-3d" since="1.4" stability="Unstable"/>
     <keyword type="struct" name="CoglQuaternion" link="cogl-Quaternions-(Rotations).html#CoglQuaternion"/>
     <keyword type="function" name="cogl_quaternion_init_identity ()" link="cogl-Quaternions-(Rotations).html#cogl-quaternion-init-identity" since="2.0"/>
     <keyword type="function" name="cogl_quaternion_init ()" link="cogl-Quaternions-(Rotations).html#cogl-quaternion-init" since="2.0"/>
@@ -442,8 +441,8 @@
     <keyword type="function" name="cogl_get_bitmasks ()" link="cogl-General-API-(Deprecated).html#cogl-get-bitmasks"/>
     <keyword type="function" name="cogl_set_depth_test_enabled ()" link="cogl-General-API-(Deprecated).html#cogl-set-depth-test-enabled" deprecated=""/>
     <keyword type="function" name="cogl_get_depth_test_enabled ()" link="cogl-General-API-(Deprecated).html#cogl-get-depth-test-enabled" deprecated=""/>
-    <keyword type="function" name="cogl_texture_ref ()" link="cogl-Textures-(Deprecated).html#cogl-texture-ref" deprecated="1.2: Use cogl_handle_ref() instead"/>
-    <keyword type="function" name="cogl_texture_unref ()" link="cogl-Textures-(Deprecated).html#cogl-texture-unref" deprecated="1.2: Use cogl_handle_unref() instead"/>
+    <keyword type="function" name="cogl_texture_ref ()" link="cogl-Textures-(Deprecated).html#cogl-texture-ref" deprecated="1.2: Use cogl_object_ref() instead"/>
+    <keyword type="function" name="cogl_texture_unref ()" link="cogl-Textures-(Deprecated).html#cogl-texture-unref" deprecated="1.2: Use cogl_object_unref() instead"/>
     <keyword type="function" name="cogl_material_ref ()" link="cogl-Materials-(Deprecated).html#cogl-material-ref" deprecated="1.2: Use cogl_object_ref() instead" since="1.0"/>
     <keyword type="function" name="cogl_material_unref ()" link="cogl-Materials-(Deprecated).html#cogl-material-unref" deprecated="1.2: Use cogl_object_unref() instead" since="1.0"/>
     <keyword type="function" name="cogl_material_get_layers ()" link="cogl-Materials-(Deprecated).html#cogl-material-get-layers"/>
@@ -454,18 +453,18 @@
     <keyword type="function" name="cogl_clip_stack_restore ()" link="cogl-Clipping-(Deprecated).html#cogl-clip-stack-restore" deprecated="" since="0.8.2"/>
     <keyword type="function" name="cogl_vertex_buffer_ref ()" link="cogl-Vertex-Buffers-(Deprecated).html#cogl-vertex-buffer-ref" deprecated="1.2: Use cogl_handle_ref() instead"/>
     <keyword type="function" name="cogl_vertex_buffer_unref ()" link="cogl-Vertex-Buffers-(Deprecated).html#cogl-vertex-buffer-unref" deprecated="1.2: Use cogl_handle_unref() instead"/>
-    <keyword type="function" name="cogl_shader_ref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-ref" deprecated=""/>
-    <keyword type="function" name="cogl_shader_unref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-unref" deprecated=""/>
-    <keyword type="function" name="cogl_program_ref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-ref"/>
-    <keyword type="function" name="cogl_program_unref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-unref"/>
+    <keyword type="function" name="cogl_shader_ref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-ref" deprecated="1.0: Please use cogl_handle_ref() instead."/>
+    <keyword type="function" name="cogl_shader_unref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-shader-unref" deprecated="1.0: Please use cogl_handle_unref() instead."/>
+    <keyword type="function" name="cogl_program_ref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-ref" deprecated="1.0: Please use cogl_handle_ref() instead."/>
+    <keyword type="function" name="cogl_program_unref ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-unref" deprecated="1.0: Please use cogl_handle_unref() instead."/>
     <keyword type="function" name="cogl_program_use ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-use"/>
     <keyword type="function" name="cogl_program_uniform_1f ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-1f" deprecated="1.4: Use cogl_program_set_uniform_1f() instead."/>
     <keyword type="function" name="cogl_program_uniform_1i ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-1i" deprecated="1.4: Use cogl_program_set_uniform_1i() instead."/>
     <keyword type="function" name="cogl_program_uniform_float ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-float" deprecated="1.4: Use cogl_program_set_uniform_float() instead."/>
     <keyword type="function" name="cogl_program_uniform_int ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-int" deprecated=""/>
     <keyword type="function" name="cogl_program_uniform_matrix ()" link="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html#cogl-program-uniform-matrix" deprecated=""/>
-    <keyword type="function" name="cogl_offscreen_ref ()" link="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-ref" deprecated="1.2: cogl_handle_ref() should be used in new code."/>
-    <keyword type="function" name="cogl_offscreen_unref ()" link="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-unref" deprecated="1.2: cogl_handle_unref() should be used in new code."/>
+    <keyword type="function" name="cogl_offscreen_ref ()" link="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-ref" deprecated="1.2: cogl_object_ref() should be used in new code."/>
+    <keyword type="function" name="cogl_offscreen_unref ()" link="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-unref" deprecated="1.2: cogl_object_unref() should be used in new code."/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_ANY" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ANY:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_A_8" link="cogl-General-API.html#COGL-PIXEL-FORMAT-A-8:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_RGB_565" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"/>
@@ -479,12 +478,20 @@
     <keyword type="constant" name="COGL_PIXEL_FORMAT_BGRA_8888" link="cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-8888:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_ARGB_8888" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-8888:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_ABGR_8888" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-8888:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_RGBA_1010102" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-1010102:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_BGRA_1010102" link="cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-1010102:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_ARGB_2101010" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-2101010:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_ABGR_2101010" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-2101010:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_RGBA_8888_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_BGRA_8888_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-8888-PRE:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_ARGB_8888_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-8888-PRE:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_ABGR_8888_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-8888-PRE:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_RGBA_4444_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-4444-PRE:CAPS"/>
     <keyword type="constant" name="COGL_PIXEL_FORMAT_RGBA_5551_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-5551-PRE:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_RGBA_1010102_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-1010102-PRE:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_BGRA_1010102_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-1010102-PRE:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_ARGB_2101010_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-2101010-PRE:CAPS"/>
+    <keyword type="constant" name="COGL_PIXEL_FORMAT_ABGR_2101010_PRE" link="cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-2101010-PRE:CAPS"/>
     <keyword type="constant" name="COGL_WINDOW_BUFFER" link="cogl-General-API.html#COGL-WINDOW-BUFFER:CAPS"/>
     <keyword type="constant" name="COGL_OFFSCREEN_BUFFER" link="cogl-General-API.html#COGL-OFFSCREEN-BUFFER:CAPS"/>
     <keyword type="constant" name="COGL_BUFFER_BIT_COLOR" link="cogl-General-API.html#COGL-BUFFER-BIT-COLOR:CAPS"/>

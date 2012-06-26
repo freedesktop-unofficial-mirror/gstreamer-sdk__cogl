@@ -26,12 +26,20 @@
 <ANCHOR id="COGL-PIXEL-FORMAT-BGRA-8888:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-8888:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-ARGB-8888:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-8888:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-ABGR-8888:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-8888:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-RGBA-1010102:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-1010102:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-BGRA-1010102:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-1010102:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-ARGB-2101010:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-2101010:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-ABGR-2101010:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-2101010:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-BGRA-8888-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-8888-PRE:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-ARGB-8888-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-8888-PRE:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-ABGR-8888-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-8888-PRE:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-RGBA-4444-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-4444-PRE:CAPS">
 <ANCHOR id="COGL-PIXEL-FORMAT-RGBA-5551-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-5551-PRE:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-RGBA-1010102-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-RGBA-1010102-PRE:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-BGRA-1010102-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-BGRA-1010102-PRE:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-ARGB-2101010-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ARGB-2101010-PRE:CAPS">
+<ANCHOR id="COGL-PIXEL-FORMAT-ABGR-2101010-PRE:CAPS" href="cogl/cogl-General-API.html#COGL-PIXEL-FORMAT-ABGR-2101010-PRE:CAPS">
 <ANCHOR id="CoglBufferTarget" href="cogl/cogl-General-API.html#CoglBufferTarget">
 <ANCHOR id="COGL-WINDOW-BUFFER:CAPS" href="cogl/cogl-General-API.html#COGL-WINDOW-BUFFER:CAPS">
 <ANCHOR id="COGL-OFFSCREEN-BUFFER:CAPS" href="cogl/cogl-General-API.html#COGL-OFFSCREEN-BUFFER:CAPS">
@@ -358,6 +366,7 @@
 <ANCHOR id="cogl-matrix-rotate" href="cogl/cogl-Matrices.html#cogl-matrix-rotate">
 <ANCHOR id="cogl-matrix-translate" href="cogl/cogl-Matrices.html#cogl-matrix-translate">
 <ANCHOR id="cogl-matrix-scale" href="cogl/cogl-Matrices.html#cogl-matrix-scale">
+<ANCHOR id="cogl-matrix-transpose" href="cogl/cogl-Matrices.html#cogl-matrix-transpose">
 <ANCHOR id="cogl-matrix-init-from-array" href="cogl/cogl-Matrices.html#cogl-matrix-init-from-array">
 <ANCHOR id="cogl-matrix-get-array" href="cogl/cogl-Matrices.html#cogl-matrix-get-array">
 <ANCHOR id="cogl-matrix-get-inverse" href="cogl/cogl-Matrices.html#cogl-matrix-get-inverse">
@@ -493,8 +502,6 @@
 <ANCHOR id="cogl-Buffers.details" href="cogl/cogl-Buffers.html#cogl-Buffers.details">
 <ANCHOR id="cogl-is-buffer" href="cogl/cogl-Buffers.html#cogl-is-buffer">
 <ANCHOR id="cogl-buffer-get-size" href="cogl/cogl-Buffers.html#cogl-buffer-get-size">
-<ANCHOR id="cogl-buffer-set-usage-hint" href="cogl/cogl-Buffers.html#cogl-buffer-set-usage-hint">
-<ANCHOR id="cogl-buffer-get-usage-hint" href="cogl/cogl-Buffers.html#cogl-buffer-get-usage-hint">
 <ANCHOR id="CoglBufferUpdateHint" href="cogl/cogl-Buffers.html#CoglBufferUpdateHint">
 <ANCHOR id="COGL-BUFFER-UPDATE-HINT-STATIC:CAPS" href="cogl/cogl-Buffers.html#COGL-BUFFER-UPDATE-HINT-STATIC:CAPS">
 <ANCHOR id="COGL-BUFFER-UPDATE-HINT-DYNAMIC:CAPS" href="cogl/cogl-Buffers.html#COGL-BUFFER-UPDATE-HINT-DYNAMIC:CAPS">
@@ -510,7 +517,6 @@
 <ANCHOR id="cogl-buffer-set-data" href="cogl/cogl-Buffers.html#cogl-buffer-set-data">
 <ANCHOR id="cogl-pixel-buffer-new" href="cogl/cogl-Buffers.html#cogl-pixel-buffer-new">
 <ANCHOR id="cogl-is-pixel-buffer" href="cogl/cogl-Buffers.html#cogl-is-pixel-buffer">
-<ANCHOR id="cogl-texture-new-from-buffer" href="cogl/cogl-Buffers.html#cogl-texture-new-from-buffer">
 <ANCHOR id="cogl-Vectors" href="cogl/cogl-Vectors.html">
 <ANCHOR id="cogl-Vectors.synopsis" href="cogl/cogl-Vectors.html#cogl-Vectors.synopsis">
 <ANCHOR id="cogl-Vectors.description" href="cogl/cogl-Vectors.html#cogl-Vectors.description">

@@ -8,7 +8,7 @@
 <link rel="up" href="ch02.html" title="Cogl experimental API">
 <link rel="prev" href="cogl-3D-textures.html" title="3D textures">
 <link rel="next" href="ch03.html" title="Cogl deprecated API">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -48,7 +48,7 @@ quaternions.</p>
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-init-from-angle-vector" title="cogl_quaternion_init_from_angle_vector ()">cogl_quaternion_init_from_angle_vector</a>
                                                         (<em class="parameter"><code><a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> angle</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">CoglVector3</span> *axis</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">float</span> *axis3f</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-init-from-array" title="cogl_quaternion_init_from_array ()">cogl_quaternion_init_from_array</a>     (<em class="parameter"><code><a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>,
                                                          <em class="parameter"><code>const <span class="type">float</span> *array</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-init-from-x-rotation" title="cogl_quaternion_init_from_x_rotation ()">cogl_quaternion_init_from_x_rotation</a>
@@ -66,7 +66,7 @@ quaternions.</p>
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-free" title="cogl_quaternion_free ()">cogl_quaternion_free</a>                (<em class="parameter"><code><a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>);
 <span class="returnvalue">float</span>               <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-get-rotation-angle" title="cogl_quaternion_get_rotation_angle ()">cogl_quaternion_get_rotation_angle</a>  (<em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-get-rotation-axis" title="cogl_quaternion_get_rotation_axis ()">cogl_quaternion_get_rotation_axis</a>   (<em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>,
-                                                         <em class="parameter"><code><span class="type">CoglVector3</span> *vector</code></em>);
+                                                         <em class="parameter"><code><span class="type">float</span> *vector3</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-normalize" title="cogl_quaternion_normalize ()">cogl_quaternion_normalize</a>           (<em class="parameter"><code><a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>);
 <span class="returnvalue">float</span>               <a class="link" href="cogl-Quaternions-(Rotations).html#cogl-quaternion-dot-product" title="cogl_quaternion_dot_product ()">cogl_quaternion_dot_product</a>         (<em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *a</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *b</code></em>);
@@ -294,7 +294,7 @@ rotated <em class="parameter"><code>angle</code></em> degrees around the axis ve
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_quaternion_init_from_angle_vector
                                                         (<em class="parameter"><code><a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>,
                                                          <em class="parameter"><code><span class="type">float</span> angle</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">CoglVector3</span> *axis</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">float</span> *axis3f</code></em>);</pre>
 <p>
 Initializes a quaternion that rotates <em class="parameter"><code>angle</code></em> degrees around the
 given <em class="parameter"><code>axis</code></em> vector. The axis vector does not need to be
@@ -309,8 +309,8 @@ normalized.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>axis</code></em> :</span></p></td>
-<td>your axis vector about which you want to rotate.</td>
+<td><p><span class="term"><em class="parameter"><code>axis3f</code></em> :</span></p></td>
+<td>your 3 component axis vector about which you want to rotate.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -513,7 +513,7 @@ Frees a <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" 
 <div class="refsect2">
 <a name="cogl-quaternion-get-rotation-axis"></a><h3>cogl_quaternion_get_rotation_axis ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cogl_quaternion_get_rotation_axis   (<em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *quaternion</code></em>,
-                                                         <em class="parameter"><code><span class="type">CoglVector3</span> *vector</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">float</span> *vector3</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
@@ -545,11 +545,18 @@ Frees a <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" 
                                                          <em class="parameter"><code>const <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a> *b</code></em>);</pre>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
-<tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>quaternion</code></em> :</span></p></td>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>a</code></em> :</span></p></td>
 <td>A <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a>
 </td>
-</tr></tbody>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>b</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-Quaternions-(Rotations).html#CoglQuaternion" title="CoglQuaternion"><span class="type">CoglQuaternion</span></a>
+</td>
+</tr>
+</tbody>
 </table></div>
 <p class="since">Since 2.0</p>
 </div>
@@ -761,6 +768,6 @@ rotation of 180 degrees around a degenerate axis:
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

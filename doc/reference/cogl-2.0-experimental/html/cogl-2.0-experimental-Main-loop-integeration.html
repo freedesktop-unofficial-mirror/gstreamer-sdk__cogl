@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Main loop integeration</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="ch01.html" title="Cogl - a modern 3D graphics API">
+<link rel="prev" href="cogl-2.0-experimental-The-Top-Level-Context.html" title="The Top-Level Context">
+<link rel="next" href="cogl-pipeline-apis.html" title="Setting Up A GPU Pipeline">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-The-Top-Level-Context.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-pipeline-apis.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Main-loop-integeration.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Main-loop-integeration.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Main-loop-integeration"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Main-loop-integeration.top_of_page"></a>Main loop integeration</span></h2>
+<p>Main loop integeration — Functions for integrating Cogl with an
+  application's main loop</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Main-loop-integeration.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">enum                <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFDEvent" title="enum CoglPollFDEvent">CoglPollFDEvent</a>;
+                    <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD">CoglPollFD</a>;
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-poll-get-info" title="cogl_poll_get_info ()">cogl_poll_get_info</a>                  (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a> **poll_fds</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *n_poll_fds</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *timeout</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-poll-dispatch" title="cogl_poll_dispatch ()">cogl_poll_dispatch</a>                  (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a> *poll_fds</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_poll_fds</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="returnvalue">GSource</span></a> *           <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-glib-source-new" title="cogl_glib_source_new ()">cogl_glib_source_new</a>                (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> priority</code></em>);
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Main-loop-integeration.description"></a><h2>Description</h2>
+<p>
+Cogl needs to integrate with the application's main loop so that it
+can internally handle some events from the driver. All Cogl
+applications must use these functions. They provide enough
+information to describe the state that Cogl will need to wake up
+on. An application using the GLib main loop can instead use
+<a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-glib-source-new" title="cogl_glib_source_new ()"><code class="function">cogl_glib_source_new()</code></a> which provides a <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="type">GSource</span></a> ready to be added
+to the main loop.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Main-loop-integeration.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglPollFDEvent"></a><h3>enum CoglPollFDEvent</h3>
+<pre class="programlisting">typedef enum {
+  COGL_POLL_FD_EVENT_IN = COGL_SYSDEF_POLLIN,
+  COGL_POLL_FD_EVENT_PRI = COGL_SYSDEF_POLLPRI,
+  COGL_POLL_FD_EVENT_OUT = COGL_SYSDEF_POLLOUT,
+  COGL_POLL_FD_EVENT_ERR = COGL_SYSDEF_POLLERR,
+  COGL_POLL_FD_EVENT_HUP = COGL_SYSDEF_POLLHUP,
+  COGL_POLL_FD_EVENT_NVAL = COGL_SYSDEF_POLLNVAL
+} CoglPollFDEvent;
+</pre>
+<p>
+A bitmask of events that Cogl may need to wake on for a file
+descriptor. Note that these all have the same values as the
+corresponding defines for the poll function call on Unix so they
+may be directly passed to poll.
+</p>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="CoglPollFD"></a><h3>CoglPollFD</h3>
+<pre class="programlisting">typedef struct {
+  int fd;
+  short int events;
+  short int revents;
+} CoglPollFD;
+</pre>
+<p>
+A struct for describing the state of a file descriptor that Cogl
+needs to block on. The <em class="parameter"><code>events</code></em> field contains a bitmask of
+<a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFDEvent" title="enum CoglPollFDEvent"><span class="type">CoglPollFDEvent</span></a>s that should cause the application to wake
+up. After the application is woken up from idle it should pass back
+an array of <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a>s to Cogl and update the <em class="parameter"><code>revents</code></em>
+mask to the actual events that occurred on the file descriptor.
+</p>
+<p>
+Note that CoglPollFD is deliberately exactly the same as struct
+pollfd on Unix so that it can simply be cast when calling poll.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><span class="type">int</span> <em class="structfield"><code><a name="CoglPollFD.fd"></a>fd</code></em>;</span></p></td>
+<td>The file descriptor to block on</td>
+</tr>
+<tr>
+<td><p><span class="term">short <span class="type">int</span> <em class="structfield"><code><a name="CoglPollFD.events"></a>events</code></em>;</span></p></td>
+<td>A bitmask of events to block on</td>
+</tr>
+<tr>
+<td><p><span class="term">short <span class="type">int</span> <em class="structfield"><code><a name="CoglPollFD.revents"></a>revents</code></em>;</span></p></td>
+<td>A bitmask of returned events</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-poll-get-info"></a><h3>cogl_poll_get_info ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_poll_get_info                  (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a> **poll_fds</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> *n_poll_fds</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="type">gint64</span></a> *timeout</code></em>);</pre>
+<p>
+This should be called whenever an application is about to go idle
+so that Cogl has a chance to describe what state it needs to be
+woken up on. The assumption is that the application is using a main
+loop with something like the poll function call on Unix or the GLib
+main loop.
+</p>
+<p>
+After the function is called *<em class="parameter"><code>poll_fds</code></em> will contain a pointer to
+an array of <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a> structs describing the file descriptors
+that Cogl expects. The fd and events members will be updated
+accordingly. After the application has completed its idle it is
+expected to either update the revents members directly in this
+array or to create a copy of the array and update them
+there. Either way it should pass a pointer to either array back to
+Cogl when calling <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-poll-dispatch" title="cogl_poll_dispatch ()"><code class="function">cogl_poll_dispatch()</code></a>.
+</p>
+<p>
+When using the <code class="literal">COGL_WINSYS_ID_WGL</code> winsys (where file descriptors
+don't make any sense) or <code class="literal">COGL_WINSYS_ID_SDL</code> (where the event
+handling functions of SDL don't allow blocking on a file
+descriptor) *n_poll_fds is guaranteed to be zero.
+</p>
+<p>
+<em class="parameter"><code>timeout</code></em> will contain a maximum amount of time to wait in
+microseconds before the application should wake up or -1 if the
+application should wait indefinitely. This can also be 0 zero if
+Cogl needs to be woken up immediately.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>poll_fds</code></em> :</span></p></td>
+<td>A return location for a pointer to an array
+of <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a>s</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_poll_fds</code></em> :</span></p></td>
+<td>A return location for the number of entries in *<em class="parameter"><code>poll_fds</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
+<td>A return location for the maximum length of time to wait
+in microseconds, or -1 to wait indefinitely.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-poll-dispatch"></a><h3>cogl_poll_dispatch ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_poll_dispatch                  (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code>const <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a> *poll_fds</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> n_poll_fds</code></em>);</pre>
+<p>
+This should be called whenever an application is woken up from
+going idle in its main loop. The <em class="parameter"><code>poll_fds</code></em> array should contain a
+list of file descriptors matched with the events that occurred in
+revents. The events field is ignored. It is safe to pass in extra
+file descriptors that Cogl didn't request from
+<code class="function">cogl_context_begin_idle()</code> or a shorter array missing some file
+descriptors that Cogl requested.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>poll_fds</code></em> :</span></p></td>
+<td>An array of <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#CoglPollFD" title="CoglPollFD"><span class="type">CoglPollFD</span></a>s describing the events
+that have occurred since the application went idle.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>n_poll_fds</code></em> :</span></p></td>
+<td>The length of the <em class="parameter"><code>poll_fds</code></em> array.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-glib-source-new"></a><h3>cogl_glib_source_new ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="returnvalue">GSource</span></a> *           cogl_glib_source_new                (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><span class="type">int</span> priority</code></em>);</pre>
+<p>
+Creates a <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="type">GSource</span></a> which handles Cogl's internal system event
+processing. This can be used as a convenience instead of
+<a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-poll-get-info" title="cogl_poll_get_info ()"><code class="function">cogl_poll_get_info()</code></a> and <a class="link" href="cogl-2.0-experimental-Main-loop-integeration.html#cogl-poll-dispatch" title="cogl_poll_dispatch ()"><code class="function">cogl_poll_dispatch()</code></a> in applications that
+are already using the GLib main loop. After this is called the
+<a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="type">GSource</span></a> should be attached to the main loop using
+<a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#g-source-attach"><code class="function">g_source_attach()</code></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>priority</code></em> :</span></p></td>
+<td>The priority of the <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="type">GSource</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a new <a href="http://library.gnome.org/devel/glib/unstable/glib-The-Main-Event-Loop.html#GSource"><span class="type">GSource</span></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

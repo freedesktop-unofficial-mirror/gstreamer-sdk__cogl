@@ -1,5 +1,316 @@
-Cogl 1.8.2                                                         2011-10-17
-===============================================================================
+Cogl 1.10.2                                                        2012-04-19
+
+  • List of changes since Cogl 1.10.0
+
+  » Fix for fallback path in cogl_texture_get_data when reading from
+    an FBO doesn't work
+  » Bug fix to make cogl_pipeline_get_depth_state work
+  » The cogl-crate and cogl-msaa examples now show error messages if
+    it fails to initialise
+  » cogl_context_new no longer crashes if initialisation fails when
+    passed a NULL display
+  » Visual Studio build fixes
+  » Translation updates
+
+  • List of bugs fixed since Cogl 1.10.0
+
+    https://bugzilla.gnome.org:
+
+    #672533 - Quartz image option causes compile error
+    #673137 - Grab the current window -> Screenshot is mirrored
+
+Many thanks to:
+
+  Robert Bragg
+  Chun-wei Fan
+  Adel Gadllah
+  Bruno Brouard
+  Gabor Kelemen
+  Krishnababu Krothapalli
+  Rajesh Ranjan
+  Yinghua Wang
+
+Cogl 1.10.0                                                        2012-03-20
+
+  • List of changes since Cogl 1.9.8
+
+  » Add cogl_framebuffer_draw_[*_]rectangle functions. These can be
+    used as a replacement for cogl_rectangle in the 2.0 API to avoid
+    the global framebuffer stack.
+  » Fixed flushing the point size with the GL driver when using GLSL.
+  » Added the missing cogl_is_onscreen and cogl_is_framebuffer functions.
+  » Added cogl_quaternion_init_from_quaternion and
+    cogl_quaternion_init_from_matrix to the public headers.
+  » Make cogl_has_feature available when only
+    COGL_ENABLE_EXPERIMENTAL_API is defined.
+  » Add cogl_framebuffer_read_pixels. This is a convenience wrapper
+    around cogl_framebuffer_read_pixels_into_bitmap to read directly
+    into an application's buffer.
+  » Added a public cogl_bitmap_new_for_data function. This can be used
+    for example to call cogl_framebuffer_read_pixels_into_bitmap to
+    read directly into an application's buffer with an unusual
+    rowstride.
+  » Visual Studio build fixes
+  » Translation updates
+
+  • List of bugs fixed since Cogl 1.9.8
+
+    https://bugzilla.gnome.org:
+
+    #669122 - Clipped redraws and tearing
+    #671984 - cogl glyph cache uses uninitialised variable.
+    #671985 - cogl matrix stack has a use after realloc
+    #672038 - Move the fallback define for GL_PACK_INVERT_MESA
+    #672174 - cogl_path_curve_to second parameter ignored
+    #672243 - Drive by leak fix when code spelunking
+
+Many thanks to:
+
+  Chun-wei Fan
+  Robert Bragg
+  Dave Airlie
+  Matej Urbančič
+  Adam Matoušek
+  Adel Gadllah
+  Alexander Shopov
+  Bruce Cowan
+  Daniel Nylander
+  Dénes Almási
+  Duarte Loreto
+  Enrico Nicoletto
+  Fran Diéguez
+  Khoem Sokhem
+  Nilamdyuti Goswami
+  Piotr Drąg
+  Ray Strode
+  Ryan Lortie
+  Yuri Myasoedov
+  甘霖
+
+Cogl 1.9.8                                                         2012-03-05
+
+  • List of changes since Cogl 1.9.6
+
+  » Various Visual Studio build fixes
+  » Correctly check for GL_EXT_packed_depth_stencil and support using
+    GL_OES_packed_depth_stencil on GLES2
+  » Correctly handle pre-multiplied alpha conversions when reading
+    back texture data.
+  » Added cogl_renderer_{get,set}_driver functions so the underlying
+    driver can be chosen programmatically.
+  » Revamped the conformance testing framework so that it
+    automatically runs every test against GLES2 as well as GL and also
+    against all of the pipeline backends and with npot textures
+    disabled.
+  » Add a conformance test for reading back an RGBA texture as
+    alpha-only
+  » Added support for converting between all of Cogl's supported pixel
+    formats including pre-multiplied alpha conversions.
+  » Added conformance tests for converting to and from all of the
+    supported formats.
+  » Added a public cogl_framebuffer_read_pixels_into_bitmap()
+    function which will effective read into a CoglPixelBuffer.
+  » CoglPixelBuffer was changed to no longer have associated width,
+    height and format information and instead we will rely on
+    CoglBitmap to track that informations. The relationship is
+    analogous how CoglAttributes relate to CoglAttributeBuffers
+    and means for example that a CoglPixelBuffer could now be used
+    to hold multiple images.
+  » Added public cogl_bitmap_get_{width,height,format,rowstride} api
+  » Added a public accessor for the underlying pixel buffer of a
+    CoglBitmap.
+  » Added various missing cast macros for some buffer objects.
+  » Ported the Clutter based test-pixel-buffer test to be standalone.
+
+  • List of bugs fixed since Cogl 1.9.6
+
+    https://bugzilla.gnome.org:
+
+    #666184 - framebuffer: Enable a single depth and stencil buffer for GLES
+    #670793 - Don't use cogl_get_draw_framebuffer when flushing pipeline state
+    #671016 - INVALID_ENUM errors in gnome-shell
+
+Many thanks to:
+
+  Neil Roberts
+  Chun-wei Fan
+  Daniel Korostil
+  Martin Srebotnjak
+  Matej Urbančič
+  Matic Gradišer
+  Мирослав Николић
+
+Cogl 1.9.6                                                         2012-02-21
+
+  • List of changes since Cogl 1.9.4
+
+  » New conformance tests or tests ported from Clutter:
+        test-offscreen
+        test-primitive
+        test-texture-3d
+  » New public experimental functions:
+        cogl_pipeline_get_layer_texture
+        cogl_primitive_copy
+        cogl_primitive_foreach_attribute
+        cogl_primitive_get_indices
+        cogl_pipeline_get_layer_{min,max}_filter
+  » Added cogl_kms_renderer_get_kms_fd to get the KMS file descriptor.
+  » Bug fixed in the KMS support where it would crash on cleanup if it
+    couldn't save the CRTC state.
+  » Bug fixed in the Wayland compositor support where it would leak
+    EGLImages when creating a texture from a buffer
+  » The swap_buffer callback in GLX is now delayed until
+    cogl_poll_dispatch is called so that apps can handle it more
+    predictably.
+  » Fixes for bugs with pipelines that are trying to use a layer with
+    a NULL texture.
+  » New cogl_framebuffer_* API for drawing directly to the framebuffer
+    without having to push the framebuffer. Ideally we want to move
+    towards this style of API in future with no global stacks.
+  » Most of the _EXP suffixes have been removed from the experimental
+    API symbols in the hope that the gtk-doc unstable annotation will
+    be enough to distinguish these.
+  » Add a COGL_DEBUG=winsys option
+  » CoglBuffer and CoglPrimitive now take an explicit CoglContext
+    argument in their constructor. We want to move towards getting rid
+    of the global context.
+  » Updates to the MSVC build support.
+  » Add cogl_pipeline_set_layer_null_texture(). This can be used for
+    base pipelines instead of having to create a dummy texture.
+  » Fix some bugs where Cogl was assuming there is a direct mapping
+    between the pipeline layer number and the GL texture unit number.
+  » In snippets, there are now always builtin sampler uniforms for
+    every layer of the pipeline. This makes it easier to write GLSL
+    that samples arbitrary units.
+  » The texture lookup snippet hook now gets passed the sampler for
+    the unit. The snippet can use this to sample the texture multiple
+    times.
+  » Some public constants for CoglPixelFormat have been removed
+    (COGL_UNPREMULT_MASK, COGL_UNORDERED_MASK and
+    COGL_PIXEL_FORMAT_{24,32}).
+  » 30-bit pixel formats added.
+  » COGL_DEBUG=wireframes now correctly renders primitives using
+    vertex shader snippets.
+  » cogl_framebuffer_swap_buffers and friends have been renamed to
+    cogl_onscreen_swap_buffers.
+  » If the experimental 2.0 API is requested, as far as possible the
+    headers for the 1.0 API are no longer included. Define
+    COGL_ENABLE_EXPERIMENTAL_API instead if you want to mix both APIs.
+
+  • List of bugs fixed since Cogl 1.9.4
+
+    https://bugzilla.gnome.org:
+
+    #660188 - Color corruption with software rendering at 30-bit color depth
+    #668385 - Missing G_END_DECLS in cogl-poll.h
+    #668856 - Do not look for GLES2-only GLSL prototypes on GL
+    #668913 - The journal for an offscreen doesn't get flushed when
+              cogl_texture_get_data is called
+    #669368 - Reading back texture fails with ‘Invalid operation’ + wrong image
+    #669785 - Build fixes for COGL master (1.9.x)
+
+  • Note the following conformance tests are currently failing with
+    the GLES2 driver but they were also failing in 1.9.4:
+    test_cogl_depth_test, test_cogl_sub_texture, test_cogl_texture_3d
+
+Many thanks to:
+
+  Robert Bragg
+  Chun-wei Fan
+  Damien Leone
+  Emmanuele Bassi
+  Jasper St. Pierre
+  Chao-Hsiung Liao
+  Gheyret Kenji
+  Ihar Hrachyshka
+  Kasia Bondarava
+  Kenneth Nielsen
+  Kjartan Maraas
+  Ryan Lortie
+
+Cogl 1.9.4                                                         2012-01-16
+
+  • List of changes since Cogl 1.9.2
+
+  » Visual Studio 2008/2010 project files have landed and are being actively
+    maintained by Chun-wei Fan <fanchunwei@src.gnome.org>
+  » A basic KMS (Kernel Mode Setting) backend was added so we can run fullscreen
+    Cogl applications without X11 on Linux.
+  » EGL platforms can now be selected at runtime. Although we've had the ability
+    select backends at runtime for a while, up until now all EGL platforms were
+    part of one monolithic backend and were mutually exclusive so a platform
+    had to be chosen at build time.
+  » cogl_matrix_orthographic() was added as a replacement for cogl_matrix_ortho()
+    since the OpenGL style of arguments for cogl_matrix_ortho() wasn't consistent
+    with the rest of the Cogl API.
+  » Experimental cogl_framebuffer_ apis were added for manipulating the
+    per-framebuffer modelview matrix stack. The aim is for these to replace
+    apis like cogl_rotate/translate/scale because those apis aren't explicitly
+    related to a CoglContext which we'd like to avoid so we can remove the
+    need for a global CoglContext.
+  » Experimental cogl_framebuffer apis were added for manipulating the
+    per-framebuffer clip stacks.
+  » The internal _cogl_framebuffer_flush_state() function was optimized to do
+    a better job of bailing out when no framebuffer state has changed, and
+    when state has changed the cost should now scale by the number of changes
+    made instead of scaling by the total range of framebuffer state that Cogl
+    tracks.
+  » Internally we finally removed _cogl_enable() which won't mean much to most
+    people but makes the maintainers happy. This happened as part of a rework
+    for how attribute state is flushed when drawing which fixed some problems
+    with supporting custom attributes and should improve the performance of
+    flushing attributes too.
+  » We added an experimental CoglSnippets api aiming to greatly simplify how
+    developers can incorporate snippets of GLSL code into the pipeline. This is
+    a feature that has been on the drawing board for a long time so we're
+    really happy that it's finally here.
+
+    *** We'd really love to see people start to play with the snippets API and
+    tell us how they get on. The plan is for this API to replace all need for
+    developers to use the CoglProgram and CoglShader apis which are rather poor
+    copies of the OpenGL APIs for using GLSL which don't map well to Cogl's
+    design. ***
+
+  » We've updated Cogl's client side Wayland support
+  » We've updated Cogl's compositor side Wayland support, including updating the
+    example cogland compositor.
+  » We added an SDL window system backend for Cogl, which provides a simple,
+    portable way to play with Cogl as a standalone graphics API with basic
+    support for input events available from SDL. See examples/cogl-sdl-hello
+    to see how that works.
+  » We added mainloop integration support to Cogl. Since we want to have the
+    ability to use poll() to block for events from some drivers we have introduced
+    apis that all Cogl applications are required to use to integrate Cogl
+    into their mainloop. For applications using a glib mainloop we've provided
+    a GSource for convenience.
+
+  • List of bugs fixed since Cogl 1.9.2
+
+    https://bugzilla.gnome.org:
+
+    #650020 - Visual C++ 2008/2010 Project files to compile Cogl and Cogl-Pango
+    #665190 - The conformance test wrapper scripts don't return an exit code
+    #665604 - Cogl needs to bind the framebuffer before calling eglSwapBuffers
+    #665722 - Build Fixes for COGL master branch
+    #665723 - Conformance tests failed (snippets, pipeline_uniforms)
+    #667009 - Remove DRM vblank hack
+
+Many thanks to:
+
+  Neil Roberts
+  Chun-wei Fan
+  Rob Bradford
+  Daniel Mustieles
+  Fran Diéguez
+  Aurimas Černius
+  Javier Jardón
+  Jorge González
+  Joshua Lock
+  Seong-ho, Cho
+  Tomeu Vizoso
+  Yinghua Wang
+
+Cogl 1.9.2                                                         2011-11-23
 
   • List of changes since Cogl 1.8.0
 
@@ -7,26 +318,97 @@ Cogl 1.8.2                                                         2011-10-17
     NULL texture.
   » Improvements to the mingw-fetch-dependencies script to work
     without first needing to find a copy of config.guess.
-  » Translation updates.  
+  » Translation updates.
+  » Ported more conformance tests from Clutter to be standalone Cogl tests.
+  » Adds experimental support for EXT_discard_framebuffer extension which
+    is important for good performance on PowerVR graphics hardware
+  » Adds experimental API to enable clipping to the silhouette of an arbitrary
+    2D CoglPrimitive
+  » Make the CoglTexture2DSliced API directly available as experimental API
+  » Adds a new feature checking API that's not limited to just 32 features
+    and also must be passed a CoglContext pointer so it's clear at what point
+    the features can start to be queried.
+  » Adds an experimental CoglMetaTexture interface that gives one simple
+    api for mapping meta-textures that aren't directly understood by the GPU
+    (such as sliced textures, atlas textures, sub textures) into low level
+    textures. This interface also gives us a single place to handle repeat
+    mode fallbacks, supporting clamp-to-edge, repeat and mirrored repeat.
+  » Make the CoglTextureRectangle API directly available as experimental API
+  » Adds experimental support for multisampling, which is where the gpu
+    calculates multiple samples per pixel and the final pixel is a weighted
+    average of those samples.  For example you can expect that multisampling
+    with 4 samples per pixel would give similar quality to rendering at double
+    the resolution and then scaling that image down with texture filtering, but
+    the GPU can often do some tricks such that multisampling is faster than
+    doing that manually (known as supersampling)
+  » Make the CoglSubTexture API directly available as experimental API
+  » Added an n_indices argument to cogl_primitive_set_indices to avoid needing
+    to always call cogl_primitive_set_n_vertices() after using the api and
+    to make it less error prone to use the api.
+  » Ship a standalone cogl-xlib.h that must be included manually for any xlib
+    specific api because the Xlib headers so many numerous badly namespaced
+    symbols that it's not desireable to include them unless absolutely
+    required.
+  » Updated the Wayland support to work with the latest upstream interfaces.
+  » Add experimental CoglPipeline API for controlling the backface culling.
+  » Added a cogl_matrix_transpose() function
+  » Add experimental support for setting uniforms on a CoglPipeline. This
+    is in preparation for being able to associate snippets of GLSL that hook
+    into specific parts of the pipeline. We plan to eventually deprecate
+    CoglProgram but even in the meantime we would also recommend setting
+    uniforms on the pipeline now instead of the program.
+  » Adds experimental cogl_framebuffer_finish() api for explicitly synchonizing
+    the GPU with the CPU.
 
   • List of bugs fixed since Cogl 1.8.0
 
     https://bugzilla.gnome.org:
 
+    #656755 - Install the examples
+    #658700 - Bind the locale domain so that gettext actually works
     #660184 - Running an X client causes a segfault when using software
               rendering
     #660387 - test-color-mask fails due to uninitialized texture data
+    #660617 - Porting of clutter tests
     #660986 - memory leak in CoglPipeline::layers_cache
+    #661019 - Indices don't seem to work
+    #661174 - Remove inclusion of Xlib headers from Cogl headers
+    #662184 - Pipeline shaders often fail to link on GLES2 because of different
+              n_tex_coord_attribs
+    #662542 - The ARBfp and GLSL pipeline backends sometimes don't flush
+              uniforms
+    #663578 - _COGL_RETURN_IF_FAIL sometimes doesn't use glib
+    #663628 - Make the pipeline backface culling experimental public
 
-Many thanks to:
+Many thanks too:
     Robert Bragg
-    Ivaylo Valkov
-    Gabor Kelemen
+    Neil Roberts
     Luca Bruno
+    Chun-wei Fan
+    Jorge González
+    Rob Bradford
+    Fran Diéguez
+    Rico Tzschichholz
+    Yaron Shahrabani
+    krishnababu k
+    Damien Leone
+    Daniel Martinez Cucalon
+    Daniel Mustieles
+    Flemming Christensen
+    Gabor Kelemen
+    Gil Forcada
+    Ivaylo Valkov
+    Jasper St. Pierre
+    Kjartan Maraas
+    Matej Urbančič
+    Muhammet Kara
+    Nguyễn Thái Ngọc Duy
+    Nilamdyuti Goswami
     Seong-ho, Cho
+    Simos Xenitellis
+    Zan Dobersek
 
 Cogl 1.8.0                                                         2011-09-19
-===============================================================================
 
   • List of changes since Cogl 1.7.8
 
@@ -53,7 +435,7 @@ Cogl 1.8.0                                                         2011-09-19
     #659029 - Clipping problem
     #659360 - Optimization in _cogl_winsys_onscreen_swap_region causes tearing
 
-Many thanks to:
+Many thanks too:
     Neil Roberts
     Matej Urbančič
     Abdalrahim G. Fakhouri
@@ -81,7 +463,6 @@ Many thanks to:
     Мирослав Николић
 
 Cogl 1.7.8                                                         2011-09-05
-===============================================================================
 
   • List of changes since Cogl 1.7.6
 

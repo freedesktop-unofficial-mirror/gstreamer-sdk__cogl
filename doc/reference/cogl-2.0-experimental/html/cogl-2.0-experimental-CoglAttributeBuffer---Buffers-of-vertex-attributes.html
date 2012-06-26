@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-buffer-apis.html" title="Allocating GPU Memory">
 <link rel="prev" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html" title="CoglBuffer: The Buffer Interface">
 <link rel="next" href="cogl-2.0-experimental-CoglIndexBuffer---Buffers-of-vertex-indices.html" title="CoglIndexBuffer: Buffers of vertex indices">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -39,7 +39,8 @@
 <div class="refsynopsisdiv">
 <a name="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer">CoglAttributeBuffer</a>;
-<a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#cogl-attribute-buffer-new" title="cogl_attribute_buffer_new ()">cogl_attribute_buffer_new</a>         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> bytes</code></em>,
+<a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#cogl-attribute-buffer-new" title="cogl_attribute_buffer_new ()">cogl_attribute_buffer_new</a>         (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> bytes</code></em>,
                                                          <em class="parameter"><code>const <span class="type">void</span> *data</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#cogl-is-attribute-buffer" title="cogl_is_attribute_buffer ()">cogl_is_attribute_buffer</a>            (<em class="parameter"><code><span class="type">void</span> *object</code></em>);
 </pre>
@@ -62,12 +63,13 @@ FIXME
 <hr>
 <div class="refsect2">
 <a name="cogl-attribute-buffer-new"></a><h3>cogl_attribute_buffer_new ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * cogl_attribute_buffer_new         (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> bytes</code></em>,
+<pre class="programlisting"><a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="returnvalue">CoglAttributeBuffer</span></a> * cogl_attribute_buffer_new         (<em class="parameter"><code><span class="type">CoglContext</span> *context</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> bytes</code></em>,
                                                          <em class="parameter"><code>const <span class="type">void</span> *data</code></em>);</pre>
 <p>
 Declares a new <a class="link" href="cogl-2.0-experimental-CoglAttributeBuffer---Buffers-of-vertex-attributes.html#CoglAttributeBuffer" title="CoglAttributeBuffer"><span class="type">CoglAttributeBuffer</span></a> of <em class="parameter"><code>size</code></em> bytes to contain arrays of vertex
-attribute data. Once declared, data can be set using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data" title="cogl_buffer_set_data"><code class="function">cogl_buffer_set_data()</code></a>
-or by mapping it into the application's address space using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map"><code class="function">cogl_buffer_map()</code></a>.
+attribute data. Once declared, data can be set using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-set-data" title="cogl_buffer_set_data ()"><code class="function">cogl_buffer_set_data()</code></a>
+or by mapping it into the application's address space using <a class="link" href="cogl-2.0-experimental-CoglBuffer---The-Buffer-Interface.html#cogl-buffer-map" title="cogl_buffer_map ()"><code class="function">cogl_buffer_map()</code></a>.
 </p>
 <p>
 If <em class="parameter"><code>data</code></em> isn't <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> then <em class="parameter"><code>size</code></em> bytes will be read from <em class="parameter"><code>data</code></em> and
@@ -76,6 +78,11 @@ immediately copied into the new buffer.
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span>
+</td>
+</tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>bytes</code></em> :</span></p></td>
 <td>The number of bytes to allocate for vertex attribute data.</td>
@@ -119,6 +126,6 @@ Gets whether the given object references a <a class="link" href="cogl-2.0-experi
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

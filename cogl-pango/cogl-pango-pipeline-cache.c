@@ -33,6 +33,8 @@
 #include <cogl/cogl.h>
 #include "cogl-pango-pipeline-cache.h"
 
+#include "cogl/cogl-context-private.h"
+
 typedef struct _CoglPangoPipelineCacheEntry CoglPangoPipelineCacheEntry;
 
 struct _CoglPangoPipelineCache
@@ -49,7 +51,7 @@ struct _CoglPangoPipelineCacheEntry
 {
   /* This will take a reference or it can be NULL to represent the
      pipeline used to render colors */
-  CoglHandle texture;
+  CoglTexture *texture;
 
   /* This will only take a weak reference */
   CoglHandle pipeline;
@@ -105,10 +107,12 @@ get_base_texture_rgba_pipeline (CoglPangoPipelineCache *cache)
     {
       CoglPipeline *pipeline;
 
-      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new ();
+      _COGL_GET_CONTEXT (ctx, NULL);
+
+      pipeline = cache->base_texture_rgba_pipeline = cogl_pipeline_new (ctx);
 
       cogl_pipeline_set_layer_wrap_mode (pipeline, 0,
-                                         COGL_MATERIAL_WRAP_MODE_CLAMP_TO_EDGE);
+                                         COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 
       if (cache->use_mipmapping)
         cogl_pipeline_set_layer_filters
@@ -155,7 +159,7 @@ get_base_texture_alpha_pipeline (CoglPangoPipelineCache *cache)
 typedef struct
 {
   CoglPangoPipelineCache *cache;
-  CoglHandle texture;
+  CoglTexture *texture;
 } PipelineDestroyNotifyData;
 
 static void
@@ -188,7 +192,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
     {
       CoglPipeline *base;
 
-      entry->texture = cogl_handle_ref (texture);
+      entry->texture = cogl_object_ref (texture);
 
       if (cogl_texture_get_format (entry->texture) == COGL_PIXEL_FORMAT_A_8)
         base = get_base_texture_alpha_pipeline (cache);
@@ -201,8 +205,10 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
     }
   else
     {
+      _COGL_GET_CONTEXT (ctx, NULL);
+
       entry->texture = NULL;
-      entry->pipeline = cogl_pipeline_new ();
+      entry->pipeline = cogl_pipeline_new (ctx);
     }
 
   /* Add a weak reference to the pipeline so we can remove it from the
@@ -216,7 +222,7 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
                              pipeline_destroy_notify_cb);
 
   g_hash_table_insert (cache->hash_table,
-                       texture ? cogl_handle_ref (texture) : NULL,
+                       texture ? cogl_object_ref (texture) : NULL,
                        entry);
 
   /* This doesn't take a reference on the pipeline so that it will use

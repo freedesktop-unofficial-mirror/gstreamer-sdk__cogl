@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Rectangle textures (non-normalized coordinates)</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-textures.html" title="Textures">
+<link rel="prev" href="cogl-2.0-experimental-3D-textures.html" title="3D textures">
+<link rel="next" href="cogl-meta-textures.html" title="Meta Textures">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-3D-textures.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-textures.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-meta-textures.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates)"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).top_of_page"></a>Rectangle textures (non-normalized coordinates)</span></h2>
+<p>Rectangle textures (non-normalized coordinates) — Functions for creating and manipulating rectangle
+                    textures for use with non-normalized coordinates.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle">CoglTextureRectangle</a>;
+#define             <a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#cogl-texture-rectangle-new-with-size" title="cogl_texture_rectangle_new_with_size">cogl_texture_rectangle_new_with_size</a>
+#define             <a class="link" href="cogl-2.0-experimental-2D-textures.html#cogl-is-texture-rectangle" title="cogl_is_texture_rectangle">cogl_is_texture_rectangle</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).description"></a><h2>Description</h2>
+<p>
+These functions allow low-level "rectangle" textures to be allocated.
+These textures are never constrained to power-of-two sizes but they
+also don't support having a mipmap and can only be wrapped with
+<code class="literal">COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE</code>.
+</p>
+<p>
+The most notable difference between rectangle textures and 2D
+textures is that rectangle textures are sampled using un-normalized
+texture coordinates, so instead of using coordinates (0,0) and
+(1,1) to map to the top-left and bottom right corners of the
+texture you would instead use (0,0) and (width,height).
+</p>
+<p>
+The use of non-normalized coordinates can be particularly
+convenient when writing glsl shaders that use a texture as a lookup
+table since you don't need to upload separate uniforms to map
+normalized coordinates to texels.
+</p>
+<p>
+If you want to sample from a rectangle texture from GLSL you should
+use the sampler2DRect sampler type.
+</p>
+<p>
+Applications wanting to use <a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a> should first check
+for the <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-RECTANGLE:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_RECTANGLE</code></a> feature using
+<a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a>.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglTextureRectangle"></a><h3>CoglTextureRectangle</h3>
+<pre class="programlisting">typedef struct _CoglTextureRectangle CoglTextureRectangle;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-texture-rectangle-new-with-size"></a><h3>cogl_texture_rectangle_new_with_size</h3>
+<pre class="programlisting">#define             cogl_texture_rectangle_new_with_size</pre>
+<p>
+Allocates a new <span class="type">CoglRectangle</span> texture with a given <em class="parameter"><code>width</code></em>, <em class="parameter"><code>height</code></em>
+and <em class="parameter"><code>internal_format</code></em>. This texture is a low-level texture that
+the GPU can sample from directly unlike high-level textures such
+as <a class="link" href="cogl-2.0-experimental-Sliced-Textures.html#CoglTexture2DSliced" title="CoglTexture2DSliced"><span class="type">CoglTexture2DSliced</span></a> and <span class="type">CoglAtlasTexture</span>.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>If you want to sample from a rectangle texture from GLSL you
+should use the sampler2DRect sampler type.</div>
+<p>
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Applications wanting to use <a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a> should
+first check for the <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#COGL-FEATURE-ID-TEXTURE-RECTANGLE:CAPS"><code class="literal">COGL_FEATURE_ID_TEXTURE_RECTANGLE</code></a> feature
+using <a class="link" href="cogl-2.0-experimental-The-Top-Level-Context.html#cogl-has-feature" title="cogl_has_feature ()"><code class="function">cogl_has_feature()</code></a>.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>width</code></em> :</span></p></td>
+<td>The texture width to allocate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>height</code></em> :</span></p></td>
+<td>The texture height to allocate</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>internal_format</code></em> :</span></p></td>
+<td>The desired internal texture format</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>An optional GError pointer for reporting exceptions</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A pointer to a newly allocated <span class="type">CoglRectangle</span> texture
+or if the size was too large or there wasn't enough memory
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> is returned and <em class="parameter"><code>error</code></em> set.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-texture-rectangle"></a><h3>cogl_is_texture_rectangle</h3>
+<pre class="programlisting">#define cogl_is_texture_rectangle cogl_is_texture_rectangle_EXP
+</pre>
+<p>
+Gets whether the given object references an existing
+<a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a> object.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>A <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the object references a
+<a class="link" href="cogl-2.0-experimental-Rectangle-textures-(non-normalized-coordinates).html#CoglTextureRectangle" title="CoglTextureRectangle"><span class="type">CoglTextureRectangle</span></a>, <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

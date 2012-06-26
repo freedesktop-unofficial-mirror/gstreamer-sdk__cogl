@@ -25,8 +25,6 @@
 #include "config.h"
 #endif
 
-#include "cogl.h"
-
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
@@ -50,10 +48,8 @@
 #include "cogl-renderer-private.h"
 #include "cogl-config-private.h"
 #include "cogl-private.h"
-
-#ifndef GL_PACK_INVERT_MESA
-#define GL_PACK_INVERT_MESA 0x8758
-#endif
+#include "cogl1-context.h"
+#include "cogl-offscreen.h"
 
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
@@ -79,7 +75,7 @@ static const struct {
 static const unsigned int n_gl_errors = G_N_ELEMENTS (gl_errors);
 
 const char *
-cogl_gl_error_to_string (GLenum error_code)
+_cogl_gl_error_to_string (GLenum error_code)
 {
   int i;
 
@@ -139,69 +135,6 @@ void
 cogl_clear (const CoglColor *color, unsigned long buffers)
 {
   cogl_framebuffer_clear (cogl_get_draw_framebuffer (), buffers, color);
-}
-
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-
-static gboolean
-toggle_client_flag (CoglContext *ctx,
-		    unsigned long new_flags,
-		    unsigned long flag,
-		    GLenum gl_flag)
-{
-  g_return_val_if_fail (ctx->driver != COGL_DRIVER_GLES2, FALSE);
-
-  /* Toggles and caches a single client-side enable flag
-   * on or off by comparing to current state
-   */
-  if (new_flags & flag)
-    {
-      if (!(ctx->enable_flags & flag))
-	{
-	  GE( ctx, glEnableClientState (gl_flag) );
-	  ctx->enable_flags |= flag;
-	  return TRUE;
-	}
-    }
-  else if (ctx->enable_flags & flag)
-    {
-      GE( ctx, glDisableClientState (gl_flag) );
-      ctx->enable_flags &= ~flag;
-    }
-
-  return FALSE;
-}
-
-#endif
-
-void
-_cogl_enable (unsigned long flags)
-{
-  /* This function essentially caches glEnable state() in the
-   * hope of lessening number GL traffic.
-  */
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  if (ctx->driver != COGL_DRIVER_GLES2)
-    {
-      toggle_client_flag (ctx, flags,
-                          COGL_ENABLE_VERTEX_ARRAY,
-                          GL_VERTEX_ARRAY);
-
-      toggle_client_flag (ctx, flags,
-                          COGL_ENABLE_COLOR_ARRAY,
-                          GL_COLOR_ARRAY);
-    }
-#endif
-}
-
-unsigned long
-_cogl_get_enable (void)
-{
-  _COGL_GET_CONTEXT (ctx, 0);
-
-  return ctx->enable_flags;
 }
 
 /* XXX: This API has been deprecated */
@@ -319,6 +252,38 @@ cogl_features_available (CoglFeatureFlags features)
   return (ctx->feature_flags & features) == features;
 }
 
+gboolean
+cogl_has_feature (CoglContext *ctx, CoglFeatureID feature)
+{
+  return COGL_FLAGS_GET (ctx->features, feature);
+}
+
+gboolean
+cogl_has_features (CoglContext *ctx, ...)
+{
+  va_list args;
+  CoglFeatureID feature;
+
+  va_start (args, ctx);
+  while ((feature = va_arg (args, CoglFeatureID)))
+    if (!cogl_has_feature (ctx, feature))
+      return FALSE;
+  va_end (args);
+
+  return TRUE;
+}
+
+void
+cogl_foreach_feature (CoglContext *ctx,
+                      CoglFeatureCallback callback,
+                      void *user_data)
+{
+  int i;
+  for (i = 0; i < _COGL_N_FEATURE_IDS; i++)
+    if (COGL_FLAGS_GET (ctx->features, i))
+      callback (i, user_data);
+}
+
 /* XXX: This function should either be replaced with one returning
  * integers, or removed/deprecated and make the
  * _cogl_framebuffer_get_viewport* functions public.
@@ -400,202 +365,6 @@ cogl_flush (void)
 }
 
 void
-_cogl_read_pixels_with_rowstride (int x,
-                                  int y,
-                                  int width,
-                                  int height,
-                                  CoglReadPixelsFlags source,
-                                  CoglPixelFormat format,
-                                  guint8 *pixels,
-                                  int rowstride)
-{
-  CoglFramebuffer *framebuffer = _cogl_get_read_framebuffer ();
-  int              framebuffer_height;
-  int              bpp;
-  CoglBitmap      *bmp;
-  GLenum           gl_intformat;
-  GLenum           gl_format;
-  GLenum           gl_type;
-  CoglPixelFormat  bmp_format;
-  gboolean         pack_invert_set;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_return_if_fail (source == COGL_READ_PIXELS_COLOR_BUFFER);
-
-  if (width == 1 && height == 1 && !framebuffer->clear_clip_dirty)
-    {
-      /* If everything drawn so far for this frame is still in the
-       * Journal then if all of the rectangles only have a flat
-       * opaque color we have a fast-path for reading a single pixel
-       * that avoids the relatively high cost of flushing primitives
-       * to be drawn on the GPU (considering how simple the geometry
-       * is in this case) and then blocking on the long GPU pipelines
-       * for the result.
-       */
-      if (_cogl_framebuffer_try_fast_read_pixel (framebuffer,
-                                                 x, y, source, format,
-                                                 pixels))
-        return;
-    }
-
-  /* make sure any batched primitives get emitted to the GL driver
-   * before issuing our read pixels...
-   *
-   * XXX: Note we currently use cogl_flush to ensure *all* journals
-   * are flushed here and not _cogl_journal_flush because we don't
-   * track the dependencies between framebuffers so we don't know if
-   * the current framebuffer depends on the contents of other
-   * framebuffers which could also have associated journal entries.
-   */
-  cogl_flush ();
-
-  _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
-                                 framebuffer,
-                                 0);
-
-  framebuffer_height = cogl_framebuffer_get_height (framebuffer);
-
-  /* The y co-ordinate should be given in OpenGL's coordinate system
-   * so 0 is the bottom row
-   *
-   * NB: all offscreen rendering is done upside down so no conversion
-   * is necissary in this case.
-   */
-  if (!cogl_is_offscreen (framebuffer))
-    y = framebuffer_height - y - height;
-
-  /* Initialise the CoglBitmap */
-  bpp = _cogl_get_format_bpp (format);
-  bmp_format = format;
-
-  if ((format & COGL_A_BIT))
-    {
-      /* We match the premultiplied state of the target buffer to the
-       * premultiplied state of the framebuffer so that it will get
-       * converted to the right format below */
-
-      if ((framebuffer->format & COGL_PREMULT_BIT))
-        bmp_format |= COGL_PREMULT_BIT;
-      else
-        bmp_format &= ~COGL_PREMULT_BIT;
-    }
-
-  bmp = _cogl_bitmap_new_from_data (pixels,
-                                    bmp_format, width, height, rowstride,
-                                    NULL, NULL);
-
-  ctx->texture_driver->pixel_format_to_gl (format,
-                                           &gl_intformat,
-                                           &gl_format,
-                                           &gl_type);
-
-  /* NB: All offscreen rendering is done upside down so there is no need
-   * to flip in this case... */
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
-      !cogl_is_offscreen (framebuffer))
-    {
-      GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, TRUE));
-      pack_invert_set = TRUE;
-    }
-  else
-    pack_invert_set = FALSE;
-
-  /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
-     implementation specific format under
-     GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES and
-     GL_IMPLEMENTATION_COLOR_READ_TYPE_OES is supported. We could try
-     to be more clever and check if the requested type matches that
-     but we would need some reliable functions to convert from GL
-     types to Cogl types. For now, lets just always read in
-     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
-     to use this intermediate buffer if the rowstride has padding
-     because GLES does not support setting GL_ROW_LENGTH */
-  if (ctx->driver != COGL_DRIVER_GL &&
-      (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
-       rowstride != 4 * width))
-    {
-      CoglBitmap *tmp_bmp, *dst_bmp;
-      guint8 *tmp_data = g_malloc (width * height * 4);
-
-      tmp_bmp = _cogl_bitmap_new_from_data (tmp_data,
-                                            COGL_PIXEL_FORMAT_RGBA_8888 |
-                                            (bmp_format & COGL_PREMULT_BIT),
-                                            width, height, 4 * width,
-                                            (CoglBitmapDestroyNotify) g_free,
-                                            NULL);
-
-      ctx->texture_driver->prep_gl_for_pixels_download (4 * width, 4);
-
-      GE( ctx, glReadPixels (x, y, width, height,
-                             GL_RGBA, GL_UNSIGNED_BYTE,
-                             tmp_data) );
-
-      /* CoglBitmap doesn't currently have a way to convert without
-         allocating its own buffer so we have to copy the data
-         again */
-      if ((dst_bmp = _cogl_bitmap_convert_format_and_premult (tmp_bmp,
-                                                              format)))
-        {
-          _cogl_bitmap_copy_subregion (dst_bmp,
-                                       bmp,
-                                       0, 0,
-                                       0, 0,
-                                       width, height);
-          cogl_object_unref (dst_bmp);
-        }
-      else
-        {
-          /* FIXME: there's no way to report an error here so we'll
-             just have to leave the data initialised */
-        }
-
-      cogl_object_unref (tmp_bmp);
-    }
-  else
-    {
-      ctx->texture_driver->prep_gl_for_pixels_download (rowstride, bpp);
-
-      GE( ctx, glReadPixels (x, y, width, height, gl_format, gl_type, pixels) );
-
-      /* Convert to the premult format specified by the caller
-         in-place. This will do nothing if the premult status is already
-         correct. */
-      _cogl_bitmap_convert_premult_status (bmp, format);
-    }
-
-  /* Currently this function owns the pack_invert state and we don't want this
-   * to interfere with other Cogl components so all other code can assume that
-   * we leave the pack_invert state off. */
-  if (pack_invert_set)
-    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
-
-  /* NB: All offscreen rendering is done upside down so there is no need
-   * to flip in this case... */
-  if (!cogl_is_offscreen (framebuffer) && !pack_invert_set)
-    {
-      guint8 *temprow = g_alloca (rowstride * sizeof (guint8));
-
-      /* vertically flip the buffer in-place */
-      for (y = 0; y < height / 2; y++)
-        {
-          if (y != height - y - 1) /* skip center row */
-            {
-              memcpy (temprow,
-                      pixels + y * rowstride, rowstride);
-              memcpy (pixels + y * rowstride,
-                      pixels + (height - y - 1) * rowstride, rowstride);
-              memcpy (pixels + (height - y - 1) * rowstride,
-                      temprow,
-                      rowstride);
-            }
-        }
-    }
-
-  cogl_object_unref (bmp);
-}
-
-void
 cogl_read_pixels (int x,
                   int y,
                   int width,
@@ -604,16 +373,26 @@ cogl_read_pixels (int x,
                   CoglPixelFormat format,
                   guint8 *pixels)
 {
-  _cogl_read_pixels_with_rowstride (x, y, width, height,
-                                    source, format, pixels,
-                                    /* rowstride */
-                                    _cogl_get_format_bpp (format) * width);
+  int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
+  CoglBitmap *bitmap;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  bitmap = cogl_bitmap_new_for_data (ctx,
+                                     width, height,
+                                     format,
+                                     bpp * width, /* rowstride */
+                                     pixels);
+  cogl_framebuffer_read_pixels_into_bitmap (_cogl_get_read_framebuffer (),
+                                            x, y,
+                                            source,
+                                            bitmap);
+  cogl_object_unref (bitmap);
 }
 
 void
 cogl_begin_gl (void)
 {
-  unsigned long enable_flags = 0;
   CoglPipeline *pipeline;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -639,7 +418,7 @@ cogl_begin_gl (void)
    * always be done first when preparing to draw. */
   _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
                                  _cogl_get_read_framebuffer (),
-                                 0);
+                                 COGL_FRAMEBUFFER_STATE_ALL);
 
   /* Setup the state for the current pipeline */
 
@@ -665,8 +444,6 @@ cogl_begin_gl (void)
                                  FALSE,
                                  cogl_pipeline_get_n_layers (pipeline));
 
-  _cogl_enable (enable_flags);
-
   /* Disable any cached vertex arrays */
   _cogl_attribute_disable_cached_arrays ();
 }
@@ -690,49 +467,37 @@ cogl_end_gl (void)
 void
 cogl_push_matrix (void)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_push (modelview_stack);
+  cogl_framebuffer_push_matrix (cogl_get_draw_framebuffer ());
 }
 
 void
 cogl_pop_matrix (void)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_pop (modelview_stack);
+  cogl_framebuffer_pop_matrix (cogl_get_draw_framebuffer ());
 }
 
 void
 cogl_scale (float x, float y, float z)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_scale (modelview_stack, x, y, z);
+  cogl_framebuffer_scale (cogl_get_draw_framebuffer (), x, y, z);
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_translate (modelview_stack, x, y, z);
+  cogl_framebuffer_translate (cogl_get_draw_framebuffer (), x, y, z);
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_rotate (modelview_stack, angle, x, y, z);
+  cogl_framebuffer_rotate (cogl_get_draw_framebuffer (), angle, x, y, z);
 }
 
 void
 cogl_transform (const CoglMatrix *matrix)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_multiply (modelview_stack, matrix);
+  cogl_framebuffer_transform (cogl_get_draw_framebuffer (), matrix);
 }
 
 void
@@ -741,14 +506,8 @@ cogl_perspective (float fov_y,
 		  float z_near,
 		  float z_far)
 {
-  float ymax = z_near * tanf (fov_y * G_PI / 360.0);
-
-  cogl_frustum (-ymax * aspect,  /* left */
-                ymax * aspect,   /* right */
-                -ymax,           /* bottom */
-                ymax,            /* top */
-                z_near,
-                z_far);
+  cogl_framebuffer_perspective (cogl_get_draw_framebuffer (),
+                                fov_y, aspect, z_near, z_far);
 }
 
 void
@@ -759,24 +518,8 @@ cogl_frustum (float        left,
 	      float        z_near,
 	      float        z_far)
 {
-  CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* XXX: The projection matrix isn't currently tracked in the journal
-   * so we need to flush all journaled primitives first... */
-  cogl_flush ();
-
-  _cogl_matrix_stack_load_identity (projection_stack);
-
-  _cogl_matrix_stack_frustum (projection_stack,
-                              left,
-                              right,
-                              bottom,
-                              top,
-                              z_near,
-                              z_far);
+  cogl_framebuffer_frustum (cogl_get_draw_framebuffer (),
+                            left, right, bottom, top, z_near, z_far);
 }
 
 void
@@ -784,73 +527,35 @@ cogl_ortho (float left,
 	    float right,
 	    float bottom,
 	    float top,
-	    float z_near,
-	    float z_far)
+	    float near,
+	    float far)
 {
-  CoglMatrix ortho;
-  CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* XXX: The projection matrix isn't currently tracked in the journal
-   * so we need to flush all journaled primitives first... */
-  cogl_flush ();
-
-  cogl_matrix_init_identity (&ortho);
-  cogl_matrix_ortho (&ortho, left, right, bottom, top, z_near, z_far);
-  _cogl_matrix_stack_set (projection_stack, &ortho);
+  cogl_framebuffer_orthographic (cogl_get_draw_framebuffer (),
+                                 left, top, right, bottom, near, far);
 }
 
 void
 cogl_get_modelview_matrix (CoglMatrix *matrix)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_get (modelview_stack, matrix);
-  _COGL_MATRIX_DEBUG_PRINT (matrix);
+  cogl_framebuffer_get_modelview_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
 void
 cogl_set_modelview_matrix (CoglMatrix *matrix)
 {
-  CoglMatrixStack *modelview_stack =
-    _cogl_framebuffer_get_modelview_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_set (modelview_stack, matrix);
-  _COGL_MATRIX_DEBUG_PRINT (matrix);
+  cogl_framebuffer_set_modelview_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
 void
 cogl_get_projection_matrix (CoglMatrix *matrix)
 {
-  CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
-  _cogl_matrix_stack_get (projection_stack, matrix);
-  _COGL_MATRIX_DEBUG_PRINT (matrix);
+  cogl_framebuffer_get_projection_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
 void
 cogl_set_projection_matrix (CoglMatrix *matrix)
 {
-  CoglMatrixStack *projection_stack =
-    _cogl_framebuffer_get_projection_stack (cogl_get_draw_framebuffer ());
-
-  /* XXX: The projection matrix isn't currently tracked in the journal
-   * so we need to flush all journaled primitives first... */
-  cogl_flush ();
-
-  _cogl_matrix_stack_set (projection_stack, matrix);
-
-  _COGL_MATRIX_DEBUG_PRINT (matrix);
-}
-
-CoglClipState *
-_cogl_get_clip_state (void)
-{
-  CoglFramebuffer *framebuffer;
-
-  framebuffer = cogl_get_draw_framebuffer ();
-  return _cogl_framebuffer_get_clip_state (framebuffer);
+  cogl_framebuffer_set_projection_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
 GQuark
@@ -892,7 +597,7 @@ cogl_push_source (void *material_or_pipeline)
 {
   CoglPipeline *pipeline = COGL_PIPELINE (material_or_pipeline);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   _cogl_push_source (pipeline, TRUE);
 }
@@ -907,7 +612,7 @@ _cogl_push_source (CoglPipeline *pipeline, gboolean enable_legacy)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
   if (ctx->source_stack)
     {
@@ -932,7 +637,7 @@ cogl_pop_source (void)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (ctx->source_stack);
+  _COGL_RETURN_IF_FAIL (ctx->source_stack);
 
   top = ctx->source_stack->data;
   top->push_count--;
@@ -953,7 +658,7 @@ cogl_get_source (void)
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  g_return_val_if_fail (ctx->source_stack, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->source_stack, NULL);
 
   top = ctx->source_stack->data;
   return top->pipeline;
@@ -966,7 +671,7 @@ _cogl_get_enable_legacy_state (void)
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-  g_return_val_if_fail (ctx->source_stack, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (ctx->source_stack, FALSE);
 
   top = ctx->source_stack->data;
   return top->enable_legacy;
@@ -980,8 +685,8 @@ cogl_set_source (void *material_or_pipeline)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (cogl_is_pipeline (pipeline));
-  g_return_if_fail (ctx->source_stack);
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (ctx->source_stack);
 
   top = ctx->source_stack->data;
   if (top->pipeline == pipeline && top->enable_legacy)
@@ -1004,13 +709,13 @@ cogl_set_source (void *material_or_pipeline)
 }
 
 void
-cogl_set_source_texture (CoglHandle texture_handle)
+cogl_set_source_texture (CoglTexture *texture)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  g_return_if_fail (texture_handle != NULL);
+  _COGL_RETURN_IF_FAIL (texture != NULL);
 
-  cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture_handle);
+  cogl_pipeline_set_layer_texture (ctx->texture_pipeline, 0, texture);
   cogl_set_source (ctx->texture_pipeline);
 }
 
@@ -1100,4 +805,56 @@ _cogl_init (void)
       _cogl_debug_check_environment ();
       g_once_init_leave (&init_status, 1);
     }
+}
+
+/*
+ * Returns the number of bytes-per-pixel of a given format. The bpp
+ * can be extracted from the least significant nibble of the pixel
+ * format (see CoglPixelFormat).
+ *
+ * The mapping is the following (see discussion on bug #660188):
+ *
+ * 0     = undefined
+ * 1, 8  = 1 bpp (e.g. A_8, G_8)
+ * 2     = 3 bpp, aligned (e.g. 888)
+ * 3     = 4 bpp, aligned (e.g. 8888)
+ * 4-6   = 2 bpp, not aligned (e.g. 565, 4444, 5551)
+ * 7     = undefined yuv
+ * 9     = 2 bpp, aligned
+ * 10     = undefined
+ * 11     = undefined
+ * 12    = 3 bpp, not aligned
+ * 13    = 4 bpp, not aligned (e.g. 2101010)
+ * 14-15 = undefined
+ */
+int
+_cogl_pixel_format_get_bytes_per_pixel (CoglPixelFormat format)
+{
+  int bpp_lut[] = { 0, 1, 3, 4,
+                    2, 2, 2, 0,
+                    1, 2, 0, 0,
+                    3, 4, 0, 0 };
+
+  return bpp_lut [format & 0xf];
+}
+
+/* Note: this also refers to the mapping defined above for
+ * _cogl_pixel_format_get_bytes_per_pixel() */
+gboolean
+_cogl_pixel_format_is_endian_dependant (CoglPixelFormat format)
+{
+  int aligned_lut[] = { -1, 1,  1,  1,
+                         0, 0,  0, -1,
+                         1, 1, -1, -1,
+                         0, 0, -1, -1};
+  int aligned = aligned_lut[format & 0xf];
+
+  _COGL_RETURN_VAL_IF_FAIL (aligned != -1, FALSE);
+
+  /* NB: currently checking whether the format components are aligned
+   * or not determines whether the format is endian dependent or not.
+   * In the future though we might consider adding formats with
+   * aligned components that are also endian independant. */
+
+  return aligned;
 }

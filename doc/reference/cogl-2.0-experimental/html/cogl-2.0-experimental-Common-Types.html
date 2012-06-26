@@ -8,7 +8,7 @@
 <link rel="up" href="cogl-utilities.html" title="Utilities">
 <link rel="prev" href="cogl-2.0-experimental-Quaternions-(Rotations).html" title="Quaternions (Rotations)">
 <link rel="next" href="cogl-integration.html" title="Binding and Integrating">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -62,7 +62,8 @@ actual arguments and return type may be different.
 <hr>
 <div class="refsect2">
 <a name="CoglPixelFormat"></a><h3>enum CoglPixelFormat</h3>
-<pre class="programlisting">typedef enum { /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
+<pre class="programlisting">typedef enum {
+ /*&lt; prefix=COGL_PIXEL_FORMAT &gt;*/
   COGL_PIXEL_FORMAT_ANY           = 0,
   COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
 
@@ -72,37 +73,48 @@ actual arguments and return type may be different.
   COGL_PIXEL_FORMAT_YUV           = 7,
   COGL_PIXEL_FORMAT_G_8           = 8,
 
-  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
-  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_RGB_888       = 2,
+  COGL_PIXEL_FORMAT_BGR_888       = (2 | COGL_BGR_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_8888     = (3 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888     = (3 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888     = (3 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
 
-  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_1010102  = (13 | COGL_A_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102  = (13 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010  = (13 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010  = (13 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (3 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
   COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT)
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_1010102_PRE = (COGL_PIXEL_FORMAT_RGBA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_1010102_PRE = (COGL_PIXEL_FORMAT_BGRA_1010102 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ARGB_2101010_PRE = (COGL_PIXEL_FORMAT_ARGB_2101010 | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_ABGR_2101010_PRE = (COGL_PIXEL_FORMAT_ABGR_2101010 | COGL_PREMULT_BIT)
 } CoglPixelFormat;
 </pre>
 <p>
-Pixel formats used by COGL. For the formats with a byte per
+Pixel formats used by Cogl. For the formats with a byte per
 component, the order of the components specify the order in
 increasing memory addresses. So for example
 <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-RGB-888:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_888</code></a> would have the red component in the
 lowest address, green in the next address and blue after that
-regardless of the endinanness of the system.
+regardless of the endianness of the system.
 </p>
 <p>
-For the 16-bit formats the component order specifies the order
-within a 16-bit number from most significant bit to least
-significant. So for <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component
-would be in bits 11-15, the green component would be in 6-11 and
-the blue component would be in 1-5. Therefore the order in memory
-depends on the endianness of the system.
+For the formats with non byte aligned components the component
+order specifies the order within a 16-bit or 32-bit number from
+most significant bit to least significant. So for
+<a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-RGB-565:CAPS"><code class="literal">COGL_PIXEL_FORMAT_RGB_565</code></a>, the red component would be in bits
+11-15, the green component would be in 6-11 and the blue component
+would be in 1-5. Therefore the order in memory depends on the
+endianness of the system.
 </p>
 <p>
 When uploading a texture <a class="link" href="cogl-2.0-experimental-Common-Types.html#COGL-PIXEL-FORMAT-ANY:CAPS"><code class="literal">COGL_PIXEL_FORMAT_ANY</code></a> can be used as the
@@ -178,6 +190,26 @@ internally and convert the texture data if necessary.
 </td>
 </tr>
 <tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-1010102:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_1010102</code></span></p></td>
+<td>RGBA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-1010102:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_1010102</code></span></p></td>
+<td>BGRA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-2101010:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_2101010</code></span></p></td>
+<td>ARGB, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-2101010:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_2101010</code></span></p></td>
+<td>ABGR, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
 <td><p><a name="COGL-PIXEL-FORMAT-RGBA-8888-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_8888_PRE</code></span></p></td>
 <td>Premultiplied RGBA, 32 bits
 </td>
@@ -207,6 +239,26 @@ internally and convert the texture data if necessary.
 <td>Premultiplied RGBA, 16 bits
 </td>
 </tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-RGBA-1010102-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_RGBA_1010102_PRE</code></span></p></td>
+<td>Premultiplied RGBA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-BGRA-1010102-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_BGRA_1010102_PRE</code></span></p></td>
+<td>Premultiplied BGRA, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ARGB-2101010-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ARGB_2101010_PRE</code></span></p></td>
+<td>Premultiplied ARGB, 32 bits, 10 bpc
+</td>
+</tr>
+<tr>
+<td><p><a name="COGL-PIXEL-FORMAT-ABGR-2101010-PRE:CAPS"></a><span class="term"><code class="literal">COGL_PIXEL_FORMAT_ABGR_2101010_PRE</code></span></p></td>
+<td>Premultiplied ABGR, 32 bits, 10 bpc
+</td>
+</tr>
 </tbody>
 </table></div>
 <p class="since">Since 0.8</p>
@@ -214,8 +266,7 @@ internally and convert the texture data if necessary.
 <hr>
 <div class="refsect2">
 <a name="CoglBufferTarget"></a><h3>enum CoglBufferTarget</h3>
-<pre class="programlisting">typedef enum
-{
+<pre class="programlisting">typedef enum {
   COGL_WINDOW_BUFFER      = (1 &lt;&lt; 1),
   COGL_OFFSCREEN_BUFFER   = (1 &lt;&lt; 2)
 } CoglBufferTarget;
@@ -325,8 +376,7 @@ Data types for the components of a vertex attribute.
 <hr>
 <div class="refsect2">
 <a name="CoglColorMask"></a><h3>enum CoglColorMask</h3>
-<pre class="programlisting">typedef enum
-{
+<pre class="programlisting">typedef enum {
   COGL_COLOR_MASK_NONE = 0,
   COGL_COLOR_MASK_RED = 1L&lt;&lt;0,
   COGL_COLOR_MASK_GREEN = 1L&lt;&lt;1,
@@ -339,7 +389,7 @@ Data types for the components of a vertex attribute.
 </pre>
 <p>
 Defines a bit mask of color channels. This can be used with
-<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask"><code class="function">cogl_pipeline_set_color_mask()</code></a> for example to define which color
+<a class="link" href="cogl-2.0-experimental-Pipeline.html#cogl-pipeline-set-color-mask" title="cogl_pipeline_set_color_mask ()"><code class="function">cogl_pipeline_set_color_mask()</code></a> for example to define which color
 channels should be written to the current framebuffer when
 drawing something.
 </p>
@@ -383,6 +433,6 @@ drawing something.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

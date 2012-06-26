@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Cogl deprecated API">
 <link rel="prev" href="cogl-General-API-(Deprecated).html" title="General API (Deprecated)">
 <link rel="next" href="cogl-Materials-(Deprecated).html" title="Materials (Deprecated)">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -37,8 +37,8 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-Textures-(Deprecated).synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Textures-(Deprecated).html#cogl-texture-ref" title="cogl_texture_ref ()">cogl_texture_ref</a>                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-Textures-(Deprecated).html#cogl-texture-unref" title="cogl_texture_unref ()">cogl_texture_unref</a>                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<pre class="synopsis"><span class="returnvalue">void</span> *              <a class="link" href="cogl-Textures-(Deprecated).html#cogl-texture-ref" title="cogl_texture_ref ()">cogl_texture_ref</a>                    (<em class="parameter"><code><span class="type">void</span> *texture</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Textures-(Deprecated).html#cogl-texture-unref" title="cogl_texture_unref ()">cogl_texture_unref</a>                  (<em class="parameter"><code><span class="type">void</span> *texture</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -48,10 +48,10 @@
 <a name="cogl-Textures-(Deprecated).details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="cogl-texture-ref"></a><h3>cogl_texture_ref ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_texture_ref                    (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_texture_ref                    (<em class="parameter"><code><span class="type">void</span> *texture</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_texture_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()"><code class="function">cogl_handle_ref()</code></a> instead</p>
+<p><code class="literal">cogl_texture_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-object-ref" title="cogl_object_ref ()"><code class="function">cogl_object_ref()</code></a> instead</p>
 </div>
 <p>
 Increment the reference count for a cogl texture.
@@ -60,12 +60,12 @@ Increment the reference count for a cogl texture.
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <em class="parameter"><code>CoglHandle</code></em>.</td>
+<td><p><span class="term"><em class="parameter"><code>texture</code></em> :</span></p></td>
+<td>a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the <em class="parameter"><code>handle</code></em>.</td>
+<td>the <em class="parameter"><code>texture</code></em> pointer.</td>
 </tr>
 </tbody>
 </table></div>
@@ -73,10 +73,10 @@ Increment the reference count for a cogl texture.
 <hr>
 <div class="refsect2">
 <a name="cogl-texture-unref"></a><h3>cogl_texture_unref ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_texture_unref                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_texture_unref                  (<em class="parameter"><code><span class="type">void</span> *texture</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_texture_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()"><code class="function">cogl_handle_unref()</code></a> instead</p>
+<p><code class="literal">cogl_texture_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. Use <a class="link" href="cogl-General-API.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a> instead</p>
 </div>
 <p>
 Decrement the reference count for a cogl texture.
@@ -84,8 +84,8 @@ Decrement the reference count for a cogl texture.
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>a <em class="parameter"><code>CoglHandle</code></em>.</td>
+<td><p><span class="term"><em class="parameter"><code>texture</code></em> :</span></p></td>
+<td>a <a href="../cogl-2.0-experimental/cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture"><span class="type">CoglTexture</span></a>.</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -93,6 +93,6 @@ Decrement the reference count for a cogl texture.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

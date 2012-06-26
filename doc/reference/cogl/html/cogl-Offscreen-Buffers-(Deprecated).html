@@ -8,7 +8,7 @@
 <link rel="up" href="ch03.html" title="Cogl deprecated API">
 <link rel="prev" href="cogl-Shaders-and-Programmable-Pipeline-(Deprecated).html" title="Shaders and Programmable Pipeline (Deprecated)">
 <link rel="next" href="coglglossary.html" title="Glossaries">
-<meta name="generator" content="GTK-Doc V1.16.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -37,8 +37,8 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="cogl-Offscreen-Buffers-(Deprecated).synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-ref" title="cogl_offscreen_ref ()">cogl_offscreen_ref</a>                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
-<span class="returnvalue">void</span>                <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-unref" title="cogl_offscreen_unref ()">cogl_offscreen_unref</a>                (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);
+<pre class="synopsis"><span class="returnvalue">void</span> *              <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-ref" title="cogl_offscreen_ref ()">cogl_offscreen_ref</a>                  (<em class="parameter"><code><span class="type">void</span> *offscreen</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="cogl-Offscreen-Buffers-(Deprecated).html#cogl-offscreen-unref" title="cogl_offscreen_unref ()">cogl_offscreen_unref</a>                (<em class="parameter"><code><span class="type">void</span> *offscreen</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -48,24 +48,25 @@
 <a name="cogl-Offscreen-Buffers-(Deprecated).details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="cogl-offscreen-ref"></a><h3>cogl_offscreen_ref ()</h3>
-<pre class="programlisting"><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="returnvalue">CoglHandle</span></a>          cogl_offscreen_ref                  (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span> *              cogl_offscreen_ref                  (<em class="parameter"><code><span class="type">void</span> *offscreen</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_offscreen_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-handle-ref" title="cogl_handle_ref ()"><code class="function">cogl_handle_ref()</code></a> should be used in new code.</p>
+<p><code class="literal">cogl_offscreen_ref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-object-ref" title="cogl_object_ref ()"><code class="function">cogl_object_ref()</code></a> should be used in new code.</p>
 </div>
 <p>
-Increments the reference count on the offscreen buffer.
+Increments the reference count on the <em class="parameter"><code>offscreen</code></em> framebuffer.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>A CoglHandle for an offscreen buffer</td>
+<td><p><span class="term"><em class="parameter"><code>offscreen</code></em> :</span></p></td>
+<td>A pointer to a <span class="type">CoglOffscreen</span> framebuffer</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>For convenience it returns the given CoglHandle. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+<td>For convenience it returns the
+given <em class="parameter"><code>offscreen</code></em>. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -74,20 +75,20 @@ Increments the reference count on the offscreen buffer.
 <hr>
 <div class="refsect2">
 <a name="cogl-offscreen-unref"></a><h3>cogl_offscreen_unref ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cogl_offscreen_unref                (<em class="parameter"><code><a class="link" href="cogl-General-API.html#CoglHandle" title="CoglHandle"><span class="type">CoglHandle</span></a> handle</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">void</span>                cogl_offscreen_unref                (<em class="parameter"><code><span class="type">void</span> *offscreen</code></em>);</pre>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
-<p><code class="literal">cogl_offscreen_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-handle-unref" title="cogl_handle_unref ()"><code class="function">cogl_handle_unref()</code></a> should be used in new code.</p>
+<p><code class="literal">cogl_offscreen_unref</code> has been deprecated since version 1.2 and should not be used in newly-written code. <a class="link" href="cogl-General-API.html#cogl-object-unref" title="cogl_object_unref ()"><code class="function">cogl_object_unref()</code></a> should be used in new code.</p>
 </div>
 <p>
-Decreases the reference count for the offscreen buffer and frees it when
+Decreases the reference count for the <em class="parameter"><code>offscreen</code></em> buffer and frees it when
 the count reaches 0.
 </p>
 <div class="variablelist"><table border="0">
 <col align="left" valign="top">
 <tbody><tr>
-<td><p><span class="term"><em class="parameter"><code>handle</code></em> :</span></p></td>
-<td>A CoglHandle for an offscreen buffer</td>
+<td><p><span class="term"><em class="parameter"><code>offscreen</code></em> :</span></p></td>
+<td>A pointer to a <span class="type">CoglOffscreen</span> framebuffer</td>
 </tr></tbody>
 </table></div>
 </div>
@@ -95,6 +96,6 @@ the count reaches 0.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.16.1</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

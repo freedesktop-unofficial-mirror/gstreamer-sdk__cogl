@@ -26,7 +26,6 @@
 #include "config.h"
 #endif
 
-#include <cogl.h>
 #include <cogl-material-compat.h>
 #include <cogl-pipeline.h>
 #include <cogl-pipeline-private.h>
@@ -37,7 +36,8 @@
 CoglMaterial *
 cogl_material_new (void)
 {
-  return COGL_MATERIAL (cogl_pipeline_new ());
+  _COGL_GET_CONTEXT(ctx, NULL);
+  return COGL_MATERIAL (cogl_pipeline_new (ctx));
 }
 
 CoglMaterial *

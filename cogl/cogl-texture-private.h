@@ -27,19 +27,11 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-handle.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-spans.h"
+#include "cogl-meta-texture.h"
+#include "cogl-framebuffer.h"
 
-#define COGL_TEXTURE(tex) ((CoglTexture *)(tex))
-
-typedef struct _CoglTexture           CoglTexture;
 typedef struct _CoglTextureVtable     CoglTextureVtable;
-
-typedef void (*CoglTextureSliceCallback) (CoglHandle handle,
-                                          const float *slice_coords,
-                                          const float *virtual_coords,
-                                          void *user_data);
-
-typedef void (* CoglTextureManualRepeatCallback) (const float *coords,
-                                                  void *user_data);
 
 /* Encodes three possibiloities result of transforming a quad */
 typedef enum {
@@ -95,7 +87,7 @@ struct _CoglTextureVtable
                                           float virtual_ty_1,
                                           float virtual_tx_2,
                                           float virtual_ty_2,
-                                          CoglTextureSliceCallback callback,
+                                          CoglMetaTextureCallback callback,
                                           void *user_data);
 
   int (* get_max_waste) (CoglTexture *tex);
@@ -131,12 +123,14 @@ struct _CoglTextureVtable
   int (* get_width) (CoglTexture *tex);
   int (* get_height) (CoglTexture *tex);
 
+  CoglTextureType (* get_type) (CoglTexture *tex);
+
   gboolean (* is_foreign) (CoglTexture *tex);
 };
 
 struct _CoglTexture
 {
-  CoglHandleObject         _parent;
+  CoglObject               _parent;
   GList                   *framebuffers;
   const CoglTextureVtable *vtable;
 };
@@ -178,60 +172,49 @@ _cogl_texture_free (CoglTexture *texture);
 /* This is used to register a type to the list of handle types that
    will be considered a texture in cogl_is_texture() */
 void
-_cogl_texture_register_texture_type (GQuark type);
+_cogl_texture_register_texture_type (const CoglObjectClass *klass);
 
 #define COGL_TEXTURE_DEFINE(TypeName, type_name)                        \
   COGL_HANDLE_DEFINE_WITH_CODE                                          \
   (TypeName, type_name,                                                 \
-   _cogl_texture_register_texture_type (_cogl_handle_                   \
-                                        ## type_name ## _get_type ()))
+   _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
 #define COGL_TEXTURE_INTERNAL_DEFINE(TypeName, type_name)               \
   COGL_HANDLE_INTERNAL_DEFINE_WITH_CODE                                 \
   (TypeName, type_name,                                                 \
-   _cogl_texture_register_texture_type (_cogl_handle_                   \
-                                        ## type_name ## _get_type ()))
-
-void
-_cogl_texture_foreach_sub_texture_in_region (CoglHandle handle,
-                                             float virtual_tx_1,
-                                             float virtual_ty_1,
-                                             float virtual_tx_2,
-                                             float virtual_ty_2,
-                                             CoglTextureSliceCallback callback,
-                                             void *user_data);
+   _cogl_texture_register_texture_type (&_cogl_##type_name##_class))
 
 gboolean
-_cogl_texture_can_hardware_repeat (CoglHandle handle);
+_cogl_texture_can_hardware_repeat (CoglTexture *texture);
 
 void
-_cogl_texture_transform_coords_to_gl (CoglHandle handle,
+_cogl_texture_transform_coords_to_gl (CoglTexture *texture,
                                       float *s,
                                       float *t);
 CoglTransformResult
-_cogl_texture_transform_quad_coords_to_gl (CoglHandle handle,
+_cogl_texture_transform_quad_coords_to_gl (CoglTexture *texture,
                                            float *coords);
 
 GLenum
-_cogl_texture_get_gl_format (CoglHandle handle);
+_cogl_texture_get_gl_format (CoglTexture *texture);
 
 void
-_cogl_texture_set_wrap_mode_parameters (CoglHandle handle,
+_cogl_texture_set_wrap_mode_parameters (CoglTexture *texture,
                                         GLenum wrap_mode_s,
                                         GLenum wrap_mode_t,
                                         GLenum wrap_mode_p);
 
 
 void
-_cogl_texture_set_filters (CoglHandle handle,
+_cogl_texture_set_filters (CoglTexture *texture,
                            GLenum min_filter,
                            GLenum mag_filter);
 
 void
-_cogl_texture_pre_paint (CoglHandle handle, CoglTexturePrePaintFlags flags);
+_cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);
 
 void
-_cogl_texture_ensure_non_quad_rendering (CoglHandle handle);
+_cogl_texture_ensure_non_quad_rendering (CoglTexture *texture);
 
 /* Utility function to determine which pixel format to use when
    dst_format is COGL_PIXEL_FORMAT_ANY. If dst_format is not ANY then
@@ -259,37 +242,52 @@ _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
 void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int pixels_rowstride);
 
-/* Utility function for implementing manual repeating. Even texture
-   backends that always support hardware repeating need this because
-   when foreach_sub_texture_in_region is invoked Cogl will set the
-   wrap mode to GL_CLAMP_TO_EDGE so hardware repeating can't be
-   done */
-void
-_cogl_texture_iterate_manual_repeats (CoglTextureManualRepeatCallback callback,
-                                      float tx_1, float ty_1,
-                                      float tx_2, float ty_2,
-                                      void *user_data);
-
 /* Utility function to use as a fallback for getting the data of any
    texture via the framebuffer */
 
 gboolean
-_cogl_texture_draw_and_read (CoglHandle   handle,
+_cogl_texture_draw_and_read (CoglTexture *texture,
                              CoglBitmap  *target_bmp,
                              GLuint       target_gl_format,
                              GLuint       target_gl_type);
 
 gboolean
-_cogl_texture_is_foreign (CoglHandle handle);
+_cogl_texture_is_foreign (CoglTexture *texture);
 
 void
-_cogl_texture_associate_framebuffer (CoglHandle handle,
+_cogl_texture_associate_framebuffer (CoglTexture *texture,
                                      CoglFramebuffer *framebuffer);
 
 const GList *
-_cogl_texture_get_associated_framebuffers (CoglHandle handle);
+_cogl_texture_get_associated_framebuffers (CoglTexture *texture);
 
 void
-_cogl_texture_flush_journal_rendering (CoglHandle handle);
+_cogl_texture_flush_journal_rendering (CoglTexture *texture);
+
+void
+_cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
+                                       int n_x_spans,
+                                       CoglSpan *y_spans,
+                                       int n_y_spans,
+                                       CoglTexture **textures,
+                                       float *virtual_coords,
+                                       float x_normalize_factor,
+                                       float y_normalize_factor,
+                                       CoglPipelineWrapMode wrap_x,
+                                       CoglPipelineWrapMode wrap_y,
+                                       CoglMetaTextureCallback callback,
+                                       void *user_data);
+
+/*
+ * _cogl_texture_get_type:
+ * @texture: a #CoglTexture pointer
+ *
+ * Retrieves the texture type of the underlying hardware texture that
+ * this #CoglTexture will use.
+ *
+ * Return value: The type of the hardware texture.
+ */
+CoglTextureType
+_cogl_texture_get_type (CoglTexture *texture);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Sub Textures</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="Cogl 2.0 Reference Manual">
+<link rel="up" href="cogl-meta-textures.html" title="Meta Textures">
+<link rel="prev" href="cogl-2.0-experimental-High-Level-Meta-Textures.html" title="High Level Meta Textures">
+<link rel="next" href="cogl-2.0-experimental-Sliced-Textures.html" title="Sliced Textures">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="cogl-2.0-experimental-High-Level-Meta-Textures.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="cogl-meta-textures.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Cogl 2.0 Reference Manual</th>
+<td><a accesskey="n" href="cogl-2.0-experimental-Sliced-Textures.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#cogl-2.0-experimental-Sub-Textures.synopsis" class="shortcut">Top</a>
+                   | 
+                  <a href="#cogl-2.0-experimental-Sub-Textures.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry">
+<a name="cogl-2.0-experimental-Sub-Textures"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="cogl-2.0-experimental-Sub-Textures.top_of_page"></a>Sub Textures</span></h2>
+<p>Sub Textures — Functions for creating and manipulating
+                    sub-textures.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="cogl-2.0-experimental-Sub-Textures.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">                    <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture">CoglSubTexture</a>;
+#define             <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#cogl-sub-texture-new" title="cogl_sub_texture_new">cogl_sub_texture_new</a>
+#define             <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#cogl-is-sub-texture" title="cogl_is_sub_texture">cogl_is_sub_texture</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Sub-Textures.description"></a><h2>Description</h2>
+<p>
+These functions allow high-level textures to be created that
+represent a sub-region of another texture. For example these
+can be used to implement custom texture atlasing schemes.
+</p>
+</div>
+<div class="refsect1">
+<a name="cogl-2.0-experimental-Sub-Textures.details"></a><h2>Details</h2>
+<div class="refsect2">
+<a name="CoglSubTexture"></a><h3>CoglSubTexture</h3>
+<pre class="programlisting">typedef struct _CoglSubTexture CoglSubTexture;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-sub-texture-new"></a><h3>cogl_sub_texture_new</h3>
+<pre class="programlisting">#define cogl_sub_texture_new cogl_sub_texture_new_EXP
+</pre>
+<p>
+Creates a high-level <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a> representing a sub-region of
+any other <a class="link" href="cogl-2.0-experimental-The-Texture-Interface.html#CoglTexture" title="CoglTexture"><span class="type">CoglTexture</span></a>. The sub-region must strictly lye within the
+bounds of the <em class="parameter"><code>parent_texture</code></em>. The returned texture implements the
+<a class="link" href="cogl-2.0-experimental-High-Level-Meta-Textures.html#CoglMetaTexture" title="CoglMetaTexture"><span class="type">CoglMetaTexture</span></a> interface because it's not a low level texture
+that hardware can understand natively.
+</p>
+<p>
+</p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>Remember: Unless you are using high level drawing APIs such
+as <a class="link" href="cogl-2.0-experimental-Rectangles.html#cogl-rectangle" title="cogl_rectangle ()"><code class="function">cogl_rectangle()</code></a> or other APIs documented to understand the
+<a class="link" href="cogl-2.0-experimental-High-Level-Meta-Textures.html#CoglMetaTexture" title="CoglMetaTexture"><span class="type">CoglMetaTexture</span></a> interface then you need to use the
+<a class="link" href="cogl-2.0-experimental-High-Level-Meta-Textures.html#CoglMetaTexture" title="CoglMetaTexture"><span class="type">CoglMetaTexture</span></a> interface to resolve a <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a> into a
+low-level texture before drawing.</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>context</code></em> :</span></p></td>
+<td>A <span class="type">CoglContext</span> pointer</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>parent_texture</code></em> :</span></p></td>
+<td>The full texture containing a sub-region you want
+to make a <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a> from.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub_x</code></em> :</span></p></td>
+<td>The top-left x coordinate of the parent region to make
+a texture from.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub_y</code></em> :</span></p></td>
+<td>The top-left y coordinate of the parent region to make
+a texture from.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub_width</code></em> :</span></p></td>
+<td>The width of the parent region to make a texture from.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sub_height</code></em> :</span></p></td>
+<td>The height of the parent region to make a texture
+from.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>A newly allocated <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a> representing a
+sub-region of <em class="parameter"><code>parent_texture</code></em>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cogl-is-sub-texture"></a><h3>cogl_is_sub_texture</h3>
+<pre class="programlisting">#define cogl_is_sub_texture cogl_is_sub_texture_EXP
+</pre>
+<p>
+Checks whether <em class="parameter"><code>object</code></em> is a <a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a>.
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>a <a class="link" href="cogl-2.0-experimental-The-Object-Interface.html#CoglObject" title="CoglObject"><span class="type">CoglObject</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the passed <em class="parameter"><code>object</code></em> represents a
+<a class="link" href="cogl-2.0-experimental-Sub-Textures.html#CoglSubTexture" title="CoglSubTexture"><span class="type">CoglSubTexture</span></a> and <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a> otherwise.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 1.10</p>
+<p class="stability">Stability Level: Unstable</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.18.1</div>
+</body>
+</html>

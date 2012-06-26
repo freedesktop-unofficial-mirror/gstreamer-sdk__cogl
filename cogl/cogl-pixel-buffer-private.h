@@ -35,20 +35,10 @@
 
 G_BEGIN_DECLS
 
-#define COGL_PIXEL_BUFFER(array)     ((CoglPixelBuffer *)(array))
-
 struct _CoglPixelBuffer
 {
   CoglBuffer            _parent;
-
-  CoglPixelFormat       format;
-  unsigned int          width;
-  unsigned int          height;
-  unsigned int          stride;
 };
-
-GQuark
-_cogl_handle_pixel_buffer_get_type (void);
 
 G_END_DECLS
 

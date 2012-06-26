@@ -33,43 +33,27 @@
 #include "cogl-bitmap.h"
 
 /*
- * CoglBitmapDestroyNotify:
- * @data: The image data
- * @destroy_data: The callback closure data that was given to
- *   _cogl_bitmap_new_from_data().
+ * _cogl_bitmap_new_with_malloc_buffer:
+ * @context: A #CoglContext
+ * @width: width of the bitmap in pixels
+ * @height: height of the bitmap in pixels
+ * @format: the format of the pixels the array will store
  *
- * Function prototype that is used to destroy the bitmap data when
- * _cogl_bitmap_new_from_data() is called.
- */
-typedef void (* CoglBitmapDestroyNotify) (guint8 *data, void *destroy_data);
-
-/*
- * _cogl_bitmap_new_from_data:
- * @data: A pointer to the data. The bitmap will take ownership of this data.
- * @format: The format of the pixel data.
- * @width: The width of the bitmap.
- * @height: The height of the bitmap.
- * @rowstride: The rowstride of the bitmap (the number of bytes from
- *   the start of one row of the bitmap to the next).
- * @destroy_fn: A function to be called when the bitmap is
- *   destroyed. This should free @data. %NULL can be used instead if
- *   no free is needed.
- * @destroy_fn_data: This pointer will get passed to @destroy_fn.
+ * This is equivalent to cogl_bitmap_new_with_size() except that it
+ * allocated the buffer using g_malloc() instead of creating a
+ * #CoglPixelBuffer. The buffer will be automatically destroyed when
+ * the bitmap is freed.
  *
- * Creates a bitmap using some existing data. The data is not copied
- * so the bitmap will take ownership of the data pointer. When the
- * bitmap is freed @destroy_fn will be called to free the data.
+ * Return value: a #CoglPixelBuffer representing the newly created array
  *
- * Return value: A new %CoglBitmap.
+ * Since: 1.10
+ * Stability: Unstable
  */
 CoglBitmap *
-_cogl_bitmap_new_from_data (guint8                  *data,
-                            CoglPixelFormat          format,
-                            int                      width,
-                            int                      height,
-                            int                      rowstride,
-                            CoglBitmapDestroyNotify  destroy_fn,
-                            gpointer                 destroy_fn_data);
+_cogl_bitmap_new_with_malloc_buffer (CoglContext *context,
+                                     unsigned int width,
+                                     unsigned int height,
+                                     CoglPixelFormat format);
 
 /* The idea of this function is that it will create a bitmap that
    shares the actual data with another bitmap. This is needed for the
@@ -83,59 +67,29 @@ _cogl_bitmap_new_shared (CoglBitmap      *shared_bmp,
                          int              height,
                          int              rowstride);
 
-gboolean
-_cogl_bitmap_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
-
-gboolean
-_cogl_bitmap_fallback_can_convert (CoglPixelFormat src, CoglPixelFormat dst);
-
-gboolean
-_cogl_bitmap_can_unpremult (CoglPixelFormat format);
-
-gboolean
-_cogl_bitmap_fallback_can_unpremult (CoglPixelFormat format);
-
-gboolean
-_cogl_bitmap_can_premult (CoglPixelFormat format);
-
-gboolean
-_cogl_bitmap_fallback_can_premult (CoglPixelFormat format);
-
 CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat   dst_format);
-CoglBitmap *
-_cogl_bitmap_fallback_convert (CoglBitmap *bmp,
-			       CoglPixelFormat   dst_format);
 
 gboolean
-_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_fallback_unpremult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_premult (CoglBitmap *dst_bmp);
-
-gboolean
-_cogl_bitmap_fallback_premult (CoglBitmap *dst_bmp);
+_cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
+                                  CoglBitmap *dst_bmp);
 
 CoglBitmap *
 _cogl_bitmap_from_file (const char *filename,
 			GError     **error);
 
-CoglBitmap *
-_cogl_bitmap_fallback_from_file (const char *filename);
+gboolean
+_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
+
+gboolean
+_cogl_bitmap_premult (CoglBitmap *dst_bmp);
 
 gboolean
 _cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
                                      CoglPixelFormat  dst_format);
 
-CoglBitmap *
-_cogl_bitmap_convert_format_and_premult (CoglBitmap *bmp,
-                                         CoglPixelFormat   dst_format);
-
-void
+gboolean
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
 			     int         src_x,
@@ -154,21 +108,9 @@ _cogl_bitmap_get_size_from_file (const char *filename,
                                  int        *width,
                                  int        *height);
 
-CoglPixelFormat
-_cogl_bitmap_get_format (CoglBitmap *bitmap);
-
 void
 _cogl_bitmap_set_format (CoglBitmap *bitmap,
                          CoglPixelFormat format);
-
-int
-_cogl_bitmap_get_width (CoglBitmap *bitmap);
-
-int
-_cogl_bitmap_get_height (CoglBitmap *bitmap);
-
-int
-_cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
 
 /* Maps the bitmap so that the pixels can be accessed directly or if
    the bitmap is just a memory bitmap then it just returns the pointer

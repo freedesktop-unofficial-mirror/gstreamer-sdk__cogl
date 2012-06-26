@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="big5"?>
+<VisualStudioProject
+ ProjectType="Visual C++"
+ Version="9.00"
+ Name="cogl"
+ ProjectGUID="{F3A80987-5411-43DB-A23B-06F2076E1206}"
+ RootNamespace="cogl"
+ Keyword="Win32Proj"
+ TargetFrameworkVersion="196613"
+ >
+ <Platforms>
+  <Platform
+   Name="Win32"
+  />
+  <Platform
+   Name="x64"
+  />
+ </Platforms>
+ <ToolFiles>
+ </ToolFiles>
+ <Configurations>
+  <Configuration
+   Name="Debug|Win32"
+   InheritedPropertySheets=".\cogl.vsprops"
+   ConfigurationType="2"
+   CharacterSet="1"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="0"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+    MinimalRebuild="true"
+    BasicRuntimeChecks="3"
+    RuntimeLibrary="3"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="4"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    TargetMachine="1"
+   />
+  </Configuration>
+  <Configuration
+   Name="Debug_SDL|Win32"
+   InheritedPropertySheets=".\cogl.vsprops"
+   OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+   ConfigurationType="2"
+   CharacterSet="1"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="0"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+    MinimalRebuild="true"
+    BasicRuntimeChecks="3"
+    RuntimeLibrary="3"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="4"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    TargetMachine="1"
+   />
+  </Configuration>
+  <Configuration
+   Name="Debug|x64"
+   InheritedPropertySheets=".\cogl.vsprops"
+   ConfigurationType="2"
+   CharacterSet="2"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="0"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+    MinimalRebuild="true"
+    BasicRuntimeChecks="3"
+    RuntimeLibrary="3"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    TargetMachine="17"
+   />
+  </Configuration>
+  <Configuration
+   Name="Debug_SDL|x64"
+   InheritedPropertySheets=".\cogl.vsprops"
+   OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+   ConfigurationType="2"
+   CharacterSet="2"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="0"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
+    MinimalRebuild="true"
+    BasicRuntimeChecks="3"
+    RuntimeLibrary="3"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    TargetMachine="17"
+   />
+  </Configuration>
+  <Configuration
+   Name="Release|Win32"
+   InheritedPropertySheets=".\cogl.vsprops"
+   ConfigurationType="2"
+   CharacterSet="1"
+   WholeProgramOptimization="1"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="2"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    EnableIntrinsicFunctions="true"
+    PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+    RuntimeLibrary="2"
+    EnableFunctionLevelLinking="true"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="1"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    OptimizeReferences="2"
+    EnableCOMDATFolding="2"
+    TargetMachine="1"
+   />
+  </Configuration>
+  <Configuration
+   Name="Release_SDL|Win32"
+   InheritedPropertySheets=".\cogl.vsprops"
+   OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+   ConfigurationType="2"
+   CharacterSet="1"
+   WholeProgramOptimization="1"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    Optimization="2"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    EnableIntrinsicFunctions="true"
+    PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+    RuntimeLibrary="2"
+    EnableFunctionLevelLinking="true"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="1"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    OptimizeReferences="2"
+    EnableCOMDATFolding="2"
+    TargetMachine="1"
+   />
+  </Configuration>
+  <Configuration
+   Name="Release|x64"
+   InheritedPropertySheets=".\cogl.vsprops"
+   ConfigurationType="2"
+   CharacterSet="2"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefines)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+    RuntimeLibrary="2"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    OptimizeReferences="2"
+    EnableCOMDATFolding="2"
+    TargetMachine="17"
+   />
+  </Configuration>
+  <Configuration
+   Name="Release_SDL|x64"
+   InheritedPropertySheets=".\cogl.vsprops"
+   OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
+   ConfigurationType="2"
+   CharacterSet="2"
+   >
+   <Tool
+    Name="VCPreBuildEventTool"
+    CommandLine="
+$(DoDefinesSDL)
+$(PreBuildCmd)
+       "
+   />
+   <Tool
+    Name="VCCLCompilerTool"
+    AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+    PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
+    RuntimeLibrary="2"
+    UsePrecompiledHeader="0"
+    WarningLevel="3"
+    DebugInformationFormat="3"
+   />
+   <Tool
+    Name="VCPreLinkEventTool"
+    CommandLine="$(GenerateCoglDef)"
+   />
+   <Tool
+    Name="VCLinkerTool"
+    AdditionalDependencies="SDL.lib opengl32.lib intl.lib cairo.lib gdk_pixbuf-2.0.lib gmodule-2.0.lib"
+    OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
+    LinkIncremental="2"
+    ModuleDefinitionFile="..\..\..\cogl\cogl.def"
+    ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
+    GenerateDebugInformation="true"
+    SubSystem="2"
+    OptimizeReferences="2"
+    EnableCOMDATFolding="2"
+    TargetMachine="17"
+   />
+  </Configuration>
+ </Configurations>
+ <References>
+ </References>
+ <Files>
+  <Filter Name="Sources"
+   Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+   UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+   >
+   <File RelativePath="..\..\..\cogl\winsys\cogl-winsys-wgl.c" />
+   <File RelativePath="..\..\..\cogl\winsys\cogl-winsys-sdl.c" >
+    <FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+    <FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+    <FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+    <FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+   </File>
+   <File RelativePath="..\..\..\cogl\cogl-win32-renderer.c" />
+   <File RelativePath="..\..\..\cogl\.\winsys\cogl-winsys.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\dict.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\geom.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\mesh.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\normal.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\priorityq.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\render.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\sweep.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\tess.c" />
+   <File RelativePath="..\..\..\cogl\.\tesselator\tessmono.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-context.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-renderer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-swap-chain.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-onscreen-template.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-display.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-object.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-util.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-bitmap.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-bitmap-conversion.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-primitives.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-path.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl2-path.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-bitmap-pixbuf.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-clip-stack.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-clip-state.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl2-compatibility.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-feature-private.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-fixed.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-color.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-buffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pixel-buffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-vertex-buffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-index-buffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-attribute-buffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-indices.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-attribute.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-primitive.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-matrix.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-vector.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-euler.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-quaternion.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-matrix-stack.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-depth-state.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-node.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-layer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-state.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-layer-state.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-debug.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-opengl.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-fragend-glsl.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-fragend-arbfp.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-fragend-fixed.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-vertend-glsl.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-vertend-fixed.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-progend-fixed.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-progend-glsl.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-snippet.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-pipeline-cache.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-material-compat.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-program.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-blend-string.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-debug.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-sub-texture.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-texture.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-texture-2d.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-texture-2d-sliced.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-texture-3d.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-texture-rectangle.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-rectangle-map.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-atlas.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-atlas-texture.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-meta-texture.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-blit.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-spans.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-journal.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-framebuffer.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-onscreen.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-profile.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-bitmask.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-shader.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-point-in-poly.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-clutter.c" />
+   <File RelativePath="..\..\..\cogl\.\winsys\cogl-winsys-stub.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-config.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-boxed-value.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-snippet.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-poll.c" />
+   <File RelativePath="..\..\..\cogl\.\cogl-glib-source.c" />
+   <File RelativePath="..\..\..\cogl\cogl-enum-types.c" />
+   <Filter Name="Driver_GL" >
+    <File RelativePath="..\..\..\cogl\driver\gl\cogl-gl.c" />
+    <File RelativePath="..\..\..\cogl\driver\gl\cogl-texture-driver-gl.c" />
+   </Filter>
+  </Filter>
+  <Filter Name="Headers"
+   Filter="h;hpp;hxx;hm;inl;inc;xsd"
+   UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+   >
+  </Filter>
+  <Filter Name="Resource Files">
+   <File RelativePath="..\..\..\cogl\cogl.rc" />
+  </Filter>
+ </Files>
+ <Globals>
+ </Globals>
+</VisualStudioProject>

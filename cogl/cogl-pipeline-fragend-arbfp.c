@@ -30,11 +30,13 @@
 #endif
 
 #include "cogl-debug.h"
+#include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
+#include "cogl-pipeline-state-private.h"
+#include "cogl-pipeline-layer-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_ARBFP
 
-#include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-handle.h"
@@ -107,11 +109,19 @@ get_shader_state (CoglPipeline *pipeline)
 }
 
 static void
-destroy_shader_state (void *user_data)
+destroy_shader_state (void *user_data,
+                      void *instance)
 {
   CoglPipelineShaderState *shader_state = user_data;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* If the shader state was last used for this pipeline then clear it
+     so that if same address gets used again for a new pipeline then
+     we won't think it's the same pipeline and avoid updating the
+     constants */
+  if (shader_state->last_used_for_pipeline == instance)
+    shader_state->last_used_for_pipeline = NULL;
 
   if (--shader_state->ref_count == 0)
     {
@@ -130,10 +140,10 @@ destroy_shader_state (void *user_data)
 static void
 set_shader_state (CoglPipeline *pipeline, CoglPipelineShaderState *shader_state)
 {
-  cogl_object_set_user_data (COGL_OBJECT (pipeline),
-                             &shader_state_key,
-                             shader_state,
-                             destroy_shader_state);
+  _cogl_object_set_user_data (COGL_OBJECT (pipeline),
+                              &shader_state_key,
+                              shader_state,
+                              destroy_shader_state);
 }
 
 static void
@@ -161,11 +171,15 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
   /* First validate that we can handle the current state using ARBfp
    */
 
-  if (!cogl_features_available (COGL_FEATURE_SHADERS_ARBFP))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_ARBFP))
     return FALSE;
 
   /* TODO: support fog */
   if (_cogl_pipeline_get_fog_enabled (pipeline))
+    return FALSE;
+
+  /* Fragment snippets are only supported in the GLSL fragend */
+  if (_cogl_pipeline_has_fragment_snippets (pipeline))
     return FALSE;
 
   user_program = cogl_pipeline_get_user_program (pipeline);
@@ -276,26 +290,31 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
 }
 
 static const char *
-gl_target_to_arbfp_string (GLenum gl_target)
+texture_type_to_arbfp_string (CoglTextureType texture_type)
 {
-  if (gl_target == GL_TEXTURE_1D)
-    return "1D";
-  else if (gl_target == GL_TEXTURE_2D)
-    return "2D";
-#ifdef GL_ARB_texture_rectangle
-  else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    return "RECT";
+  switch (texture_type)
+    {
+#if 0 /* TODO */
+    case COGL_TEXTURE_TYPE_1D:
+      return "1D";
 #endif
-  else if (gl_target == GL_TEXTURE_3D)
-    return "3D";
-  else
-    return "2D";
+    case COGL_TEXTURE_TYPE_2D:
+      return "2D";
+    case COGL_TEXTURE_TYPE_3D:
+      return "3D";
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      return "RECT";
+    }
+
+  g_warn_if_reached ();
+
+  return "2D";
 }
 
 static void
 setup_texture_source (CoglPipelineShaderState *shader_state,
                       int unit_index,
-                      GLenum gl_target)
+                      CoglTextureType texture_type)
 {
   if (!shader_state->unit_state[unit_index].sampled)
     {
@@ -314,7 +333,7 @@ setup_texture_source (CoglPipelineShaderState *shader_state,
                                 unit_index,
                                 unit_index,
                                 unit_index,
-                                gl_target_to_arbfp_string (gl_target));
+                                texture_type_to_arbfp_string (texture_type));
       shader_state->unit_state[unit_index].sampled = TRUE;
     }
 }
@@ -334,7 +353,7 @@ typedef struct _CoglPipelineFragendARBfpArg
 
   /* for type = TEXTURE */
   int texture_unit;
-  GLenum texture_target;
+  CoglTextureType texture_type;
 
   /* for type = CONSTANT */
   int constant_id;
@@ -371,14 +390,12 @@ setup_arg (CoglPipeline *pipeline,
            CoglPipelineLayer *layer,
            CoglBlendStringChannelMask mask,
            int arg_index,
-           GLint src,
+           CoglPipelineCombineSource src,
            GLint op,
            CoglPipelineFragendARBfpArg *arg)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);
   static const char *tmp_name[3] = { "tmp0", "tmp1", "tmp2" };
-  GLenum gl_target;
-  CoglHandle texture;
 
   switch (src)
     {
@@ -386,12 +403,9 @@ setup_arg (CoglPipeline *pipeline,
       arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
       arg->name = "texel%d";
       arg->texture_unit = _cogl_pipeline_layer_get_unit_index (layer);
-      texture = _cogl_pipeline_layer_get_texture (layer);
-      if (texture)
-        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      else
-        gl_target = GL_TEXTURE_2D;
-      setup_texture_source (shader_state, arg->texture_unit, gl_target);
+      setup_texture_source (shader_state,
+                            arg->texture_unit,
+                            _cogl_pipeline_layer_get_texture_type (layer));
       break;
     case COGL_PIPELINE_COMBINE_SOURCE_CONSTANT:
       {
@@ -418,16 +432,40 @@ setup_arg (CoglPipeline *pipeline,
       else
         arg->name = "output";
       break;
-    default: /* GL_TEXTURE0..N */
-      arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
-      arg->name = "texture[%d]";
-      arg->texture_unit = src - GL_TEXTURE0;
-      texture = _cogl_pipeline_layer_get_texture (layer);
-      if (texture)
-        cogl_texture_get_gl_texture (texture, NULL, &gl_target);
-      else
-        gl_target = GL_TEXTURE_2D;
-      setup_texture_source (shader_state, arg->texture_unit, gl_target);
+    default: /* Sample the texture attached to a specific layer */
+      {
+        int layer_num = src - COGL_PIPELINE_COMBINE_SOURCE_TEXTURE0;
+        CoglPipelineGetLayerFlags flags = COGL_PIPELINE_GET_LAYER_NO_CREATE;
+        CoglPipelineLayer *other_layer =
+          _cogl_pipeline_get_layer_with_flags (pipeline, layer_num, flags);
+
+        if (other_layer == NULL)
+          {
+            static gboolean warning_seen = FALSE;
+            if (!warning_seen)
+              {
+                g_warning ("The application is trying to use a texture "
+                           "combine with a layer number that does not exist");
+                warning_seen = TRUE;
+              }
+            arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_SIMPLE;
+            arg->name = "output";
+          }
+        else
+          {
+            CoglTextureType texture_type;
+
+            arg->type = COGL_PIPELINE_FRAGEND_ARBFP_ARG_TYPE_TEXTURE;
+            arg->name = "texture[%d]";
+            arg->texture_unit =
+              _cogl_pipeline_layer_get_unit_index (other_layer);
+            texture_type = _cogl_pipeline_layer_get_texture_type (other_layer);
+            setup_texture_source (shader_state,
+                                  arg->texture_unit,
+                                  texture_type);
+          }
+      }
+      break;
     }
 
   arg->swizzle = "";
@@ -713,7 +751,7 @@ _cogl_pipeline_fragend_arbfp_add_layer (CoglPipeline *pipeline,
   if (!shader_state->source)
     return TRUE;
 
-  if (!_cogl_pipeline_need_texture_combine_separate (combine_authority))
+  if (!_cogl_pipeline_layer_needs_combine_separate (combine_authority))
     {
       append_masked_combine (pipeline,
                              layer,
@@ -754,7 +792,7 @@ _cogl_pipeline_fragend_arbfp_add_layer (CoglPipeline *pipeline,
   return TRUE;
 }
 
-gboolean
+static gboolean
 _cogl_pipeline_fragend_arbfp_passthrough (CoglPipeline *pipeline)
 {
   CoglPipelineShaderState *shader_state = get_shader_state (pipeline);

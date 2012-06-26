@@ -11,29 +11,9 @@ typedef struct _TestState
   int width;
   int height;
 
-  CoglHandle tex[NUM_FBOS];
+  CoglTexture *tex[NUM_FBOS];
   CoglFramebuffer *fbo[NUM_FBOS];
 } TestState;
-
-static void
-check_pixel (int x, int y, guint8 r, guint8 g, guint8 b)
-{
-  guint32 pixel;
-  char *screen_pixel;
-  char *intended_pixel;
-
-  cogl_read_pixels (x, y, 1, 1, COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    (guint8 *) &pixel);
-
-  screen_pixel = g_strdup_printf ("#%06x", GUINT32_FROM_BE (pixel) >> 8);
-  intended_pixel = g_strdup_printf ("#%02x%02x%02x", r, g, b);
-
-  g_assert_cmpstr (screen_pixel, ==, intended_pixel);
-
-  g_free (screen_pixel);
-  g_free (intended_pixel);
-}
 
 static void
 paint (TestState *state)
@@ -65,9 +45,12 @@ paint (TestState *state)
   /* Render all of the textures to the screen */
   for (i = 0; i < NUM_FBOS; i++)
     {
-      cogl_set_source_texture (state->tex[i]);
-      cogl_rectangle (2.0f / NUM_FBOS * i - 1.0f, -1.0f,
-                      2.0f / NUM_FBOS * (i + 1) - 1.0f, 1.0f);
+      CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_texture (pipeline, 0, state->tex[i]);
+      cogl_framebuffer_draw_rectangle (fb, pipeline,
+                                       2.0f / NUM_FBOS * i - 1.0f, -1.0f,
+                                       2.0f / NUM_FBOS * (i + 1) - 1.0f, 1.0f);
+      cogl_object_unref (pipeline);
     }
 
   /* Verify all of the fbos drew the right color */
@@ -78,27 +61,23 @@ paint (TestState *state)
           { 0x00, 0xff, 0x00, 0xff },
           { 0x00, 0x00, 0xff, 0xff } };
 
-      check_pixel (state->width * (i + 0.5f) / NUM_FBOS,
-                   state->height / 2,
-                   expected_colors[i][0],
-                   expected_colors[i][1],
-                   expected_colors[i][2]);
+      test_utils_check_pixel_rgb (fb,
+                                  state->width * (i + 0.5f) / NUM_FBOS,
+                                  state->height / 2,
+                                  expected_colors[i][0],
+                                  expected_colors[i][1],
+                                  expected_colors[i][2]);
     }
 }
 
 void
-test_cogl_color_mask (TestUtilsGTestFixture *fixture,
-                      void *data)
+test_color_mask (void)
 {
-  TestUtilsSharedState *shared_state = data;
   TestState state;
-  CoglColor bg;
   int i;
 
-  state.width = cogl_framebuffer_get_width (shared_state->fb);
-  state.height = cogl_framebuffer_get_height (shared_state->fb);
-
-  cogl_color_init_from_4ub (&bg, 0, 0, 0, 255);
+  state.width = cogl_framebuffer_get_width (fb);
+  state.height = cogl_framebuffer_get_height (fb);
 
   for (i = 0; i < NUM_FBOS; i++)
     {
@@ -107,12 +86,12 @@ test_cogl_color_mask (TestUtilsGTestFixture *fixture,
                                                  COGL_PIXEL_FORMAT_RGB_888);
 
 
-      state.fbo[i] = cogl_offscreen_new_to_texture (state.tex[i]);
+      state.fbo[i] = COGL_FRAMEBUFFER (
+        cogl_offscreen_new_to_texture (state.tex[i]));
 
       /* Clear the texture color bits */
-      cogl_push_framebuffer (state.fbo[i]);
-      cogl_clear (&bg, COGL_BUFFER_BIT_COLOR);
-      cogl_pop_framebuffer ();
+      cogl_framebuffer_clear4f (state.fbo[i],
+                                COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
       cogl_framebuffer_set_color_mask (state.fbo[i],
                                        i == 0 ? COGL_COLOR_MASK_RED :
@@ -120,9 +99,13 @@ test_cogl_color_mask (TestUtilsGTestFixture *fixture,
                                        COGL_COLOR_MASK_BLUE);
     }
 
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_rectangle() api. */
+  cogl_push_framebuffer (fb);
   paint (&state);
+  cogl_pop_framebuffer ();
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
 

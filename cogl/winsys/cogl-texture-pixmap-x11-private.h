@@ -38,8 +38,6 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-pixmap-x11.h"
 
-#define COGL_TEXTURE_PIXMAP_X11(tex) ((CoglTexturePixmapX11 *) tex)
-
 typedef struct _CoglDamageRectangle CoglDamageRectangle;
 
 struct _CoglDamageRectangle
@@ -49,8 +47,6 @@ struct _CoglDamageRectangle
   unsigned int x2;
   unsigned int y2;
 };
-
-typedef struct _CoglTexturePixmapX11 CoglTexturePixmapX11;
 
 struct _CoglTexturePixmapX11
 {
@@ -80,8 +76,5 @@ struct _CoglTexturePixmapX11
      texture */
   gboolean use_winsys_texture;
 };
-
-GQuark
-_cogl_handle_texture_pixmap_x11_get_type (void);
 
 #endif /* __COGL_TEXTURE_PIXMAP_X11_PRIVATE_H */
